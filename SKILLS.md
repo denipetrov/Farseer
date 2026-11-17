@@ -219,6 +219,26 @@ the rules. The key concept:
     `races.test.ts`. Get the real ids from Rankwarden's `mplus_characters.profile.raceId`
     and `characters.profile.race`.
 
+- **Classes:** `src/lib/wow/classes.ts` maps every API shape to one of 13 classes:
+  - the Soulseeker slug `"deathknight"` (PvP boards, stats, query params);
+  - `classId` 1–13 and `className` `"Death Knight"` (Mythic+);
+  - `{ id, name }` (Blizzard profile);
+  - `null` for PvP characters Rankwarden hasn't enriched yet.
+
+  `classIconUrl()` and `<ClassIcon cls />` give the icon. `classColorVar()` gives
+  `var(--color-class-*)`, so class colours always come from the tokens.
+  - The icon file name is the slug.
+  - Classic icons are `.jpg`, so the asset glob includes jpg/jpeg.
+
+- **Icon sizes are shared across families.** Every game icon renders through
+  `<GameIcon>` (`src/components/GameIcon.tsx`) at one of three sizes from
+  `src/styles/iconSizes.ts` (also the CSS vars `--icon-size-*`):
+  - `sm` 24px, inline with text (default);
+  - `md` 40px, inside clickable filter pickers; the button adds padding to reach a 48px hit target;
+  - `lg` 64px, page headers.
+
+  Source files should be 128x128 (2x of `lg`). Never give an icon a pixel size of its own.
+
 - **Family tests** (`races.test.ts`) fail when an icon is missing without being listed in
   `KNOWN_MISSING`, when a listed gap has been filled, or when a file name matches no race.
   Copy this pattern for new families.
@@ -357,7 +377,7 @@ cluster has been done.
   must change to what `/pvp/leaderboard` needs (`seasonId`, `bracket`, optional
   `class`/`spec`, `pageSize`), plus a way to choose PvP or Mythic+.
 - **Not built yet:** the modern/classic switch UI (the preference exists),
-  `modern/bloodelf-*` icons, endpoint modules (`pvp.ts`, `pve.ts`), Turnstile support on the
+  `modern/bloodelf-*` icons, spec icons, endpoint modules (`pvp.ts`, `pve.ts`), Turnstile support on the
   token request (Soulseeker has it off), and logout or revocation (`POST /oidc/token/revocation`).
 
 ---

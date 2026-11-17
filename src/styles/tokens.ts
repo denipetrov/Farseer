@@ -1,4 +1,5 @@
 import { css } from 'styled-components';
+import { ICON_SIZES } from './iconSizes';
 import { palette, type Faction } from './palette';
 
 const kebab = (s: string) => s.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`);
@@ -71,6 +72,9 @@ export const tokens = css`
     --space-6: 1.5rem;
     --space-8: 2rem;
     --space-12: 3rem;
+
+    /* Game icon sizes: --icon-size-sm, -md, -lg (see iconSizes.ts) */
+    ${Object.entries(ICON_SIZES).map(([k, v]) => `--icon-size-${k}: ${v}px;`)}
 
     /* Shape & motion */
     --radius-sm: 4px;

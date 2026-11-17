@@ -2,7 +2,7 @@
  * Styled assets: every asset family exists in a `modern` and a `classic` look,
  * and the user picks one (preference `assetStyle`).
  *
- *   src/assets/icons/<family>/<style>/<name>.<ext>
+ *   src/assets/icons/<family>/<style>/<name>.<ext>  (png, jpg, svg, webp)
  *   e.g. src/assets/icons/races/modern/nightelf-female.png
  *
  * A file missing from the chosen style falls back to the other style, so a
@@ -17,7 +17,7 @@ export const isAssetStyle = (v: unknown): v is AssetStyle =>
   typeof v === 'string' && (ASSET_STYLES as readonly string[]).includes(v);
 
 // Eager imports give hashed URLs (strings) only; the browser fetches a file when it is shown.
-const files = import.meta.glob<string>('/src/assets/icons/*/*/*.{png,svg,webp}', {
+const files = import.meta.glob<string>('/src/assets/icons/*/*/*.{png,jpg,jpeg,svg,webp}', {
   eager: true,
   import: 'default',
 });

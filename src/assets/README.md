@@ -5,7 +5,7 @@ time, so nginx can cache them for a year and a changed file always gets a new UR
 
 | Folder    | For                                                                                |
 | --------- | ---------------------------------------------------------------------------------- |
-| `icons/`  | Icon families: races, and later classes, specs, roles, factions                    |
+| `icons/`  | Icon families: races, classes, and later specs, roles, factions                    |
 | `images/` | Larger graphics: backgrounds, banners, logos (WebP/AVIF for photos, SVG for logos) |
 | `fonts/`  | Self-hosted web fonts (`.woff2` only)                                              |
 
@@ -34,6 +34,15 @@ icons/races/classic/nightelf-female.png
   - a new family: `styledAssetUrl(family, style, name)` in `src/lib/assets.ts`, wrapped
     in a mapper from API data.
 
+### Size
+
+- **Source files: 128x128,** square. That is 2x the largest display size, so icons
+  stay sharp on high-density screens. Shrink larger art to fit, centred on a transparent
+  square. Don't enlarge smaller art: classic icons (56–66 px) stay as drawn.
+- **Display sizes are shared by every family:** 24, 40 and 64 px (`src/styles/iconSizes.ts`).
+  `<GameIcon>` draws every family in the same square box, so a file that isn't square is
+  shown whole and centred.
+
 ### Races
 
 - `races/<style>/<slug>-<male|female>.png`, 26 races. The race ids each one covers are in
@@ -41,6 +50,15 @@ icons/races/classic/nightelf-female.png
 - Not drawn yet: `modern/bloodelf-*` (classic is used instead).
 - Kept but not mapped: `classic/dracthyr-visage-*`. The API doesn't say which form a
   Dracthyr is in.
+
+### Classes
+
+- `classes/<style>/<slug>.<png|jpg>`, 13 classes. The slug is Soulseeker's (`deathknight`,
+  `demonhunter`). Ids and names are in `src/lib/wow/classes.ts`.
+- Use `classIconUrl(cls, { style })` or `<ClassIcon cls />`. Class colours come from
+  `classColorVar(cls)`.
+- Modern icons are 128 px transparent PNGs. Classic icons are 56 px JPEGs, kept at their
+  original size because enlarging them adds no detail.
 
 ## Rules
 
