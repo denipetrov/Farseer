@@ -4,6 +4,8 @@ The World of Warcraft front end for rankwarden.gg. It shows leaderboards, charac
 [Soulseeker](../Soulseeker) API. [docs/soulseeker.md](docs/soulseeker.md) covers how
 Farseer talks to Soulseeker: origins, tokens and conventions.
 
+Agents and maintainers should read [SKILLS.md](SKILLS.md) for conventions, traps, decisions and the current state.
+
 ## Stack
 
 - React 19 + TypeScript 6, built with Vite

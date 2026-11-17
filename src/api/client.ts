@@ -1,32 +1,53 @@
 /**
- * Base HTTP client for the Soulseeker API.
- * Endpoint-specific query functions/hooks will live next to this file
- * (e.g. `api/leaderboards.ts`) once we explore the Soulseeker endpoints.
+ * Soulseeker HTTP client. Every request carries a bearer token; a 401 renews
+ * the token once and retries once.
  */
-import { config } from '@/config';
+import { ApiError } from './errors';
+import type { TokenManager } from './auth/tokenManager';
 
-const BASE_URL = config.soulseekerApiUrl;
+export type QueryParams = Record<string, string | number | boolean | undefined | null>;
 
-export class ApiError extends Error {
-  constructor(
-    public status: number,
-    message: string,
-  ) {
-    super(message);
-    this.name = 'ApiError';
-  }
+export interface ApiClientOptions {
+  baseUrl: string;
+  auth: TokenManager;
+  fetch?: typeof fetch;
 }
 
-export async function apiGet<T>(
-  path: string,
-  params?: Record<string, string | number | undefined>,
-  signal?: AbortSignal,
-): Promise<T> {
-  const url = new URL(path, BASE_URL || window.location.origin);
-  for (const [k, v] of Object.entries(params ?? {})) {
-    if (v !== undefined) url.searchParams.set(k, String(v));
-  }
-  const res = await fetch(url, { signal, headers: { Accept: 'application/json' } });
-  if (!res.ok) throw new ApiError(res.status, `${res.status} ${res.statusText}`);
-  return res.json() as Promise<T>;
+export interface ApiClient {
+  get<T>(path: string, params?: QueryParams, signal?: AbortSignal): Promise<T>;
+}
+
+export function createApiClient({ baseUrl, auth, fetch: fetchFn }: ApiClientOptions): ApiClient {
+  const doFetch = fetchFn ?? ((...args: Parameters<typeof fetch>) => globalThis.fetch(...args));
+
+  const send = (url: URL, token: string, signal?: AbortSignal) =>
+    doFetch(url, {
+      signal,
+      headers: { Accept: 'application/json', Authorization: `Bearer ${token}` },
+    });
+
+  return {
+    async get<T>(path: string, params?: QueryParams, signal?: AbortSignal): Promise<T> {
+      const url = new URL(path, baseUrl);
+      for (const [key, value] of Object.entries(params ?? {})) {
+        if (value !== undefined && value !== null) url.searchParams.set(key, String(value));
+      }
+
+      let token = await auth.getAccessToken();
+      let res = await send(url, token, signal);
+
+      // Expired or revoked token: renew and retry once. A scope problem would
+      // not be fixed by a new token, so it is not retried.
+      if (
+        res.status === 401 &&
+        !res.headers.get('www-authenticate')?.includes('insufficient_scope')
+      ) {
+        token = await auth.handleUnauthorized(token);
+        res = await send(url, token, signal);
+      }
+
+      if (!res.ok) throw await ApiError.fromResponse(res);
+      return (await res.json()) as T;
+    },
+  };
 }

@@ -33,6 +33,12 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       <Muted>The page you are looking for does not exist.</Muted>
     </Page>
   ),
+  errorComponent: ({ error }) => (
+    <Page>
+      <PageTitle>Something went wrong</PageTitle>
+      <Muted>{error instanceof Error ? error.message : String(error)}</Muted>
+    </Page>
+  ),
 });
 
 function RootLayout() {

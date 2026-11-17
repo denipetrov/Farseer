@@ -1,10 +1,12 @@
 import { defineConfig } from 'vitest/config';
-import { fileURLToPath, URL } from 'node:url';
 
 // Standalone on purpose: the router codegen plugin from vite.config.ts is not needed in tests.
 export default defineConfig({
   resolve: {
-    alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
+    // Root-relative, not an absolute path: on Windows an absolute path can differ in
+    // drive-letter case from the root, and Vite then loads the same module twice
+    // (two React contexts, "must be used within Provider" errors).
+    alias: { '@': '/src' },
   },
   test: {
     environment: 'jsdom',

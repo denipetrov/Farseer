@@ -51,3 +51,14 @@ Every call needs a token, except `/health*` and `/oidc/*`.
 ## Swagger
 
 When you run Soulseeker locally, `http://localhost:3001/docs` lists every route, generated from the same schemas that validate requests.
+
+## How Farseer implements it
+
+- [`src/api/auth/tokenManager.ts`](../src/api/auth/tokenManager.ts) gets, stores and renews tokens.
+  - Tokens are stored in localStorage under `farseer:auth`, so a reload doesn't spend a new anonymous grant.
+  - It renews 30 s before the token expires.
+  - Within a tab, concurrent callers share one renewal. Across tabs, renewals take turns under a Web Lock, and a tab uses a token another tab already stored instead of refreshing again.
+  - When the refresh grant answers `400 invalid_grant`, it starts a new anonymous session.
+- [`src/api/client.ts`](../src/api/client.ts) adds `Authorization: Bearer …` to every request. On a 401, it renews the token and retries once. It doesn't retry `insufficient_scope`, because a new token won't fix that.
+- [`src/api/queryClient.ts`](../src/api/queryClient.ts) retries only network failures and 5xx other than 503. It doesn't retry 4xx, 429 or 503.
+- Use `api.get<T>(path, params, signal)` from `@/api` inside query functions. Pass React Query's `signal` so that cancelled queries abort their request.
