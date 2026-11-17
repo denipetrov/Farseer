@@ -191,6 +191,40 @@ When you add a colour, put it in the palette, expose it in tokens if it is share
 use the variable. Shared layout pieces are `Page`, `PageTitle`, `Panel` and `Muted` in
 `src/components/Page.tsx`.
 
+### Assets and asset styles
+
+Assets live in `src/assets/` (`icons/`, `images/`, `fonts/`). `src/assets/README.md` has
+the rules. The key concept:
+
+- **Every icon family has a `modern` and a `classic` style:**
+  `src/assets/icons/<family>/<style>/<name>.<ext>`. The user picks one with the preference
+  `assetStyle` (default `modern`). The switch UI isn't built yet.
+- **Never import icon files directly.** Use the family's mapper, so the style applies.
+  `src/lib/assets.ts` loads every icon URL through one eager `import.meta.glob`, which
+  gives URLs only; the files load lazily.
+  - `styledAssetUrl(family, style, name)` returns the URL, falling back to the other
+    style when that style lacks the file.
+  - `styledAssetNames()` and `hasStyledAsset()` let tests check coverage.
+- **Races:** `src/lib/wow/races.ts` maps every API shape to a race and gender:
+  - race as an id, `"Night Elf"`, or `{ id, name }`;
+  - gender as `"male"`, `"FEMALE"`, or `{ type }`.
+
+  `raceIconUrl()` and `<RaceIcon race gender />` give the icon. The race id wins over the
+  name, because names are localised.
+  - The list covers 31 Blizzard ids in 26 races. Pandaren (24/25/26), Dracthyr (52/70),
+    Earthen (84/85) and Haranir (86/91) have one id per faction.
+  - Mythic+ data has **no gender**. `fallbackGender` (default `male`) picks the icon; pass
+    `null` for no icon.
+  - When a new race ships, add it to `RACES`, add its icons, and extend the id table in
+    `races.test.ts`. Get the real ids from Rankwarden's `mplus_characters.profile.raceId`
+    and `characters.profile.race`.
+
+- **Family tests** (`races.test.ts`) fail when an icon is missing without being listed in
+  `KNOWN_MISSING`, when a listed gap has been filled, or when a file name matches no race.
+  Copy this pattern for new families.
+
+`public/` holds only files that need a fixed URL (`config.js`).
+
 ---
 
 ## 7. Configuration and preferences
@@ -210,6 +244,8 @@ use the variable. Shared layout pieces are `Page`, `PageTitle`, `Panel` and `Mut
     validation in `readPreferences`. Read and write it with `usePreferences()`.
   - The inline script in `index.html` applies the faction before the page first draws, to
     avoid a colour flash. It reads the same key, so keep it in step if the structure changes.
+- **Preferences now:** `faction` (horde | alliance) and `assetStyle` (modern | classic).
+  `readPreferences` validates each field on its own and drops unknown keys.
 - **localStorage keys:** `farseer:preferences` and `farseer:auth`. Prefix new keys with `farseer:`.
 
 ---
@@ -320,7 +356,8 @@ cluster has been done.
   but don't fetch data yet. The `/leaderboards` search is `region`, `realm`, `page`, and
   must change to what `/pvp/leaderboard` needs (`seasonId`, `bracket`, optional
   `class`/`spec`, `pageSize`), plus a way to choose PvP or Mythic+.
-- **Not built yet:** endpoint modules (`pvp.ts`, `pve.ts`), Turnstile support on the
+- **Not built yet:** the modern/classic switch UI (the preference exists),
+  `modern/bloodelf-*` icons, endpoint modules (`pvp.ts`, `pve.ts`), Turnstile support on the
   token request (Soulseeker has it off), and logout or revocation (`POST /oidc/token/revocation`).
 
 ---
@@ -329,11 +366,12 @@ cluster has been done.
 
 Newest first.
 
-| Date       | Decision                                                | Why                                                                                       |
-| ---------- | ------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| 2026-11-17 | Vite alias `@` → `/src` (root-relative)                 | An absolute alias path loaded modules twice on Windows (§9)                               |
-| 2026-11-17 | Tokens in localStorage, with Web Locks across tabs      | Survives reloads under the grant limit. Rotating refresh tokens must never be used twice. |
-| 2026-11-17 | Runtime `/config.js` instead of build-time env          | One image for every environment                                                           |
-| 2026-11-17 | Static nginx image + Helm, mirroring Soulseeker's CI/CD | Same cluster and operating model as the backend                                           |
-| 2026-11-17 | TypeScript 6, not 7                                     | typescript-eslint doesn't support TS 7                                                    |
-| 2026-11-17 | Farseer = rankwarden.gg                                 | Soulseeker's CORS allows only that origin in production, and `localhost:5173` locally     |
+| Date       | Decision                                                       | Why                                                                                                              |
+| ---------- | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| 2026-11-17 | Icon families in `modern`/`classic` styles, chosen by the user | A general design concept, so one switch changes every icon family. A missing file falls back to the other style. |
+| 2026-11-17 | Vite alias `@` → `/src` (root-relative)                        | An absolute alias path loaded modules twice on Windows (§9)                                                      |
+| 2026-11-17 | Tokens in localStorage, with Web Locks across tabs             | Survives reloads under the grant limit. Rotating refresh tokens must never be used twice.                        |
+| 2026-11-17 | Runtime `/config.js` instead of build-time env                 | One image for every environment                                                                                  |
+| 2026-11-17 | Static nginx image + Helm, mirroring Soulseeker's CI/CD        | Same cluster and operating model as the backend                                                                  |
+| 2026-11-17 | TypeScript 6, not 7                                            | typescript-eslint doesn't support TS 7                                                                           |
+| 2026-11-17 | Farseer = rankwarden.gg                                        | Soulseeker's CORS allows only that origin in production, and `localhost:5173` locally                            |

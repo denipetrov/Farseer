@@ -108,6 +108,7 @@ FARSEER_HELM_ARGS="--set image.repository=farseer --set imagePullSecrets=null --
 ```
 src/
   api/          HTTP client and query client; Soulseeker endpoints go here
+  assets/       imported static files: icons/, images/, fonts/ (see its README)
   components/   shared UI components
   preferences/  localStorage-backed user preferences (faction, ...)
   routes/       TanStack Router file routes (routeTree.gen.ts is generated)

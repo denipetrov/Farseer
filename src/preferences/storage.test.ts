@@ -8,9 +8,17 @@ describe('preferences storage', () => {
     expect(readPreferences()).toEqual(defaultPreferences);
   });
 
-  it('round-trips a saved preference', () => {
-    writePreferences({ faction: 'alliance' });
-    expect(readPreferences().faction).toBe('alliance');
+  it('round-trips saved preferences', () => {
+    writePreferences({ faction: 'alliance', assetStyle: 'classic' });
+    expect(readPreferences()).toEqual({ faction: 'alliance', assetStyle: 'classic' });
+  });
+
+  it('validates each field on its own and drops unknown keys', () => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ faction: 'alliance', assetStyle: 'retro', junk: 1 }),
+    );
+    expect(readPreferences()).toEqual({ faction: 'alliance', assetStyle: 'modern' });
   });
 
   it('falls back to defaults on corrupt or invalid data', () => {
