@@ -1,0 +1,82 @@
+name: CI
+
+# Everything that has to hold before a change is merged or released: the code,
+# the chart, the deploy scripts and the image itself.
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # The Node version the image builds with (Dockerfile, NODE_VERSION).
+  NODE_VERSION: '24'
+
+jobs:
+  test:
+    name: Typecheck, lint, test and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # Warnings fail CI too, so they never pile up.
+      - name: Lint
+        run: npx eslint . --max-warnings 0
+
+      - name: Formatting
+        run: npm run format:check
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+  chart:
+    name: Helm chart and scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4
+
+      - name: Lint
+        run: helm lint deploy/helm/farseer --set image.tag=ci
+
+      - name: Render
+        run: helm template farseer deploy/helm/farseer --namespace farseer --set image.tag=ci > /dev/null
+
+      - name: Deploy scripts parse
+        run: for script in deploy/scripts/*.sh; do bash -n "$script"; done
+
+  image:
+    name: Container image builds
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+
+      # Built, not pushed: this only proves the Dockerfile still works. Images
+      # are published by the release workflow, from a version tag.
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

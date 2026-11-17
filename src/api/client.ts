@@ -3,7 +3,9 @@
  * Endpoint-specific query functions/hooks will live next to this file
  * (e.g. `api/leaderboards.ts`) once we explore the Soulseeker endpoints.
  */
-const BASE_URL = import.meta.env.VITE_SOULSEEKER_API_URL ?? '';
+import { config } from '@/config';
+
+const BASE_URL = config.soulseekerApiUrl;
 
 export class ApiError extends Error {
   constructor(
@@ -15,7 +17,11 @@ export class ApiError extends Error {
   }
 }
 
-export async function apiGet<T>(path: string, params?: Record<string, string | number | undefined>, signal?: AbortSignal): Promise<T> {
+export async function apiGet<T>(
+  path: string,
+  params?: Record<string, string | number | undefined>,
+  signal?: AbortSignal,
+): Promise<T> {
   const url = new URL(path, BASE_URL || window.location.origin);
   for (const [k, v] of Object.entries(params ?? {})) {
     if (v !== undefined) url.searchParams.set(k, String(v));

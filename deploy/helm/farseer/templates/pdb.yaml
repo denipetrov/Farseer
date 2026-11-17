@@ -1,0 +1,14 @@
+{{- $replicas := ternary .Values.autoscaling.minReplicas .Values.replicas .Values.autoscaling.enabled -}}
+{{- if and .Values.podDisruptionBudget.enabled (ge (int $replicas) 2) }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    {{- include "farseer.labels" . | nindent 4 }}
+spec:
+  minAvailable: {{ .Values.podDisruptionBudget.minAvailable }}
+  selector:
+    matchLabels:
+      {{- include "farseer.selectorLabels" . | nindent 6 }}
+{{- end }}

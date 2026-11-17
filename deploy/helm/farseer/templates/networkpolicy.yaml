@@ -1,0 +1,30 @@
+{{- if .Values.networkPolicy.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    {{- include "farseer.labels" . | nindent 4 }}
+spec:
+  # Only the gateway may connect. nginx makes no outbound calls of its own: the
+  # browser talks to Soulseeker directly, so egress is closed too.
+  podSelector:
+    matchLabels:
+      {{- include "farseer.selectorLabels" . | nindent 6 }}
+  policyTypes: [Ingress, Egress]
+  egress: []
+  ingress:
+    {{- if .Values.networkPolicy.allowedNamespaces }}
+    - ports:
+        - protocol: TCP
+          port: 8080
+      from:
+        {{- range .Values.networkPolicy.allowedNamespaces }}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: {{ . }}
+        {{- end }}
+    {{- else }}
+    []
+    {{- end }}
+{{- end }}

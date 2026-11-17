@@ -1,0 +1,8 @@
+apiVersion: v2
+name: farseer
+description: >-
+  The Farseer front end: static files served by nginx behind the cluster
+  gateway. The browser talks to Soulseeker directly.
+type: application
+version: 0.1.0
+appVersion: '0.1.0'

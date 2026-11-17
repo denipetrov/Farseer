@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark" />
     <title>Farseer</title>
+    <script src="/config.js"></script>
     <script>
       // Apply saved faction before first paint to avoid a colour flash
       try {
         var f = JSON.parse(localStorage.getItem('farseer:preferences') || '{}').faction;
         document.documentElement.dataset.faction = f === 'alliance' ? 'alliance' : 'horde';
-      } catch (e) { document.documentElement.dataset.faction = 'horde'; }
+      } catch (e) {
+        document.documentElement.dataset.faction = 'horde';
+      }
     </script>
   </head>
   <body>

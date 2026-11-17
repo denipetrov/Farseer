@@ -51,7 +51,9 @@ const Option = styled.button<{ $faction: Faction }>`
   font-size: var(--font-size-sm);
   font-weight: 600;
   cursor: pointer;
-  transition: background var(--transition-fast), color var(--transition-fast);
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
 
   &:hover {
     color: var(--color-text-highlight);

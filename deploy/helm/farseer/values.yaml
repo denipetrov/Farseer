@@ -1,0 +1,57 @@
+# Defaults are the production values for DigitalOcean Kubernetes, in the same
+# cluster as Rankwarden and Soulseeker, namespace `farseer`.
+
+image:
+  repository: ghcr.io/denipetrov/farseer
+  # Set by the deploy: `--set image.tag=v1.2.3`. No default, so a release can
+  # never ship "whatever latest happens to be".
+  tag: ''
+  pullPolicy: IfNotPresent
+
+imagePullSecrets:
+  - name: ghcr
+
+# Rendered into /config.js, which the app loads before it starts. Changing a
+# value here rolls the pods; no image rebuild is needed.
+runtimeConfig:
+  # Soulseeker's public host. Its CORS_ORIGINS must list every hostname in
+  # `httpRoute.hostnames`, or each token request is refused with 403.
+  soulseekerApiUrl: https://api.rankwarden.gg
+
+# Used only with autoscaling off; with it on, the HPA owns the count.
+replicas: 2
+
+# Static files cost little CPU, so two replicas carry a lot. The HPA covers spikes.
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 70
+
+resources:
+  requests:
+    cpu: 20m
+    memory: 32Mi
+  limits:
+    memory: 64Mi
+
+# Public entry through the Gateway API. The Gateway itself belongs to the cluster.
+httpRoute:
+  enabled: true
+  hostnames:
+    - rankwarden.gg
+  parentRefs:
+    - name: public
+      namespace: gateway
+      sectionName: https
+
+# Only the gateway's data plane may connect.
+networkPolicy:
+  enabled: true
+  allowedNamespaces:
+    - gateway
+
+# Applied whenever at least two replicas run.
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
