@@ -29,7 +29,7 @@ export function FactionToggle() {
 
 const Group = styled.div`
   --toggle-bg: var(--color-bg-sunken);
-  --toggle-border: var(--color-border);
+  --toggle-border: var(--color-trim-muted);
 
   display: inline-flex;
   padding: 2px;

@@ -27,7 +27,7 @@ export const GlobalStyle = createGlobalStyle`
   button { font: inherit; color: inherit; }
 
   :focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--color-trim);
     outline-offset: 2px;
   }
 

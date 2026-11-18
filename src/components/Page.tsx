@@ -16,7 +16,7 @@ export const PageTitle = styled.h1`
 
 export const Panel = styled.section`
   --panel-bg: var(--color-surface);
-  --panel-border: var(--color-border-muted);
+  --panel-border: var(--color-trim-muted);
 
   background: var(--panel-bg);
   border: 1px solid var(--panel-border);

@@ -19,21 +19,43 @@ export const palette = {
     100: '#e6edf3', // primary text
     0: '#ffffff', // highlight text
   },
+  /*
+   * Faction colours, sampled from the faction emblems (src/assets/icons/factions).
+   * 700 is the emblem colour itself; the other steps keep its hue and change
+   * lightness only, so lighter accents stay readable on the dark background.
+   */
   horde: {
-    300: '#ff8f87',
-    400: '#f2554c',
-    500: '#d93a32',
-    600: '#b3241d',
-    700: '#7d1712',
-    900: '#2a0b09',
+    300: '#f87777', // text/links on dark (7.1:1)
+    400: '#f42525',
+    500: '#cc0000', // accent: 3.2:1 on bg, white text on it 5.9:1
+    600: '#ad0000',
+    700: '#930000', // emblem red
+    900: '#290000',
   },
   alliance: {
-    300: '#8cb8ff',
-    400: '#4d90fe',
-    500: '#2f72e8',
-    600: '#1f56bd',
-    700: '#163c82',
-    900: '#0a1a33',
+    300: '#77b5f8', // text/links on dark (8.8:1)
+    400: '#2589f4',
+    500: '#0062cc', // accent: 3.3:1 on bg, white text on it 5.8:1
+    600: '#004fa3',
+    700: '#002853', // emblem blue
+    900: '#001429',
+  },
+  /* Emblem trims: Alliance frames in gold, Horde in silver (see `factionTrim`) */
+  gold: {
+    300: '#e6bf4a',
+    400: '#d19f0b', // emblem highlight
+    500: '#b67b11', // emblem gold
+    600: '#a9610e', // emblem shadow
+    700: '#6b4a10',
+    900: '#2a1d07',
+  },
+  silver: {
+    300: '#d6d1ce',
+    400: '#b0aaa7', // emblem highlight
+    500: '#8f8986',
+    600: '#746e6c', // emblem silver
+    700: '#4d4947',
+    900: '#1f1d1d',
   },
   status: {
     success: '#3fb950',
@@ -71,3 +93,9 @@ export const palette = {
 } as const;
 
 export type Faction = 'horde' | 'alliance';
+
+/** The metal each faction's emblem is framed in: used for borders and outlines. */
+export const factionTrim = { alliance: 'gold', horde: 'silver' } as const satisfies Record<
+  Faction,
+  'gold' | 'silver'
+>;

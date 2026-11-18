@@ -7,7 +7,7 @@ interface GameIconProps {
   /** Accessible name; also the hover title */
   label: string;
   size?: IconSize;
-  /** Border colour, e.g. a class colour var; defaults to --color-border */
+  /** Border colour, e.g. a class colour var; defaults to --color-trim-muted */
   borderColor?: string;
 }
 
@@ -48,5 +48,5 @@ const Img = styled.img`
   object-fit: contain;
   background: var(--color-bg-sunken);
   border-radius: var(--game-icon-radius);
-  border: 1px solid var(--game-icon-border, var(--color-border));
+  border: 1px solid var(--game-icon-border, var(--color-trim-muted));
 `;

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { ASSET_STYLES, hasStyledAsset, styledAssetNames } from '@/lib/assets';
-import { RACES, raceIconUrl, resolveGender, resolveRace, type Gender } from './races';
+import { ASSET_STYLES, hasStyledAsset, iconNames, styledAssetNames } from '@/lib/assets';
+import { RACES, raceCrestUrl, raceIconUrl, resolveGender, resolveRace, type Gender } from './races';
 
 const GENDERS: Gender[] = ['male', 'female'];
 
@@ -147,5 +147,49 @@ describe('race icons', () => {
 
   it('gives nothing for an unknown race', () => {
     expect(raceIconUrl('Murloc', 'male', { style: 'modern' })).toBeUndefined();
+  });
+});
+
+describe('race crests', () => {
+  const FACTIONS = ['alliance', 'horde'] as const;
+  const crestFile = (slug: string) => {
+    const r = RACES.find((x) => x.slug === slug)!;
+    return `${r.crestName ?? r.slug}-crest`;
+  };
+
+  it.each(FACTIONS)('every race %s can play has a crest in that folder', (faction) => {
+    const missing = RACES.filter((r) => !r.faction || r.faction === faction)
+      .map((r) => crestFile(r.slug))
+      .filter((file) => !iconNames(`races/crests/${faction}`).includes(file));
+    expect(missing).toEqual([]);
+  });
+
+  it.each(FACTIONS)('every %s crest belongs to a race of that faction', (faction) => {
+    const expected = new Set(
+      RACES.filter((r) => !r.faction || r.faction === faction).map((r) => crestFile(r.slug)),
+    );
+    expect(iconNames(`races/crests/${faction}`).filter((n) => !expected.has(n))).toEqual([]);
+  });
+
+  it('maps every race shape, with per-race file names', () => {
+    expect(raceCrestUrl(5)).toMatch(/crests\/horde\/forsaken-crest\.png/);
+    expect(raceCrestUrl('Dark Iron Dwarf')).toMatch(/crests\/alliance\/darkiron-crest\.png/);
+    expect(raceCrestUrl({ id: 31, name: 'Zandalari Troll' })).toMatch(
+      /crests\/horde\/zandalari-crest\.png/,
+    );
+  });
+
+  it("uses a single-faction race's own folder, whatever the faction says", () => {
+    expect(raceCrestUrl('Orc', 'alliance')).toMatch(/crests\/horde\/orc-crest\.png/);
+  });
+
+  it('uses the given faction for two-faction races, and works without one', () => {
+    expect(raceCrestUrl(24, 'horde')).toMatch(/crests\/horde\/pandaren-crest\.png/);
+    expect(raceCrestUrl(24, { type: 'ALLIANCE' })).toMatch(/crests\/alliance\/pandaren-crest\.png/);
+    expect(raceCrestUrl('Dracthyr')).toMatch(/crests\/\w+\/dracthyr-crest\.png/);
+  });
+
+  it('gives nothing for an unknown race', () => {
+    expect(raceCrestUrl('Murloc', 'horde')).toBeUndefined();
   });
 });

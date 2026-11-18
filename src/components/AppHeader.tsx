@@ -23,7 +23,7 @@ const Header = styled.header`
   top: 0;
   z-index: 10;
   background: var(--header-bg);
-  border-bottom: 1px solid var(--color-border-muted);
+  border-bottom: 1px solid var(--color-trim-muted);
   box-shadow: inset 0 -2px 0 var(--color-accent);
 `;
 

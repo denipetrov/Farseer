@@ -169,8 +169,15 @@ Colours are defined in three layers. Don't skip one.
 
 1. **`src/styles/palette.ts`** is the only place hex values live. It holds the neutral
    dark scale (background `#0d1117`, text `#e6edf3`, highlight `#ffffff`), the
-   `horde` (red) and `alliance` (blue) scales, status colours, item quality colours and
-   class colours.
+   `horde` (red) and `alliance` (blue) scales, the `gold` and `silver` trim scales, status
+   colours, item quality colours and class colours.
+   - **The faction colours come from the emblems** in `src/assets/icons/factions/`. In each
+     scale, step `700` is the emblem colour itself (Horde `#930000`, Alliance `#002853`).
+     The other steps keep that hue and change only lightness, because the emblem blue is
+     too dark to see on the background. `500` is the accent: at least 3:1 on the
+     background, and white text on it at least 5.8:1. Keep those ratios if you retune.
+   - **Gold and silver come from the emblems' frames.** `factionTrim` maps Alliance to gold
+     and Horde to silver.
 2. **`src/styles/tokens.ts`** turns the palette into shared CSS variables on `:root`:
    `--color-bg`, `--color-surface*`, `--color-text*`, `--color-border*`, `--color-accent*`,
    `--color-quality-<q>`, `--color-class-<kebab-class>`, `--space-*`, `--radius-*` and `--font-*`.
@@ -178,6 +185,12 @@ Colours are defined in three layers. Don't skip one.
      switches it, and the PreferencesProvider sets that attribute.
    - Use `--color-horde` and `--color-alliance` only for something that is always one
      faction (the toggle, a faction badge).
+   - **`--color-trim*` also follows the faction:** gold for Alliance, silver for Horde.
+     `--color-trim` is used for focus rings and `--color-trim-strong` for highlights.
+     `--color-trim-muted` frames panels, the header, the toggle and game icons.
+   - **`--color-border*` stays neutral.** Use it only for dividers inside content, such
+     as table rows. Frames and outlines use trim.
+   - `--color-accent-emblem` is the exact emblem colour, for large faction fills.
 3. **Components** declare local variables that default to the shared tokens, and style
    with those. A component can then be re-coloured without changing the shared tokens:
    ```ts
@@ -219,6 +232,20 @@ the rules. The key concept:
     `races.test.ts`. Get the real ids from Rankwarden's `mplus_characters.profile.raceId`
     and `characters.profile.race`.
 
+- **Race crests** are icons with a single look, at `icons/races/crests/<faction>/<name>-crest.png`.
+  `raceCrestUrl(race, faction?)` and `<RaceCrest race faction />` give them; `iconUrl(path)`
+  in `src/lib/assets.ts` reads icons that have no style.
+  - A single-faction race (`Race.faction`) always uses its own folder.
+  - A race both factions play uses the given faction, or either folder if none is given.
+  - File names that differ from the slug are declared in `crestName`.
+- **Factions:** `src/lib/wow/factions.ts` maps `"horde"`/`"alliance"` (any case) and
+  Blizzard's `{ type, name }`. Neutral and unknown values map to null.
+  - `factionIconUrl()` and `<FactionIcon faction />` give the emblem.
+  - `factionColorVars()` gives `var(--color-<faction>)` and `var(--color-<faction>-trim)`,
+    a faction's **own** colours, independent of the user's choice.
+  - **Never derive faction from race.** Two-faction races have inconsistent ids in the
+    data: Pandaren 24 appears on both sides, Dracthyr 52 as Horde, Haranir 86 as Alliance.
+    The faction is always sent directly.
 - **Classes:** `src/lib/wow/classes.ts` maps every API shape to one of 13 classes:
   - the Soulseeker slug `"deathknight"` (PvP boards, stats, query params);
   - `classId` 1–13 and `className` `"Death Knight"` (Mythic+);
@@ -388,6 +415,7 @@ Newest first.
 
 | Date       | Decision                                                       | Why                                                                                                              |
 | ---------- | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| 2026-11-18 | Faction colours from the emblems; gold/silver trim for frames  | The user asked for the logo colours. Alliance frames in gold and Horde in silver, as on the emblems.             |
 | 2026-11-17 | Icon families in `modern`/`classic` styles, chosen by the user | A general design concept, so one switch changes every icon family. A missing file falls back to the other style. |
 | 2026-11-17 | Vite alias `@` → `/src` (root-relative)                        | An absolute alias path loaded modules twice on Windows (§9)                                                      |
 | 2026-11-17 | Tokens in localStorage, with Web Locks across tabs             | Survives reloads under the grant limit. Rotating refresh tokens must never be used twice.                        |

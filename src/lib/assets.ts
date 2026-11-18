@@ -7,6 +7,9 @@
  *
  * A file missing from the chosen style falls back to the other style, so a
  * family can be completed one style at a time.
+ *
+ * Icons with a single look (race crests: icons/races/crests/<faction>/<name>.png)
+ * are read by path with `iconUrl`.
  */
 
 export const ASSET_STYLES = ['modern', 'classic'] as const;
@@ -17,22 +20,37 @@ export const isAssetStyle = (v: unknown): v is AssetStyle =>
   typeof v === 'string' && (ASSET_STYLES as readonly string[]).includes(v);
 
 // Eager imports give hashed URLs (strings) only; the browser fetches a file when it is shown.
-const files = import.meta.glob<string>('/src/assets/icons/*/*/*.{png,jpg,jpeg,svg,webp}', {
+const files = import.meta.glob<string>('/src/assets/icons/**/*.{png,jpg,jpeg,svg,webp}', {
   eager: true,
   import: 'default',
 });
 
-/** "races/modern/nightelf-female" → URL */
+/** Path under icons/ without extension → URL: "races/modern/nightelf-female", "races/crests/horde/orc-crest" */
 const byKey = new Map<string, string>();
 for (const [path, url] of Object.entries(files)) {
-  const match = /\/icons\/([^/]+)\/([^/]+)\/([^/]+)\.\w+$/.exec(path);
-  if (match) byKey.set(`${match[1]}/${match[2]}/${match[3]}`, url);
+  const match = /\/icons\/(.+)\.\w+$/.exec(path);
+  if (match) byKey.set(match[1]!, url);
+}
+
+/**
+ * URL of an icon that has no modern/classic styles (e.g. race crests), by its path
+ * under `icons/` without extension. Prefer a family mapper over calling this directly.
+ */
+export function iconUrl(path: string): string | undefined {
+  return byKey.get(path);
+}
+
+/** Every icon path (no extension) directly inside a folder under `icons/`. */
+export function iconNames(folder: string): string[] {
+  const prefix = `${folder}/`;
+  return [...byKey.keys()]
+    .filter((k) => k.startsWith(prefix) && !k.slice(prefix.length).includes('/'))
+    .map((k) => k.slice(prefix.length));
 }
 
 /** Every file name (no extension) a family has in one style. */
 export function styledAssetNames(family: string, style: AssetStyle): string[] {
-  const prefix = `${family}/${style}/`;
-  return [...byKey.keys()].filter((k) => k.startsWith(prefix)).map((k) => k.slice(prefix.length));
+  return iconNames(`${family}/${style}`);
 }
 
 /** Whether a family has `name` in exactly this style (no fallback). */

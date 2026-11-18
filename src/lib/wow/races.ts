@@ -15,7 +15,9 @@
  * 2026-11-17). Faction-specific variants share one race: Pandaren 24/25/26,
  * Dracthyr 52/70, Earthen 84/85, Haranir 86/91.
  */
-import { ASSET_STYLES, styledAssetUrl, type AssetStyle } from '@/lib/assets';
+import { ASSET_STYLES, iconUrl, styledAssetUrl, type AssetStyle } from '@/lib/assets';
+import { resolveFaction, type FactionInput } from '@/lib/wow/factions';
+import type { Faction } from '@/styles/palette';
 
 export type Gender = 'male' | 'female';
 
@@ -55,32 +57,51 @@ export interface Race {
   ids: readonly number[];
   /** Icon file base name per style, when it differs from `slug` */
   iconName?: Partial<Record<AssetStyle, string>>;
+  /**
+   * The only faction that can play this race. Undefined for races both factions
+   * play (Pandaren, Dracthyr, Earthen, Haranir).
+   */
+  faction?: Faction;
+  /** Crest file base name, when it differs from `slug` ("forsaken" for Undead) */
+  crestName?: string;
 }
 
 export const RACES: readonly Race[] = [
-  { slug: 'human', name: 'Human', ids: [1] },
-  { slug: 'orc', name: 'Orc', ids: [2] },
-  { slug: 'dwarf', name: 'Dwarf', ids: [3] },
-  { slug: 'nightelf', name: 'Night Elf', ids: [4] },
-  { slug: 'undead', name: 'Undead', ids: [5] },
-  { slug: 'tauren', name: 'Tauren', ids: [6] },
-  { slug: 'gnome', name: 'Gnome', ids: [7] },
-  { slug: 'troll', name: 'Troll', ids: [8] },
-  { slug: 'goblin', name: 'Goblin', ids: [9] },
-  { slug: 'bloodelf', name: 'Blood Elf', ids: [10] },
-  { slug: 'draenei', name: 'Draenei', ids: [11] },
-  { slug: 'worgen', name: 'Worgen', ids: [22] },
+  { slug: 'human', name: 'Human', ids: [1], faction: 'alliance' },
+  { slug: 'orc', name: 'Orc', ids: [2], faction: 'horde' },
+  { slug: 'dwarf', name: 'Dwarf', ids: [3], faction: 'alliance' },
+  { slug: 'nightelf', name: 'Night Elf', ids: [4], faction: 'alliance' },
+  { slug: 'undead', name: 'Undead', ids: [5], faction: 'horde', crestName: 'forsaken' },
+  { slug: 'tauren', name: 'Tauren', ids: [6], faction: 'horde' },
+  { slug: 'gnome', name: 'Gnome', ids: [7], faction: 'alliance' },
+  { slug: 'troll', name: 'Troll', ids: [8], faction: 'horde' },
+  { slug: 'goblin', name: 'Goblin', ids: [9], faction: 'horde' },
+  { slug: 'bloodelf', name: 'Blood Elf', ids: [10], faction: 'horde' },
+  { slug: 'draenei', name: 'Draenei', ids: [11], faction: 'alliance' },
+  { slug: 'worgen', name: 'Worgen', ids: [22], faction: 'alliance' },
   { slug: 'pandaren', name: 'Pandaren', ids: [24, 25, 26], iconName: { modern: 'panda' } },
-  { slug: 'nightborne', name: 'Nightborne', ids: [27] },
-  { slug: 'highmountain', name: 'Highmountain Tauren', ids: [28] },
-  { slug: 'voidelf', name: 'Void Elf', ids: [29] },
-  { slug: 'lightforged', name: 'Lightforged Draenei', ids: [30] },
-  { slug: 'zandalaritroll', name: 'Zandalari Troll', ids: [31] },
-  { slug: 'kultiranhuman', name: 'Kul Tiran', ids: [32] },
-  { slug: 'darkirondwarf', name: 'Dark Iron Dwarf', ids: [34] },
-  { slug: 'vulpera', name: 'Vulpera', ids: [35] },
-  { slug: 'maghar', name: "Mag'har Orc", ids: [36] },
-  { slug: 'mechagnome', name: 'Mechagnome', ids: [37] },
+  { slug: 'nightborne', name: 'Nightborne', ids: [27], faction: 'horde' },
+  { slug: 'highmountain', name: 'Highmountain Tauren', ids: [28], faction: 'horde' },
+  { slug: 'voidelf', name: 'Void Elf', ids: [29], faction: 'alliance' },
+  { slug: 'lightforged', name: 'Lightforged Draenei', ids: [30], faction: 'alliance' },
+  {
+    slug: 'zandalaritroll',
+    name: 'Zandalari Troll',
+    ids: [31],
+    faction: 'horde',
+    crestName: 'zandalari',
+  },
+  { slug: 'kultiranhuman', name: 'Kul Tiran', ids: [32], faction: 'alliance' },
+  {
+    slug: 'darkirondwarf',
+    name: 'Dark Iron Dwarf',
+    ids: [34],
+    faction: 'alliance',
+    crestName: 'darkiron',
+  },
+  { slug: 'vulpera', name: 'Vulpera', ids: [35], faction: 'horde' },
+  { slug: 'maghar', name: "Mag'har Orc", ids: [36], faction: 'horde' },
+  { slug: 'mechagnome', name: 'Mechagnome', ids: [37], faction: 'alliance' },
   { slug: 'dracthyr', name: 'Dracthyr', ids: [52, 70] },
   { slug: 'earthen', name: 'Earthen', ids: [84, 85] },
   { slug: 'haranir', name: 'Haranir', ids: [86, 91] },
@@ -157,5 +178,26 @@ export function raceIconUrl(
   return (
     styledAssetUrl('races', style, fileName(style)) ??
     styledAssetUrl('races', other, fileName(other))
+  );
+}
+
+/**
+ * Crest URL for an API race. Crests have one look (no modern/classic) and live in
+ * icons/races/crests/<faction>/<name>-crest.png.
+ *
+ * A single-faction race always uses its own faction's folder, whatever `faction`
+ * says. A race both factions play uses `faction` when given, otherwise whichever
+ * folder has the crest (today both folders hold the same art for these races).
+ * Undefined when the race is unknown.
+ */
+export function raceCrestUrl(race: RaceInput, faction?: FactionInput): string | undefined {
+  const r = resolveRace(race);
+  if (!r) return undefined;
+  const file = `${r.crestName ?? r.slug}-crest`;
+  const preferred = r.faction ?? resolveFaction(faction)?.slug;
+  const order: Faction[] = preferred === 'horde' ? ['horde', 'alliance'] : ['alliance', 'horde'];
+  return (
+    iconUrl(`races/crests/${order[0]}/${file}`) ??
+    (r.faction ? undefined : iconUrl(`races/crests/${order[1]}/${file}`))
   );
 }

@@ -43,6 +43,16 @@ icons/races/classic/nightelf-female.png
   `<GameIcon>` draws every family in the same square box, so a file that isn't square is
   shown whole and centred.
 
+### Factions
+
+- `factions/<style>/{alliance,horde}.png`, the faction emblems, in both styles. Use
+  `factionIconUrl(faction, { style })` or `<FactionIcon faction />`
+  (`src/lib/wow/factions.ts`).
+- The faction colours in `src/styles/palette.ts` are sampled from the **classic** emblems:
+  blue/red for the accent, gold/silver for the trim. Re-sample the palette if they change.
+  The modern emblems differ: the Alliance lion is all gold, and the Horde red is crimson
+  (`#860019`).
+
 ### Races
 
 - `races/<style>/<slug>-<male|female>.png`, 26 races. The race ids each one covers are in
@@ -50,6 +60,23 @@ icons/races/classic/nightelf-female.png
 - Not drawn yet: `modern/bloodelf-*` (classic is used instead).
 - Kept but not mapped: `classic/dracthyr-visage-*`. The API doesn't say which form a
   Dracthyr is in.
+
+### Race crests
+
+Crests have **one look** (no modern/classic) and are grouped by faction:
+
+```
+icons/races/crests/<alliance|horde>/<name>-crest.png
+```
+
+- Each faction folder holds a crest for every race that faction can play: 15 each. Races
+  both factions play (Pandaren, Dracthyr, Earthen, Haranir) are in both folders, with
+  identical art today.
+- `<name>` is the race slug, except `forsaken` (Undead), `darkiron` (Dark Iron Dwarf) and
+  `zandalari` (Zandalari Troll). These are declared as `crestName` in
+  `src/lib/wow/races.ts`.
+- Use `raceCrestUrl(race, faction?)` or `<RaceCrest race faction />`. Tests fail on a
+  missing or misnamed crest.
 
 ### Classes
 
