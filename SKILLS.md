@@ -238,6 +238,12 @@ the rules. The key concept:
   - A single-faction race (`Race.faction`) always uses its own folder.
   - A race both factions play uses the given faction, or either folder if none is given.
   - File names that differ from the slug are declared in `crestName`.
+- **Honor badges:** `src/lib/wow/honor.ts` maps the PvP character's
+  `honor: { level, honorableKills }` (or a bare level) to a badge. `HONOR_BADGES` is
+  `{ tier, minLevel }`; a badge is shown from its level until the next one.
+  - The thresholds came from the project owner, not from an API. Only tiers 1–21 have
+    one. Tiers 22–33 are unmapped, so add a threshold before using them.
+  - Below level 5, or with `honor: null`, there is no badge.
 - **Factions:** `src/lib/wow/factions.ts` maps `"horde"`/`"alliance"` (any case) and
   Blizzard's `{ type, name }`. Neutral and unknown values map to null.
   - `factionIconUrl()` and `<FactionIcon faction />` give the emblem.

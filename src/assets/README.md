@@ -78,6 +78,15 @@ icons/races/crests/<alliance|horde>/<name>-crest.png
 - Use `raceCrestUrl(race, faction?)` or `<RaceCrest race faction />`. Tests fail on a
   missing or misnamed crest.
 
+### PvP honor badges
+
+- `pvp/honor/pvptier-<tier>.png`, 33 tiers, one look (no modern/classic), already 128 px.
+- `HONOR_BADGES` in `src/lib/wow/honor.ts` gives the lowest honor level for each tier (5 →
+  tier 1 … 500 → tier 21). Below level 5 there is no badge. Use `honorBadgeUrl(honor)` or
+  `<HonorBadge honor />`.
+- Tiers 22–33 have no known threshold yet and are never shown. They are listed in
+  `UNMAPPED_TIERS` in `honor.test.ts`.
+
 ### Classes
 
 - `classes/<style>/<slug>.<png|jpg>`, 13 classes. The slug is Soulseeker's (`deathknight`,
