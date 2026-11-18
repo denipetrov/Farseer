@@ -244,6 +244,18 @@ the rules. The key concept:
   - The thresholds came from the project owner, not from an API. Only tiers 1–21 have
     one. Tiers 22–33 are unmapped, so add a threshold before using them.
   - Below level 5, or with `honor: null`, there is no badge.
+- **PvP ranks** (`src/lib/wow/pvpRank.ts`, `<PvpRankIcon rank />`). The bands came from the
+  project owner.
+  - **Past seasons:** `rankOfHistoryEntry(entry)` maps a `pvpHistory` entry's `tier`.
+    Gladiator, Legend, Strategist and Battle Mender share the Gladiator icon; `rank-one` is
+    any Rank 1 title. `bestRankInSeason(history, seasonId)` picks a season's best.
+  - **Current rating:** `rankForRating({ rating, history, seasonId, rankOneCutoff })`:
+    - below 1000 Unranked; Combatant from 1000; Challenger 1400; Rival 1800; Duelist 2100;
+    - from 2300, Rank 1 at or above the ladder's Rank 1 cutoff;
+    - else Gladiator if this character holds a Gladiator-type title for `seasonId`;
+    - else Elite.
+  - Achievements are account-wide. Titles with `earnedByThisCharacter: false` count only
+    with `{ ownOnly: false }`.
 - **Factions:** `src/lib/wow/factions.ts` maps `"horde"`/`"alliance"` (any case) and
   Blizzard's `{ type, name }`. Neutral and unknown values map to null.
   - `factionIconUrl()` and `<FactionIcon faction />` give the emblem.

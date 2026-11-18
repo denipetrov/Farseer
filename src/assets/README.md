@@ -87,6 +87,13 @@ icons/races/crests/<alliance|horde>/<name>-crest.png
 - Tiers 22–33 have no known threshold yet and are never shown. They are listed in
   `UNMAPPED_TIERS` in `honor.test.ts`.
 
+### PvP ranks
+
+- `pvp/ranked/rankedpvp_0<1-8>.png`, one look, 128 px: Unranked, Combatant, Challenger,
+  Rival, Duelist, Elite, Gladiator/Legend, Rank 1.
+- `src/lib/wow/pvpRank.ts` maps both `pvpHistory` titles and current ratings to them. Use
+  `<PvpRankIcon rank />`.
+
 ### Classes
 
 - `classes/<style>/<slug>.<png|jpg>`, 13 classes. The slug is Soulseeker's (`deathknight`,
