@@ -256,6 +256,18 @@ the rules. The key concept:
     - else Elite.
   - Achievements are account-wide. Titles with `earnedByThisCharacter: false` count only
     with `{ ownOnly: false }`.
+- **Specs:** `src/lib/wow/specs.ts` holds all 40, with Blizzard ids from Soulseeker's
+  `SPEC_IDS`, plus each spec's role. `resolveSpec(spec, cls?)` accepts:
+  - an id (Mythic+ `specId`, Blizzard `activeSpec`);
+  - a ladder name (`shuffle-mage-fire`);
+  - a slug or name **with its class**, because holy, frost, restoration and protection
+    each belong to two classes. Without the class it returns null.
+- **Hero talents:** `src/lib/wow/heroTalents.ts` holds all 41 trees, with Blizzard ids
+  taken from Rankwarden's `characters.profile.heroTalentTree`. It accepts a name (PvP
+  boards' `heroTalents`), an id, or `{ id, name }`; the id wins. Tree names are unique
+  across classes. Mythic+ characters always have `heroTalents: null`.
+- When Blizzard adds a spec or tree, add it to `SPECS` / `HERO_TREES` with its id, plus
+  its icon. The tests fail on a missing icon or a file that matches nothing.
 - **Factions:** `src/lib/wow/factions.ts` maps `"horde"`/`"alliance"` (any case) and
   Blizzard's `{ type, name }`. Neutral and unknown values map to null.
   - `factionIconUrl()` and `<FactionIcon faction />` give the emblem.

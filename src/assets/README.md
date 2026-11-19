@@ -94,6 +94,23 @@ icons/races/crests/<alliance|horde>/<name>-crest.png
 - `src/lib/wow/pvpRank.ts` maps both `pvpHistory` titles and current ratings to them. Use
   `<PvpRankIcon rank />`.
 
+### Specs and hero talents
+
+Both have one look and are grouped by class, in a folder named after the class in kebab
+case (`death-knight`, `demon-hunter`):
+
+```
+icons/specs/<class>/<spec slug>.jpg           specs/hunter/beastmastery.jpg
+icons/hero-talents/<class>/<tree>.png         hero-talents/druid/elunes-chosen.png
+```
+
+- **Specs:** 40, named by Soulseeker's slug. They are 56 px JPEGs, kept as drawn, like the
+  classic class icons. Use `specIconUrl(spec, cls?)` or `<SpecIcon spec cls />`
+  (`src/lib/wow/specs.ts`).
+- **Hero talents:** 41 trees, 128 px. The file is the tree name in kebab case without
+  apostrophes (`San'layn` → `sanlayn`). Use `heroTreeIconUrl(tree)` or
+  `<HeroTalentIcon tree />` (`src/lib/wow/heroTalents.ts`).
+
 ### Classes
 
 - `classes/<style>/<slug>.<png|jpg>`, 13 classes. The slug is Soulseeker's (`deathknight`,
