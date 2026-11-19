@@ -51,6 +51,7 @@ is a decision.
 | styled-components                | 6                             | No UI library: every component is styled here. Use transient props (`$faction`).                                                            |
 | Vitest + jsdom, ESLint, Prettier |                               | `npm run check` runs everything CI runs, except the build.                                                                                  |
 | Node                             | 24 (`.nvmrc`, CI, Dockerfile) | Newer versions work locally.                                                                                                                |
+| `@denipetrov/spirit-link`        | 0.6                           | Constants shared with Soulseeker and Rankwarden (`SPECIALIZATIONS`, `SpecRole`, `SpecSubRole`). A private GitHub package: see §10.          |
 
 ---
 
@@ -256,26 +257,44 @@ the rules. The key concept:
     - else Elite.
   - Achievements are account-wide. Titles with `earnedByThisCharacter: false` count only
     with `{ ownOnly: false }`.
-- **Specs:** `src/lib/wow/specs.ts` holds all 40, with Blizzard ids from Soulseeker's
-  `SPEC_IDS`, plus each spec's role. `resolveSpec(spec, cls?)` accepts:
-  - an id (Mythic+ `specId`, Blizzard `activeSpec`);
+- **Ids first.** Since Soulseeker 311b007, every answer that names a class, spec, race or
+  hero talent tree also carries Blizzard's id: `classId`, `specId` (`activeSpecId` on
+  the PvE character), `raceId`, `heroTalentId`. Pass the id to the mappers; names are
+  the fallback for older shapes.
+- **Specs:** `src/lib/wow/specs.ts` builds `SPECS` from spirit-link's `SPECIALIZATIONS`
+  (ids, names, class ids, `role`, `subRole`). Never hand-maintain a spec table here. The
+  slug is the name, letters only, as Soulseeker's ladders spell it. `resolveSpec(spec, cls?)` accepts:
+  - an id (`specId`, Blizzard `activeSpec`);
   - a ladder name (`shuffle-mage-fire`);
   - a slug or name **with its class**, because holy, frost, restoration and protection
     each belong to two classes. Without the class it returns null.
+- **Roles:** `src/lib/wow/roles.ts`, `<RoleIcon role subRole />` or `<RoleIcon spec cls />`.
+  - Values are spirit-link's: `role` `tank | healer | dps`, `subRole` `melee | ranged`
+    (dps only). `resolveRole` also reads Raider.io's `TANK | HEALING | DPS`
+    (`activeSpecRole`). A sub-role implies dps; tanks and healers never have one.
+  - `roleOfSpec(spec)` gives a spec's role and sub-role.
+  - `specsMatching({ class, role, subRole })` lists the specs a role filter names, by the
+    same rules as Soulseeker's `/pvp/leaderboard`, `/pvp/cutoffs` and
+    `/pve/mplus-leaderboard` filters. Empty means Soulseeker answers 400 (a priest has
+    no tank). Never send `role`/`subRole` together with `spec`.
+  - Icons: `icons/roles/{tank,healer,dps,dps-melee,dps-ranged}.png`. `dps` is for a dps
+    role whose sub-role is unknown.
 - **Hero talents:** `src/lib/wow/heroTalents.ts` holds all 41 trees, with Blizzard ids
   taken from Rankwarden's `characters.profile.heroTalentTree`. It accepts a name (PvP
-  boards' `heroTalents`), an id, or `{ id, name }`; the id wins. Tree names are unique
-  across classes. Mythic+ characters always have `heroTalents: null`.
-- When Blizzard adds a spec or tree, add it to `SPECS` / `HERO_TREES` with its id, plus
-  its icon. The tests fail on a missing icon or a file that matches nothing.
+  boards' `heroTalents`), an id (`heroTalentId`), or `{ id, name }`; the id wins. Tree
+  names are unique across classes. Mythic+ characters always have `heroTalents: null`.
+- When Blizzard adds a spec, update spirit-link and add the spec's icon. When it adds a
+  tree, add it to `HERO_TREES` with its id, plus its icon. The tests fail on a missing
+  icon or a file that matches nothing.
 - **Factions:** `src/lib/wow/factions.ts` maps `"horde"`/`"alliance"` (any case) and
   Blizzard's `{ type, name }`. Neutral and unknown values map to null.
   - `factionIconUrl()` and `<FactionIcon faction />` give the emblem.
   - `factionColorVars()` gives `var(--color-<faction>)` and `var(--color-<faction>-trim)`,
     a faction's **own** colours, independent of the user's choice.
-  - **Never derive faction from race.** Two-faction races have inconsistent ids in the
-    data: Pandaren 24 appears on both sides, Dracthyr 52 as Horde, Haranir 86 as Alliance.
-    The faction is always sent directly.
+  - **Never derive faction from race.** Blizzard's PvP profiles use the per-faction ids
+    consistently, but Raider.io's Mythic+ `raceId` doesn't: Pandaren 24 appears on both
+    sides, and so do Dracthyr 52, Earthen 84 and Haranir 86 (checked 2026-11-19). The
+    faction is always sent directly.
 - **Classes:** `src/lib/wow/classes.ts` maps every API shape to one of 13 classes:
   - the Soulseeker slug `"deathknight"` (PvP boards, stats, query params);
   - `classId` 1–13 and `className` `"Death Knight"` (Mythic+);
@@ -363,6 +382,10 @@ the rules. The key concept:
   A plain `docker build` fails here. CI doesn't need the certificate.
 - **PowerShell 5.1** `Set-Content -Encoding utf8` writes a BOM. Strip it afterwards with
   `sed -i '1s/^\xEF\xBB\xBF//' file`, or edit with the file tools instead.
+  `Get-Content -Raw` reads a UTF-8 file without a BOM as ANSI, so a read-modify-write
+  turns `→` into `â†’`. Don't rewrite source files through PowerShell.
+- **GitHub Packages.** `.npmrc` maps `@denipetrov` to `npm.pkg.github.com`; the token
+  lives only in `~/.npmrc` (`//npm.pkg.github.com/:_authToken=…`). Never commit a token.
 - **Long heredocs** in the Bash tool can fail to parse, and when they do, nothing is
   written. Use the Write tool for multi-file scaffolding.
 - **Helm isn't installed.** Lint and render the chart through Docker:
@@ -407,6 +430,16 @@ same DigitalOcean cluster as Rankwarden and Soulseeker. It contains:
 
 `image.tag` is required; rendering without it fails on purpose.
 
+**Private packages.** `npm ci` needs a GitHub Packages token for `@denipetrov/spirit-link`:
+
+- CI sets `NODE_AUTH_TOKEN` (`PACKAGES_TOKEN`, else `GITHUB_TOKEN`) with
+  `setup-node`'s `registry-url`.
+- The image build takes it as the BuildKit secret `npm_token`. CI and release pass it;
+  `npm run docker:build` reads `NPM_TOKEN` or `~/.npmrc`. It ends up in no layer.
+- `GITHUB_TOKEN` can read the package only after Farseer is granted access under the
+  package's "Manage Actions access" setting. Otherwise add a `PACKAGES_TOKEN` secret
+  with `read:packages`. This mirrors Soulseeker.
+
 **Before the first deploy**, these are the user's actions, not an agent's:
 
 - the GitHub `production` environment, with secrets `DIGITALOCEAN_ACCESS_TOKEN`,
@@ -434,7 +467,7 @@ cluster has been done.
   must change to what `/pvp/leaderboard` needs (`seasonId`, `bracket`, optional
   `class`/`spec`, `pageSize`), plus a way to choose PvP or Mythic+.
 - **Not built yet:** the modern/classic switch UI (the preference exists),
-  `modern/bloodelf-*` icons, spec icons, endpoint modules (`pvp.ts`, `pve.ts`), Turnstile support on the
+  `modern/bloodelf-*` icons, endpoint modules (`pvp.ts`, `pve.ts`), Turnstile support on the
   token request (Soulseeker has it off), and logout or revocation (`POST /oidc/token/revocation`).
 
 ---
@@ -443,13 +476,14 @@ cluster has been done.
 
 Newest first.
 
-| Date       | Decision                                                       | Why                                                                                                              |
-| ---------- | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| 2026-11-18 | Faction colours from the emblems; gold/silver trim for frames  | The user asked for the logo colours. Alliance frames in gold and Horde in silver, as on the emblems.             |
-| 2026-11-17 | Icon families in `modern`/`classic` styles, chosen by the user | A general design concept, so one switch changes every icon family. A missing file falls back to the other style. |
-| 2026-11-17 | Vite alias `@` → `/src` (root-relative)                        | An absolute alias path loaded modules twice on Windows (§9)                                                      |
-| 2026-11-17 | Tokens in localStorage, with Web Locks across tabs             | Survives reloads under the grant limit. Rotating refresh tokens must never be used twice.                        |
-| 2026-11-17 | Runtime `/config.js` instead of build-time env                 | One image for every environment                                                                                  |
-| 2026-11-17 | Static nginx image + Helm, mirroring Soulseeker's CI/CD        | Same cluster and operating model as the backend                                                                  |
-| 2026-11-17 | TypeScript 6, not 7                                            | typescript-eslint doesn't support TS 7                                                                           |
-| 2026-11-17 | Farseer = rankwarden.gg                                        | Soulseeker's CORS allows only that origin in production, and `localhost:5173` locally                            |
+| Date       | Decision                                                        | Why                                                                                                              |
+| ---------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| 2026-11-19 | Specs, roles and sub-roles from spirit-link's `SPECIALIZATIONS` | One list shared with Soulseeker and Rankwarden, so role filters and labels can't drift from the API's.           |
+| 2026-11-18 | Faction colours from the emblems; gold/silver trim for frames   | The user asked for the logo colours. Alliance frames in gold and Horde in silver, as on the emblems.             |
+| 2026-11-17 | Icon families in `modern`/`classic` styles, chosen by the user  | A general design concept, so one switch changes every icon family. A missing file falls back to the other style. |
+| 2026-11-17 | Vite alias `@` → `/src` (root-relative)                         | An absolute alias path loaded modules twice on Windows (§9)                                                      |
+| 2026-11-17 | Tokens in localStorage, with Web Locks across tabs              | Survives reloads under the grant limit. Rotating refresh tokens must never be used twice.                        |
+| 2026-11-17 | Runtime `/config.js` instead of build-time env                  | One image for every environment                                                                                  |
+| 2026-11-17 | Static nginx image + Helm, mirroring Soulseeker's CI/CD         | Same cluster and operating model as the backend                                                                  |
+| 2026-11-17 | TypeScript 6, not 7                                             | typescript-eslint doesn't support TS 7                                                                           |
+| 2026-11-17 | Farseer = rankwarden.gg                                         | Soulseeker's CORS allows only that origin in production, and `localhost:5173` locally                            |

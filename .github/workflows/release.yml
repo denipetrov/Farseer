@@ -47,5 +47,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          # `@denipetrov/spirit-link` is a private GitHub package (see ci.yml).
+          secrets: |
+            npm_token=${{ secrets.PACKAGES_TOKEN || secrets.GITHUB_TOKEN }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

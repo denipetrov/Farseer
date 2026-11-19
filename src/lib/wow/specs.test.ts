@@ -1,6 +1,7 @@
+import { SPECIALIZATIONS } from '@denipetrov/spirit-link/constants';
 import { describe, expect, it } from 'vitest';
 import { iconNames } from '@/lib/assets';
-import { CLASSES } from './classes';
+import { CLASSES, resolveClass } from './classes';
 import { SPECS, classFolder, resolveSpec, specIconUrl } from './specs';
 
 describe('resolveSpec', () => {
@@ -42,6 +43,17 @@ describe('resolveSpec', () => {
     expect(SPECS).toHaveLength(40);
     expect(new Set(SPECS.map((sp) => sp.id)).size).toBe(40);
     for (const c of CLASSES) expect(SPECS.some((sp) => sp.classSlug === c.slug)).toBe(true);
+  });
+
+  it("is spirit-link's list, with Soulseeker's slugs", () => {
+    for (const s of SPECIALIZATIONS) {
+      const sp = resolveSpec(s.id)!;
+      expect(sp).toMatchObject({ name: s.name, role: s.role, subRole: s.subRole });
+      expect(resolveClass(sp.classSlug)?.id).toBe(s.classId);
+    }
+    // Soulseeker's slugs, as on the ladders
+    expect(resolveSpec(253)?.slug).toBe('beastmastery');
+    expect(resolveSpec(1480)?.slug).toBe('devourer');
   });
 });
 

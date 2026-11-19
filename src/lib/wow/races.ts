@@ -2,18 +2,22 @@
  * Playable races, and the mapping from API race/gender data to race icons.
  *
  * The API describes race in several shapes, depending on the source:
- *   PvP leaderboard         race: "Night Elf",                 gender: "female"
+ *   PvP leaderboard         race: "Night Elf", raceId: 4,      gender: "female"
  *   PvP character, Blizzard race: { id: 4, name: "Night Elf" }, gender: "FEMALE" | { type: "FEMALE" }
  *   Mythic+ boards          raceId: 4, raceName: "Night Elf",  no gender
- *   PvE character, search   race / raceName: "Night Elf",      gender: "male" | absent
+ *   PvE character, search   race / raceName: "Night Elf", raceId: 4, gender: "male" | absent
  *
  * The race id is preferred: it is Blizzard's and does not depend on the locale.
  * Names are English (Soulseeker answers en_US) and are matched loosely ("Mag'har Orc",
  * "magharorc" and "maghar-orc" are the same).
  *
+ * Every Soulseeker answer that names a race also carries Blizzard's id (`raceId`).
+ *
  * Ids are complete as of Midnight Season 2 (checked against Rankwarden's data on
  * 2026-11-17). Faction-specific variants share one race: Pandaren 24/25/26,
- * Dracthyr 52/70, Earthen 84/85, Haranir 86/91.
+ * Dracthyr 52/70, Earthen 84/85, Haranir 86/91. Never read the faction from
+ * these ids: Raider.io's Mythic+ data sends 24 for both sides, and 52, 84 and 86
+ * for both too (checked 2026-11-19). The API sends the faction itself.
  */
 import { ASSET_STYLES, iconUrl, styledAssetUrl, type AssetStyle } from '@/lib/assets';
 import { resolveFaction, type FactionInput } from '@/lib/wow/factions';

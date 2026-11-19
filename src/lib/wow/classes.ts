@@ -2,7 +2,7 @@
  * Playable classes, and the mapping from API class data to class icons and colours.
  *
  * The API describes class in several shapes, depending on the source:
- *   PvP leaderboards, stats   class: "deathknight"                (Soulseeker slug)
+ *   PvP leaderboards, stats   class: "deathknight", classId: 6    (Soulseeker slug)
  *   Mythic+ boards            classId: 6, className: "Death Knight"
  *   PvP character, Blizzard   class: { id: 6, name: "Death Knight" }
  *   PvE character, search     class / className: "Death Knight"

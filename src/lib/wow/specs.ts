@@ -2,23 +2,30 @@
  * Specializations, and the mapping from API spec data to spec icons.
  *
  * The API describes a spec in several shapes, depending on the source:
- *   PvP boards, cutoffs, stats   class: "mage", spec: "fire"          (Soulseeker slugs)
+ *   PvP boards, cutoffs, tiers   spec: "fire", specId: 63              (+ class: "mage")
  *   PvP ladder names             bracket: "shuffle-mage-fire"
- *   Mythic+ boards               specId: 63, specName: "Fire"
+ *   Mythic+ boards, search       specId: 63, specName: "Fire"
  *   PvP character, Blizzard      activeSpec: { id: 63, name: "Fire" }
- *   PvE character                activeSpecName: "Fire" (with class: "Mage")
+ *   PvE character                activeSpecId: 63, activeSpecName: "Fire"
  *
- * The id is unique and preferred. A spec name or slug alone is ambiguous (holy,
- * frost, restoration, protection belong to two classes each), so it needs the class.
- * Ids are Soulseeker's SPEC_IDS (checked against Rankwarden's data, 2026-11-04).
+ * Every answer that names a spec also carries Blizzard's id (`specId`,
+ * `activeSpecId`), so the id is the normal path. A spec name or slug alone is
+ * ambiguous (holy, frost, restoration, protection belong to two classes each),
+ * so it needs the class.
+ *
+ * The spec list, ids, roles and sub-roles come from spirit-link's
+ * `SPECIALIZATIONS`, the list Soulseeker and Rankwarden share, so a spec added
+ * there arrives here with a package update. The slug is Soulseeker's: the name,
+ * letters only (`Beast Mastery` → `beastmastery`).
  *
  * Icons have one look: icons/specs/<class-folder>/<spec slug>.jpg, where the class
  * folder is the class name in kebab case (`death-knight`).
  */
+import { SPECIALIZATIONS, SpecRole, SpecSubRole } from '@denipetrov/spirit-link/constants';
 import { iconUrl } from '@/lib/assets';
 import { resolveClass, type ClassInput, type ClassSlug, type WowClass } from '@/lib/wow/classes';
 
-export type SpecRole = 'tank' | 'healer' | 'dps';
+export { SpecRole, SpecSubRole };
 
 export interface Spec {
   /** Soulseeker's slug: letters only (`beastmastery`) */
@@ -28,62 +35,27 @@ export interface Spec {
   /** Blizzard specialization id */
   id: number;
   classSlug: ClassSlug;
+  /** Group role: `tank`, `healer` or `dps` */
   role: SpecRole;
+  /** `melee` or `ranged` for damage dealers; null for tanks and healers */
+  subRole: SpecSubRole | null;
 }
-
-const s = (classSlug: ClassSlug, slug: string, name: string, id: number, role: SpecRole): Spec => ({
-  classSlug,
-  slug,
-  name,
-  id,
-  role,
-});
-
-export const SPECS: readonly Spec[] = [
-  s('deathknight', 'blood', 'Blood', 250, 'tank'),
-  s('deathknight', 'frost', 'Frost', 251, 'dps'),
-  s('deathknight', 'unholy', 'Unholy', 252, 'dps'),
-  s('demonhunter', 'havoc', 'Havoc', 577, 'dps'),
-  s('demonhunter', 'vengeance', 'Vengeance', 581, 'tank'),
-  s('demonhunter', 'devourer', 'Devourer', 1480, 'dps'),
-  s('druid', 'balance', 'Balance', 102, 'dps'),
-  s('druid', 'feral', 'Feral', 103, 'dps'),
-  s('druid', 'guardian', 'Guardian', 104, 'tank'),
-  s('druid', 'restoration', 'Restoration', 105, 'healer'),
-  s('evoker', 'devastation', 'Devastation', 1467, 'dps'),
-  s('evoker', 'preservation', 'Preservation', 1468, 'healer'),
-  s('evoker', 'augmentation', 'Augmentation', 1473, 'dps'),
-  s('hunter', 'beastmastery', 'Beast Mastery', 253, 'dps'),
-  s('hunter', 'marksmanship', 'Marksmanship', 254, 'dps'),
-  s('hunter', 'survival', 'Survival', 255, 'dps'),
-  s('mage', 'arcane', 'Arcane', 62, 'dps'),
-  s('mage', 'fire', 'Fire', 63, 'dps'),
-  s('mage', 'frost', 'Frost', 64, 'dps'),
-  s('monk', 'brewmaster', 'Brewmaster', 268, 'tank'),
-  s('monk', 'windwalker', 'Windwalker', 269, 'dps'),
-  s('monk', 'mistweaver', 'Mistweaver', 270, 'healer'),
-  s('paladin', 'holy', 'Holy', 65, 'healer'),
-  s('paladin', 'protection', 'Protection', 66, 'tank'),
-  s('paladin', 'retribution', 'Retribution', 70, 'dps'),
-  s('priest', 'discipline', 'Discipline', 256, 'healer'),
-  s('priest', 'holy', 'Holy', 257, 'healer'),
-  s('priest', 'shadow', 'Shadow', 258, 'dps'),
-  s('rogue', 'assassination', 'Assassination', 259, 'dps'),
-  s('rogue', 'outlaw', 'Outlaw', 260, 'dps'),
-  s('rogue', 'subtlety', 'Subtlety', 261, 'dps'),
-  s('shaman', 'elemental', 'Elemental', 262, 'dps'),
-  s('shaman', 'enhancement', 'Enhancement', 263, 'dps'),
-  s('shaman', 'restoration', 'Restoration', 264, 'healer'),
-  s('warlock', 'affliction', 'Affliction', 265, 'dps'),
-  s('warlock', 'demonology', 'Demonology', 266, 'dps'),
-  s('warlock', 'destruction', 'Destruction', 267, 'dps'),
-  s('warrior', 'arms', 'Arms', 71, 'dps'),
-  s('warrior', 'fury', 'Fury', 72, 'dps'),
-  s('warrior', 'protection', 'Protection', 73, 'tank'),
-];
 
 /** Letters only, lowercase: "Beast Mastery" → "beastmastery" */
 const fold = (v: string) => v.toLowerCase().replace(/[^a-z]/g, '');
+
+export const SPECS: readonly Spec[] = SPECIALIZATIONS.map((sp) => {
+  const cls = resolveClass(sp.classId);
+  if (!cls) throw new Error(`spirit-link spec ${sp.id} has unknown class id ${sp.classId}`);
+  return {
+    slug: fold(sp.name),
+    name: sp.name,
+    id: sp.id,
+    classSlug: cls.slug,
+    role: sp.role,
+    subRole: sp.subRole,
+  };
+});
 
 const byId = new Map(SPECS.map((sp) => [sp.id, sp]));
 const byClassAndName = new Map(SPECS.map((sp) => [`${sp.classSlug}/${sp.slug}`, sp]));

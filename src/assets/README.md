@@ -104,12 +104,21 @@ icons/specs/<class>/<spec slug>.jpg           specs/hunter/beastmastery.jpg
 icons/hero-talents/<class>/<tree>.png         hero-talents/druid/elunes-chosen.png
 ```
 
-- **Specs:** 40, named by Soulseeker's slug. They are 56 px JPEGs, kept as drawn, like the
+- **Specs:** 40 (spirit-link's `SPECIALIZATIONS`), named by Soulseeker's slug. They are 56 px JPEGs, kept as drawn, like the
   classic class icons. Use `specIconUrl(spec, cls?)` or `<SpecIcon spec cls />`
   (`src/lib/wow/specs.ts`).
 - **Hero talents:** 41 trees, 128 px. The file is the tree name in kebab case without
   apostrophes (`San'layn` → `sanlayn`). Use `heroTreeIconUrl(tree)` or
   `<HeroTalentIcon tree />` (`src/lib/wow/heroTalents.ts`).
+
+### Roles
+
+`icons/roles/<role>.png`, one look, 128 px: `tank`, `healer`, `dps`, plus `dps-melee`
+(crossed daggers) and `dps-ranged` (bow and arrow). The two DPS variants were built from
+`dps.png`'s frame, background and glow; their full-size art is with the originals. Use
+`roleIconUrl(role, subRole?)`, `specRoleIconUrl(spec, cls?)`, or
+`<RoleIcon role subRole />` / `<RoleIcon spec cls />` (`src/lib/wow/roles.ts`). `dps` is
+for a damage dealer whose melee/ranged split is unknown.
 
 ### Classes
 

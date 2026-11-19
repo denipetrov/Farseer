@@ -2,13 +2,14 @@
  * Hero talent trees, and the mapping from API data to hero talent icons.
  *
  * The API describes a tree in two shapes:
- *   PvP boards, M+ characters        heroTalents: "Trickster"           (English name)
+ *   PvP boards, search, PvE page     heroTalents: "Trickster", heroTalentId: 51
  *   PvP character (Blizzard), stats  heroTalentTree / activeHeroTalentTree: { id: 51, name: "Trickster" }
- * Mythic+ characters always have heroTalents: null.
+ * Mythic+ characters always have heroTalents: null (and heroTalentId: null).
  *
- * The id is preferred (Blizzard's; names are localised on /pvp/character with a
- * locale). Names are matched loosely ("San'layn" = "sanlayn"). Every tree name is
- * unique across classes. Ids checked against Rankwarden's characters, 2026-11-19.
+ * The id is preferred (Blizzard's, which Raider.io shares; names are localised on
+ * /pvp/character with a locale). Names are matched loosely ("San'layn" = "sanlayn").
+ * Every tree name is unique across classes. Ids checked against Rankwarden's
+ * characters, 2026-11-19.
  *
  * Icons have one look: icons/hero-talents/<class-folder>/<tree-file>.png, where
  * the file is the name in kebab case without apostrophes ("san-layn" → "sanlayn").
