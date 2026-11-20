@@ -18,7 +18,7 @@
  * there arrives here with a package update. The slug is Soulseeker's: the name,
  * letters only (`Beast Mastery` → `beastmastery`).
  *
- * Icons have one look: icons/specs/<class-folder>/<spec slug>.jpg, where the class
+ * Icons have one look: icons/specs/<class-folder>/<spec slug>.png, where the class
  * folder is the class name in kebab case (`death-knight`).
  */
 import { SPECIALIZATIONS, SpecRole, SpecSubRole } from '@denipetrov/spirit-link/constants';

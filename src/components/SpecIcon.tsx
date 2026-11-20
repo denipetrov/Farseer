@@ -1,4 +1,4 @@
-import { classColorVar, type ClassInput } from '@/lib/wow/classes';
+import type { ClassInput } from '@/lib/wow/classes';
 import { classOfSpec, resolveSpec, specIconUrl, type SpecInput } from '@/lib/wow/specs';
 import type { IconSize } from '@/styles/iconSizes';
 import { GameIcon } from './GameIcon';
@@ -11,18 +11,13 @@ interface SpecIconProps {
   size?: IconSize;
 }
 
-/** A spec icon framed in its class colour, labelled "Fire Mage". Renders nothing when unknown. */
+/** A round spec icon (its rim is in the class colour), labelled "Fire Mage". Renders nothing when unknown. */
 export function SpecIcon({ spec, cls, size }: SpecIconProps) {
   const url = specIconUrl(spec, cls);
   const sp = resolveSpec(spec, cls);
   if (!url || !sp) return null;
 
   return (
-    <GameIcon
-      src={url}
-      label={`${sp.name} ${classOfSpec(sp).name}`}
-      size={size}
-      borderColor={classColorVar(sp.classSlug)}
-    />
+    <GameIcon src={url} label={`${sp.name} ${classOfSpec(sp).name}`} size={size} shape="round" />
   );
 }

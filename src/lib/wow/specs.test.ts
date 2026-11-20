@@ -67,8 +67,8 @@ describe('spec icons', () => {
   });
 
   it('resolves to the class folder', () => {
-    expect(specIconUrl(250)).toMatch(/specs\/death-knight\/blood\.jpg/);
-    expect(specIconUrl('beastmastery', 'hunter')).toMatch(/specs\/hunter\/beastmastery\.jpg/);
-    expect(specIconUrl('Holy', 'Paladin')).toMatch(/specs\/paladin\/holy\.jpg/);
+    expect(specIconUrl(250)).toMatch(/specs\/death-knight\/blood\.png/);
+    expect(specIconUrl('beastmastery', 'hunter')).toMatch(/specs\/hunter\/beastmastery\.png/);
+    expect(specIconUrl('Holy', 'Paladin')).toMatch(/specs\/paladin\/holy\.png/);
   });
 });

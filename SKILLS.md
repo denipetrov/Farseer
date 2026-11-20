@@ -311,7 +311,7 @@ the rules. The key concept:
   `classIconUrl()` and `<ClassIcon cls />` give the icon. `classColorVar()` gives
   `var(--color-class-*)`, so class colours always come from the tokens.
   - The icon file name is the slug.
-  - Some icons are `.jpg` (specs), so the asset glob includes jpg/jpeg.
+  - Every icon is now `.png`; the asset glob still accepts jpg/jpeg/svg/webp.
 
 - **Icon sizes are shared across families.** Every game icon renders through
   `<GameIcon>` (`src/components/GameIcon.tsx`) at one of three sizes from
@@ -320,7 +320,7 @@ the rules. The key concept:
   - `md` 40px, inside clickable filter pickers; the button adds padding to reach a 48px hit target;
   - `lg` 64px, page headers.
   - **Shape:** the default `square` box has a background and a 1px CSS border
-    (`borderColor`). Classes, hero talents and races are round art with their own frame
+    (`borderColor`). Classes, specs, hero talents and races are round art with their own frame
     (class-colour rim; faction trim on races), so their components pass `shape="round"`:
     a circle with no CSS border or background. Use `round` for any new self-framed round art.
 

@@ -43,8 +43,8 @@ icons/races/classic/nightelf-female.png
   square. Don't enlarge smaller art: classic icons (56–66 px) stay as drawn.
 - **Display sizes are shared by every family:** 24, 40 and 64 px (`src/styles/iconSizes.ts`).
   `<GameIcon>` draws every family in the same square box, so a file that isn't square is
-  shown whole and centred. Round art that carries its own frame (classes, hero talents,
-  races) uses `shape="round"`: a circle with no box border or background.
+  shown whole and centred. Round art that carries its own frame (classes, specs, hero
+  talents, races) uses `shape="round"`: a circle with no box border or background.
 
 ### Factions
 
@@ -103,14 +103,14 @@ Both have one look and are grouped by class, in a folder named after the class i
 case (`death-knight`, `demon-hunter`):
 
 ```
-icons/specs/<class>/<spec slug>.jpg           specs/hunter/beastmastery.jpg
+icons/specs/<class>/<spec slug>.png           specs/hunter/beastmastery.png
 icons/hero-talents/<class>/<tree>.png         hero-talents/druid/elunes-chosen.png
 ```
 
-- **Specs:** 40 (spirit-link's `SPECIALIZATIONS`), named by Soulseeker's slug. They are 56 px JPEGs, kept as drawn, like the
-  classic class icons. Use `specIconUrl(spec, cls?)` or `<SpecIcon spec cls />`
+- **Specs:** 40 (spirit-link's `SPECIALIZATIONS`), named by Soulseeker's slug. They are 56 px round PNGs (the art kept at its original
+  size) with the class's rim, like the class and hero talent icons. Use `specIconUrl(spec, cls?)` or `<SpecIcon spec cls />`
   (`src/lib/wow/specs.ts`).
-- **Hero talents:** 41 trees, 128 px. The file is the tree name in kebab case without
+- **Hero talents:** 41 trees, 128 px, round, with the class's rim. The file is the tree name in kebab case without
   apostrophes (`San'layn` → `sanlayn`). Use `heroTreeIconUrl(tree)` or
   `<HeroTalentIcon tree />` (`src/lib/wow/heroTalents.ts`).
 
@@ -125,12 +125,12 @@ for a damage dealer whose melee/ranged split is unknown.
 
 ### Classes
 
-- `classes/<style>/<slug>.<png|jpg>`, 13 classes. The slug is Soulseeker's (`deathknight`,
+- `classes/<style>/<slug>.png`, 13 classes. The slug is Soulseeker's (`deathknight`,
   `demonhunter`). Ids and names are in `src/lib/wow/classes.ts`.
 - Use `classIconUrl(cls, { style })` or `<ClassIcon cls />`. Class colours come from
   `classColorVar(cls)`.
-- Modern icons are 128 px transparent PNGs. Classic icons are 56 px JPEGs, kept at their
-  original size because enlarging them adds no detail.
+- Both styles are round, transparent PNGs. Modern: 88 px, a gold frame with corner
+  ornaments. Classic: 128 px, a metal rim tinted in the class colour.
 
 ## Rules
 
