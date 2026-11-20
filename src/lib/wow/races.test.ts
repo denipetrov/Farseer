@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { ASSET_STYLES, hasStyledAsset, iconNames, styledAssetNames } from '@/lib/assets';
-import { RACES, raceCrestUrl, raceIconUrl, resolveGender, resolveRace, type Gender } from './races';
+import {
+  RACES,
+  raceCrestUrl,
+  raceIconFileName,
+  raceIconUrl,
+  resolveGender,
+  resolveRace,
+  type Gender,
+} from './races';
 
 const GENDERS: Gender[] = ['male', 'female'];
 
@@ -14,12 +22,18 @@ const KNOWN_MISSING = new Set(['modern/bloodelf-male', 'modern/bloodelf-female']
 const KNOWN_EXTRA = new Set([
   // Dracthyr's humanoid form. The API does not say which form a character is
   // in, so these are not used by the mapper.
-  'classic/dracthyr-visage-male',
-  'classic/dracthyr-visage-female',
+  'classic/dracthyr-visage-male-alliance',
+  'classic/dracthyr-visage-male-horde',
+  'classic/dracthyr-visage-female-alliance',
+  'classic/dracthyr-visage-female-horde',
 ]);
 
-const fileName = (slug: string, style: 'modern' | 'classic', g: Gender) =>
-  `${RACES.find((r) => r.slug === slug)!.iconName?.[style] ?? slug}-${g}`;
+/** Every portrait file a race needs in one style: one per gender, and per faction for a race both factions play. */
+const fileNames = (slug: string, style: 'modern' | 'classic') => {
+  const race = RACES.find((r) => r.slug === slug)!;
+  const factions = race.faction ? [race.faction] : (['alliance', 'horde'] as const);
+  return GENDERS.flatMap((g) => factions.map((f) => raceIconFileName(race, style, g, f)));
+};
 
 describe('resolveRace', () => {
   // Every (raceId, raceName) pair in Rankwarden's data, 2026-11-17
@@ -98,7 +112,7 @@ describe('resolveGender', () => {
 describe('race icons', () => {
   it.each(ASSET_STYLES)('every race and gender has a %s icon (or is a known gap)', (style) => {
     const missing = RACES.flatMap((r) =>
-      GENDERS.map((g) => `${style}/${fileName(r.slug, style, g)}`),
+      fileNames(r.slug, style).map((name) => `${style}/${name}`),
     ).filter((key) => {
       const [, name] = key.split('/');
       return !hasStyledAsset('races', style, name!) && !KNOWN_MISSING.has(key);
@@ -114,7 +128,7 @@ describe('race icons', () => {
   });
 
   it.each(ASSET_STYLES)('every %s file belongs to a race (no misspelt names)', (style) => {
-    const expected = new Set(RACES.flatMap((r) => GENDERS.map((g) => fileName(r.slug, style, g))));
+    const expected = new Set(RACES.flatMap((r) => fileNames(r.slug, style)));
     const orphans = styledAssetNames('races', style).filter(
       (name) => !expected.has(name) && !KNOWN_EXTRA.has(`${style}/${name}`),
     );
@@ -127,8 +141,34 @@ describe('race icons', () => {
   });
 
   it('uses per-style file names (Pandaren is "panda" in modern)', () => {
-    expect(raceIconUrl(25, 'male', { style: 'modern' })).toMatch(/modern\/panda-male\.png/);
-    expect(raceIconUrl(25, 'male', { style: 'classic' })).toMatch(/classic\/pandaren-male\.png/);
+    expect(raceIconUrl(25, 'male', { style: 'modern' })).toMatch(
+      /modern\/panda-male-alliance\.png/,
+    );
+    expect(raceIconUrl(25, 'male', { style: 'classic' })).toMatch(
+      /classic\/pandaren-male-alliance\.png/,
+    );
+  });
+
+  it("picks a two-faction race's portrait by faction (Alliance when unknown or neutral)", () => {
+    expect(raceIconUrl(52, 'female', { style: 'modern', faction: 'horde' })).toMatch(
+      /modern\/dracthyr-female-horde\.png/,
+    );
+    expect(raceIconUrl(86, 'male', { style: 'classic', faction: { type: 'HORDE' } })).toMatch(
+      /classic\/haranir-male-horde\.png/,
+    );
+    expect(raceIconUrl(84, 'male', { style: 'modern', faction: 'alliance' })).toMatch(
+      /earthen-male-alliance\.png/,
+    );
+    expect(raceIconUrl(24, 'male', { style: 'modern', faction: 'NEUTRAL' })).toMatch(
+      /panda-male-alliance\.png/,
+    );
+    expect(raceIconUrl(24, 'male', { style: 'modern' })).toMatch(/panda-male-alliance\.png/);
+  });
+
+  it('ignores the faction for a single-faction race', () => {
+    expect(raceIconUrl(2, 'male', { style: 'modern', faction: 'alliance' })).toMatch(
+      /modern\/orc-male\.png/,
+    );
   });
 
   it('falls back to the other style when an icon is missing', () => {

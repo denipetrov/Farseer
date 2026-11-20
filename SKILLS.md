@@ -229,6 +229,13 @@ the rules. The key concept:
     Earthen (84/85) and Haranir (86/91) have one id per faction.
   - Mythic+ data has **no gender**. `fallbackGender` (default `male`) picks the icon; pass
     `null` for no icon.
+  - **Portraits are round and framed in faction colours:** Horde in silver trim around a
+    red ring, Alliance in gold around blue (`palette.silver/gold/horde/alliance`). A race
+    both factions play therefore has one file per faction, `<name>-<gender>-<faction>`
+    (`panda-male-horde`). Pass the character's faction: `raceIconUrl(race, gender,
+{ style, faction })` or `<RaceIcon race gender faction />`. Unknown or neutral picks
+    Alliance. Single-faction races have no suffix and ignore `faction`.
+    `raceIconFileName()` builds the name; the tests use it for coverage.
   - When a new race ships, add it to `RACES`, add its icons, and extend the id table in
     `races.test.ts`. Get the real ids from Rankwarden's `mplus_characters.profile.raceId`
     and `characters.profile.race`.
@@ -304,7 +311,7 @@ the rules. The key concept:
   `classIconUrl()` and `<ClassIcon cls />` give the icon. `classColorVar()` gives
   `var(--color-class-*)`, so class colours always come from the tokens.
   - The icon file name is the slug.
-  - Classic icons are `.jpg`, so the asset glob includes jpg/jpeg.
+  - Some icons are `.jpg` (specs), so the asset glob includes jpg/jpeg.
 
 - **Icon sizes are shared across families.** Every game icon renders through
   `<GameIcon>` (`src/components/GameIcon.tsx`) at one of three sizes from
@@ -312,6 +319,10 @@ the rules. The key concept:
   - `sm` 24px, inline with text (default);
   - `md` 40px, inside clickable filter pickers; the button adds padding to reach a 48px hit target;
   - `lg` 64px, page headers.
+  - **Shape:** the default `square` box has a background and a 1px CSS border
+    (`borderColor`). Classes, hero talents and races are round art with their own frame
+    (class-colour rim; faction trim on races), so their components pass `shape="round"`:
+    a circle with no CSS border or background. Use `round` for any new self-framed round art.
 
   Source files should be 128x128 (2x of `lg`). Never give an icon a pixel size of its own.
 
@@ -476,14 +487,15 @@ cluster has been done.
 
 Newest first.
 
-| Date       | Decision                                                        | Why                                                                                                              |
-| ---------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| 2026-11-19 | Specs, roles and sub-roles from spirit-link's `SPECIALIZATIONS` | One list shared with Soulseeker and Rankwarden, so role filters and labels can't drift from the API's.           |
-| 2026-11-18 | Faction colours from the emblems; gold/silver trim for frames   | The user asked for the logo colours. Alliance frames in gold and Horde in silver, as on the emblems.             |
-| 2026-11-17 | Icon families in `modern`/`classic` styles, chosen by the user  | A general design concept, so one switch changes every icon family. A missing file falls back to the other style. |
-| 2026-11-17 | Vite alias `@` → `/src` (root-relative)                         | An absolute alias path loaded modules twice on Windows (§9)                                                      |
-| 2026-11-17 | Tokens in localStorage, with Web Locks across tabs              | Survives reloads under the grant limit. Rotating refresh tokens must never be used twice.                        |
-| 2026-11-17 | Runtime `/config.js` instead of build-time env                  | One image for every environment                                                                                  |
-| 2026-11-17 | Static nginx image + Helm, mirroring Soulseeker's CI/CD         | Same cluster and operating model as the backend                                                                  |
-| 2026-11-17 | TypeScript 6, not 7                                             | typescript-eslint doesn't support TS 7                                                                           |
-| 2026-11-17 | Farseer = rankwarden.gg                                         | Soulseeker's CORS allows only that origin in production, and `localhost:5173` locally                            |
+| Date       | Decision                                                                      | Why                                                                                                                                                                |
+| ---------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 2026-11-20 | Race portraits round, framed per faction; two-faction races per-faction files | The user asked for faction borders (silver+red Horde, gold+blue Alliance). One frame per file, so Pandaren, Dracthyr, Earthen and Haranir need a file per faction. |
+| 2026-11-19 | Specs, roles and sub-roles from spirit-link's `SPECIALIZATIONS`               | One list shared with Soulseeker and Rankwarden, so role filters and labels can't drift from the API's.                                                             |
+| 2026-11-18 | Faction colours from the emblems; gold/silver trim for frames                 | The user asked for the logo colours. Alliance frames in gold and Horde in silver, as on the emblems.                                                               |
+| 2026-11-17 | Icon families in `modern`/`classic` styles, chosen by the user                | A general design concept, so one switch changes every icon family. A missing file falls back to the other style.                                                   |
+| 2026-11-17 | Vite alias `@` → `/src` (root-relative)                                       | An absolute alias path loaded modules twice on Windows (§9)                                                                                                        |
+| 2026-11-17 | Tokens in localStorage, with Web Locks across tabs                            | Survives reloads under the grant limit. Rotating refresh tokens must never be used twice.                                                                          |
+| 2026-11-17 | Runtime `/config.js` instead of build-time env                                | One image for every environment                                                                                                                                    |
+| 2026-11-17 | Static nginx image + Helm, mirroring Soulseeker's CI/CD                       | Same cluster and operating model as the backend                                                                                                                    |
+| 2026-11-17 | TypeScript 6, not 7                                                           | typescript-eslint doesn't support TS 7                                                                                                                             |
+| 2026-11-17 | Farseer = rankwarden.gg                                                       | Soulseeker's CORS allows only that origin in production, and `localhost:5173` locally                                                                              |

@@ -29,8 +29,10 @@ icons/races/classic/nightelf-female.png
   family's tests list such gaps (`KNOWN_MISSING`) and fail if a file is misnamed or a gap
   appears that isn't listed.
 - **Never import icon files directly.** Go through the family's mapper so the user's style applies:
-  - races: `raceIconUrl(race, gender, { style })` in `src/lib/wow/races.ts`, or the
-    `<RaceIcon race gender />` component;
+  - races: `raceIconUrl(race, gender, { style, faction })` in `src/lib/wow/races.ts`, or the
+    `<RaceIcon race gender faction />` component. Race portraits are framed in faction
+    colours, so a race both factions play has one file per faction:
+    `<name>-<gender>-<faction>` (`pandaren-male-horde`);
   - a new family: `styledAssetUrl(family, style, name)` in `src/lib/assets.ts`, wrapped
     in a mapper from API data.
 
@@ -41,7 +43,8 @@ icons/races/classic/nightelf-female.png
   square. Don't enlarge smaller art: classic icons (56–66 px) stay as drawn.
 - **Display sizes are shared by every family:** 24, 40 and 64 px (`src/styles/iconSizes.ts`).
   `<GameIcon>` draws every family in the same square box, so a file that isn't square is
-  shown whole and centred.
+  shown whole and centred. Round art that carries its own frame (classes, hero talents,
+  races) uses `shape="round"`: a circle with no box border or background.
 
 ### Factions
 

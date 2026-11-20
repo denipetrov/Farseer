@@ -159,6 +159,34 @@ export interface RaceIconOptions {
    * so one must be picked; pass null to get no icon instead.
    */
   fallbackGender?: Gender | null;
+  /**
+   * The character's faction. Portraits are framed in faction colours, so a race both
+   * factions play has one file per faction; this picks it (Alliance when unknown or
+   * neutral). Ignored for single-faction races.
+   */
+  faction?: FactionInput;
+}
+
+/**
+ * The faction whose portrait frame a race is drawn with: its own faction, or for a
+ * race both factions play the given one, Alliance when that is unknown or neutral.
+ */
+export function raceIconFaction(race: Race, faction?: FactionInput): Faction {
+  return race.faction ?? resolveFaction(faction)?.slug ?? 'alliance';
+}
+
+/**
+ * Portrait file name (no extension) for a race in one style:
+ * `<name>-<gender>`, plus `-<faction>` for a race both factions play.
+ */
+export function raceIconFileName(
+  race: Race,
+  style: AssetStyle,
+  gender: Gender,
+  faction?: Faction,
+): string {
+  const base = `${race.iconName?.[style] ?? race.slug}-${gender}`;
+  return race.faction ? base : `${base}-${faction ?? 'alliance'}`;
 }
 
 /**
@@ -169,7 +197,7 @@ export interface RaceIconOptions {
 export function raceIconUrl(
   race: RaceInput,
   gender: GenderInput,
-  { style, fallbackGender = 'male' }: RaceIconOptions,
+  { style, fallbackGender = 'male', faction }: RaceIconOptions,
 ): string | undefined {
   const r = resolveRace(race);
   const g = resolveGender(gender) ?? fallbackGender;
@@ -177,11 +205,11 @@ export function raceIconUrl(
 
   // The file name can differ per style (Pandaren is "panda" in modern), so the
   // fallback to the other style asks for that style's own name.
-  const fileName = (s: AssetStyle) => `${r.iconName?.[s] ?? r.slug}-${g}`;
+  const f = raceIconFaction(r, faction);
   const other = ASSET_STYLES.find((s) => s !== style)!;
   return (
-    styledAssetUrl('races', style, fileName(style)) ??
-    styledAssetUrl('races', other, fileName(other))
+    styledAssetUrl('races', style, raceIconFileName(r, style, g, f)) ??
+    styledAssetUrl('races', other, raceIconFileName(r, other, g, f))
   );
 }
 

@@ -1,5 +1,5 @@
 import { usePreferences } from '@/preferences/PreferencesProvider';
-import { classColorVar, classIconUrl, resolveClass, type ClassInput } from '@/lib/wow/classes';
+import { classIconUrl, resolveClass, type ClassInput } from '@/lib/wow/classes';
 import type { IconSize } from '@/styles/iconSizes';
 import { GameIcon } from './GameIcon';
 
@@ -9,18 +9,11 @@ interface ClassIconProps {
   size?: IconSize;
 }
 
-/** A class icon in the user's chosen asset style, framed in the class colour. Renders nothing for an unknown class. */
+/** A round class icon in the user's chosen asset style (its rim is in the class colour). Renders nothing for an unknown class. */
 export function ClassIcon({ cls, size }: ClassIconProps) {
   const { preferences } = usePreferences();
   const url = classIconUrl(cls, { style: preferences.assetStyle });
   if (!url) return null;
 
-  return (
-    <GameIcon
-      src={url}
-      label={resolveClass(cls)!.name}
-      size={size}
-      borderColor={classColorVar(cls)}
-    />
-  );
+  return <GameIcon src={url} label={resolveClass(cls)!.name} size={size} shape="round" />;
 }

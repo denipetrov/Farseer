@@ -57,7 +57,7 @@ describe('class icons', () => {
 
   it('resolves to the file of the chosen style', () => {
     expect(classIconUrl('Death Knight', { style: 'modern' })).toMatch(/modern\/deathknight\.png/);
-    expect(classIconUrl(6, { style: 'classic' })).toMatch(/classic\/deathknight\.jpg/);
+    expect(classIconUrl(6, { style: 'classic' })).toMatch(/classic\/deathknight\.png/);
   });
 
   it('gives nothing for an unknown class', () => {
