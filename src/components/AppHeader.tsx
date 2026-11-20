@@ -1,12 +1,15 @@
 import styled from 'styled-components';
 import { Link } from '@tanstack/react-router';
+import logoUrl from '@/assets/images/logo/rankwarden-logo.svg';
 import { FactionToggle } from './FactionToggle';
 
 export function AppHeader() {
   return (
     <Header>
       <Inner>
-        <Brand to="/">Farseer</Brand>
+        <Brand to="/" aria-label="Rankwarden home">
+          <img src={logoUrl} alt="Rankwarden" height={52} />
+        </Brand>
         <Nav>
           <NavLink to="/leaderboards">Leaderboards</NavLink>
         </Nav>
@@ -37,10 +40,14 @@ const Inner = styled.div`
 `;
 
 const Brand = styled(Link)`
-  font-size: var(--font-size-lg);
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  color: var(--color-text-highlight);
+  display: flex;
+  flex: none;
+
+  img {
+    display: block;
+    height: 52px;
+    width: auto;
+  }
 `;
 
 const Nav = styled.nav`

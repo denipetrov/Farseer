@@ -207,7 +207,8 @@ use the variable. Shared layout pieces are `Page`, `PageTitle`, `Panel` and `Mut
 
 ### Assets and asset styles
 
-Assets live in `src/assets/` (`icons/`, `images/`, `fonts/`). `src/assets/README.md` has
+Assets live in `src/assets/` (`icons/`, `images/`, `fonts/`). The Rankwarden logo is
+`images/logo/rankwarden-logo.svg` (header) and `rankwarden-emblem.svg`; favicons are in `public/`. `src/assets/README.md` has
 the rules. The key concept:
 
 - **Every icon family has a `modern` and a `classic` style:**

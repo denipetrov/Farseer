@@ -132,6 +132,20 @@ for a damage dealer whose melee/ranged split is unknown.
 - Both styles are round, transparent PNGs. Modern: 88 px, a gold frame with corner
   ornaments. Classic: 128 px, a metal rim tinted in the class colour.
 
+## Logo
+
+`images/logo/`, the Rankwarden brand: a gold laurel wreath around a silver/gold/bronze
+podium, crown above, a Horde-red and Alliance-blue ribbon, in the palette's gold, silver,
+horde and alliance colours.
+
+- `rankwarden-logo.svg`: emblem + "RANKWARDEN" wordmark (RANK in gold, WARDEN in silver).
+  The wordmark is outlined (Georgia Bold paths), so it renders the same everywhere.
+  Used by `<AppHeader>`.
+- `rankwarden-emblem.svg`: the emblem alone, for square places.
+- Favicons are copies in `public/`: `favicon.svg`, `favicon.ico` (16/32/48 px) and
+  `apple-touch-icon.png` (180 px on the app background, as iOS shows no transparency).
+  Regenerate them from the emblem when it changes.
+
 ## Rules
 
 - **Theme colours:** SVG icons that should follow the theme use `fill="currentColor"`, so
