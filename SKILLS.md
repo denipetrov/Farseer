@@ -213,7 +213,9 @@ Navigation icons (`icons/nav/*.svg`) are monochrome `currentColor` SVGs coloured
 faction accent, except `bosses.svg` (fixed fel green) and `guild-{alliance,horde}.svg`
 (metal via `var(--color-trim)`), which must be inlined. One-look PNG families read by path
 with `iconUrl()`: `game-modes/` (pvp, pve, mplus, raid), `places/` (place-1..3 badges) and
-`info/` (item-level, deaths, vantus-rune, in the role icons' round frame). See the assets
+`info/` (item-level, deaths, vantus-rune, gems, embellishments, enchants, tier-set, unknown, in the role icons' round frame) `pvp/brackets/` (named by bracket slug: 2v2, 3v3, rbg, shuffle, blitz) and `difficulty/`
+(normal, heroic, mythic; SVG versions in `difficulty/svg/`, because `iconUrl` keys by path
+without extension, so a same-named .png and .svg in one folder clash). See the assets
 README. `src/assets/README.md` has the rules. The key concept:
 
 - **Every icon family has a `modern` and a `classic` style:**

@@ -97,6 +97,36 @@ icons/races/crests/<alliance|horde>/<name>-crest.png
 - `src/lib/wow/pvpRank.ts` maps both `pvpHistory` titles and current ratings to them. Use
   `<PvpRankIcon rank />`.
 
+### Raid difficulty
+
+`icons/difficulty/<normal|heroic|mythic>.png` (128 px) and `icons/difficulty/svg/<…>.svg`:
+the Raid icon's dragon coiled around a dark well holding the difficulty's skull. The dragon's
+metal rises with the difficulty: bronze (normal, plain skull), silver (heroic, fanged skull),
+gold (mythic, fanged skull with red eyes).
+
+- The SVGs are posterised traces of the PNGs (fixed dragon and skull colours). Only the well
+  behind the skull is `currentColor` (the faction accent) under a dark gradient, so inline
+  them; as an `<img>` the well falls back to black. Gradient ids are `rw-diff-<difficulty>-well`.
+- The SVGs live in `svg/` because `iconUrl` keys files by path without extension: a `.png`
+  and `.svg` of the same name in one folder would clash.
+- Read them by path: `iconUrl('difficulty/mythic')` or `iconUrl('difficulty/svg/mythic')`.
+
+### PvP brackets
+
+- `pvp/brackets/<bracket>.png`, one look, 128 px, named by Soulseeker's bracket slug (`2v2`,
+  `3v3`, `rbg`, `shuffle`, `blitz`), so an icon is looked up straight from the bracket. Game
+  art in the role icons' round frame, zoomed out to fit the circle whole, its background
+  continued to the rim.
+- `2v2.png`: two crossed golden axes on dark red, in the DPS frame.
+- `3v3.png`: three golden swords on purple, in the DPS frame; the blades, cut by the source's
+  bottom edge, are continued down to the rim.
+- `rbg.png`: a charging rider with a banner in silhouette on magenta, fitted to the circle
+  (the scene leaves through the rim), in the DPS frame.
+- `blitz.png`: the same scene as `rbg` in orange, made the same way.
+- `shuffle.png`: a classic orange-guarded sword with a glowing coin (cut from a model
+  render, set upright), on a dark red field in the DPS frame.
+- Read them by path with `iconUrl('pvp/brackets/2v2')`.
+
 ### Specs and hero talents
 
 Both have one look and are grouped by class, in a folder named after the class in kebab
@@ -129,6 +159,9 @@ accent in both factions. No frame, no text.
 - `stats.svg`: a line graph (L axes, rising line with data points, area under it in a lighter
   shade).
 - `rating.svg`: the stats line graph ending in a star instead of a last data point.
+- `flavour-of-the-month.svg`: the most popular specs right now. A calendar page (lighter)
+  with a flame on it as the dates and a small rising trend arrow in the header band as the
+  month (kept apart from the band by a gap).
 - `tier-list.svg`: a tier list. Five rows, each a label tile (S, A, B, C, D cut out) followed
   by round ability icons (solid rim, lighter face).
 - `archives.svg`: an old tome for previous seasons (spine and hourglass cut out, the page
@@ -191,6 +224,16 @@ emeralds. Read them by path with `iconUrl('places/place-1')`.
   circle.
 - `deaths.png`: a human skull (game art, `inv_misc_bone_humanskull_02`), in the DPS frame.
 - `vantus-rune.png`: the glowing Vantus rune (game art), in the DPS frame.
+- `embellishments.png`: a rolled hide with a red ribbon and three gold quality stars (game
+  art), in the tank frame; the art is zoomed out and its teal background continued to the rim.
+- `enchants.png`: a glowing enchanting scroll (game art), in the DPS frame; fitted to the
+  circle, the scroll leaves through the rim as it leaves the original image.
+- `tier-set.png`: a tier set as a bust: helm (game art) in front of the two pauldrons
+  (emblems facing in, blades out), on a dark blue field in the tank frame.
+- `unknown.png`: the game's red 3D question mark, for anything unknown, in the DPS frame;
+  zoomed out to fit the circle, the top of its arc (cut by the source's edge) completed.
+- `gems.png`: a sack spilling coloured gems (600 px art, fits the circle whole), in the tank
+  frame.
 - The art of `deaths` and `vantus-rune` is zoomed out so the whole image fits the circle;
   its background fades into a dark fill in its own tone, and the subject is kept intact.
 
