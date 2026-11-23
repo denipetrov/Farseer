@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="currentColor">
+  <!-- Scroll to top: a solid arrow pointing up at a bar (the top of the page) in a lighter shade. -->
+  <rect fill-opacity=".45" x="10" y="6" width="44" height="6.5" rx="3.25"/>
+  <path d="M32 19.5a3.6 3.6 0 0 1 2.6 1.1l16.2 16.8a3.4 3.4 0 0 1-2.5 5.8H38v14.3a3.5 3.5 0 0 1-3.5 3.5h-5A3.5 3.5 0 0 1 26 57.5V43.2H15.7a3.4 3.4 0 0 1-2.5-5.8l16.2-16.8a3.6 3.6 0 0 1 2.6-1.1Z"/>
+</svg>

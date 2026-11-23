@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="currentColor">
+  <!-- Refresh: two curved arrows chasing each other round a circle, each pointing at the
+       other's tail. -->
+  <path fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" d="M11.72 26.56A21 21 0 0 1 47.61 17.95 M52.28 37.44A21 21 0 0 1 16.39 46.05"/>
+  <path stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M53.63 24.64L52.88 11.85L40.99 22.56Z M10.37 39.36L11.12 52.15L23.01 41.44Z"/>
+</svg>

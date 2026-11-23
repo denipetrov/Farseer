@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="currentColor">
+  <!-- Last page: a chevron pointing right at a bar (the end). -->
+  <path fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" d="M16 12L36 32L16 52"/>
+  <rect x="47" y="10" width="7" height="44" rx="3.5"/>
+</svg>

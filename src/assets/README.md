@@ -114,6 +114,88 @@ icons/hero-talents/<class>/<tree>.png         hero-talents/druid/elunes-chosen.p
   apostrophes (`San'layn` → `sanlayn`). Use `heroTreeIconUrl(tree)` or
   `<HeroTalentIcon tree />` (`src/lib/wow/heroTalents.ts`).
 
+### Navigation
+
+`icons/nav/<name>.svg`, one look: monochrome SVG icons for navigation buttons, coloured by
+the faction accent. Every shape is `fill="currentColor"`; detail comes from cut-outs and
+lower opacity (`fill-opacity`) only, never from a second colour, so the icon follows the
+accent in both factions. No frame, no text.
+
+- `home.svg`: a hall with the hearthstone swirl (traced from the game's housing icon) in
+  the doorway.
+- `search.svg`: a magnifying glass; the glass is a lighter shade with a highlight cut out.
+- `leaderboards.svg`: the logo's podium (1st solid with a star cut out and a crown above;
+  2nd and 3rd in lighter shades).
+- `stats.svg`: a line graph (L axes, rising line with data points, area under it in a lighter
+  shade).
+- `rating.svg`: the stats line graph ending in a star instead of a last data point.
+- `tier-list.svg`: a tier list. Five rows, each a label tile (S, A, B, C, D cut out) followed
+  by round ability icons (solid rim, lighter face).
+- `archives.svg`: an old tome for previous seasons (spine and hourglass cut out, the page
+  block in a lighter shade, a bookmark ribbon).
+- `character.svg`: the Lich King's helm, traced from the Wrath of the Lich King silhouette.
+- `gear.svg`: Frostmourne, traced from a render (skull crossguard, jagged blade, the rune channel
+  cut out and four runes engraved above it).
+- `talents.svg`: a modern talent tree (square active, round passive and a split octagonal
+  choice node; chosen talents solid, the rest lighter).
+- `copy.svg`: two sheets (the back one lighter, the front one solid), for copy actions.
+- `external.svg`: a window frame (lighter) with a solid arrow leaving it, for links that open
+  an external site in a new tab.
+- `refresh.svg`: two curved arrows chasing each other round a circle.
+- `scroll-top.svg`: a solid arrow pointing up at a lighter bar (the top of the page).
+- `page-first.svg`, `page-prev.svg`, `page-next.svg`, `page-last.svg`: pagination. A
+  chevron (previous, next), or a chevron pointing at a bar (first, last).
+- `bosses.svg`: Illidan's silhouette (horns, spread wings), traced from a sticker. **The one
+  exception to the single-colour rule:** his warglaives (`#85bb6f`) and fel tattoos and eyes
+  (`#abdaa4`) have fixed fel-green fills, so they stay green in both factions; only the body
+  follows the accent. As a CSS mask it would lose the green, so inline it.
+- `guild-alliance.svg`, `guild-horde.svg`: a guild tabard with the faction's emblem, traced
+  from `factions/classic/`; pick the file by faction. The cloth (lighter) and emblem follow
+  the accent; the tabard border and the emblem's metal (Alliance: gold lion on an accent
+  field; Horde: the symbol edged in silver) use `var(--color-trim)` when inlined, falling back
+  to palette gold/silver 500. Also an exception to the single-colour rule: inline them.
+- Colour them with the accent either inline (`color: var(--color-accent)`, e.g. through an
+  SVG-as-component import) or as a CSS mask:
+  `mask: url(…) center / contain no-repeat; background: var(--color-accent)`.
+- Draw on a 64×64 `viewBox` with shapes that still read at 24 px. Give mask or gradient
+  ids a `rw-<icon>-` prefix so inlined icons never clash.
+
+### Game modes
+
+`icons/game-modes/<mode>.png`, one look, 128 px: `pvp`, `pve`, `mplus` and `raid`.
+Navigation icons that switch the site between game modes, so they have no round frame: the
+art's own shape with its label ("PvP", "PvE", "Mythic+", "Raid") underneath in light gold
+(Georgia Bold, dark outline; a long label is shrunk to fit the width). PvP is
+`pvp/ranked/rankedpvp_07.png`; PvE is a shield with fist, warhammer and pauldron; Mythic+ is
+the keystone banner (hourglass orb), its cloth recoloured to the PvE shield's off-white and
+its gems to sapphire. Raid is the same banner with a boss skull in a red orb, a gold dragon
+coiled round it, and the three strips in role colours with gold role marks: healer cross on
+green (left), tank shield on blue (middle), DPS swords on red (right).
+Read them by path with `iconUrl('game-modes/pvp')`.
+
+### Places
+
+`icons/places/place-<1|2|3>.png`, one look, 128 px: badges for the top three (e.g. top
+guilds). A crowned, studded medallion with the embossed place number, a laurel wreath, a
+crimson ribbon with stars (3, 2, 1) and a light burst. 1st is palette gold with rubies, 2nd
+palette silver with sapphires, 3rd bronze (not in the palette: `#c27a3c` family) with
+emeralds. Read them by path with `iconUrl('places/place-1')`.
+
+### Info
+
+`icons/info/<name>.png`, one look, 128 px: informational icons in the role icons' round frame
+(stone and copper rings, a coloured field).
+
+- `item-level.png`: a sword in a plate gauntlet with a green up-arrow (game art), in the
+  healer frame. The arrowhead's right half and the stem's end were completed to fit the
+  circle.
+- `deaths.png`: a human skull (game art, `inv_misc_bone_humanskull_02`), in the DPS frame.
+- `vantus-rune.png`: the glowing Vantus rune (game art), in the DPS frame.
+- The art of `deaths` and `vantus-rune` is zoomed out so the whole image fits the circle;
+  its background fades into a dark fill in its own tone, and the subject is kept intact.
+
+Read them by path with `iconUrl('info/item-level')`.
+
 ### Roles
 
 `icons/roles/<role>.png`, one look, 128 px: `tank`, `healer`, `dps`, plus `dps-melee`
@@ -121,7 +203,9 @@ icons/hero-talents/<class>/<tree>.png         hero-talents/druid/elunes-chosen.p
 `dps.png`'s frame, background and glow; their full-size art is with the originals. Use
 `roleIconUrl(role, subRole?)`, `specRoleIconUrl(spec, cls?)`, or
 `<RoleIcon role subRole />` / `<RoleIcon spec cls />` (`src/lib/wow/roles.ts`). `dps` is
-for a damage dealer whose melee/ranged split is unknown.
+for a damage dealer whose melee/ranged split is unknown. `all` (a green flag on a teal field,
+in the tank frame) stands for every role, e.g. a "show all roles" filter; it isn't a role in
+`roles.ts` yet, so read it by path with `iconUrl('roles/all')`.
 
 ### Classes
 

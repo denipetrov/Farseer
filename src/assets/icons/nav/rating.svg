@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="currentColor">
+  <!-- Rating: the stats line graph (L-shaped axes, rising line with data points, the area under
+       it in a lighter shade) ending in a star. -->
+  <path fill-opacity=".3" d="M14 44L24 33L34 38L45 22L55.2 13.6L55.2 54L14 54Z"/>
+  <path d="M5 6.5a2.5 2.5 0 0 1 5 0V54h47.5a2.5 2.5 0 0 1 0 5H7.5A2.5 2.5 0 0 1 5 56.5Z"/>
+  <path fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M14 44L24 33L34 38L45 22L55.2 13.6"/>
+  <circle cx="14" cy="44" r="3.6"/><circle cx="24" cy="33" r="3.6"/><circle cx="34" cy="38" r="3.6"/><circle cx="45" cy="22" r="3.6"/>
+  <path stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" d="M55.20 5.40L57.32 10.69L63.00 11.07L58.62 14.71L60.02 20.23L55.20 17.20L50.38 20.23L51.78 14.71L47.40 11.07L53.08 10.69Z"/>
+</svg>

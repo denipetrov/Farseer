@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="currentColor">
+  <!-- Home: a hall with a steep roof and chimney; door and windows cut out, walls a shade lighter.
+       The hearthstone swirl (traced from the game's housing icon) sits in the doorway. -->
+  <path d="M42 11h6v12l-6-5z"/>
+  <path d="M32 5 61 30h-7L32 11 10 30H3L32 5Z"/>
+  <path fill-opacity=".7" fill-rule="evenodd" d="M12 31 32 14l20 17v25H12V31Z
+           M26 56V45c0-8 12-8 12 0v11H26Z
+           M16 41v-4c0-3 6-3 6 0v4h-6Z M42 41v-4c0-3 6-3 6 0v4h-6Z"/>
+  <path fill="none" stroke="currentColor" stroke-width="1.48" stroke-linecap="round" stroke-linejoin="round"
+        d="M31.51 48.14 C31.30 48.27 30.70 48.87 30.28 48.88 C29.85 48.90 29.28 48.58 28.96 48.23 C28.64 47.87 28.35 47.24 28.35 46.75 C28.35 46.26 28.61 45.68 28.96 45.27 C29.32 44.86 29.89 44.49 30.48 44.29 C31.08 44.08 31.88 43.94 32.53 44.04 C33.18 44.13 33.90 44.45 34.38 44.86 C34.86 45.27 35.19 45.89 35.41 46.50 C35.62 47.12 35.74 47.87 35.65 48.55 C35.57 49.24 35.31 50.02 34.91 50.61 C34.52 51.19 33.87 51.67 33.27 52.08 C32.67 52.49 31.94 52.82 31.30 53.07 C30.67 53.31 29.76 53.48 29.46 53.56"/>
+  <path d="M7 56h50v5H7z"/>
+</svg>

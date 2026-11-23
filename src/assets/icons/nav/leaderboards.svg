@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="currentColor">
+  <!-- Leaderboards: the logo's podium. 1st in the middle (solid, star cut out, crown above),
+       2nd left and 3rd right in lighter shades, on a shared base. -->
+  <path d="M23.5 18.5 23 11l5 4 4-6.5 4 6.5 5-4-.5 7.5Z"/>
+  <path d="M23.5 19.8h17v3.4h-17Z"/>
+  <circle cx="23" cy="10" r="1.9"/><circle cx="32" cy="7.3" r="1.9"/><circle cx="41" cy="10" r="1.9"/>
+  <path fill-rule="evenodd" d="M22.5 26h19v28h-19Z M32.00 30.00L33.88 35.12L39.00 37.00L33.88 38.88L32.00 44.00L30.12 38.88L25.00 37.00L30.12 35.12Z"/>
+  <path fill-opacity=".7" d="M4.5 35h16.5v19H4.5Z"/>
+  <path fill-opacity=".45" d="M43 42h16.5v12H43Z"/>
+  <path d="M2 55.5h60V61H2Z"/>
+</svg>

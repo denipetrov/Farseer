@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="currentColor">
+  <!-- Copy: two sheets. The back one in a lighter shade, the front one solid, with a thin gap
+       between them. -->
+  <mask id="rw-copy-gap">
+    <rect width="64" height="64" fill="#fff"/>
+    <rect x="18.5" y="18.5" width="41" height="43" rx="7.5" fill="#000"/>
+  </mask>
+  <rect mask="url(#rw-copy-gap)" fill-opacity=".45" x="6" y="4" width="36" height="40" rx="5"/>
+  <rect x="22" y="22" width="36" height="38" rx="5"/>
+</svg>

@@ -92,8 +92,12 @@ describe('role icons', () => {
   });
 
   it('every role has its icon, and every file is a role', () => {
+    // Files that aren't a role: `all` is the "every role" icon (e.g. a filter's reset option).
+    const KNOWN_EXTRA = ['all'];
     for (const k of ROLE_KINDS) expect(roleIconUrl(k.role, k.subRole)).toBeDefined();
-    expect(iconNames('roles').sort()).toEqual(ROLE_KINDS.map(roleIconFile).sort());
+    expect(iconNames('roles').sort()).toEqual(
+      [...ROLE_KINDS.map(roleIconFile), ...KNOWN_EXTRA].sort(),
+    );
   });
 
   it('resolves API values and specs to icons', () => {

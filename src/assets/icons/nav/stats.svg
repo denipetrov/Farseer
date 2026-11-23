@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="currentColor">
+  <!-- Stats: a line graph. L-shaped axes, a rising trend line with data points, and the area
+       under the line in a lighter shade. -->
+  <path fill-opacity=".3" d="M14 44L24 33L34 38L45 22L56 14L56 54L14 54Z"/>
+  <path d="M5 6.5a2.5 2.5 0 0 1 5 0V54h47.5a2.5 2.5 0 0 1 0 5H7.5A2.5 2.5 0 0 1 5 56.5Z"/>
+  <path fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M14 44L24 33L34 38L45 22L56 14"/>
+  <circle cx="14" cy="44" r="3.6"/><circle cx="24" cy="33" r="3.6"/><circle cx="34" cy="38" r="3.6"/><circle cx="45" cy="22" r="3.6"/><circle cx="56" cy="14" r="3.6"/>
+</svg>

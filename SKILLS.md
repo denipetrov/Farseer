@@ -208,8 +208,13 @@ use the variable. Shared layout pieces are `Page`, `PageTitle`, `Panel` and `Mut
 ### Assets and asset styles
 
 Assets live in `src/assets/` (`icons/`, `images/`, `fonts/`). The Rankwarden logo is
-`images/logo/rankwarden-logo.svg` (header) and `rankwarden-emblem.svg`; favicons are in `public/`. `src/assets/README.md` has
-the rules. The key concept:
+`images/logo/rankwarden-logo.svg` (header) and `rankwarden-emblem.svg`; favicons are in `public/`.
+Navigation icons (`icons/nav/*.svg`) are monochrome `currentColor` SVGs coloured by the
+faction accent, except `bosses.svg` (fixed fel green) and `guild-{alliance,horde}.svg`
+(metal via `var(--color-trim)`), which must be inlined. One-look PNG families read by path
+with `iconUrl()`: `game-modes/` (pvp, pve, mplus, raid), `places/` (place-1..3 badges) and
+`info/` (item-level, deaths, vantus-rune, in the role icons' round frame). See the assets
+README. `src/assets/README.md` has the rules. The key concept:
 
 - **Every icon family has a `modern` and a `classic` style:**
   `src/assets/icons/<family>/<style>/<name>.<ext>`. The user picks one with the preference
@@ -384,7 +389,10 @@ the rules. The key concept:
 - **Drive-letter case.** Git Bash's working directory is `/d/...` (lowercase), while
   PowerShell and Node use `D:\`. Two consequences:
   - **Vitest** started from Git Bash loads itself twice and fails with "failed to find the
-    current suite". **Run Vitest from PowerShell** (`Set-Location D:\PersonalProject\Farseer`).
+    current suite", or with every suite failing at its first `describe` ("Cannot read
+    properties of undefined (reading 'config')", "no tests"). It can pass one run and fail
+    the next, so a pass from Bash proves nothing. **Run Vitest from PowerShell**
+    (`Set-Location D:\PersonalProject\Farseer`). Node 24 and 26 both pass there.
   - **Vite aliases** must point at the root-relative `/src`, never at an absolute path. An
     absolute path loaded the same module twice (once as `/src/...`, once as `/@fs/d:/...`).
     That created two React contexts and the error "usePreferences must be used within PreferencesProvider".
