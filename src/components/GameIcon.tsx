@@ -15,6 +15,14 @@ interface GameIconProps {
    * races): a circle with no box border or background, so only the art's frame shows.
    */
   shape?: 'square' | 'round';
+  /**
+   * How much of the file the art fills (0–1), for files with transparent padding around
+   * the art (modern class icons: a 63 px circle in an 88 px canvas). The image is scaled
+   * so the art fills the box like every other icon; the art itself is untouched.
+   */
+  artFill?: number;
+  /** The image failed to load (an external URL from the data): show a fallback instead */
+  onError?: () => void;
 }
 
 /**
@@ -28,6 +36,8 @@ export function GameIcon({
   size = 'sm',
   borderColor,
   shape = 'square',
+  artFill = 1,
+  onError,
 }: GameIconProps) {
   const px = ICON_SIZES[size];
   return (
@@ -39,11 +49,13 @@ export function GameIcon({
       height={px}
       loading="lazy"
       decoding="async"
+      onError={onError}
       $round={shape === 'round'}
       style={
         {
           '--game-icon-size': `var(--icon-size-${size})`,
           ...(borderColor && { '--game-icon-border': borderColor }),
+          ...(artFill < 1 && { transform: `scale(${1 / artFill})` }),
         } as CSSProperties
       }
     />

@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { ASSET_STYLES, hasStyledAsset, iconNames, styledAssetNames } from '@/lib/assets';
+import {
+  ASSET_STYLES,
+  hasStyledAsset,
+  iconNames,
+  styledAssetNames,
+  styledAssetUrl,
+} from '@/lib/assets';
 import {
   RACES,
   raceCrestUrl,
@@ -16,7 +22,7 @@ const GENDERS: Gender[] = ['male', 'female'];
  * Icons not drawn yet. The mapper falls back to the other style for these.
  * Remove an entry once its file is added; the coverage test fails until you do.
  */
-const KNOWN_MISSING = new Set(['modern/bloodelf-male', 'modern/bloodelf-female']);
+const KNOWN_MISSING = new Set<string>([]);
 
 /** Files on disk that no race maps to, on purpose. */
 const KNOWN_EXTRA = new Set([
@@ -172,8 +178,15 @@ describe('race icons', () => {
   });
 
   it('falls back to the other style when an icon is missing', () => {
+    // Every race has both styles now; the Dracthyr visage files exist only in classic.
+    expect(styledAssetUrl('races', 'modern', 'dracthyr-visage-male-horde')).toMatch(
+      /classic\/dracthyr-visage-male-horde\.png/,
+    );
+  });
+
+  it('uses the modern Blood Elf portraits', () => {
     expect(raceIconUrl('Blood Elf', 'MALE', { style: 'modern' })).toMatch(
-      /classic\/bloodelf-male\.png/,
+      /modern\/bloodelf-male\.png/,
     );
   });
 

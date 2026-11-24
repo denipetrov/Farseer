@@ -8,17 +8,38 @@ describe('preferences storage', () => {
     expect(readPreferences()).toEqual(defaultPreferences);
   });
 
+  it('defaults to PvP', () => {
+    expect(defaultPreferences.gameMode).toBe('pvp');
+  });
+
   it('round-trips saved preferences', () => {
-    writePreferences({ faction: 'alliance', assetStyle: 'classic' });
-    expect(readPreferences()).toEqual({ faction: 'alliance', assetStyle: 'classic' });
+    const prefs = { faction: 'alliance', assetStyle: 'classic', gameMode: 'pve' } as const;
+    writePreferences(prefs);
+    expect(readPreferences()).toEqual(prefs);
   });
 
   it('validates each field on its own and drops unknown keys', () => {
     localStorage.setItem(
       STORAGE_KEY,
-      JSON.stringify({ faction: 'alliance', assetStyle: 'retro', junk: 1 }),
+      JSON.stringify({ faction: 'alliance', assetStyle: 'retro', gameMode: 'raid', junk: 1 }),
     );
-    expect(readPreferences()).toEqual({ faction: 'alliance', assetStyle: 'modern' });
+    expect(readPreferences()).toEqual({
+      faction: 'alliance',
+      assetStyle: 'modern',
+      gameMode: 'pvp',
+    });
+  });
+
+  it('keeps older saved preferences that have no game mode', () => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ faction: 'alliance', assetStyle: 'classic' }),
+    );
+    expect(readPreferences()).toEqual({
+      faction: 'alliance',
+      assetStyle: 'classic',
+      gameMode: 'pvp',
+    });
   });
 
   it('falls back to defaults on corrupt or invalid data', () => {

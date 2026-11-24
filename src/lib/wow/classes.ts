@@ -90,6 +90,16 @@ export function resolveClass(input: ClassInput): WowClass | null {
 }
 
 /**
+ * How much of a class icon file its art fills, per style. Modern files are an 88 px canvas
+ * with the round icon 63 px wide in the middle (every class, measured 2026-11-24); classic
+ * files are filled edge to edge. `<ClassIcon>` scales by this so both match other icons.
+ */
+export const CLASS_ICON_ART_FILL: Readonly<Record<AssetStyle, number>> = {
+  modern: 63 / 88,
+  classic: 1,
+};
+
+/**
  * Icon URL for an API class value, in the chosen style (falling back to the
  * other style when that one has no file). Undefined when the class is unknown.
  */

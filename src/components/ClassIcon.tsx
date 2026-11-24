@@ -1,5 +1,11 @@
+import { hasStyledAsset } from '@/lib/assets';
+import {
+  CLASS_ICON_ART_FILL,
+  classIconUrl,
+  resolveClass,
+  type ClassInput,
+} from '@/lib/wow/classes';
 import { usePreferences } from '@/preferences/PreferencesProvider';
-import { classIconUrl, resolveClass, type ClassInput } from '@/lib/wow/classes';
 import type { IconSize } from '@/styles/iconSizes';
 import { GameIcon } from './GameIcon';
 
@@ -9,11 +15,31 @@ interface ClassIconProps {
   size?: IconSize;
 }
 
-/** A round class icon in the user's chosen asset style (its rim is in the class colour). Renders nothing for an unknown class. */
+/**
+ * A round class icon in the user's chosen asset style (its rim is in the class colour).
+ * Modern files pad the art, so they are scaled to fill the same circle as other icons.
+ * Renders nothing for an unknown class.
+ */
 export function ClassIcon({ cls, size }: ClassIconProps) {
   const { preferences } = usePreferences();
+  const c = resolveClass(cls);
   const url = classIconUrl(cls, { style: preferences.assetStyle });
-  if (!url) return null;
+  if (!c || !url) return null;
 
-  return <GameIcon src={url} label={resolveClass(cls)!.name} size={size} shape="round" />;
+  // The file shown may be the other style's (fallback): scale by the style actually used.
+  const style = hasStyledAsset('classes', preferences.assetStyle, c.slug)
+    ? preferences.assetStyle
+    : preferences.assetStyle === 'modern'
+      ? 'classic'
+      : 'modern';
+
+  return (
+    <GameIcon
+      src={url}
+      label={c.name}
+      size={size}
+      shape="round"
+      artFill={CLASS_ICON_ART_FILL[style]}
+    />
+  );
 }

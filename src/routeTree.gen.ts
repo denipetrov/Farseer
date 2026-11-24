@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LeaderboardsRouteImport } from './routes/leaderboards'
+import { Route as PveIndexRouteImport } from './routes/pve/index'
+import { Route as PvpIndexRouteImport } from './routes/pvp/index'
 import { Route as CharacterRegionRealmNameRouteImport } from './routes/character/$region.$realm.$name'
 import { Route as GuildRegionRealmNameRouteImport } from './routes/guild/$region.$realm.$name'
 
@@ -22,6 +24,16 @@ const IndexRoute = IndexRouteImport.update({
 const LeaderboardsRoute = LeaderboardsRouteImport.update({
   id: '/leaderboards',
   path: '/leaderboards',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PveIndexRoute = PveIndexRouteImport.update({
+  id: '/pve/',
+  path: '/pve/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PvpIndexRoute = PvpIndexRouteImport.update({
+  id: '/pvp/',
+  path: '/pvp/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CharacterRegionRealmNameRoute =
@@ -39,12 +51,16 @@ const GuildRegionRealmNameRoute = GuildRegionRealmNameRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/leaderboards': typeof LeaderboardsRoute
+  '/pve/': typeof PveIndexRoute
+  '/pvp/': typeof PvpIndexRoute
   '/character/$region/$realm/$name': typeof CharacterRegionRealmNameRoute
   '/guild/$region/$realm/$name': typeof GuildRegionRealmNameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/leaderboards': typeof LeaderboardsRoute
+  '/pve': typeof PveIndexRoute
+  '/pvp': typeof PvpIndexRoute
   '/character/$region/$realm/$name': typeof CharacterRegionRealmNameRoute
   '/guild/$region/$realm/$name': typeof GuildRegionRealmNameRoute
 }
@@ -52,6 +68,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/leaderboards': typeof LeaderboardsRoute
+  '/pve/': typeof PveIndexRoute
+  '/pvp/': typeof PvpIndexRoute
   '/character/$region/$realm/$name': typeof CharacterRegionRealmNameRoute
   '/guild/$region/$realm/$name': typeof GuildRegionRealmNameRoute
 }
@@ -60,18 +78,24 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/leaderboards'
+    | '/pve/'
+    | '/pvp/'
     | '/character/$region/$realm/$name'
     | '/guild/$region/$realm/$name'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/leaderboards'
+    | '/pve'
+    | '/pvp'
     | '/character/$region/$realm/$name'
     | '/guild/$region/$realm/$name'
   id:
     | '__root__'
     | '/'
     | '/leaderboards'
+    | '/pve/'
+    | '/pvp/'
     | '/character/$region/$realm/$name'
     | '/guild/$region/$realm/$name'
   fileRoutesById: FileRoutesById
@@ -79,6 +103,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LeaderboardsRoute: typeof LeaderboardsRoute
+  PveIndexRoute: typeof PveIndexRoute
+  PvpIndexRoute: typeof PvpIndexRoute
   CharacterRegionRealmNameRoute: typeof CharacterRegionRealmNameRoute
   GuildRegionRealmNameRoute: typeof GuildRegionRealmNameRoute
 }
@@ -97,6 +123,20 @@ declare module '@tanstack/react-router' {
       path: '/leaderboards'
       fullPath: '/leaderboards'
       preLoaderRoute: typeof LeaderboardsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pve/': {
+      id: '/pve/'
+      path: '/pve'
+      fullPath: '/pve/'
+      preLoaderRoute: typeof PveIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pvp/': {
+      id: '/pvp/'
+      path: '/pvp'
+      fullPath: '/pvp/'
+      preLoaderRoute: typeof PvpIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/character/$region/$realm/$name': {
@@ -119,6 +159,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LeaderboardsRoute: LeaderboardsRoute,
+  PveIndexRoute: PveIndexRoute,
+  PvpIndexRoute: PvpIndexRoute,
   CharacterRegionRealmNameRoute: CharacterRegionRealmNameRoute,
   GuildRegionRealmNameRoute: GuildRegionRealmNameRoute,
 }

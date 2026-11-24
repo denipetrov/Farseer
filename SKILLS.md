@@ -161,6 +161,76 @@ Through CORS, the browser can read the `retry-after` and `www-authenticate` head
 - Route files are code-split by the plugin (`autoCodeSplitting`), and the
   `react-refresh/only-export-components` lint rule is off for `src/routes/**`.
 - The root route has a `notFoundComponent` and an `errorComponent`.
+- **Game modes.** The site has two halves, PvP and PvE (`src/lib/gameMode.ts`), each with
+  its own home: `/pvp` and `/pve`. Put each mode's pages under its prefix.
+  - `/` has no page: `beforeLoad` redirects to the remembered mode (preference
+    `gameMode`, default `pvp`).
+  - `useGameMode()` (`src/preferences/useGameMode.ts`) gives the current mode and a
+    switch. Under `/pvp/…` or `/pve/…` the URL decides and is remembered, so a shared link
+    sets the mode; elsewhere (character, guild, leaderboards) the remembered mode applies.
+    Switching remembers the mode and opens its home. The logo links to the current
+    mode's home.
+
+**The header** (`src/components/AppHeader.tsx`) is a three-column grid:
+
+- left: the logo and the PvP / PvE switch (`header/GameModeToggle`, the
+  `game-modes/pvp|pve` art, which carries its own label);
+- centre: `header/SearchBar`;
+- right: the icon style switch (`header/AssetStyleToggle`, showing
+  `icons/styles/<style>-<faction>.png` for the user's faction, unfiltered and underlined in
+  the accent like the faction switch) and the faction switch (`FactionToggle`, the emblems in the chosen style).
+
+The header is `position: sticky; top: 0`. A sticky element only sticks within its parent, so
+`#root` (its parent) must grow with the page: `min-height: 100%`, **never `height`**
+(`GlobalStyle.ts`). A fixed-height `#root` let the header scroll away after one screen.
+Never give an ancestor of the header `overflow` other than `visible` either.
+
+The outer columns are `minmax(max-content, 1fr)`, so the search stays centred and is never
+covered. Below 1100px the search moves to a row of its own; below 600px the logo becomes
+the emblem and all three switches (all `lg`, 64px) drop to `md`. All three switches are `header/IconToggle`: a
+radio group (arrow keys move the choice). The art is **never filtered or backed**: not
+chosen, it is only fainter (60%, still in colour); the chosen one has a bar underneath, in
+the accent (mode, style) or the option's own `underline` colour (each faction its own). The
+user rejected greyscale, glow, drop-shadow outlines and a plate behind the art as making the
+emblems invisible, blurry or untrue to the files. Its icon size is the CSS var
+`--toggle-icon-size` on the group, so a layout can override it.
+
+**Showing a character** (`src/components/CharacterLine.tsx`): everywhere a character is
+listed (search, boards, rosters), use `<CharacterLine>`, the user's fixed order:
+
+    [race] [class] [spec] [hero talent]  Name <Guild>          [faction]
+                                         Realm · Region
+
+- The faction sits at the far right of the row (it didn't fit beside the round icons).
+- Every slot is always filled: an icon the data doesn't give, or a value with no file,
+  shows `info/unknown.png` (`<UnknownIcon label="Unknown spec" />`). Rows keep one shape,
+  so names line up. An unenriched PvP character is four question marks.
+- PvE characters have no hero talent slot at all (`showHeroTalent={false}`): the API never
+  gives one and the user doesn't want it there.
+- Pass ids first (`classId`, `specId`, `raceId`, `heroTalentId`), names as the fallback.
+- The name is in the class colour; the guild in `<>` only when given.
+- **Guilds** use `<GuildLine>` in the same shape: `[logo] Name / Realm · Region [faction]`.
+  The logo is the URL the data gives (Raider.io's CDN: a custom logo or its generic faction
+  icon); with none, or one that fails to load, it is `unknown.png`. The faction slot shows
+  only when the source carries a guild faction (pass `faction`; `null` = unknown). Search
+  suggestions send `logo` and `faction` (Soulseeker 839629d, 8de63f6). Soulseeker caches
+  suggestions in Redis per prefix, so an answer cached before a field was added lacks it
+  until the cache expires; `GuildLine` then just has no faction slot. Shared row styles: `src/components/lineParts.ts`.
+- `regionName()` (`src/lib/wow/regions.ts`): `us` Americas, `eu` Europe, `kr` Korea, `tw`
+  Taiwan, `cn` China. `realmLabel()` shows a realm slug as words when the data has no name.
+
+**Search** (`header/SearchBar`, `src/api/search.ts`): `GET /search/suggestions?type=<mode>&q=`
+as the visitor types (debounced 250ms), as an ARIA combobox (arrows, Enter opens the
+highlighted or first entry, Escape closes then clears).
+
+- `searchQueryOf()` applies Soulseeker's rules first (2–32 characters; letters, digits,
+  space, `- ! *`), so a refused query never becomes a request.
+- Each list is up to 100 long; the box shows 20 of each. PvP has characters only; PvE has
+  characters and guilds (`<GuildLine>`).
+- Character rows are `<CharacterLine />` (above), from the ids in the suggestion.
+  Suggestions carry no gender (the portrait falls back to male) and no guild.
+- A choice opens `/character/$region/$realm/$name` or `/guild/$region/$realm/$name` with
+  the name as Soulseeker spells it.
 
 ---
 
@@ -213,7 +283,8 @@ Navigation icons (`icons/nav/*.svg`) are monochrome `currentColor` SVGs coloured
 faction accent, except `bosses.svg` (fixed fel green) and `guild-{alliance,horde}.svg`
 (metal via `var(--color-trim)`), which must be inlined. One-look PNG families read by path
 with `iconUrl()`: `game-modes/` (pvp, pve, mplus, raid), `places/` (place-1..3 badges) and
-`info/` (item-level, deaths, vantus-rune, gems, embellishments, enchants, tier-set, unknown, in the role icons' round frame) `pvp/brackets/` (named by bracket slug: 2v2, 3v3, rbg, shuffle, blitz) and `difficulty/`
+`info/` (item-level, deaths, vantus-rune, gems, embellishments, enchants, tier-set, unknown, in the role icons' round frame) `pvp/brackets/` (named by bracket slug: 2v2, 3v3, rbg, shuffle, blitz), `styles/`
+(classic/modern header switch, per faction: `<style>-<faction>`) and `difficulty/`
 (normal, heroic, mythic; SVG versions in `difficulty/svg/`, because `iconUrl` keys by path
 without extension, so a same-named .png and .svg in one folder clash). See the assets
 README. `src/assets/README.md` has the rules. The key concept:
@@ -359,7 +430,8 @@ README. `src/assets/README.md` has the rules. The key concept:
     validation in `readPreferences`. Read and write it with `usePreferences()`.
   - The inline script in `index.html` applies the faction before the page first draws, to
     avoid a colour flash. It reads the same key, so keep it in step if the structure changes.
-- **Preferences now:** `faction` (horde | alliance) and `assetStyle` (modern | classic).
+- **Preferences now:** `faction` (horde | alliance), `assetStyle` (modern | classic) and
+  `gameMode` (pvp | pve, default pvp; read outside React by the `/` redirect).
   `readPreferences` validates each field on its own and drops unknown keys.
 - **localStorage keys:** `farseer:preferences` and `farseer:auth`. Prefix new keys with `farseer:`.
 
@@ -406,6 +478,17 @@ README. `src/assets/README.md` has the rules. The key concept:
   `sed -i '1s/^\xEF\xBB\xBF//' file`, or edit with the file tools instead.
   `Get-Content -Raw` reads a UTF-8 file without a BOM as ANSI, so a read-modify-write
   turns `→` into `â†’`. Don't rewrite source files through PowerShell.
+- **The Vite dev server misses quick edits.** A second edit to a file shortly after the
+  first is sometimes not picked up, so the browser runs stale code (seen 2026-11-24: `/`
+  redirected to `/undefined`). Before trusting what the browser shows, compare
+  `curl localhost:5173/src/<file>` with the file, and `touch` any file that's behind.
+  The user usually has a dev server on 5173 already, and Soulseeker's CORS allows only
+  that port, so test against theirs; a second server goes to 5174 and its API calls fail.
+- **SVG in CSS `url()`.** Vite inlines small SVGs as `data:` URLs that contain single
+  quotes, so the `url()` needs double quotes. Prettier rewrites quotes inside
+  styled-components CSS to single ones, which breaks it again (a plain square instead of
+  the icon). Build the whole value in TypeScript and interpolate it:
+  `` const glyph = `url("${iconUrl('nav/search')}")` `` then `mask: ${glyph} …`.
 - **GitHub Packages.** `.npmrc` maps `@denipetrov` to `npm.pkg.github.com`; the token
   lives only in `~/.npmrc` (`//npm.pkg.github.com/:_authToken=…`). Never commit a token.
 - **Long heredocs** in the Bash tool can fail to parse, and when they do, nothing is
@@ -474,22 +557,26 @@ cluster has been done.
 
 ---
 
-## 11. Current state (2026-11-17)
+## 11. Current state (2026-11-24)
 
 - **Done:**
   - the stack scaffold;
-  - the palette, tokens and the faction toggle;
-  - preferences;
-  - routes `/`, `/leaderboards`, `/character/$region/$realm/$name` and `/guild/$region/$realm/$name`;
+  - the palette, tokens and preferences;
+  - the header: logo, PvP/PvE switch, search with suggestions, icon style and faction
+    switches (§5);
+  - routes `/` (redirect), `/pvp`, `/pve`, `/leaderboards`, `/character/$region/$realm/$name`
+    and `/guild/$region/$realm/$name`;
   - the complete auth flow and API client;
-  - the home page `ApiStatus` indicator (`GET /session`);
+  - the `ApiStatus` indicator (`GET /session`) on the mode homes;
   - CI/CD and the chart.
-- **Placeholders:** the leaderboards, character and guild pages render their parameters
+- **Placeholders:** the `/pvp` and `/pve` homes (`ModeHome`), and the leaderboards, character and guild pages render their parameters
   but don't fetch data yet. The `/leaderboards` search is `region`, `realm`, `page`, and
   must change to what `/pvp/leaderboard` needs (`seasonId`, `bracket`, optional
   `class`/`spec`, `pageSize`), plus a way to choose PvP or Mythic+.
-- **Not built yet:** the modern/classic switch UI (the preference exists),
-  `modern/bloodelf-*` icons, endpoint modules (`pvp.ts`, `pve.ts`), Turnstile support on the
+- **Open question:** character and guild pages sit outside `/pvp` and `/pve`, but Soulseeker
+  has separate PvP and PvE character endpoints. Decide whether they move under the mode
+  prefixes before building them.
+- **Not built yet:** endpoint modules (`pvp.ts`, `pve.ts`), Turnstile support on the
   token request (Soulseeker has it off), and logout or revocation (`POST /oidc/token/revocation`).
 
 ---
@@ -500,6 +587,7 @@ Newest first.
 
 | Date       | Decision                                                                      | Why                                                                                                                                                                |
 | ---------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 2026-11-24 | PvP and PvE homes at `/pvp` and `/pve`; `/` redirects to the remembered mode  | The user's header design: the mode switch decides the home, remembered in localStorage, PvP by default.                                                            |
 | 2026-11-20 | Race portraits round, framed per faction; two-faction races per-faction files | The user asked for faction borders (silver+red Horde, gold+blue Alliance). One frame per file, so Pandaren, Dracthyr, Earthen and Haranir need a file per faction. |
 | 2026-11-19 | Specs, roles and sub-roles from spirit-link's `SPECIALIZATIONS`               | One list shared with Soulseeker and Rankwarden, so role filters and labels can't drift from the API's.                                                             |
 | 2026-11-18 | Faction colours from the emblems; gold/silver trim for frames                 | The user asked for the logo colours. Alliance frames in gold and Horde in silver, as on the emblems.                                                               |

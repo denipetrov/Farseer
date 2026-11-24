@@ -60,7 +60,8 @@ icons/races/classic/nightelf-female.png
 
 - `races/<style>/<slug>-<male|female>.png`, 26 races. The race ids each one covers are in
   `src/lib/wow/races.ts`.
-- Not drawn yet: `modern/bloodelf-*` (classic is used instead).
+- Every race has a portrait in both styles. A future gap would fall back to the other style;
+  list it in `KNOWN_MISSING` in `races.test.ts`.
 - Kept but not mapped: `classic/dracthyr-visage-*`. The API doesn't say which form a
   Dracthyr is in.
 
@@ -143,6 +144,14 @@ icons/hero-talents/<class>/<tree>.png         hero-talents/druid/elunes-chosen.p
 - **Hero talents:** 41 trees, 128 px, round, with the class's rim. The file is the tree name in kebab case without
   apostrophes (`San'layn` → `sanlayn`). Use `heroTreeIconUrl(tree)` or
   `<HeroTalentIcon tree />` (`src/lib/wow/heroTalents.ts`).
+
+### Style switch
+
+`icons/styles/<classic|modern>-<horde|alliance>.png`, 128 px, for the header switch between
+the two asset styles. Each shows three icons of its style together, as they are (no filters):
+Horde a monk class icon, a male Blood Elf portrait and the Horde emblem; Alliance a mage class
+icon, a female Gnome portrait and the Alliance emblem. Pick the pair by the user's faction.
+Read them by path: `iconUrl('styles/modern-horde')`.
 
 ### Navigation
 
@@ -258,6 +267,11 @@ in the tank frame) stands for every role, e.g. a "show all roles" filter; it isn
   `classColorVar(cls)`.
 - Both styles are round, transparent PNGs. Modern: 88 px, a gold frame with corner
   ornaments. Classic: 128 px, a metal rim tinted in the class colour.
+
+- **Modern class files pad the art:** an 88 px canvas with the round icon 63 px wide in the
+  middle (every class). `<ClassIcon>` scales them by `CLASS_ICON_ART_FILL` so they fill the
+  same circle as other icons. If the files are re-cut to fill their canvas, set the modern
+  value to `1`.
 
 ## Logo
 

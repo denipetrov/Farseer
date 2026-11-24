@@ -1,0 +1,378 @@
+import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from '@tanstack/react-router';
+import { useId, useMemo, useState, type KeyboardEvent } from 'react';
+import styled from 'styled-components';
+import { ApiError } from '@/api';
+import {
+  searchQueryOf,
+  searchSuggestionsQuery,
+  type CharacterSuggestion,
+  type GuildSuggestion,
+} from '@/api/search';
+import { CharacterLine } from '@/components/CharacterLine';
+import { GuildLine } from '@/components/GuildLine';
+import { iconUrl } from '@/lib/assets';
+import { useDebouncedValue } from '@/lib/useDebouncedValue';
+import { useGameMode } from '@/preferences/useGameMode';
+import type { GameMode } from '@/lib/gameMode';
+
+/** Each list is up to 100 long; the first few are what a visitor reads. */
+const MAX_SHOWN = 20;
+const DEBOUNCE_MS = 250;
+
+const PLACEHOLDER = {
+  pvp: 'Search PvP characters',
+  pve: 'Search characters and guilds',
+} as const;
+
+type Item =
+  | { kind: 'character'; id: string; data: CharacterSuggestion }
+  | { kind: 'guild'; id: string; data: GuildSuggestion };
+
+/**
+ * The header search: suggestions from `/search/suggestions` for the current game mode
+ * as the visitor types. Choosing one opens its character or guild page.
+ *
+ * An ARIA combobox: arrow keys move through the list, Enter opens the highlighted
+ * entry (the first when none is), Escape closes the list, then clears the box.
+ */
+export function SearchBar() {
+  const [mode] = useGameMode();
+  const navigate = useNavigate();
+  const listId = useId();
+
+  const [input, setInput] = useState('');
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState(-1);
+
+  const q = searchQueryOf(useDebouncedValue(input, DEBOUNCE_MS));
+  const typed = searchQueryOf(input);
+  const { data, error, isFetching } = useQuery({
+    ...searchSuggestionsQuery(mode, q ?? ''),
+    enabled: q !== null,
+  });
+
+  // An answer for an older query stays on screen only while it is still being typed past.
+  const current = typed !== null && data?.type === mode ? data : undefined;
+
+  const items = useMemo<Item[]>(() => {
+    if (!current) return [];
+    const key = (...parts: string[]) => parts.join('/');
+    return [
+      ...current.characters.slice(0, MAX_SHOWN).map((c): Item => ({
+        kind: 'character',
+        id: key('c', c.region, c.realmSlug, c.characterName),
+        data: c,
+      })),
+      ...current.guilds.slice(0, MAX_SHOWN).map((g): Item => ({
+        kind: 'guild',
+        id: key('g', g.region, g.realmSlug, g.name),
+        data: g,
+      })),
+    ];
+  }, [current]);
+
+  const characters = items.filter((i) => i.kind === 'character');
+  const guilds = items.filter((i) => i.kind === 'guild');
+  const truncated =
+    !!current && (current.characters.length > MAX_SHOWN || current.guilds.length > MAX_SHOWN);
+
+  const choose = (item: Item) => {
+    setInput('');
+    setOpen(false);
+    setActive(-1);
+    (document.activeElement as HTMLElement | null)?.blur();
+    const { region, realmSlug } = item.data;
+    if (item.kind === 'character') {
+      void navigate({
+        to: '/character/$region/$realm/$name',
+        params: { region, realm: realmSlug, name: item.data.characterName },
+      });
+    } else {
+      void navigate({
+        to: '/guild/$region/$realm/$name',
+        params: { region, realm: realmSlug, name: item.data.name },
+      });
+    }
+  };
+
+  const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    switch (e.key) {
+      case 'ArrowDown':
+      case 'ArrowUp': {
+        e.preventDefault();
+        setOpen(true);
+        if (!items.length) return;
+        const step = e.key === 'ArrowDown' ? 1 : -1;
+        setActive((a) => (a + step + items.length + (a < 0 && step < 0 ? 1 : 0)) % items.length);
+        return;
+      }
+      case 'Enter': {
+        const item = items[active] ?? items[0];
+        if (item) {
+          e.preventDefault();
+          choose(item);
+        }
+        return;
+      }
+      case 'Escape':
+        e.preventDefault();
+        if (open && input) setOpen(false);
+        else setInput('');
+        setActive(-1);
+        return;
+    }
+  };
+
+  const status = (() => {
+    if (typed === null) {
+      return input.trim().length >= 2 ? 'Names only have letters, digits, spaces, - ! *' : null;
+    }
+    if (error && !current) {
+      return error instanceof ApiError && error.status === 503
+        ? 'Search is busy, try again shortly'
+        : error instanceof ApiError && error.status === 400
+          ? 'No matches'
+          : 'Search is unavailable';
+    }
+    if (!current) return isFetching || q !== typed ? 'Searching…' : null;
+    if (!items.length) return 'No matches';
+    return null;
+  })();
+
+  const expanded = open && (items.length > 0 || status !== null);
+  const optionId = (i: number) => `${listId}-${i}`;
+
+  const renderItem = (item: Item) => {
+    const i = items.indexOf(item);
+    return (
+      <Option
+        key={item.id}
+        id={optionId(i)}
+        role="option"
+        aria-selected={i === active}
+        // Keep focus in the box, so the list isn't closed by blur before the click lands
+        onMouseDown={(e) => e.preventDefault()}
+        onClick={() => choose(item)}
+        onMouseMove={() => setActive(i)}
+      >
+        {item.kind === 'character' ? (
+          <CharacterRow c={item.data} mode={mode} />
+        ) : (
+          <GuildRow g={item.data} />
+        )}
+      </Option>
+    );
+  };
+
+  return (
+    <Wrap>
+      <Field>
+        <SearchGlyph aria-hidden />
+        <Input
+          type="search"
+          role="combobox"
+          aria-label={PLACEHOLDER[mode]}
+          aria-expanded={expanded}
+          aria-controls={listId}
+          aria-autocomplete="list"
+          aria-activedescendant={active >= 0 ? optionId(active) : undefined}
+          placeholder={PLACEHOLDER[mode]}
+          autoComplete="off"
+          spellCheck={false}
+          maxLength={64}
+          value={input}
+          onChange={(e) => {
+            setInput(e.target.value);
+            setOpen(true);
+            setActive(-1);
+          }}
+          onFocus={() => setOpen(true)}
+          onBlur={() => setOpen(false)}
+          onKeyDown={onKeyDown}
+        />
+      </Field>
+
+      {expanded && (
+        <Popup>
+          <ul id={listId} role="listbox" aria-label="Suggestions">
+            {characters.length > 0 && (
+              <li role="presentation">
+                <GroupLabel>Characters</GroupLabel>
+                <ul role="group" aria-label="Characters">
+                  {characters.map(renderItem)}
+                </ul>
+              </li>
+            )}
+            {guilds.length > 0 && (
+              <li role="presentation">
+                <GroupLabel>Guilds</GroupLabel>
+                <ul role="group" aria-label="Guilds">
+                  {guilds.map(renderItem)}
+                </ul>
+              </li>
+            )}
+          </ul>
+          {status && <Status role="status">{status}</Status>}
+          {!status && truncated && <Status>Keep typing to narrow the list</Status>}
+        </Popup>
+      )}
+    </Wrap>
+  );
+}
+
+function CharacterRow({ c, mode }: { c: CharacterSuggestion; mode: GameMode }) {
+  // Ids first; names are the fallback (an unenriched PvP character has neither)
+  const cls = c.classId ?? c.className;
+  return (
+    <CharacterLine
+      name={c.characterName}
+      realm={c.realmName ?? c.realmSlug}
+      region={c.region}
+      faction={c.faction}
+      race={c.raceId ?? c.raceName}
+      cls={cls}
+      spec={c.specId ?? c.specName}
+      heroTalent={c.heroTalentId ?? c.heroTalents}
+      // PvE characters don't show a hero talent
+      showHeroTalent={mode === 'pvp'}
+    />
+  );
+}
+
+function GuildRow({ g }: { g: GuildSuggestion }) {
+  return (
+    <GuildLine
+      name={g.name}
+      realm={g.realmName}
+      region={g.region}
+      logo={g.logo}
+      faction={g.faction}
+    />
+  );
+}
+
+/**
+ * The prepared `nav/search.svg`, as a CSS `url()` value. Built here, not in the CSS:
+ * Vite inlines small SVGs as data: URLs containing single quotes, so the value needs
+ * double quotes, and Prettier rewrites quotes inside styled-components CSS to single.
+ */
+const searchGlyph = `url("${iconUrl('nav/search')}")`;
+
+const Wrap = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+const Field = styled.label`
+  --search-bg: var(--color-bg-sunken);
+  --search-border: var(--color-trim-muted);
+
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 44px;
+  padding: 0 var(--space-3);
+  background: var(--search-bg);
+  border: 1px solid var(--search-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-subtle);
+  cursor: text;
+  transition: border-color var(--transition-fast);
+
+  &:hover {
+    --search-border: var(--color-trim);
+  }
+
+  &:focus-within {
+    --search-border: var(--color-accent);
+    color: var(--color-accent-strong);
+    box-shadow: 0 0 0 3px var(--color-accent-subtle);
+  }
+`;
+
+/**
+ * `nav/search.svg` is monochrome (`currentColor`, lighter glass via fill-opacity), so it is
+ * drawn as a mask in the field's text colour: subtle at rest, the accent when focused.
+ */
+const SearchGlyph = styled.span`
+  flex: none;
+  width: 20px;
+  height: 20px;
+  background: currentColor;
+  mask: ${searchGlyph} center / contain no-repeat;
+`;
+
+const Input = styled.input`
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-highlight);
+  font: inherit;
+
+  /* The field draws the focus ring around the whole box */
+  &,
+  &:focus-visible {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: var(--color-text-subtle);
+  }
+
+  &::-webkit-search-cancel-button {
+    filter: grayscale(1);
+  }
+`;
+
+const Popup = styled.div`
+  position: absolute;
+  top: calc(100% + var(--space-1));
+  left: 0;
+  right: 0;
+  z-index: 20;
+  max-height: min(70vh, 480px);
+  overflow-y: auto;
+  padding: var(--space-1);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-trim-muted);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+`;
+
+const GroupLabel = styled.div`
+  padding: var(--space-2) var(--space-2) var(--space-1);
+  color: var(--color-trim-strong);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+`;
+
+const Option = styled.li`
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+
+  &[aria-selected='true'] {
+    background: var(--color-surface-hover);
+    box-shadow: inset 3px 0 0 var(--color-accent);
+  }
+`;
+
+const Status = styled.p`
+  padding: var(--space-2);
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+`;

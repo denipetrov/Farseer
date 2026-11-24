@@ -1,22 +1,9 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
-import { Page, PageTitle, Panel, Muted } from '@/components/Page';
-import { ApiStatus } from '@/components/ApiStatus';
+import { createFileRoute, redirect } from '@tanstack/react-router';
+import { readPreferences } from '@/preferences/storage';
 
+/** `/` has no page of its own: it opens the home of the mode the user last chose (PvP by default). */
 export const Route = createFileRoute('/')({
-  component: HomePage,
+  beforeLoad: () => {
+    throw redirect({ to: `/${readPreferences().gameMode}`, replace: true });
+  },
 });
-
-function HomePage() {
-  return (
-    <Page>
-      <PageTitle>Farseer</PageTitle>
-      <Muted>Leaderboards, characters, guilds and more — powered by Soulseeker.</Muted>
-      <ApiStatus />
-      <Panel>
-        <Link to="/leaderboards" search={{ region: 'eu' }}>
-          Browse leaderboards →
-        </Link>
-      </Panel>
-    </Page>
-  );
-}

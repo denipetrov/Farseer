@@ -6,7 +6,14 @@ export const GlobalStyle = createGlobalStyle`
 
   *, *::before, *::after { box-sizing: border-box; }
 
-  html, body, #root { height: 100%; }
+  html, body { height: 100%; }
+
+  /*
+   * min-height, never height: #root contains the sticky header, and a sticky element only
+   * sticks within its parent. A fixed-height #root (one window tall) let the header scroll
+   * away after the first screen.
+   */
+  #root { min-height: 100%; }
 
   body {
     margin: 0;
