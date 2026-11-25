@@ -1,33 +1,40 @@
 import { Link } from '@tanstack/react-router';
 import styled from 'styled-components';
-import emblemUrl from '@/assets/images/logo/rankwarden-emblem.svg';
 import logoUrl from '@/assets/images/logo/rankwarden-logo.svg';
+import { useI18n } from '@/i18n/useI18n';
 import { useGameMode } from '@/preferences/useGameMode';
 import { FactionToggle } from './FactionToggle';
 import { AssetStyleToggle } from './header/AssetStyleToggle';
 import { GameModeToggle } from './header/GameModeToggle';
+import { LanguageSelect } from './header/LanguageSelect';
+import { MobileMenu } from './header/MobileMenu';
 import { SearchBar } from './header/SearchBar';
 
 /**
- * Left: the logo (home of the current game mode) and the PvP / PvE switch.
- * Centre: the search. Right: the icon style and faction switches.
+ * Desktop: left, the logo (home of the current game mode), the language dropdown and the
+ * PvP / PvE switch; centre, the search; right, the icon style and faction switches. Three
+ * grid columns, the outer two equal, so the search stays centred whatever the sides hold.
+ * Below 1100px the search moves to a row of its own.
  *
- * Three grid columns, the outer two equal, so the search stays centred whatever the
- * sides hold. Below `--header-stack` the search moves to a row of its own.
+ * Mobile (820px and below): the menu button and the search only. Everything else is in the
+ * menu's drawer, one below the other (`MobileMenu`), with the left menu once it exists.
  */
 export function AppHeader() {
   const [mode] = useGameMode();
+  const { locale, t } = useI18n();
 
   return (
     <Header>
       <Inner>
+        <Menu>
+          <MobileMenu />
+        </Menu>
+
         <Start>
-          <Brand to={`/${mode}`} aria-label="Rankwarden home">
-            <picture>
-              <source media="(max-width: 600px)" srcSet={emblemUrl} />
-              <img src={logoUrl} alt="Rankwarden" />
-            </picture>
+          <Brand to={`/${locale.slug}/${mode}`} aria-label={t('app.home')}>
+            <img src={logoUrl} alt="Rankwarden" />
           </Brand>
+          <LanguageSelect />
           <GameModeToggle />
         </Start>
 
@@ -76,9 +83,22 @@ const Inner = styled.div`
     padding-bottom: var(--space-3);
   }
 
-  @media (max-width: 600px) {
-    padding-inline: var(--space-3);
-    column-gap: var(--space-2);
+  /* Mobile: the menu button, then the search, on one row */
+  @media (max-width: 820px) {
+    grid-template-columns: auto 1fr;
+    grid-template-areas: 'menu center';
+    column-gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+  }
+`;
+
+/** The mobile menu button: only on mobile */
+const Menu = styled.div`
+  grid-area: menu;
+  display: none;
+
+  @media (max-width: 820px) {
+    display: flex;
   }
 `;
 
@@ -89,13 +109,9 @@ const Start = styled.div`
   gap: var(--space-4);
   min-width: 0;
 
-  /* Phones: the mode art drops to the middle size so both sides fit one row */
-  @media (max-width: 600px) {
-    gap: var(--space-2);
-
-    [role='radiogroup'] {
-      --toggle-icon-size: var(--icon-size-md);
-    }
+  /* Mobile: in the menu's drawer instead */
+  @media (max-width: 820px) {
+    display: none;
   }
 `;
 
@@ -111,11 +127,9 @@ const End = styled.div`
   justify-content: flex-end;
   gap: var(--space-2);
 
-  /* Phones: the style art drops to the middle size, as the mode art does */
-  @media (max-width: 600px) {
-    [role='radiogroup'] {
-      --toggle-icon-size: var(--icon-size-md);
-    }
+  /* Mobile: in the menu's drawer instead */
+  @media (max-width: 820px) {
+    display: none;
   }
 `;
 

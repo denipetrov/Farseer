@@ -10,103 +10,122 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as LeaderboardsRouteImport } from './routes/leaderboards'
-import { Route as PveIndexRouteImport } from './routes/pve/index'
-import { Route as PvpIndexRouteImport } from './routes/pvp/index'
-import { Route as CharacterRegionRealmNameRouteImport } from './routes/character/$region.$realm.$name'
-import { Route as GuildRegionRealmNameRouteImport } from './routes/guild/$region.$realm.$name'
+import { Route as LocaleRouteRouteImport } from './routes/$locale/route'
+import { Route as LocaleIndexRouteImport } from './routes/$locale/index'
+import { Route as LocaleLeaderboardsRouteImport } from './routes/$locale/leaderboards'
+import { Route as LocalePveIndexRouteImport } from './routes/$locale/pve/index'
+import { Route as LocalePvpIndexRouteImport } from './routes/$locale/pvp/index'
+import { Route as LocaleCharacterRegionRealmNameRouteImport } from './routes/$locale/character/$region.$realm.$name'
+import { Route as LocaleGuildRegionRealmNameRouteImport } from './routes/$locale/guild/$region.$realm.$name'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LeaderboardsRoute = LeaderboardsRouteImport.update({
+const LocaleRouteRoute = LocaleRouteRouteImport.update({
+  id: '/$locale',
+  path: '/$locale',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LocaleIndexRoute = LocaleIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LocaleRouteRoute,
+} as any)
+const LocaleLeaderboardsRoute = LocaleLeaderboardsRouteImport.update({
   id: '/leaderboards',
   path: '/leaderboards',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => LocaleRouteRoute,
 } as any)
-const PveIndexRoute = PveIndexRouteImport.update({
+const LocalePveIndexRoute = LocalePveIndexRouteImport.update({
   id: '/pve/',
   path: '/pve/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => LocaleRouteRoute,
 } as any)
-const PvpIndexRoute = PvpIndexRouteImport.update({
+const LocalePvpIndexRoute = LocalePvpIndexRouteImport.update({
   id: '/pvp/',
   path: '/pvp/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => LocaleRouteRoute,
 } as any)
-const CharacterRegionRealmNameRoute =
-  CharacterRegionRealmNameRouteImport.update({
+const LocaleCharacterRegionRealmNameRoute =
+  LocaleCharacterRegionRealmNameRouteImport.update({
     id: '/character/$region/$realm/$name',
     path: '/character/$region/$realm/$name',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => LocaleRouteRoute,
   } as any)
-const GuildRegionRealmNameRoute = GuildRegionRealmNameRouteImport.update({
-  id: '/guild/$region/$realm/$name',
-  path: '/guild/$region/$realm/$name',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const LocaleGuildRegionRealmNameRoute =
+  LocaleGuildRegionRealmNameRouteImport.update({
+    id: '/guild/$region/$realm/$name',
+    path: '/guild/$region/$realm/$name',
+    getParentRoute: () => LocaleRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/leaderboards': typeof LeaderboardsRoute
-  '/pve/': typeof PveIndexRoute
-  '/pvp/': typeof PvpIndexRoute
-  '/character/$region/$realm/$name': typeof CharacterRegionRealmNameRoute
-  '/guild/$region/$realm/$name': typeof GuildRegionRealmNameRoute
+  '/$locale': typeof LocaleRouteRouteWithChildren
+  '/$locale/leaderboards': typeof LocaleLeaderboardsRoute
+  '/$locale/': typeof LocaleIndexRoute
+  '/$locale/pve/': typeof LocalePveIndexRoute
+  '/$locale/pvp/': typeof LocalePvpIndexRoute
+  '/$locale/character/$region/$realm/$name': typeof LocaleCharacterRegionRealmNameRoute
+  '/$locale/guild/$region/$realm/$name': typeof LocaleGuildRegionRealmNameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/leaderboards': typeof LeaderboardsRoute
-  '/pve': typeof PveIndexRoute
-  '/pvp': typeof PvpIndexRoute
-  '/character/$region/$realm/$name': typeof CharacterRegionRealmNameRoute
-  '/guild/$region/$realm/$name': typeof GuildRegionRealmNameRoute
+  '/$locale/leaderboards': typeof LocaleLeaderboardsRoute
+  '/$locale': typeof LocaleIndexRoute
+  '/$locale/pve': typeof LocalePveIndexRoute
+  '/$locale/pvp': typeof LocalePvpIndexRoute
+  '/$locale/character/$region/$realm/$name': typeof LocaleCharacterRegionRealmNameRoute
+  '/$locale/guild/$region/$realm/$name': typeof LocaleGuildRegionRealmNameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/leaderboards': typeof LeaderboardsRoute
-  '/pve/': typeof PveIndexRoute
-  '/pvp/': typeof PvpIndexRoute
-  '/character/$region/$realm/$name': typeof CharacterRegionRealmNameRoute
-  '/guild/$region/$realm/$name': typeof GuildRegionRealmNameRoute
+  '/$locale': typeof LocaleRouteRouteWithChildren
+  '/$locale/leaderboards': typeof LocaleLeaderboardsRoute
+  '/$locale/': typeof LocaleIndexRoute
+  '/$locale/pve/': typeof LocalePveIndexRoute
+  '/$locale/pvp/': typeof LocalePvpIndexRoute
+  '/$locale/character/$region/$realm/$name': typeof LocaleCharacterRegionRealmNameRoute
+  '/$locale/guild/$region/$realm/$name': typeof LocaleGuildRegionRealmNameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/leaderboards'
-    | '/pve/'
-    | '/pvp/'
-    | '/character/$region/$realm/$name'
-    | '/guild/$region/$realm/$name'
+    | '/$locale'
+    | '/$locale/leaderboards'
+    | '/$locale/'
+    | '/$locale/pve/'
+    | '/$locale/pvp/'
+    | '/$locale/character/$region/$realm/$name'
+    | '/$locale/guild/$region/$realm/$name'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/leaderboards'
-    | '/pve'
-    | '/pvp'
-    | '/character/$region/$realm/$name'
-    | '/guild/$region/$realm/$name'
+    | '/$locale/leaderboards'
+    | '/$locale'
+    | '/$locale/pve'
+    | '/$locale/pvp'
+    | '/$locale/character/$region/$realm/$name'
+    | '/$locale/guild/$region/$realm/$name'
   id:
     | '__root__'
     | '/'
-    | '/leaderboards'
-    | '/pve/'
-    | '/pvp/'
-    | '/character/$region/$realm/$name'
-    | '/guild/$region/$realm/$name'
+    | '/$locale'
+    | '/$locale/leaderboards'
+    | '/$locale/'
+    | '/$locale/pve/'
+    | '/$locale/pvp/'
+    | '/$locale/character/$region/$realm/$name'
+    | '/$locale/guild/$region/$realm/$name'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  LeaderboardsRoute: typeof LeaderboardsRoute
-  PveIndexRoute: typeof PveIndexRoute
-  PvpIndexRoute: typeof PvpIndexRoute
-  CharacterRegionRealmNameRoute: typeof CharacterRegionRealmNameRoute
-  GuildRegionRealmNameRoute: typeof GuildRegionRealmNameRoute
+  LocaleRouteRoute: typeof LocaleRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -118,51 +137,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/leaderboards': {
-      id: '/leaderboards'
+    '/$locale': {
+      id: '/$locale'
+      path: '/$locale'
+      fullPath: '/$locale'
+      preLoaderRoute: typeof LocaleRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$locale/': {
+      id: '/$locale/'
+      path: '/'
+      fullPath: '/$locale/'
+      preLoaderRoute: typeof LocaleIndexRouteImport
+      parentRoute: typeof LocaleRouteRoute
+    }
+    '/$locale/leaderboards': {
+      id: '/$locale/leaderboards'
       path: '/leaderboards'
-      fullPath: '/leaderboards'
-      preLoaderRoute: typeof LeaderboardsRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/$locale/leaderboards'
+      preLoaderRoute: typeof LocaleLeaderboardsRouteImport
+      parentRoute: typeof LocaleRouteRoute
     }
-    '/pve/': {
-      id: '/pve/'
+    '/$locale/pve/': {
+      id: '/$locale/pve/'
       path: '/pve'
-      fullPath: '/pve/'
-      preLoaderRoute: typeof PveIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/$locale/pve/'
+      preLoaderRoute: typeof LocalePveIndexRouteImport
+      parentRoute: typeof LocaleRouteRoute
     }
-    '/pvp/': {
-      id: '/pvp/'
+    '/$locale/pvp/': {
+      id: '/$locale/pvp/'
       path: '/pvp'
-      fullPath: '/pvp/'
-      preLoaderRoute: typeof PvpIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/$locale/pvp/'
+      preLoaderRoute: typeof LocalePvpIndexRouteImport
+      parentRoute: typeof LocaleRouteRoute
     }
-    '/character/$region/$realm/$name': {
-      id: '/character/$region/$realm/$name'
+    '/$locale/character/$region/$realm/$name': {
+      id: '/$locale/character/$region/$realm/$name'
       path: '/character/$region/$realm/$name'
-      fullPath: '/character/$region/$realm/$name'
-      preLoaderRoute: typeof CharacterRegionRealmNameRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/$locale/character/$region/$realm/$name'
+      preLoaderRoute: typeof LocaleCharacterRegionRealmNameRouteImport
+      parentRoute: typeof LocaleRouteRoute
     }
-    '/guild/$region/$realm/$name': {
-      id: '/guild/$region/$realm/$name'
+    '/$locale/guild/$region/$realm/$name': {
+      id: '/$locale/guild/$region/$realm/$name'
       path: '/guild/$region/$realm/$name'
-      fullPath: '/guild/$region/$realm/$name'
-      preLoaderRoute: typeof GuildRegionRealmNameRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/$locale/guild/$region/$realm/$name'
+      preLoaderRoute: typeof LocaleGuildRegionRealmNameRouteImport
+      parentRoute: typeof LocaleRouteRoute
     }
   }
 }
 
+interface LocaleRouteRouteChildren {
+  LocaleLeaderboardsRoute: typeof LocaleLeaderboardsRoute
+  LocaleIndexRoute: typeof LocaleIndexRoute
+  LocalePveIndexRoute: typeof LocalePveIndexRoute
+  LocalePvpIndexRoute: typeof LocalePvpIndexRoute
+  LocaleCharacterRegionRealmNameRoute: typeof LocaleCharacterRegionRealmNameRoute
+  LocaleGuildRegionRealmNameRoute: typeof LocaleGuildRegionRealmNameRoute
+}
+
+const LocaleRouteRouteChildren: LocaleRouteRouteChildren = {
+  LocaleLeaderboardsRoute: LocaleLeaderboardsRoute,
+  LocaleIndexRoute: LocaleIndexRoute,
+  LocalePveIndexRoute: LocalePveIndexRoute,
+  LocalePvpIndexRoute: LocalePvpIndexRoute,
+  LocaleCharacterRegionRealmNameRoute: LocaleCharacterRegionRealmNameRoute,
+  LocaleGuildRegionRealmNameRoute: LocaleGuildRegionRealmNameRoute,
+}
+
+const LocaleRouteRouteWithChildren = LocaleRouteRoute._addFileChildren(
+  LocaleRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LeaderboardsRoute: LeaderboardsRoute,
-  PveIndexRoute: PveIndexRoute,
-  PvpIndexRoute: PvpIndexRoute,
-  CharacterRegionRealmNameRoute: CharacterRegionRealmNameRoute,
-  GuildRegionRealmNameRoute: GuildRegionRealmNameRoute,
+  LocaleRouteRoute: LocaleRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

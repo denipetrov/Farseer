@@ -5,6 +5,7 @@ import {
   resolveClass,
   type ClassInput,
 } from '@/lib/wow/classes';
+import { useI18n } from '@/i18n/useI18n';
 import { usePreferences } from '@/preferences/PreferencesProvider';
 import type { IconSize } from '@/styles/iconSizes';
 import { GameIcon } from './GameIcon';
@@ -22,6 +23,7 @@ interface ClassIconProps {
  */
 export function ClassIcon({ cls, size }: ClassIconProps) {
   const { preferences } = usePreferences();
+  const { name } = useI18n();
   const c = resolveClass(cls);
   const url = classIconUrl(cls, { style: preferences.assetStyle });
   if (!c || !url) return null;
@@ -36,7 +38,7 @@ export function ClassIcon({ cls, size }: ClassIconProps) {
   return (
     <GameIcon
       src={url}
-      label={c.name}
+      label={name('classes', c.id, c.name)}
       size={size}
       shape="round"
       artFill={CLASS_ICON_ART_FILL[style]}

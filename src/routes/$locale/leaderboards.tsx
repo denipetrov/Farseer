@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { Page, PageTitle, Panel, Muted } from '@/components/Page';
+import { useI18n } from '@/i18n/useI18n';
 
 export const REGIONS = ['us', 'eu', 'kr', 'tw'] as const;
 export type Region = (typeof REGIONS)[number];
@@ -13,7 +14,7 @@ export interface LeaderboardSearch {
 
 const DEFAULTS = { region: 'eu', page: 1 } as const satisfies LeaderboardSearch;
 
-export const Route = createFileRoute('/leaderboards')({
+export const Route = createFileRoute('/$locale/leaderboards')({
   // Drop anything invalid so it falls back to the default
   validateSearch: (search: Record<string, unknown>): LeaderboardSearch => ({
     region: REGIONS.includes(search.region as Region) ? (search.region as Region) : undefined,
@@ -25,6 +26,7 @@ export const Route = createFileRoute('/leaderboards')({
 
 function LeaderboardsPage() {
   const search = Route.useSearch();
+  const { t } = useI18n();
   const filters = {
     region: search.region ?? DEFAULTS.region,
     realm: search.realm,
@@ -33,9 +35,9 @@ function LeaderboardsPage() {
 
   return (
     <Page>
-      <PageTitle>Leaderboards</PageTitle>
+      <PageTitle>{t('leaderboards.title')}</PageTitle>
       <Panel>
-        <Muted>Active filters (from URL):</Muted>
+        <Muted>{t('leaderboards.activeFilters')}</Muted>
         <pre>{JSON.stringify(filters, null, 2)}</pre>
       </Panel>
     </Page>

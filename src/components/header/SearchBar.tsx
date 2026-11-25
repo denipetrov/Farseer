@@ -13,17 +13,13 @@ import { CharacterLine } from '@/components/CharacterLine';
 import { GuildLine } from '@/components/GuildLine';
 import { iconUrl } from '@/lib/assets';
 import { useDebouncedValue } from '@/lib/useDebouncedValue';
+import { useI18n } from '@/i18n/useI18n';
 import { useGameMode } from '@/preferences/useGameMode';
 import type { GameMode } from '@/lib/gameMode';
 
 /** Each list is up to 100 long; the first few are what a visitor reads. */
 const MAX_SHOWN = 20;
 const DEBOUNCE_MS = 250;
-
-const PLACEHOLDER = {
-  pvp: 'Search PvP characters',
-  pve: 'Search characters and guilds',
-} as const;
 
 type Item =
   | { kind: 'character'; id: string; data: CharacterSuggestion }
@@ -38,6 +34,7 @@ type Item =
  */
 export function SearchBar() {
   const [mode] = useGameMode();
+  const { locale, t } = useI18n();
   const navigate = useNavigate();
   const listId = useId();
 
@@ -85,13 +82,13 @@ export function SearchBar() {
     const { region, realmSlug } = item.data;
     if (item.kind === 'character') {
       void navigate({
-        to: '/character/$region/$realm/$name',
-        params: { region, realm: realmSlug, name: item.data.characterName },
+        to: '/$locale/character/$region/$realm/$name',
+        params: { locale: locale.slug, region, realm: realmSlug, name: item.data.characterName },
       });
     } else {
       void navigate({
-        to: '/guild/$region/$realm/$name',
-        params: { region, realm: realmSlug, name: item.data.name },
+        to: '/$locale/guild/$region/$realm/$name',
+        params: { locale: locale.slug, region, realm: realmSlug, name: item.data.name },
       });
     }
   };
@@ -126,17 +123,17 @@ export function SearchBar() {
 
   const status = (() => {
     if (typed === null) {
-      return input.trim().length >= 2 ? 'Names only have letters, digits, spaces, - ! *' : null;
+      return input.trim().length >= 2 ? t('search.invalidCharacters') : null;
     }
     if (error && !current) {
       return error instanceof ApiError && error.status === 503
-        ? 'Search is busy, try again shortly'
+        ? t('search.busy')
         : error instanceof ApiError && error.status === 400
-          ? 'No matches'
-          : 'Search is unavailable';
+          ? t('search.noMatches')
+          : t('search.unavailable');
     }
-    if (!current) return isFetching || q !== typed ? 'Searching…' : null;
-    if (!items.length) return 'No matches';
+    if (!current) return isFetching || q !== typed ? t('search.searching') : null;
+    if (!items.length) return t('search.noMatches');
     return null;
   })();
 
@@ -172,12 +169,12 @@ export function SearchBar() {
         <Input
           type="search"
           role="combobox"
-          aria-label={PLACEHOLDER[mode]}
+          aria-label={t(`search.placeholder.${mode}`)}
           aria-expanded={expanded}
           aria-controls={listId}
           aria-autocomplete="list"
           aria-activedescendant={active >= 0 ? optionId(active) : undefined}
-          placeholder={PLACEHOLDER[mode]}
+          placeholder={t(`search.placeholder.${mode}`)}
           autoComplete="off"
           spellCheck={false}
           maxLength={64}
@@ -195,26 +192,26 @@ export function SearchBar() {
 
       {expanded && (
         <Popup>
-          <ul id={listId} role="listbox" aria-label="Suggestions">
+          <ul id={listId} role="listbox" aria-label={t('search.suggestions')}>
             {characters.length > 0 && (
               <li role="presentation">
-                <GroupLabel>Characters</GroupLabel>
-                <ul role="group" aria-label="Characters">
+                <GroupLabel>{t('search.characters')}</GroupLabel>
+                <ul role="group" aria-label={t('search.characters')}>
                   {characters.map(renderItem)}
                 </ul>
               </li>
             )}
             {guilds.length > 0 && (
               <li role="presentation">
-                <GroupLabel>Guilds</GroupLabel>
-                <ul role="group" aria-label="Guilds">
+                <GroupLabel>{t('search.guilds')}</GroupLabel>
+                <ul role="group" aria-label={t('search.guilds')}>
                   {guilds.map(renderItem)}
                 </ul>
               </li>
             )}
           </ul>
           {status && <Status role="status">{status}</Status>}
-          {!status && truncated && <Status>Keep typing to narrow the list</Status>}
+          {!status && truncated && <Status>{t('search.keepTyping')}</Status>}
         </Popup>
       )}
     </Wrap>

@@ -5,6 +5,7 @@ import {
   resolveFaction,
   type FactionInput,
 } from '@/lib/wow/factions';
+import { useI18n } from '@/i18n/useI18n';
 import type { IconSize } from '@/styles/iconSizes';
 import { GameIcon } from './GameIcon';
 
@@ -21,13 +22,14 @@ interface FactionIconProps {
  */
 export function FactionIcon({ faction, size }: FactionIconProps) {
   const { preferences } = usePreferences();
+  const { t } = useI18n();
   const url = factionIconUrl(faction, { style: preferences.assetStyle });
   if (!url) return null;
 
   return (
     <GameIcon
       src={url}
-      label={resolveFaction(faction)!.name}
+      label={t(`faction.${resolveFaction(faction)!.slug}`)}
       size={size}
       borderColor={factionColorVars(faction)!.trim}
     />

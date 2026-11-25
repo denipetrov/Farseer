@@ -1,5 +1,6 @@
 import { iconUrl } from '@/lib/assets';
 import { GAME_MODES, GAME_MODE_LABELS } from '@/lib/gameMode';
+import { useI18n } from '@/i18n/useI18n';
 import { useGameMode } from '@/preferences/useGameMode';
 import { IconToggle } from './IconToggle';
 
@@ -13,9 +14,10 @@ const OPTIONS = GAME_MODES.map((mode) => ({
 /** PvP / PvE switch: remembers the choice and opens that mode's home. */
 export function GameModeToggle() {
   const [mode, switchTo] = useGameMode();
+  const { t } = useI18n();
   return (
     <IconToggle
-      label="Game mode"
+      label={t('header.gameMode')}
       value={mode}
       options={OPTIONS}
       onChange={(m) => m !== mode && switchTo(m)}

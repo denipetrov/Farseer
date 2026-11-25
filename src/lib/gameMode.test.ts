@@ -16,4 +16,11 @@ describe('game modes', () => {
     expect(gameModeOfPath('/character/eu/draenor/pvpking')).toBeNull();
     expect(gameModeOfPath('/pvpstats')).toBeNull();
   });
+
+  it('reads the mode after the language', () => {
+    expect(gameModeOfPath('/de/pvp')).toBe('pvp');
+    expect(gameModeOfPath('/cn/pve/')).toBe('pve');
+    expect(gameModeOfPath('/en/character/eu/draenor/x')).toBeNull();
+    expect(gameModeOfPath('/de')).toBeNull();
+  });
 });

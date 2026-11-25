@@ -1,17 +1,19 @@
 import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { sessionQuery } from '@/api/session';
+import { useI18n } from '@/i18n/useI18n';
 
 /** Shows whether we hold a working Soulseeker session. */
 export function ApiStatus() {
   const { data, error, isPending } = useQuery(sessionQuery);
+  const { t } = useI18n();
 
   const state = isPending ? 'pending' : error ? 'error' : 'ok';
   const label = isPending
-    ? 'Connecting to Soulseeker…'
+    ? t('api.connecting')
     : error
-      ? `Soulseeker unavailable: ${error.message}`
-      : `Connected · ${data?.anonymous ? 'anonymous session' : data?.subject}`;
+      ? t('api.unavailable', { message: error.message })
+      : t('api.connected', { who: data?.anonymous ? t('api.anonymous') : (data?.subject ?? '') });
 
   return (
     <Status $state={state} role="status">

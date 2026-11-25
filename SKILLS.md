@@ -150,7 +150,11 @@ Through CORS, the browser can read the `retry-after` and `www-authenticate` head
 ## 5. Routing (`src/routes/`)
 
 - File-based. A `$param` segment in a file name is a path parameter, and dots separate
-  segments (`character/$region.$realm.$name.tsx` → `/character/$region/$realm/$name`).
+  segments (`$locale/character/$region.$realm.$name.tsx` →
+  `/$locale/character/$region/$realm/$name`).
+- **Every page lives under its language** (`src/routes/$locale/`): `/de/pvp`,
+  `/en/character/eu/draenor/name`. See "Languages" below. Link with the param:
+  `<Link to="/$locale/leaderboards" params={{ locale: locale.slug }}>`.
 - **URL search params are the data filters.** Every board keeps its filters in the URL,
   so a page can be shared and the back button works.
 - `validateSearch` with a plain function: TanStack treats its output type as the input
@@ -162,19 +166,61 @@ Through CORS, the browser can read the `retry-after` and `www-authenticate` head
   `react-refresh/only-export-components` lint rule is off for `src/routes/**`.
 - The root route has a `notFoundComponent` and an `errorComponent`.
 - **Game modes.** The site has two halves, PvP and PvE (`src/lib/gameMode.ts`), each with
-  its own home: `/pvp` and `/pve`. Put each mode's pages under its prefix.
-  - `/` has no page: `beforeLoad` redirects to the remembered mode (preference
-    `gameMode`, default `pvp`).
+  its own home: `/<lang>/pvp` and `/<lang>/pve`. Put each mode's pages under its prefix.
+  - `/` and `/<lang>` have no page: they redirect to the remembered mode (preference
+    `gameMode`, default `pvp`) in the preferred language.
   - `useGameMode()` (`src/preferences/useGameMode.ts`) gives the current mode and a
-    switch. Under `/pvp/…` or `/pve/…` the URL decides and is remembered, so a shared link
-    sets the mode; elsewhere (character, guild, leaderboards) the remembered mode applies.
-    Switching remembers the mode and opens its home. The logo links to the current
-    mode's home.
+    switch. Under `/<lang>/pvp/…` or `/<lang>/pve/…` the URL decides and is remembered, so
+    a shared link sets the mode; elsewhere (character, guild, leaderboards) the remembered
+    mode applies. Switching remembers the mode and opens its home in the current language.
+    The logo links to the current mode's home.
+
+**Languages** (`src/i18n/`). Eight, each with a short URL slug the user chose:
+
+| Slug | Soulseeker `locale` | Shown as  |
+| ---- | ------------------- | --------- |
+| `en` | `en_US`             | English   |
+| `es` | `es_ES`             | Español   |
+| `pt` | `pt_BR`             | Português |
+| `fr` | `fr_FR`             | Français  |
+| `de` | `de_DE`             | Deutsch   |
+| `ru` | `ru_RU`             | Русский   |
+| `ko` | `ko_KR`             | 한국어    |
+| `cn` | `zh_CN`             | 简体中文  |
+
+- **URL.** The language is the first segment. `resolveLocaleSlug` reads any spelling
+  (`DE`, `de_DE`, `de-de`, `kr` → `ko`, `zh` → `cn`); the `$locale` route redirects it to
+  the slug. A path whose first segment names no language (`/pvp`, `/character/…`) gets the
+  preferred language put in front by the **root** route's `beforeLoad` (a path like
+  `/character/eu/x/y` matches nothing under `$locale`, so that route's checks never run).
+- **Preferred language** (`preferredLocale()`): the remembered one (preference `locale`,
+  set whenever a language URL is opened or the dropdown is used), else the browser's
+  (`navigator.languages`, first match by language: `de-AT` → `de`), else English.
+- **The front end's own text**: `src/i18n/messages/<slug>.json`, flat keys
+  (`"search.noMatches"`). `en.json` is the source and its keys are the `MessageKey` type.
+  Read it with `const { t } = useI18n(); t('guild.logo', { name })`; `{placeholders}` are
+  filled from the params. English is bundled; the others load before the `$locale` route
+  renders (no flash of English). **Every new static string goes in all eight files**:
+  `messages.test.ts` fails on a missing or extra key, an empty value, or a placeholder that
+  differs from English. Use WoW's own terms for the language (Horda, Allianz, 방어 전담).
+- **Game names**: `GET /i18n/names?locale=<code>` (`src/api/gameNames.ts`), prefetched by
+  the `$locale` route's loader on every load, cached an hour. `useI18n().name(kind, id,
+englishFallback)` looks up classes, specs, races, hero talents, affixes and dungeons by
+  the ids the API sends; until the answer arrives, and for anything Blizzard has no name
+  for, our English name is used. Icon labels (class, spec, race, hero talent) use it.
+- **Codes the API sends** get translated labels from `src/i18n/labels.ts`: `regionLabel(t,
+'eu')`, `roleText(t, kind)`. The English helpers in `src/lib/wow/` stay for code without
+  a translator.
+- `<html lang>` follows the URL's language (`htmlLang`, e.g. `de-DE`).
+- **Not translated yet:** PvP rank and honor badge names (`PvpRankIcon`, `HonorBadge`), as
+  nothing shows them yet. "PvP" / "PvE" stay as they are: the mode art carries them.
 
 **The header** (`src/components/AppHeader.tsx`) is a three-column grid:
 
-- left: the logo and the PvP / PvE switch (`header/GameModeToggle`, the
-  `game-modes/pvp|pve` art, which carries its own label);
+- left: the logo, the language dropdown (`header/LanguageSelect`: the current code,
+  `DE`, opening a list of the eight in their own names; choosing one swaps only the URL's
+  first segment and keeps the path, search and hash) and the PvP / PvE switch
+  (`header/GameModeToggle`, the `game-modes/pvp|pve` art, which carries its own label);
 - centre: `header/SearchBar`;
 - right: the icon style switch (`header/AssetStyleToggle`, showing
   `icons/styles/<style>-<faction>.png` for the user's faction, unfiltered and underlined in
@@ -186,8 +232,27 @@ The header is `position: sticky; top: 0`. A sticky element only sticks within it
 Never give an ancestor of the header `overflow` other than `visible` either.
 
 The outer columns are `minmax(max-content, 1fr)`, so the search stays centred and is never
-covered. Below 1100px the search moves to a row of its own; below 600px the logo becomes
-the emblem and all three switches (all `lg`, 64px) drop to `md`. All three switches are `header/IconToggle`: a
+covered. Below 1100px the search moves to a row of its own.
+
+**Mobile (820px and below)** the header is the menu button and the search, on one row
+(61px tall). Everything else (logo, language, PvP / PvE, icon style, faction) is in the
+menu's drawer, `header/MobileMenu`, one below the other with a label each:
+
+- A left overlay (`min(22rem, 88vw)`, portal to `body`), opened by the three-bar button
+  (drawn in CSS; there is no `nav/menu.svg`). A modal dialog: focus starts on the close
+  button and Tab wraps inside (counting only what Tab reaches: unchosen radios are
+  `tabindex -1`); Escape (listened for on `document`, so it works wherever focus is), the
+  backdrop or the close button closes it and focus returns to the menu button; the page
+  behind doesn't scroll. Escape on the open language list closes only the list.
+- Any navigation closes it (mode, language, the logo, a link); faction and style don't.
+- **The left menu** (site navigation, not built yet) goes in as `<MobileMenu>{…}</MobileMenu>`
+  in `AppHeader`: it shows below the settings, after a trim divider.
+- Measured 2026-11-25: above 820px the desktop header fits without overlaps in every
+  language; at 820px and below its two sides don't, hence the drawer. After a header
+  change, scan widths 360–1400 for overlapping controls (compare the bounding boxes of
+  the visible `header a, header button, header input`).
+
+All three switches are `header/IconToggle`: a
 radio group (arrow keys move the choice). The art is **never filtered or backed**: not
 chosen, it is only fainter (60%, still in colour); the chosen one has a bar underneath, in
 the accent (mode, style) or the option's own `underline` colour (each faction its own). The
@@ -430,8 +495,10 @@ README. `src/assets/README.md` has the rules. The key concept:
     validation in `readPreferences`. Read and write it with `usePreferences()`.
   - The inline script in `index.html` applies the faction before the page first draws, to
     avoid a colour flash. It reads the same key, so keep it in step if the structure changes.
-- **Preferences now:** `faction` (horde | alliance), `assetStyle` (modern | classic) and
-  `gameMode` (pvp | pve, default pvp; read outside React by the `/` redirect).
+- **Preferences now:** `faction` (horde | alliance), `assetStyle` (modern | classic),
+  `gameMode` (pvp | pve, default pvp) and `locale` (a language slug, or null until one is
+  chosen, so a first visit follows the browser). `gameMode` and `locale` are read outside
+  React by the redirects.
   `readPreferences` validates each field on its own and drops unknown keys.
 - **localStorage keys:** `farseer:preferences` and `farseer:auth`. Prefix new keys with `farseer:`.
 
@@ -585,16 +652,17 @@ cluster has been done.
 
 Newest first.
 
-| Date       | Decision                                                                      | Why                                                                                                                                                                |
-| ---------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 2026-11-24 | PvP and PvE homes at `/pvp` and `/pve`; `/` redirects to the remembered mode  | The user's header design: the mode switch decides the home, remembered in localStorage, PvP by default.                                                            |
-| 2026-11-20 | Race portraits round, framed per faction; two-faction races per-faction files | The user asked for faction borders (silver+red Horde, gold+blue Alliance). One frame per file, so Pandaren, Dracthyr, Earthen and Haranir need a file per faction. |
-| 2026-11-19 | Specs, roles and sub-roles from spirit-link's `SPECIALIZATIONS`               | One list shared with Soulseeker and Rankwarden, so role filters and labels can't drift from the API's.                                                             |
-| 2026-11-18 | Faction colours from the emblems; gold/silver trim for frames                 | The user asked for the logo colours. Alliance frames in gold and Horde in silver, as on the emblems.                                                               |
-| 2026-11-17 | Icon families in `modern`/`classic` styles, chosen by the user                | A general design concept, so one switch changes every icon family. A missing file falls back to the other style.                                                   |
-| 2026-11-17 | Vite alias `@` → `/src` (root-relative)                                       | An absolute alias path loaded modules twice on Windows (§9)                                                                                                        |
-| 2026-11-17 | Tokens in localStorage, with Web Locks across tabs                            | Survives reloads under the grant limit. Rotating refresh tokens must never be used twice.                                                                          |
-| 2026-11-17 | Runtime `/config.js` instead of build-time env                                | One image for every environment                                                                                                                                    |
-| 2026-11-17 | Static nginx image + Helm, mirroring Soulseeker's CI/CD                       | Same cluster and operating model as the backend                                                                                                                    |
-| 2026-11-17 | TypeScript 6, not 7                                                           | typescript-eslint doesn't support TS 7                                                                                                                             |
-| 2026-11-17 | Farseer = rankwarden.gg                                                       | Soulseeker's CORS allows only that origin in production, and `localhost:5173` locally                                                                              |
+| Date       | Decision                                                                           | Why                                                                                                                                                                |
+| ---------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 2026-11-25 | Language first in the URL, as a short slug (`/de/pvp`); own JSON text per language | The user's choice: `en es pt fr de ru ko cn`. Game names come from Soulseeker's `/i18n/names` (Blizzard's translations).                                           |
+| 2026-11-24 | PvP and PvE homes at `/pvp` and `/pve`; `/` redirects to the remembered mode       | The user's header design: the mode switch decides the home, remembered in localStorage, PvP by default.                                                            |
+| 2026-11-20 | Race portraits round, framed per faction; two-faction races per-faction files      | The user asked for faction borders (silver+red Horde, gold+blue Alliance). One frame per file, so Pandaren, Dracthyr, Earthen and Haranir need a file per faction. |
+| 2026-11-19 | Specs, roles and sub-roles from spirit-link's `SPECIALIZATIONS`                    | One list shared with Soulseeker and Rankwarden, so role filters and labels can't drift from the API's.                                                             |
+| 2026-11-18 | Faction colours from the emblems; gold/silver trim for frames                      | The user asked for the logo colours. Alliance frames in gold and Horde in silver, as on the emblems.                                                               |
+| 2026-11-17 | Icon families in `modern`/`classic` styles, chosen by the user                     | A general design concept, so one switch changes every icon family. A missing file falls back to the other style.                                                   |
+| 2026-11-17 | Vite alias `@` → `/src` (root-relative)                                            | An absolute alias path loaded modules twice on Windows (§9)                                                                                                        |
+| 2026-11-17 | Tokens in localStorage, with Web Locks across tabs                                 | Survives reloads under the grant limit. Rotating refresh tokens must never be used twice.                                                                          |
+| 2026-11-17 | Runtime `/config.js` instead of build-time env                                     | One image for every environment                                                                                                                                    |
+| 2026-11-17 | Static nginx image + Helm, mirroring Soulseeker's CI/CD                            | Same cluster and operating model as the backend                                                                                                                    |
+| 2026-11-17 | TypeScript 6, not 7                                                                | typescript-eslint doesn't support TS 7                                                                                                                             |
+| 2026-11-17 | Farseer = rankwarden.gg                                                            | Soulseeker's CORS allows only that origin in production, and `localhost:5173` locally                                                                              |

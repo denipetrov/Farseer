@@ -5,6 +5,7 @@
 import type { Faction } from '@/styles/palette';
 import { DEFAULT_ASSET_STYLE, isAssetStyle, type AssetStyle } from '@/lib/assets';
 import { DEFAULT_GAME_MODE, isGameMode, type GameMode } from '@/lib/gameMode';
+import { isLocaleSlug, type LocaleSlug } from '@/i18n/locales';
 
 export const STORAGE_KEY = 'farseer:preferences';
 
@@ -15,12 +16,18 @@ export interface Preferences {
   assetStyle: AssetStyle;
   /** The half of the site the user last chose: PvP or PvE. `/` and the logo lead there. */
   gameMode: GameMode;
+  /**
+   * The language last chosen (dropdown or a link's URL), as its URL slug. Null until one is:
+   * a first visit then follows the browser's language.
+   */
+  locale: LocaleSlug | null;
 }
 
 export const defaultPreferences: Preferences = {
   faction: 'horde',
   assetStyle: DEFAULT_ASSET_STYLE,
   gameMode: DEFAULT_GAME_MODE,
+  locale: null,
 };
 
 const isFaction = (v: unknown): v is Faction => v === 'horde' || v === 'alliance';
@@ -37,6 +44,7 @@ export function readPreferences(): Preferences {
         ? parsed.assetStyle
         : defaultPreferences.assetStyle,
       gameMode: isGameMode(parsed.gameMode) ? parsed.gameMode : defaultPreferences.gameMode,
+      locale: isLocaleSlug(parsed.locale) ? parsed.locale : defaultPreferences.locale,
     };
   } catch {
     return defaultPreferences;

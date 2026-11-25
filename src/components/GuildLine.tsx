@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { factionIconUrl, type FactionInput } from '@/lib/wow/factions';
-import { realmLabel, regionName } from '@/lib/wow/regions';
+import { regionLabel } from '@/i18n/labels';
+import { useI18n } from '@/i18n/useI18n';
+import { realmLabel } from '@/lib/wow/regions';
 import { usePreferences } from '@/preferences/PreferencesProvider';
 import type { IconSize } from '@/styles/iconSizes';
 import { FactionIcon } from './FactionIcon';
@@ -36,6 +38,7 @@ export interface GuildLineProps {
  */
 export function GuildLine({ name, realm, region, logo, faction, size = 'sm' }: GuildLineProps) {
   const { assetStyle: style } = usePreferences().preferences;
+  const { t } = useI18n();
   const [failed, setFailed] = useState<string | null>(null);
   const showLogo = !!logo && failed !== logo;
 
@@ -43,9 +46,14 @@ export function GuildLine({ name, realm, region, logo, faction, size = 'sm' }: G
     <Row>
       <Icons>
         {showLogo ? (
-          <GameIcon src={logo} label={`${name} logo`} size={size} onError={() => setFailed(logo)} />
+          <GameIcon
+            src={logo}
+            label={t('guild.logo', { name })}
+            size={size}
+            onError={() => setFailed(logo)}
+          />
         ) : (
-          <UnknownIcon label="Unknown guild logo" size={size} />
+          <UnknownIcon label={t('unknown.guildLogo')} size={size} />
         )}
       </Icons>
       <Text>
@@ -53,7 +61,7 @@ export function GuildLine({ name, realm, region, logo, faction, size = 'sm' }: G
           <Name>{name}</Name>
         </First>
         <Second>
-          {realmLabel(realm)} · {regionName(region)}
+          {realmLabel(realm)} · {regionLabel(t, region)}
         </Second>
       </Text>
       {faction !== undefined && (
@@ -61,7 +69,7 @@ export function GuildLine({ name, realm, region, logo, faction, size = 'sm' }: G
           {factionIconUrl(faction, { style }) ? (
             <FactionIcon faction={faction} size={size} />
           ) : (
-            <UnknownIcon label="Unknown faction" size={size} />
+            <UnknownIcon label={t('unknown.faction')} size={size} />
           )}
         </End>
       )}

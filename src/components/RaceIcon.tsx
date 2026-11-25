@@ -7,6 +7,7 @@ import {
   type GenderInput,
   type RaceInput,
 } from '@/lib/wow/races';
+import { useI18n } from '@/i18n/useI18n';
 import type { IconSize } from '@/styles/iconSizes';
 import { GameIcon } from './GameIcon';
 
@@ -23,10 +24,21 @@ interface RaceIconProps {
 /** A round race/gender portrait in the user's chosen asset style, framed in faction colours. Renders nothing for an unknown race. */
 export function RaceIcon({ race, gender, faction, size }: RaceIconProps) {
   const { preferences } = usePreferences();
+  const { t, name } = useI18n();
   const url = raceIconUrl(race, gender, { style: preferences.assetStyle, faction });
   if (!url) return null;
 
   const r = resolveRace(race)!;
   const g = resolveGender(gender);
-  return <GameIcon src={url} label={g ? `${r.name}, ${g}` : r.name} size={size} shape="round" />;
+  // The data's own race id names the variant (Pandaren 25/26); our first id is the fallback
+  const raceName = name('races', raceIdOf(race) ?? r.ids[0], r.name);
+  const label = g ? t('race.label', { race: raceName, gender: t(`gender.${g}`) }) : raceName;
+  return <GameIcon src={url} label={label} size={size} shape="round" />;
+}
+
+/** The Blizzard race id in an API race value, if it carries one. */
+function raceIdOf(race: RaceInput): number | null {
+  if (typeof race === 'number') return race;
+  if (typeof race === 'object' && race?.id != null) return race.id;
+  return null;
 }

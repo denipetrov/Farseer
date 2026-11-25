@@ -1,5 +1,7 @@
 import type { ClassInput } from '@/lib/wow/classes';
-import { roleIconFile, roleLabel, roleOfSpec, resolveRoleKind } from '@/lib/wow/roles';
+import { roleText } from '@/i18n/labels';
+import { useI18n } from '@/i18n/useI18n';
+import { roleIconFile, roleOfSpec, resolveRoleKind } from '@/lib/wow/roles';
 import type { SpecInput } from '@/lib/wow/specs';
 import { iconUrl } from '@/lib/assets';
 import type { IconSize } from '@/styles/iconSizes';
@@ -28,6 +30,7 @@ type RoleIconProps = {
 
 /** A role icon (Tank, Healer, DPS, Melee DPS, Ranged DPS). Renders nothing when unknown. */
 export function RoleIcon({ size, ...props }: RoleIconProps) {
+  const { t } = useI18n();
   const kind =
     props.spec !== undefined
       ? roleOfSpec(props.spec, props.cls)
@@ -35,5 +38,5 @@ export function RoleIcon({ size, ...props }: RoleIconProps) {
   const url = kind ? iconUrl(`roles/${roleIconFile(kind)}`) : undefined;
   if (!kind || !url) return null;
 
-  return <GameIcon src={url} label={roleLabel(kind)} size={size} />;
+  return <GameIcon src={url} label={roleText(t, kind)} size={size} />;
 }

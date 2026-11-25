@@ -2,7 +2,10 @@ import { classColorVar, classIconUrl, type ClassInput } from '@/lib/wow/classes'
 import { factionIconUrl, type FactionInput } from '@/lib/wow/factions';
 import { heroTreeIconUrl, type HeroTreeInput } from '@/lib/wow/heroTalents';
 import { raceIconUrl, type GenderInput, type RaceInput } from '@/lib/wow/races';
-import { realmLabel, regionName } from '@/lib/wow/regions';
+import { regionLabel } from '@/i18n/labels';
+import type { MessageKey } from '@/i18n/messages';
+import { useI18n } from '@/i18n/useI18n';
+import { realmLabel } from '@/lib/wow/regions';
 import { specIconUrl, type SpecInput } from '@/lib/wow/specs';
 import { usePreferences } from '@/preferences/PreferencesProvider';
 import type { IconSize } from '@/styles/iconSizes';
@@ -68,7 +71,8 @@ export function CharacterLine({
   size = 'sm',
 }: CharacterLineProps) {
   const { assetStyle: style } = usePreferences().preferences;
-  const unknown = (what: string) => <UnknownIcon label={`Unknown ${what}`} size={size} />;
+  const { t } = useI18n();
+  const unknown = (key: MessageKey) => <UnknownIcon label={t(key)} size={size} />;
 
   return (
     <Row>
@@ -76,14 +80,22 @@ export function CharacterLine({
         {raceIconUrl(race, gender, { style, faction }) ? (
           <RaceIcon race={race} gender={gender} faction={faction} size={size} />
         ) : (
-          unknown('race')
+          unknown('unknown.race')
         )}
-        {classIconUrl(cls, { style }) ? <ClassIcon cls={cls} size={size} /> : unknown('class')}
-        {specIconUrl(spec, cls) ? <SpecIcon spec={spec} cls={cls} size={size} /> : unknown('spec')}
+        {classIconUrl(cls, { style }) ? (
+          <ClassIcon cls={cls} size={size} />
+        ) : (
+          unknown('unknown.class')
+        )}
+        {specIconUrl(spec, cls) ? (
+          <SpecIcon spec={spec} cls={cls} size={size} />
+        ) : (
+          unknown('unknown.spec')
+        )}
         {!showHeroTalent ? null : heroTreeIconUrl(heroTalent) ? (
           <HeroTalentIcon tree={heroTalent} size={size} />
         ) : (
-          unknown('hero talent')
+          unknown('unknown.heroTalent')
         )}
       </Icons>
       <Text>
@@ -92,14 +104,14 @@ export function CharacterLine({
           {guild && <Guild>&lt;{guild}&gt;</Guild>}
         </First>
         <Second>
-          {realmLabel(realm)} · {regionName(region)}
+          {realmLabel(realm)} · {regionLabel(t, region)}
         </Second>
       </Text>
       <End>
         {factionIconUrl(faction, { style }) ? (
           <FactionIcon faction={faction} size={size} />
         ) : (
-          unknown('faction')
+          unknown('unknown.faction')
         )}
       </End>
     </Row>

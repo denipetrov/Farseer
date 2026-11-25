@@ -1,23 +1,20 @@
 import { Link } from '@tanstack/react-router';
 import { ApiStatus } from '@/components/ApiStatus';
 import { Muted, Page, PageTitle, Panel } from '@/components/Page';
+import { useI18n } from '@/i18n/useI18n';
 import { GAME_MODE_LABELS, type GameMode } from '@/lib/gameMode';
 
-const INTRO: Record<GameMode, string> = {
-  pvp: 'Arena and battleground ladders, cutoffs, tier lists and PvP characters.',
-  pve: 'Mythic+ and raid rankings, runs, characters and guilds.',
-};
-
-/** Placeholder home of a game mode (`/pvp`, `/pve`) until its dashboard is built. */
+/** Placeholder home of a game mode (`/<lang>/pvp`, `/<lang>/pve`) until its dashboard is built. */
 export function ModeHome({ mode }: { mode: GameMode }) {
+  const { locale, t } = useI18n();
   return (
     <Page>
       <PageTitle>{GAME_MODE_LABELS[mode]}</PageTitle>
-      <Muted>{INTRO[mode]}</Muted>
+      <Muted>{t(`mode.${mode}.intro`)}</Muted>
       <ApiStatus />
       <Panel>
-        <Link to="/leaderboards" search={{ region: 'eu' }}>
-          Browse leaderboards →
+        <Link to="/$locale/leaderboards" params={{ locale: locale.slug }} search={{ region: 'eu' }}>
+          {t('mode.browseLeaderboards')}
         </Link>
       </Panel>
     </Page>

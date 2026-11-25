@@ -13,7 +13,12 @@ describe('preferences storage', () => {
   });
 
   it('round-trips saved preferences', () => {
-    const prefs = { faction: 'alliance', assetStyle: 'classic', gameMode: 'pve' } as const;
+    const prefs = {
+      faction: 'alliance',
+      assetStyle: 'classic',
+      gameMode: 'pve',
+      locale: 'de',
+    } as const;
     writePreferences(prefs);
     expect(readPreferences()).toEqual(prefs);
   });
@@ -21,12 +26,19 @@ describe('preferences storage', () => {
   it('validates each field on its own and drops unknown keys', () => {
     localStorage.setItem(
       STORAGE_KEY,
-      JSON.stringify({ faction: 'alliance', assetStyle: 'retro', gameMode: 'raid', junk: 1 }),
+      JSON.stringify({
+        faction: 'alliance',
+        assetStyle: 'retro',
+        gameMode: 'raid',
+        locale: 'xx',
+        junk: 1,
+      }),
     );
     expect(readPreferences()).toEqual({
       faction: 'alliance',
       assetStyle: 'modern',
       gameMode: 'pvp',
+      locale: null,
     });
   });
 
@@ -39,6 +51,7 @@ describe('preferences storage', () => {
       faction: 'alliance',
       assetStyle: 'classic',
       gameMode: 'pvp',
+      locale: null,
     });
   });
 

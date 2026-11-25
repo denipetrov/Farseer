@@ -1,8 +1,11 @@
-import { createRootRouteWithContext, Outlet } from '@tanstack/react-router';
+import { createRootRouteWithContext, Outlet, redirect } from '@tanstack/react-router';
 import type { QueryClient } from '@tanstack/react-query';
 import { lazy, Suspense } from 'react';
 import { AppHeader } from '@/components/AppHeader';
 import { Page, PageTitle, Muted } from '@/components/Page';
+import { resolveLocaleSlug } from '@/i18n/locales';
+import { preferredLocale } from '@/i18n/preferredLocale';
+import { useI18n } from '@/i18n/useI18n';
 
 export interface RouterContext {
   queryClient: QueryClient;
@@ -26,20 +29,45 @@ const Devtools = import.meta.env.DEV
   : () => null;
 
 export const Route = createRootRouteWithContext<RouterContext>()({
+  /**
+   * Every page lives under a language. A path whose first segment names none (`/pvp`,
+   * `/character/eu/x/y`, an old link) gets the preferred language put in front. Here, not in
+   * the `$locale` route: a path like `/character/eu/x/y` matches no route under `$locale`, so
+   * its checks would never run. `/` is the index route's own redirect.
+   */
+  beforeLoad: ({ location }) => {
+    const first = location.pathname.split('/')[1];
+    if (first && !resolveLocaleSlug(first)) {
+      throw redirect({
+        href: `/${preferredLocale()}${location.pathname}${location.searchStr}`,
+        replace: true,
+      });
+    }
+  },
   component: RootLayout,
-  notFoundComponent: () => (
+  notFoundComponent: NotFound,
+  errorComponent: ({ error }) => <ErrorPage error={error} />,
+});
+
+function NotFound() {
+  const { t } = useI18n();
+  return (
     <Page>
-      <PageTitle>Not found</PageTitle>
-      <Muted>The page you are looking for does not exist.</Muted>
+      <PageTitle>{t('page.notFound.title')}</PageTitle>
+      <Muted>{t('page.notFound.text')}</Muted>
     </Page>
-  ),
-  errorComponent: ({ error }) => (
+  );
+}
+
+function ErrorPage({ error }: { error: unknown }) {
+  const { t } = useI18n();
+  return (
     <Page>
-      <PageTitle>Something went wrong</PageTitle>
+      <PageTitle>{t('page.error.title')}</PageTitle>
       <Muted>{error instanceof Error ? error.message : String(error)}</Muted>
     </Page>
-  ),
-});
+  );
+}
 
 function RootLayout() {
   return (

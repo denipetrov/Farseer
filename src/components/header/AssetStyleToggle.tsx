@@ -1,8 +1,7 @@
 import { ASSET_STYLES, iconUrl } from '@/lib/assets';
+import { useI18n } from '@/i18n/useI18n';
 import { usePreferences } from '@/preferences/PreferencesProvider';
 import { IconToggle } from './IconToggle';
-
-const LABELS = { modern: 'Modern icons', classic: 'Classic icons' } as const;
 
 /**
  * Modern / classic switch for every styled icon family.
@@ -14,15 +13,16 @@ const LABELS = { modern: 'Modern icons', classic: 'Classic icons' } as const;
  */
 export function AssetStyleToggle() {
   const { preferences, setPreference } = usePreferences();
+  const { t } = useI18n();
   const options = ASSET_STYLES.map((style) => ({
     value: style,
-    label: LABELS[style],
+    label: t(`header.iconStyle.${style}`),
     icon: iconUrl(`styles/${style}-${preferences.faction}`),
   }));
 
   return (
     <IconToggle
-      label="Icon style"
+      label={t('header.iconStyle')}
       value={preferences.assetStyle}
       options={options}
       onChange={(style) => setPreference('assetStyle', style)}
