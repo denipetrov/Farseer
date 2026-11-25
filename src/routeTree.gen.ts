@@ -13,6 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as LocaleRouteRouteImport } from './routes/$locale/route'
 import { Route as LocaleIndexRouteImport } from './routes/$locale/index'
 import { Route as LocaleLeaderboardsRouteImport } from './routes/$locale/leaderboards'
+import { Route as LocalePrivacyRouteImport } from './routes/$locale/privacy'
+import { Route as LocaleTermsRouteImport } from './routes/$locale/terms'
 import { Route as LocalePveIndexRouteImport } from './routes/$locale/pve/index'
 import { Route as LocalePvpIndexRouteImport } from './routes/$locale/pvp/index'
 import { Route as LocaleCharacterRegionRealmNameRouteImport } from './routes/$locale/character/$region.$realm.$name'
@@ -36,6 +38,16 @@ const LocaleIndexRoute = LocaleIndexRouteImport.update({
 const LocaleLeaderboardsRoute = LocaleLeaderboardsRouteImport.update({
   id: '/leaderboards',
   path: '/leaderboards',
+  getParentRoute: () => LocaleRouteRoute,
+} as any)
+const LocalePrivacyRoute = LocalePrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => LocaleRouteRoute,
+} as any)
+const LocaleTermsRoute = LocaleTermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => LocaleRouteRoute,
 } as any)
 const LocalePveIndexRoute = LocalePveIndexRouteImport.update({
@@ -65,6 +77,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$locale': typeof LocaleRouteRouteWithChildren
   '/$locale/leaderboards': typeof LocaleLeaderboardsRoute
+  '/$locale/privacy': typeof LocalePrivacyRoute
+  '/$locale/terms': typeof LocaleTermsRoute
   '/$locale/': typeof LocaleIndexRoute
   '/$locale/pve/': typeof LocalePveIndexRoute
   '/$locale/pvp/': typeof LocalePvpIndexRoute
@@ -74,6 +88,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$locale/leaderboards': typeof LocaleLeaderboardsRoute
+  '/$locale/privacy': typeof LocalePrivacyRoute
+  '/$locale/terms': typeof LocaleTermsRoute
   '/$locale': typeof LocaleIndexRoute
   '/$locale/pve': typeof LocalePveIndexRoute
   '/$locale/pvp': typeof LocalePvpIndexRoute
@@ -85,6 +101,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/$locale': typeof LocaleRouteRouteWithChildren
   '/$locale/leaderboards': typeof LocaleLeaderboardsRoute
+  '/$locale/privacy': typeof LocalePrivacyRoute
+  '/$locale/terms': typeof LocaleTermsRoute
   '/$locale/': typeof LocaleIndexRoute
   '/$locale/pve/': typeof LocalePveIndexRoute
   '/$locale/pvp/': typeof LocalePvpIndexRoute
@@ -97,6 +115,8 @@ export interface FileRouteTypes {
     | '/'
     | '/$locale'
     | '/$locale/leaderboards'
+    | '/$locale/privacy'
+    | '/$locale/terms'
     | '/$locale/'
     | '/$locale/pve/'
     | '/$locale/pvp/'
@@ -106,6 +126,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/$locale/leaderboards'
+    | '/$locale/privacy'
+    | '/$locale/terms'
     | '/$locale'
     | '/$locale/pve'
     | '/$locale/pvp'
@@ -116,6 +138,8 @@ export interface FileRouteTypes {
     | '/'
     | '/$locale'
     | '/$locale/leaderboards'
+    | '/$locale/privacy'
+    | '/$locale/terms'
     | '/$locale/'
     | '/$locale/pve/'
     | '/$locale/pvp/'
@@ -158,6 +182,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocaleLeaderboardsRouteImport
       parentRoute: typeof LocaleRouteRoute
     }
+    '/$locale/privacy': {
+      id: '/$locale/privacy'
+      path: '/privacy'
+      fullPath: '/$locale/privacy'
+      preLoaderRoute: typeof LocalePrivacyRouteImport
+      parentRoute: typeof LocaleRouteRoute
+    }
+    '/$locale/terms': {
+      id: '/$locale/terms'
+      path: '/terms'
+      fullPath: '/$locale/terms'
+      preLoaderRoute: typeof LocaleTermsRouteImport
+      parentRoute: typeof LocaleRouteRoute
+    }
     '/$locale/pve/': {
       id: '/$locale/pve/'
       path: '/pve'
@@ -191,6 +229,8 @@ declare module '@tanstack/react-router' {
 
 interface LocaleRouteRouteChildren {
   LocaleLeaderboardsRoute: typeof LocaleLeaderboardsRoute
+  LocalePrivacyRoute: typeof LocalePrivacyRoute
+  LocaleTermsRoute: typeof LocaleTermsRoute
   LocaleIndexRoute: typeof LocaleIndexRoute
   LocalePveIndexRoute: typeof LocalePveIndexRoute
   LocalePvpIndexRoute: typeof LocalePvpIndexRoute
@@ -200,6 +240,8 @@ interface LocaleRouteRouteChildren {
 
 const LocaleRouteRouteChildren: LocaleRouteRouteChildren = {
   LocaleLeaderboardsRoute: LocaleLeaderboardsRoute,
+  LocalePrivacyRoute: LocalePrivacyRoute,
+  LocaleTermsRoute: LocaleTermsRoute,
   LocaleIndexRoute: LocaleIndexRoute,
   LocalePveIndexRoute: LocalePveIndexRoute,
   LocalePvpIndexRoute: LocalePvpIndexRoute,

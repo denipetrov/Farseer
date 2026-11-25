@@ -1,0 +1,199 @@
+{
+  "updated": "2026-11-25",
+  "intro": [
+    {
+      "p": "Esta es una traducción. Si difiere de la versión en inglés, prevalece la versión en inglés."
+    },
+    {
+      "p": "Rankwarden (rankwarden.gg) es un sitio de fans gratuito que muestra clasificaciones, personajes y hermandades de World of Warcraft. Lo gestiona Deni Emilov Petrov, un particular con residencia en Bulgaria («nosotros»). Esta política explica qué información tratan el sitio web y el servicio que lo respalda, por qué, durante cuánto tiempo se conserva y qué puedes hacer al respecto."
+    },
+    {
+      "p": "En pocas palabras: Rankwarden no tiene cuentas, ni cookies, ni publicidad, ni analítica. Mostramos datos del juego que Blizzard y Raider.io ya hacen públicos y guardamos la poca información técnica que un sitio web necesita para funcionar con seguridad."
+    }
+  ],
+  "sections": [
+    {
+      "id": "controller",
+      "heading": "¿Quién es responsable de tu información?",
+      "summary": "Deni Emilov Petrov, que gestiona Rankwarden, es el responsable del tratamiento.",
+      "blocks": [
+        {
+          "p": "A efectos del Reglamento General de Protección de Datos de la UE (RGPD), el responsable del tratamiento es Deni Emilov Petrov, Bulgaria. Puedes escribirnos a [rankwardengg@gmail.com](mailto:rankwardengg@gmail.com) sobre cualquier punto de esta política."
+        }
+      ]
+    },
+    {
+      "id": "collect",
+      "heading": "¿Qué información tratamos?",
+      "summary": "Datos públicos del juego sobre personajes y hermandades, datos técnicos básicos de tu visita, algunos ajustes guardados en tu propio navegador y lo que decidas enviarnos por correo.",
+      "blocks": [
+        {
+          "p": "**Datos públicos del juego.** Para elaborar las clasificaciones leemos datos de la API de World of Warcraft de Blizzard y de Raider.io. Describen personajes y hermandades del juego: nombres de personajes y hermandades, reino y región, facción, raza, género, clase, especialización y talentos, equipo, índices, clasificaciones, carreras de mítica+, progreso de bandas, títulos y logros, y logos de hermandad. Todo ello ya es visible públicamente en el juego, en la Armería oficial o en Raider.io. El nombre de un personaje no es un nombre real, pero como cada personaje pertenece a un jugador, tratamos estos datos como datos personales."
+        },
+        {
+          "p": "**Datos técnicos de tu visita.** Cuando tu navegador se conecta a nuestros servidores, estos reciben tu dirección IP y los datos habituales de la solicitud, como la dirección solicitada, la hora y el agente de usuario de tu navegador. Usamos la dirección IP para limitar cuántas solicitudes puede hacer un visitante por minuto, y nuestros servidores pueden anotar estos datos en registros de corta duración."
+        },
+        {
+          "p": "**Datos guardados en tu navegador.** Rankwarden guarda tus ajustes (facción, estilo de iconos, JcJ o JcE, idioma) y un token de acceso anónimo para nuestra API en el almacenamiento local de tu navegador. Esto permanece en tu dispositivo; consulta la sección sobre cookies y almacenamiento local."
+        },
+        {
+          "p": "**Mensajes que nos envías.** Si nos escribes por correo electrónico, recibimos tu dirección de correo y el contenido de tu mensaje."
+        },
+        {
+          "p": "**Lo que no recopilamos:** no te pedimos tu nombre, no tenemos cuentas ni contraseñas, no nos conectamos a tu cuenta de Battle.net, no aceptamos pagos y no rastreamos tu ubicación más allá de lo que se deduce de una dirección IP."
+        }
+      ]
+    },
+    {
+      "id": "use",
+      "heading": "¿Para qué la usamos y con qué base jurídica?",
+      "summary": "Para mostrar clasificaciones, mantener el sitio en funcionamiento y seguro, recordar tus ajustes y responderte. Nunca la vendemos ni la usamos con fines publicitarios.",
+      "blocks": [
+        {
+          "list": [
+            "Mostrar clasificaciones y páginas de personajes, hermandades y estadísticas creadas a partir de datos públicos del juego. Base jurídica: nuestro interés legítimo, y el de la comunidad, en presentar información pública del juego de forma útil (artículo 6, apartado 1, letra f, del RGPD).",
+            "Hacer funcionar y proteger el servicio: limitación de solicitudes, prevención de abusos y de extracción masiva de datos, y corrección de errores. Base jurídica: nuestro interés legítimo en un servicio seguro y disponible (artículo 6, apartado 1, letra f).",
+            "Recordar tus ajustes y mantener tu sesión anónima en funcionamiento. Este almacenamiento es estrictamente necesario para las funciones que utilizas, por lo que no requiere consentimiento.",
+            "Responder a tus mensajes y atender solicitudes sobre tus derechos. Base jurídica: nuestro interés legítimo en responderte y nuestras obligaciones legales cuando ejerces tus derechos (artículo 6, apartado 1, letras c y f)."
+          ]
+        },
+        {
+          "p": "No vendemos ni alquilamos información, no creamos perfiles publicitarios y no tomamos decisiones automatizadas sobre ti."
+        }
+      ]
+    },
+    {
+      "id": "storage",
+      "heading": "¿Usamos cookies?",
+      "summary": "No. Rankwarden no usa ninguna cookie; guarda dos entradas en el almacenamiento local de tu navegador, que puedes eliminar en cualquier momento.",
+      "blocks": [
+        {
+          "p": "Rankwarden no instala cookies ni carga píxeles de seguimiento, scripts de analítica o de publicidad. Guarda dos entradas en el almacenamiento local de tu navegador:"
+        },
+        {
+          "list": [
+            "farseer:preferences — la facción, el estilo de iconos, el modo de juego y el idioma que has elegido.",
+            "farseer:auth — un token de acceso anónimo que permite al sitio leer datos de nuestra API. Identifica una sesión del navegador, no a una persona, es válido durante unos 10 minutos y se renueva como máximo durante 12 horas."
+          ]
+        },
+        {
+          "p": "Ambas permanecen en tu dispositivo y puedes eliminarlas borrando los datos de este sitio en tu navegador. El sitio simplemente volverá a empezar con sus ajustes predeterminados. Como no te rastreamos entre sitios web, una señal «Do Not Track» no cambia nada aquí: no hay nada que desactivar."
+        }
+      ]
+    },
+    {
+      "id": "sharing",
+      "heading": "¿Con quién compartimos información?",
+      "summary": "Solo con nuestro proveedor de alojamiento, y con Raider.io cuando tu navegador carga logos de hermandad desde allí. Nunca con anunciantes ni intermediarios de datos.",
+      "blocks": [
+        {
+          "list": [
+            "**Alojamiento**: nuestros servidores y bases de datos funcionan en DigitalOcean, LLC, en su centro de datos de Fráncfort (Alemania). DigitalOcean trata datos por cuenta nuestra conforme a sus condiciones de tratamiento de datos.",
+            "**Raider.io**: tu navegador carga los logos de hermandad directamente desde los servidores de imágenes de Raider.io, por lo que Raider.io recibe tu dirección IP y los datos de tu navegador cuando los ves. A ello se aplica la propia política de privacidad de Raider.io.",
+            "**Blizzard Entertainment y Raider.io como fuentes de datos**: les solicitamos datos públicos del juego. No les enviamos información sobre nuestros visitantes.",
+            "**Autoridades**: solo divulgamos información cuando la ley lo exige, por ejemplo en respuesta a una orden judicial válida."
+          ]
+        },
+        {
+          "p": "No vendemos ni compartimos información personal con terceros para su propio marketing o publicidad, vivas donde vivas."
+        }
+      ]
+    },
+    {
+      "id": "transfers",
+      "heading": "¿Se transfiere información fuera de la UE?",
+      "summary": "Nuestros servidores están en la UE; cuando un proveedor con sede fuera de ella puede acceder a los datos, la transferencia está protegida por garantías aprobadas por la UE.",
+      "blocks": [
+        {
+          "p": "Nuestros servidores están en Fráncfort, Alemania. DigitalOcean es una empresa con sede en Estados Unidos, por lo que puede acceder a datos desde fuera del Espacio Económico Europeo, por ejemplo para tareas de soporte. Estas transferencias se basan en las cláusulas contractuales tipo de la UE o en el Marco de Privacidad de Datos UE-EE. UU. Cuando tu navegador carga logos de hermandad desde Raider.io, esa solicitud va directamente a Raider.io, con sede en Estados Unidos."
+        }
+      ]
+    },
+    {
+      "id": "retention",
+      "heading": "¿Cuánto tiempo la conservamos?",
+      "summary": "Los datos técnicos, de minutos a unas pocas semanas; los datos del juego, mientras sean útiles para las clasificaciones; y los correos, hasta cerrar tu solicitud.",
+      "blocks": [
+        {
+          "list": [
+            "**Contadores de limitación de solicitudes (por dirección IP)**: alrededor de un minuto.",
+            "**Tokens de acceso**: unos 10 minutos; la sesión que los renueva, 12 horas como máximo.",
+            "**Registros del servidor**: no más de 30 días.",
+            "**Datos públicos del juego**: mientras se necesiten para las clasificaciones actuales e históricas, o hasta que se eliminen a petición tuya.",
+            "**Correos electrónicos**: hasta que se haya tramitado tu solicitud y, en cualquier caso, no más de 12 meses, salvo que debamos conservarlos más tiempo para cumplir una obligación legal.",
+            "**El almacenamiento local de tu navegador**: hasta que lo borres."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "heading": "¿Cómo la protegemos?",
+      "summary": "Conexiones cifradas, acceso restringido y límites contra abusos, aunque ningún sistema es totalmente seguro.",
+      "blocks": [
+        {
+          "p": "Todo el tráfico hacia Rankwarden está cifrado con HTTPS, nuestras bases de datos no son accesibles desde internet, el acceso a los servidores está restringido y nuestra API limita y supervisa las solicitudes para evitar abusos. Ningún método de almacenamiento o transmisión de datos es completamente seguro, pero trabajamos para proteger lo que tratamos y para conservar lo mínimo posible."
+        }
+      ]
+    },
+    {
+      "id": "rights",
+      "heading": "¿Cuáles son tus derechos?",
+      "summary": "Puedes preguntar qué datos tenemos sobre ti, pedir que se corrijan o se eliminen y oponerte a que se muestren. Escríbenos y te responderemos en el plazo de un mes.",
+      "blocks": [
+        {
+          "p": "Según el RGPD, tienes derecho a acceder a los datos personales que tenemos sobre ti, a que se rectifiquen, a que se supriman, a limitar u oponerte a su tratamiento y, cuando proceda, a recibirlos en un formato portable."
+        },
+        {
+          "p": "**Ocultar o eliminar tus personajes.** Si no quieres que tu personaje o tu hermandad aparezcan en Rankwarden, escribe a [rankwardengg@gmail.com](mailto:rankwardengg@gmail.com) indicando el nombre, el reino y la región del personaje. Puede que te pidamos que demuestres que el personaje es tuyo, por ejemplo haciendo en el juego un pequeño cambio temporal que te indicaremos. Una vez confirmado, eliminamos el personaje de Rankwarden y tomamos medidas razonables para que no vuelva a aparecer. Esto no cambia lo que publican Blizzard o Raider.io; los propios ajustes de privacidad de Blizzard controlan lo que comparten sus servicios."
+        },
+        {
+          "p": "Para ejercer cualquier derecho, escríbenos indicando de qué derecho y de qué datos se trata. Respondemos en el plazo de un mes; en solicitudes complejas este plazo puede ampliarse hasta dos meses más, y te avisaremos si es así. Ejercer tus derechos es gratuito."
+        },
+        {
+          "p": "Si consideras que tratamos tus datos de forma ilícita, puedes presentar una reclamación ante una autoridad de protección de datos. En Bulgaria es la Comisión para la Protección de Datos Personales ([cpdp.bg](https://www.cpdp.bg)); también puedes dirigirte a la autoridad del país de la UE donde vives o trabajas. Te agradeceríamos que nos dieras primero la oportunidad de resolver tu inquietud."
+        }
+      ]
+    },
+    {
+      "id": "children",
+      "heading": "¿Tratamos información de menores?",
+      "summary": "Rankwarden no está pensado para menores de 13 años y no recopilamos a sabiendas su información.",
+      "blocks": [
+        {
+          "p": "Rankwarden está dirigido a personas de 13 años o más. No recopilamos a sabiendas información personal de menores de 13 años. Si crees que un menor de 13 años nos ha enviado información personal, ponte en contacto con nosotros y la eliminaremos."
+        }
+      ]
+    },
+    {
+      "id": "links",
+      "heading": "¿Y otros sitios web?",
+      "summary": "Los enlaces a otros sitios se rigen por las políticas de esos sitios.",
+      "blocks": [
+        {
+          "p": "Rankwarden enlaza a otros servicios y muestra contenido de ellos, como Blizzard y Raider.io. El tratamiento que hacen de tu información se rige por sus propias políticas de privacidad, no por esta, y no somos responsables de ellas."
+        }
+      ]
+    },
+    {
+      "id": "changes",
+      "heading": "¿Cambiará esta política?",
+      "summary": "Sí, cuando cambien el sitio o la ley; la fecha de arriba siempre indica la versión más reciente.",
+      "blocks": [
+        {
+          "p": "Actualizaremos esta política cuando Rankwarden cambie, por ejemplo si algún día añadimos cuentas, analítica o publicidad, o cuando la ley lo exija. La fecha de «Última actualización» indica cuándo cambió por última vez. Si los cambios son importantes, también lo avisaremos en el sitio."
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "heading": "¿Cómo puedes contactarnos?",
+      "summary": "Por correo electrónico: rankwardengg@gmail.com.",
+      "blocks": [
+        {
+          "p": "Para preguntas sobre esta política, solicitudes sobre tus datos o solicitudes de eliminación: [rankwardengg@gmail.com](mailto:rankwardengg@gmail.com). Rankwarden está gestionado por Deni Emilov Petrov, Bulgaria."
+        }
+      ]
+    }
+  ]
+}

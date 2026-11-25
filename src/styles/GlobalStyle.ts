@@ -13,7 +13,12 @@ export const GlobalStyle = createGlobalStyle`
    * sticks within its parent. A fixed-height #root (one window tall) let the header scroll
    * away after the first screen.
    */
-  #root { min-height: 100%; }
+  #root {
+    min-height: 100%;
+    /* A column: header, content (grows), footer at the bottom of short pages */
+    display: flex;
+    flex-direction: column;
+  }
 
   body {
     margin: 0;
@@ -24,6 +29,9 @@ export const GlobalStyle = createGlobalStyle`
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
+
+  /* Korean wraps between words, not inside them (the browser default splits syllables) */
+  :lang(ko) { word-break: keep-all; overflow-wrap: anywhere; }
 
   h1, h2, h3, h4 { color: var(--color-text-highlight); margin: 0; line-height: 1.2; }
   p { margin: 0; }

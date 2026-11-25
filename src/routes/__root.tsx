@@ -1,6 +1,8 @@
 import { createRootRouteWithContext, Outlet, redirect } from '@tanstack/react-router';
 import type { QueryClient } from '@tanstack/react-query';
 import { lazy, Suspense } from 'react';
+import styled from 'styled-components';
+import { AppFooter } from '@/components/AppFooter';
 import { AppHeader } from '@/components/AppHeader';
 import { Page, PageTitle, Muted } from '@/components/Page';
 import { resolveLocaleSlug } from '@/i18n/locales';
@@ -73,10 +75,18 @@ function RootLayout() {
   return (
     <>
       <AppHeader />
-      <Outlet />
+      <Content>
+        <Outlet />
+      </Content>
+      <AppFooter />
       <Suspense>
         <Devtools />
       </Suspense>
     </>
   );
 }
+
+/** Grows between header and footer, so the footer sits at the bottom of short pages */
+const Content = styled.div`
+  flex: 1 0 auto;
+`;

@@ -56,5 +56,15 @@
   "role.rangedDps": "Ranged DPS",
   "menu.open": "Open menu",
   "menu.close": "Close menu",
-  "menu.title": "Menu"
+  "menu.title": "Menu",
+  "footer.slogan": "“Chaos is a ladder.”",
+  "footer.legal": "Legal",
+  "legal.privacy": "Privacy Policy",
+  "legal.terms": "Terms of Service",
+  "footer.copyright": "© {year} Rankwarden. World of Warcraft is a trademark of Blizzard Entertainment.",
+  "footer.notAffiliated": "Not affiliated with Blizzard Entertainment.",
+  "legal.updated": "Last updated: {date}",
+  "legal.contents": "Contents",
+  "legal.inShort": "In short:",
+  "legal.englishOnly": "This document is currently available in English. A translation is coming."
 }

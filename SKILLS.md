@@ -284,6 +284,46 @@ listed (search, boards, rosters), use `<CharacterLine>`, the user's fixed order:
 - `regionName()` (`src/lib/wow/regions.ts`): `us` Americas, `eu` Europe, `kr` Korea, `tw`
   Taiwan, `cn` China. `realmLabel()` shows a realm slug as words when the data has no name.
 
+**The footer** (`src/components/AppFooter.tsx`): the logo (home of the current mode) with
+the slogan below it, and the legal links on the right (stacked and centred at 820px and
+below).
+
+- The slogan is the user's: "Chaos is a ladder." (`footer.slogan`), in each language's own
+  quotation marks (part of the message: “…”, „…“, « … », «…»), grey
+  (`--color-text-subtle`), in a handwritten font. Fonts are self-hosted from fontsource
+  (OFL): Caveat (Latin, Cyrillic), Nanum Pen Script (Korean), Ma Shan Zheng (Chinese; first
+  on `:lang(zh)`, else the Korean font would draw the Han characters). Split by character
+  range, so a page downloads only the glyphs it shows.
+- Korean also puts its own font first (`:lang(ko)`): with Caveat first, Caveat's small “
+  was hidden under the first Hangul glyph.
+- Below a thin divider, the notice: `footer.copyright` ("© {year} Rankwarden. World of
+  Warcraft is a trademark of Blizzard Entertainment.", the year from the clock) and
+  `footer.notAffiliated` ("Not affiliated with Blizzard Entertainment."). Names stay in
+  English in every language.
+- **Legal pages**: `/<lang>/privacy` and `/<lang>/terms` (`LegalPage`, data in
+  `src/legal/<slug>/{privacy,terms}.json`, typed by `src/legal/types.ts`). English is the
+  authoritative version; a language without its own files shows the English text with a
+  translated note (`legal.englishOnly`). A translation must keep English's section ids and
+  order (`legal.test.ts`). Text supports `[label](url)` links (`mailto:`, `https://`, or a
+  site path like `/privacy`, which gets the current language) and `**bold**`.
+  - **All eight languages exist** (2026-11-25). Each translation opens with "This is a
+    translation; the English version prevails", and keeps English's sections, list items,
+    links and bold markers. **Any change to the English text must be made in all seven
+    translations too**, with the same `updated` date. Keep personal names in Latin letters
+    in every language (no transliteration). GDPR is RGPD in es/pt/fr, DSGVO in de.
+  - Korean wraps between words site-wide (`:lang(ko) { word-break: keep-all }` in
+    `GlobalStyle.ts`); the browser default splits words mid-syllable.
+  - Written 2026-11-25 for the site as it is: operator Deni Emilov Petrov (Bulgaria),
+    contact rankwardengg@gmail.com, Bulgarian law, minimum age 13, no accounts, cookies,
+    analytics or ads; servers in DigitalOcean FRA1. **Update both documents** before
+    adding accounts, analytics, ads, payments, Wowhead tooltips or any new third party,
+    and keep the retention list (section `retention`) true to the servers' real settings.
+- The footer sits at the bottom of short pages: `#root` is a flex column and the content
+  between header and footer grows (`Content` in `__root.tsx`). `#root` still grows with
+  the page, so the sticky header rule holds.
+- In development the TanStack devtools buttons sit over the footer's corners; they are not
+  in the production build.
+
 **Search** (`header/SearchBar`, `src/api/search.ts`): `GET /search/suggestions?type=<mode>&q=`
 as the visitor types (debounced 250ms), as an ARIA combobox (arrows, Enter opens the
 highlighted or first entry, Escape closes then clears).

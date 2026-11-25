@@ -1,0 +1,240 @@
+import { useNavigate } from '@tanstack/react-router';
+import type { MouseEvent, ReactNode } from 'react';
+import styled from 'styled-components';
+import { Muted, Page, PageTitle } from '@/components/Page';
+import { localeBySlug } from '@/i18n/locales';
+import { useI18n } from '@/i18n/useI18n';
+import type { LoadedLegalDocument } from '@/legal/load';
+import type { LegalBlock } from '@/legal/types';
+
+interface LegalPageProps {
+  title: 'legal.privacy' | 'legal.terms';
+  loaded: LoadedLegalDocument;
+}
+
+/**
+ * A legal page (`/<lang>/privacy`, `/<lang>/terms`): title, last-updated date, contents,
+ * then each section with its one-line summary ("In short") and its text.
+ *
+ * A language without a translation shows the English text, with a note in the reader's
+ * language; English is the authoritative version.
+ */
+export function LegalPage({ title, loaded }: LegalPageProps) {
+  const { t, locale } = useI18n();
+  const { doc, slug: docSlug } = loaded;
+  const docLang = localeBySlug(docSlug).htmlLang;
+  const date = new Intl.DateTimeFormat(locale.htmlLang, { dateStyle: 'long' }).format(
+    new Date(`${doc.updated}T00:00:00`),
+  );
+
+  return (
+    <Page>
+      <header>
+        <PageTitle>{t(title)}</PageTitle>
+        <Muted>{t('legal.updated', { date })}</Muted>
+      </header>
+
+      {docSlug !== locale.slug && <Note role="note">{t('legal.englishOnly')}</Note>}
+
+      <Doc lang={docLang}>
+        {doc.intro.map((b, i) => (
+          <Block key={i} block={b} />
+        ))}
+
+        <Contents aria-labelledby="legal-contents">
+          <ContentsTitle id="legal-contents">{t('legal.contents')}</ContentsTitle>
+          <ol>
+            {doc.sections.map((s) => (
+              <li key={s.id}>
+                <a href={`#${s.id}`}>{s.heading}</a>
+              </li>
+            ))}
+          </ol>
+        </Contents>
+
+        {doc.sections.map((s, i) => (
+          <Section key={s.id} id={s.id} aria-labelledby={`${s.id}-h`}>
+            <h2 id={`${s.id}-h`}>
+              <Num>{i + 1}.</Num> {s.heading}
+            </h2>
+            {s.summary && (
+              <Summary>
+                <strong>{t('legal.inShort')}</strong> {s.summary}
+              </Summary>
+            )}
+            {s.blocks.map((b, j) => (
+              <Block key={j} block={b} />
+            ))}
+          </Section>
+        ))}
+      </Doc>
+    </Page>
+  );
+}
+
+function Block({ block }: { block: LegalBlock }) {
+  if ('list' in block) {
+    return (
+      <ul>
+        {block.list.map((item, i) => (
+          <li key={i}>
+            <Inline text={item} />
+          </li>
+        ))}
+      </ul>
+    );
+  }
+  return (
+    <p>
+      <Inline text={block.p} />
+    </p>
+  );
+}
+
+/** Text with `[label](url)` links (mailto:, https:, or a site path like `/privacy`) and `**bold**`. */
+function Inline({ text }: { text: string }) {
+  const parts: ReactNode[] = [];
+  const re = /\[([^\]]+)\]\(([^)\s]+)\)|\*\*([^*]+)\*\*/g;
+  let last = 0;
+  for (let m = re.exec(text); m; m = re.exec(text)) {
+    if (m.index > last) parts.push(text.slice(last, m.index));
+    parts.push(
+      m[3] !== undefined ? (
+        <strong key={m.index}>{m[3]}</strong>
+      ) : (
+        <DocLink key={m.index} href={m[2]!} label={m[1]!} />
+      ),
+    );
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) parts.push(text.slice(last));
+  return <>{parts}</>;
+}
+
+function DocLink({ href, label }: { href: string; label: string }) {
+  const { locale } = useI18n();
+  const navigate = useNavigate();
+
+  if (href.startsWith('/')) {
+    const local = `/${locale.slug}${href}`;
+    const onClick = (e: MouseEvent) => {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      void navigate({ href: local });
+    };
+    return (
+      <a href={local} onClick={onClick}>
+        {label}
+      </a>
+    );
+  }
+  const external = href.startsWith('http');
+  return (
+    <a href={href} {...(external && { target: '_blank', rel: 'noopener noreferrer' })}>
+      {label}
+    </a>
+  );
+}
+
+const Note = styled.p`
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-trim-muted);
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+`;
+
+/** Readable line length and spacing for long legal text */
+const Doc = styled.article`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 48rem;
+  color: var(--color-text);
+  line-height: 1.65;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin: 0;
+    padding-left: var(--space-6);
+  }
+
+  a {
+    text-decoration: underline;
+    text-decoration-color: var(--color-accent-muted);
+    text-underline-offset: 3px;
+    overflow-wrap: anywhere;
+  }
+`;
+
+const Contents = styled.nav`
+  padding: var(--space-4) var(--space-6);
+  border: 1px solid var(--color-trim-muted);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+
+  ol {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+    padding-left: var(--space-6);
+  }
+
+  a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--color-text-highlight);
+    }
+  }
+`;
+
+const ContentsTitle = styled.h2`
+  margin-bottom: var(--space-2);
+  color: var(--color-trim-strong);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+`;
+
+const Section = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  /* Clear the sticky header when jumped to from the contents (its height per layout) */
+  scroll-margin-top: 105px;
+
+  h2 {
+    font-size: var(--font-size-lg);
+  }
+
+  @media (max-width: 1100px) {
+    scroll-margin-top: 170px;
+  }
+
+  @media (max-width: 820px) {
+    scroll-margin-top: 80px;
+  }
+`;
+
+const Num = styled.span`
+  color: var(--color-trim-strong);
+`;
+
+const Summary = styled.p`
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--color-trim-muted);
+  color: var(--color-text-muted);
+  font-style: italic;
+
+  strong {
+    color: var(--color-text-highlight);
+    font-style: normal;
+  }
+`;

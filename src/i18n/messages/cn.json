@@ -56,5 +56,15 @@
   "role.rangedDps": "远程伤害输出",
   "menu.open": "打开菜单",
   "menu.close": "关闭菜单",
-  "menu.title": "菜单"
+  "menu.title": "菜单",
+  "footer.slogan": "“混乱是阶梯。”",
+  "footer.legal": "法律信息",
+  "legal.privacy": "隐私政策",
+  "legal.terms": "服务条款",
+  "footer.copyright": "© {year} Rankwarden。World of Warcraft 是 Blizzard Entertainment 的商标。",
+  "footer.notAffiliated": "与 Blizzard Entertainment 无关联。",
+  "legal.updated": "最后更新：{date}",
+  "legal.contents": "目录",
+  "legal.inShort": "简而言之：",
+  "legal.englishOnly": "本文档目前仅提供英文版本，译文即将推出。"
 }

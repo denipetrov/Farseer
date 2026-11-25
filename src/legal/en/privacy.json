@@ -1,0 +1,196 @@
+{
+  "updated": "2026-11-25",
+  "intro": [
+    {
+      "p": "Rankwarden (rankwarden.gg) is a free fan site that shows World of Warcraft rankings, characters and guilds. It is run by Deni Emilov Petrov, a private individual based in Bulgaria (\"we\", \"us\"). This policy explains what information the website and the service behind it handle, why, how long it is kept, and what you can do about it."
+    },
+    {
+      "p": "The short version: there are no accounts, no cookies, no advertising and no analytics on Rankwarden. We show game data that Blizzard and Raider.io already make public, and we keep the little technical information a website needs to run safely."
+    }
+  ],
+  "sections": [
+    {
+      "id": "controller",
+      "heading": "Who is responsible for your information?",
+      "summary": "Deni Emilov Petrov, who runs Rankwarden, is the data controller.",
+      "blocks": [
+        {
+          "p": "For the purposes of the EU General Data Protection Regulation (GDPR), the controller is Deni Emilov Petrov, Bulgaria. You can reach us at [rankwardengg@gmail.com](mailto:rankwardengg@gmail.com) about anything in this policy."
+        }
+      ]
+    },
+    {
+      "id": "collect",
+      "heading": "What information do we handle?",
+      "summary": "Public game data about characters and guilds, basic technical data from your visit, a few settings stored in your own browser, and anything you choose to email us.",
+      "blocks": [
+        {
+          "p": "**Public game data.** To build rankings we read data from Blizzard's World of Warcraft API and from Raider.io. It describes game characters and guilds: character and guild names, realm and region, faction, race, gender, class, specialization and talents, equipment, ratings, rankings, Mythic+ runs, raid progress, titles and achievements, and guild logos. All of it is already publicly visible in the game, on the official Armory or on Raider.io. A character name is not a real name, but because a character belongs to a player, we treat this data as personal data."
+        },
+        {
+          "p": "**Technical data from your visit.** When your browser contacts our servers, they receive your IP address and standard request details such as the address requested, the time and your browser's user agent. We use the IP address to limit how many requests one visitor can make per minute, and our servers may write these details to short-lived logs."
+        },
+        {
+          "p": "**Data stored in your browser.** Rankwarden keeps your settings (faction, icon style, PvP or PvE, language) and an anonymous access token for our API in your browser's local storage. This stays on your device; see the section on cookies and local storage."
+        },
+        {
+          "p": "**Messages you send us.** If you email us, we receive your email address and whatever your message contains."
+        },
+        {
+          "p": "**What we do not collect:** we do not ask for your name, we have no accounts or passwords, we do not connect to your Battle.net account, we take no payments, and we do not track your location beyond what an IP address implies."
+        }
+      ]
+    },
+    {
+      "id": "use",
+      "heading": "How do we use it, and on what legal basis?",
+      "summary": "To show rankings, to keep the site running and safe, to remember your settings and to answer you. We never sell it or use it for advertising.",
+      "blocks": [
+        {
+          "list": [
+            "Showing rankings, character, guild and statistics pages built from public game data. Legal basis: our legitimate interest, and the community's, in presenting public game information in a useful way (GDPR Article 6(1)(f)).",
+            "Running and protecting the service: rate limiting, preventing abuse and scraping, and fixing errors. Legal basis: our legitimate interest in a secure, available service (Article 6(1)(f)).",
+            "Remembering your settings and keeping your anonymous session working. This storage is strictly necessary for the features you use, so it needs no consent.",
+            "Answering your messages and handling requests about your rights. Legal basis: our legitimate interest in responding to you, and our legal obligations where you exercise your rights (Article 6(1)(c) and (f))."
+          ]
+        },
+        {
+          "p": "We do not sell or rent information, we do not build advertising profiles, and we make no automated decisions about you."
+        }
+      ]
+    },
+    {
+      "id": "storage",
+      "heading": "Do we use cookies?",
+      "summary": "No. Rankwarden uses no cookies at all; it stores two entries in your browser's local storage, which you can delete at any time.",
+      "blocks": [
+        {
+          "p": "Rankwarden sets no cookies and loads no tracking pixels, analytics or advertising scripts. It keeps two entries in your browser's local storage:"
+        },
+        {
+          "list": [
+            "farseer:preferences — your chosen faction, icon style, game mode and language.",
+            "farseer:auth — an anonymous access token that lets the site read data from our API. It identifies a browser session, not a person, is valid for about 10 minutes and is renewed for at most 12 hours."
+          ]
+        },
+        {
+          "p": "Both stay on your device, and you can remove them by clearing this site's data in your browser. The site then simply starts again with its default settings. Because we do not track you across websites, a \"Do Not Track\" signal changes nothing here: there is nothing to switch off."
+        }
+      ]
+    },
+    {
+      "id": "sharing",
+      "heading": "Who do we share information with?",
+      "summary": "Only our hosting provider, and Raider.io when your browser loads guild logos from it. Never with advertisers or data brokers.",
+      "blocks": [
+        {
+          "list": [
+            "**Hosting**: our servers and databases run on DigitalOcean, LLC, in its Frankfurt (Germany) data centre. DigitalOcean processes data on our behalf under its data processing terms.",
+            "**Raider.io**: guild logos are loaded by your browser directly from Raider.io's image servers, so Raider.io receives your IP address and browser details when you view them. Raider.io's own privacy policy applies to that.",
+            "**Blizzard Entertainment and Raider.io as data sources**: we request public game data from them. We do not send them information about our visitors.",
+            "**Authorities**: we disclose information only when the law requires it, for example in answer to a valid court order."
+          ]
+        },
+        {
+          "p": "We do not sell or share personal information with third parties for their own marketing or advertising, wherever you live."
+        }
+      ]
+    },
+    {
+      "id": "transfers",
+      "heading": "Is information transferred outside the EU?",
+      "summary": "Our servers are in the EU; where a provider based outside it may access data, the transfer is protected by EU-approved safeguards.",
+      "blocks": [
+        {
+          "p": "Our servers are in Frankfurt, Germany. DigitalOcean is a company based in the United States, so it may access data from outside the European Economic Area, for example for support. Such transfers rely on the EU Standard Contractual Clauses or the EU–US Data Privacy Framework. When your browser loads guild logos from Raider.io, that request goes directly to Raider.io, which is based in the United States."
+        }
+      ]
+    },
+    {
+      "id": "retention",
+      "heading": "How long do we keep it?",
+      "summary": "Technical data for minutes to a few weeks, game data while it is useful for rankings, and emails until your request is closed.",
+      "blocks": [
+        {
+          "list": [
+            "**Rate-limit counters (keyed by IP address)**: about one minute.",
+            "**Access tokens**: about 10 minutes; the session that renews them, at most 12 hours.",
+            "**Server logs**: no longer than 30 days.",
+            "**Public game data**: for as long as it is needed for current and historical rankings, or until it is removed at your request.",
+            "**Emails**: until your request has been handled, and in any case no longer than 12 months, unless we must keep them longer to meet a legal obligation.",
+            "**Your browser's local storage**: until you clear it."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "heading": "How do we keep it safe?",
+      "summary": "Encrypted connections, restricted access and limits against abuse, though no system is perfectly secure.",
+      "blocks": [
+        {
+          "p": "All traffic to Rankwarden is encrypted with HTTPS, our databases are not reachable from the internet, access to the servers is restricted, and our API limits and monitors requests to prevent abuse. No method of storing or transmitting data is completely secure, but we work to protect what we handle and to keep as little of it as possible."
+        }
+      ]
+    },
+    {
+      "id": "rights",
+      "heading": "What are your rights?",
+      "summary": "You can ask what we hold about you, have it corrected or removed, and object to it being shown. Email us and we will answer within one month.",
+      "blocks": [
+        {
+          "p": "Under the GDPR you have the right to access the personal data we hold about you, to have it corrected, to have it erased, to restrict or object to its processing, and, where it applies, to receive it in a portable format."
+        },
+        {
+          "p": "**Hiding or removing your characters.** If you do not want your character or guild to appear on Rankwarden, email [rankwardengg@gmail.com](mailto:rankwardengg@gmail.com) with the character's name, realm and region. We may ask you to show that the character is yours, for example by making a small, temporary change we describe to you in the game. Once confirmed, we remove the character from Rankwarden and take reasonable steps to keep it from reappearing. This does not change what Blizzard or Raider.io publish; Blizzard's own privacy settings control what its services share."
+        },
+        {
+          "p": "To exercise any right, email us and say which right and which data your request concerns. We answer within one month; for complex requests this can be extended by up to two more months, and we will tell you if so. Exercising your rights is free."
+        },
+        {
+          "p": "If you believe we handle your data unlawfully, you can complain to a data protection authority. In Bulgaria this is the Commission for Personal Data Protection ([cpdp.bg](https://www.cpdp.bg)); you may also contact the authority in the EU country where you live or work. We would appreciate the chance to sort out your concern first."
+        }
+      ]
+    },
+    {
+      "id": "children",
+      "heading": "Do we handle information from children?",
+      "summary": "Rankwarden is not meant for children under 13, and we do not knowingly collect their information.",
+      "blocks": [
+        {
+          "p": "Rankwarden is intended for people aged 13 and over. We do not knowingly collect personal information from children under 13. If you believe a child under 13 has sent us personal information, contact us and we will delete it."
+        }
+      ]
+    },
+    {
+      "id": "links",
+      "heading": "What about other websites?",
+      "summary": "Links to other sites are covered by those sites' own policies.",
+      "blocks": [
+        {
+          "p": "Rankwarden links to and shows content from other services, such as Blizzard and Raider.io. Their handling of your information is governed by their own privacy policies, not this one, and we are not responsible for them."
+        }
+      ]
+    },
+    {
+      "id": "changes",
+      "heading": "Will this policy change?",
+      "summary": "Yes, when the site or the law changes; the date at the top always shows the latest version.",
+      "blocks": [
+        {
+          "p": "We will update this policy when Rankwarden changes, for example if we ever add accounts, analytics or advertising, or when the law requires it. The \"Last updated\" date shows when it last changed. For significant changes we will also put a notice on the site."
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "heading": "How can you contact us?",
+      "summary": "By email: rankwardengg@gmail.com.",
+      "blocks": [
+        {
+          "p": "For questions about this policy, requests about your data or removal requests: [rankwardengg@gmail.com](mailto:rankwardengg@gmail.com). Rankwarden is operated by Deni Emilov Petrov, Bulgaria."
+        }
+      ]
+    }
+  ]
+}

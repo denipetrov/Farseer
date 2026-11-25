@@ -56,5 +56,15 @@
   "role.rangedDps": "Боец дальнего боя",
   "menu.open": "Открыть меню",
   "menu.close": "Закрыть меню",
-  "menu.title": "Меню"
+  "menu.title": "Меню",
+  "footer.slogan": "«Хаос — это лестница.»",
+  "footer.legal": "Правовая информация",
+  "legal.privacy": "Политика конфиденциальности",
+  "legal.terms": "Условия использования",
+  "footer.copyright": "© {year} Rankwarden. World of Warcraft — товарный знак Blizzard Entertainment.",
+  "footer.notAffiliated": "Не связан с Blizzard Entertainment.",
+  "legal.updated": "Последнее обновление: {date}",
+  "legal.contents": "Содержание",
+  "legal.inShort": "Коротко:",
+  "legal.englishOnly": "Пока этот документ доступен на английском языке. Перевод скоро появится."
 }

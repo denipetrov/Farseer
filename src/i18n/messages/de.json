@@ -56,5 +56,15 @@
   "role.rangedDps": "Fernkampfschaden",
   "menu.open": "Menü öffnen",
   "menu.close": "Menü schließen",
-  "menu.title": "Menü"
+  "menu.title": "Menü",
+  "footer.slogan": "„Chaos ist eine Leiter.“",
+  "footer.legal": "Rechtliches",
+  "legal.privacy": "Datenschutzerklärung",
+  "legal.terms": "Nutzungsbedingungen",
+  "footer.copyright": "© {year} Rankwarden. World of Warcraft ist eine Marke von Blizzard Entertainment.",
+  "footer.notAffiliated": "Nicht mit Blizzard Entertainment verbunden.",
+  "legal.updated": "Zuletzt aktualisiert: {date}",
+  "legal.contents": "Inhalt",
+  "legal.inShort": "Kurz gesagt:",
+  "legal.englishOnly": "Dieses Dokument ist derzeit auf Englisch verfügbar. Eine Übersetzung folgt."
 }

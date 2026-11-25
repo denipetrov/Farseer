@@ -1,0 +1,199 @@
+{
+  "updated": "2026-11-25",
+  "intro": [
+    {
+      "p": "These terms apply to your use of Rankwarden: the website at rankwarden.gg and the API behind it (together, the \"service\"). Rankwarden is run by Deni Emilov Petrov, a private individual based in Bulgaria (\"we\", \"us\"). By using the service you accept these terms; if you do not accept them, please do not use it."
+    }
+  ],
+  "sections": [
+    {
+      "id": "service",
+      "heading": "What Rankwarden is",
+      "summary": "A free fan site with World of Warcraft rankings, built from public game data.",
+      "blocks": [
+        {
+          "p": "Rankwarden shows PvP and PvE rankings, characters, guilds, cutoffs, tier lists and statistics for World of Warcraft. Its data comes from Blizzard Entertainment's official API and from Raider.io, and is collected and served by our own API. The service is free and needs no account."
+        }
+      ]
+    },
+    {
+      "id": "eligibility",
+      "heading": "Who may use it",
+      "summary": "Anyone aged 13 or over.",
+      "blocks": [
+        {
+          "p": "You must be at least 13 years old to use Rankwarden. If the law where you live sets a higher age for using online services without a parent's consent, you need that consent too."
+        }
+      ]
+    },
+    {
+      "id": "use",
+      "heading": "Using Rankwarden",
+      "summary": "Use it freely for your own, non-commercial purposes; sharing links and screenshots is welcome.",
+      "blocks": [
+        {
+          "p": "We give you a personal, non-exclusive, revocable permission to view and use Rankwarden for your own non-commercial purposes. You are welcome to share links and screenshots of Rankwarden pages, for example with your guild or on social media, as long as you do not present them as your own work."
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use",
+      "heading": "What you must not do",
+      "summary": "Don't scrape us, get around our limits or misuse our API, harm the service, or use it against other players.",
+      "blocks": [
+        {
+          "p": "When using Rankwarden, you agree not to:"
+        },
+        {
+          "list": [
+            "copy our data in bulk, scrape the site or the API, or build a database, mirror or competing service from them without our written permission;",
+            "use bots, scripts or other automated tools to access the service, other than ordinary web browsers and assistive technologies;",
+            "get around our rate limits, access tokens or other protective measures, or use our access tokens outside the Rankwarden website;",
+            "use our API to power another website, app, addon or bot without our written permission;",
+            "overload, disrupt or attack the service, probe it for weaknesses, or try to reach parts of it not meant for you;",
+            "decompile or reverse engineer the service, except where the law allows it regardless of these terms;",
+            "use information from Rankwarden to harass, threaten, stalk or harm anyone;",
+            "use Rankwarden in breach of the law or of Blizzard Entertainment's terms for World of Warcraft;",
+            "pretend to be us, or claim that we endorse you or your work;",
+            "remove or hide the copyright and trademark notices on the site."
+          ]
+        },
+        {
+          "p": "If you break these rules, we may block your access to the service, including by IP address, without notice."
+        }
+      ]
+    },
+    {
+      "id": "game-data",
+      "heading": "Game data and its accuracy",
+      "summary": "We show what Blizzard and Raider.io report, which can be late, incomplete or wrong.",
+      "blocks": [
+        {
+          "p": "Rankings, ratings and character details come from Blizzard and Raider.io and depend on their availability and correctness. Data can be delayed, incomplete or occasionally wrong, and we may correct, change or remove it at any time without notice. Don't rely on Rankwarden as the official record; the game and Blizzard's services are."
+        },
+        {
+          "p": "If you want your character or guild removed from Rankwarden, see our [Privacy Policy](/privacy)."
+        }
+      ]
+    },
+    {
+      "id": "ip",
+      "heading": "Intellectual property",
+      "summary": "World of Warcraft belongs to Blizzard; Rankwarden's own design, code and artwork belong to us.",
+      "blocks": [
+        {
+          "p": "World of Warcraft, Warcraft, Blizzard Entertainment and all related names, logos, artwork and game assets are trademarks or property of Blizzard Entertainment, Inc. Rankwarden is an independent fan project and is not affiliated with, endorsed or sponsored by Blizzard Entertainment. Data and images from Raider.io, including guild logos, belong to Raider.io or their respective owners."
+        },
+        {
+          "p": "The Rankwarden name and logo, the site's design, its original artwork and text, and its source code belong to us. You may not copy, redistribute or create derivative works from them without our permission, except as these terms allow."
+        }
+      ]
+    },
+    {
+      "id": "copyright",
+      "heading": "Copyright complaints",
+      "summary": "If something on Rankwarden infringes your rights, email us and we will look into it promptly.",
+      "blocks": [
+        {
+          "p": "We respect the rights of others. If you believe material on Rankwarden infringes your copyright or other rights, email [rankwardengg@gmail.com](mailto:rankwardengg@gmail.com) with: your contact details; a description of the work and of your rights in it; where the material appears on Rankwarden; and a statement that the information you give is accurate and that you are the rights holder or authorised to act for them. We will review every complete notice and remove or disable the material where appropriate."
+        }
+      ]
+    },
+    {
+      "id": "third-parties",
+      "heading": "Other websites and services",
+      "summary": "We are not responsible for sites we link to or services we rely on.",
+      "blocks": [
+        {
+          "p": "Rankwarden links to and shows content from other services, such as Blizzard, Raider.io and Wowhead. We do not control them and are not responsible for their content, availability or policies. Your use of them is governed by their own terms."
+        }
+      ]
+    },
+    {
+      "id": "availability",
+      "heading": "Changes to the service",
+      "summary": "Rankwarden is free and may change, pause or stop at any time.",
+      "blocks": [
+        {
+          "p": "We may change, add or remove features, pause the service for maintenance, or discontinue it, at any time and without notice. We do our best to keep Rankwarden available, but we do not promise that it will always be online or free of errors."
+        }
+      ]
+    },
+    {
+      "id": "disclaimer",
+      "heading": "No warranty",
+      "summary": "The service is provided \"as is\".",
+      "blocks": [
+        {
+          "p": "Rankwarden is provided free of charge, \"as is\" and \"as available\". To the extent the law allows, we give no warranties of any kind, express or implied, including about accuracy, completeness, availability or fitness for a particular purpose."
+        }
+      ]
+    },
+    {
+      "id": "liability",
+      "heading": "Limitation of liability",
+      "summary": "As a free service we limit our liability as far as the law allows, but not for intent, gross negligence or harm to life or health.",
+      "blocks": [
+        {
+          "p": "To the extent permitted by law, we are not liable for indirect or consequential damage, or for loss of data, profit, rankings or opportunities, arising from your use of Rankwarden or your inability to use it."
+        },
+        {
+          "p": "Nothing in these terms limits or excludes liability for damage caused intentionally or through gross negligence, for harm to life, body or health, or any other liability that cannot be limited under applicable law. If you are a consumer, you keep all rights that the law of your country gives you and that cannot be waived."
+        }
+      ]
+    },
+    {
+      "id": "termination",
+      "heading": "Ending your use",
+      "summary": "You can stop using Rankwarden at any time; we can block access that breaks these terms.",
+      "blocks": [
+        {
+          "p": "You can stop using Rankwarden whenever you like. We may suspend or block access to the service for anyone who breaks these terms or puts the service or its users at risk. The sections on intellectual property, no warranty, limitation of liability and governing law continue to apply after your use ends."
+        }
+      ]
+    },
+    {
+      "id": "law",
+      "heading": "Governing law and disputes",
+      "summary": "Bulgarian law applies, without taking away the protections of your own country's consumer law.",
+      "blocks": [
+        {
+          "p": "These terms are governed by the laws of the Republic of Bulgaria. Disputes are decided by the competent courts of Bulgaria. If you are a consumer living in another country of the European Union, you also keep the protection of the mandatory consumer laws of that country and may bring a claim before its courts."
+        },
+        {
+          "p": "If you have a problem with Rankwarden, please contact us first; most issues can be solved quickly by email."
+        }
+      ]
+    },
+    {
+      "id": "changes",
+      "heading": "Changes to these terms",
+      "summary": "We may update these terms; the date at the top shows the latest version.",
+      "blocks": [
+        {
+          "p": "We may change these terms from time to time, for example when we add features or when the law changes. The \"Last updated\" date shows when they last changed, and significant changes will be announced on the site. If you keep using Rankwarden after a change takes effect, the updated terms apply to you."
+        }
+      ]
+    },
+    {
+      "id": "general",
+      "heading": "General",
+      "summary": "The usual legal fine print, in short.",
+      "blocks": [
+        {
+          "p": "These terms, together with our [Privacy Policy](/privacy), are the whole agreement between you and us about Rankwarden. If any part of them is found invalid, the rest stays in force. If we do not enforce a right straight away, we have not given it up. We may transfer our rights and obligations under these terms to someone who takes over Rankwarden, provided your rights are not reduced. We are not responsible for delays or failures caused by events beyond our reasonable control."
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "heading": "Contact",
+      "summary": "By email: rankwardengg@gmail.com.",
+      "blocks": [
+        {
+          "p": "Questions about these terms: [rankwardengg@gmail.com](mailto:rankwardengg@gmail.com). Rankwarden is operated by Deni Emilov Petrov, Bulgaria."
+        }
+      ]
+    }
+  ]
+}

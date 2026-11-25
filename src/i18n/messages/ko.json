@@ -56,5 +56,15 @@
   "role.rangedDps": "원거리 공격 전담",
   "menu.open": "메뉴 열기",
   "menu.close": "메뉴 닫기",
-  "menu.title": "메뉴"
+  "menu.title": "메뉴",
+  "footer.slogan": "“혼돈은 사다리다.”",
+  "footer.legal": "법적 고지",
+  "legal.privacy": "개인정보 처리방침",
+  "legal.terms": "서비스 약관",
+  "footer.copyright": "© {year} Rankwarden. World of Warcraft는 Blizzard Entertainment의 상표입니다.",
+  "footer.notAffiliated": "Blizzard Entertainment와 제휴 관계가 없습니다.",
+  "legal.updated": "최종 업데이트: {date}",
+  "legal.contents": "목차",
+  "legal.inShort": "요약:",
+  "legal.englishOnly": "이 문서는 현재 영어로만 제공됩니다. 번역이 곧 추가됩니다."
 }

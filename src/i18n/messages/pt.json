@@ -56,5 +56,15 @@
   "role.rangedDps": "DPS à distância",
   "menu.open": "Abrir menu",
   "menu.close": "Fechar menu",
-  "menu.title": "Menu"
+  "menu.title": "Menu",
+  "footer.slogan": "“O caos é uma escada.”",
+  "footer.legal": "Legal",
+  "legal.privacy": "Política de Privacidade",
+  "legal.terms": "Termos de Serviço",
+  "footer.copyright": "© {year} Rankwarden. World of Warcraft é uma marca comercial da Blizzard Entertainment.",
+  "footer.notAffiliated": "Sem afiliação com a Blizzard Entertainment.",
+  "legal.updated": "Última atualização: {date}",
+  "legal.contents": "Índice",
+  "legal.inShort": "Em resumo:",
+  "legal.englishOnly": "Este documento está disponível no momento em inglês. Em breve haverá uma tradução."
 }
