@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 import { Muted, Page, PageTitle, Panel } from '@/components/Page';
 import { NavGlyph } from '@/components/NavGlyph';
-import type { NavIcon } from '@/components/nav/pvpNav';
 import { useI18n } from '@/i18n/useI18n';
 
 interface ComingSoonPageProps {
   title: string;
   subtitle?: string;
-  /** The page's menu icon, shown beside the title */
-  icon?: NavIcon;
+  /** A single-colour icon beside the title: its path under `icons/` (`nav/cutoffs`) */
+  icon?: string;
 }
 
 /** A page whose content is not built yet: its title and icon, and a short note. */

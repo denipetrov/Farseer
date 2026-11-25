@@ -26,9 +26,13 @@ export interface Preferences {
    * Null until one is opened (the link then opens the top Solo Shuffle player).
    */
   lastPvpCharacter: CharacterRef | null;
+  /** The last PvE character page opened (else the link opens the top Mythic+ player) */
+  lastPveCharacter: CharacterRef | null;
+  /** The last guild page opened (else the link opens the current raid's top guild) */
+  lastPveGuild: CharacterRef | null;
 }
 
-/** A character page's address: region, realm slug and name as in its URL. */
+/** A character or guild page's address: region, realm slug and name as in its URL. */
 export interface CharacterRef {
   region: string;
   realm: string;
@@ -41,6 +45,8 @@ export const defaultPreferences: Preferences = {
   gameMode: DEFAULT_GAME_MODE,
   locale: null,
   lastPvpCharacter: null,
+  lastPveCharacter: null,
+  lastPveGuild: null,
 };
 
 const isFaction = (v: unknown): v is Faction => v === 'horde' || v === 'alliance';
@@ -59,6 +65,10 @@ export const isCharacterRef = (v: unknown): v is CharacterRef => {
   );
 };
 
+/** A stored page address, copied field by field (nothing else from storage is kept), or null */
+const pageRef = (v: unknown): CharacterRef | null =>
+  isCharacterRef(v) ? { region: v.region, realm: v.realm, name: v.name } : null;
+
 /** Each field is validated on its own: one bad value never resets the others. */
 export function readPreferences(): Preferences {
   try {
@@ -72,13 +82,9 @@ export function readPreferences(): Preferences {
         : defaultPreferences.assetStyle,
       gameMode: isGameMode(parsed.gameMode) ? parsed.gameMode : defaultPreferences.gameMode,
       locale: isLocaleSlug(parsed.locale) ? parsed.locale : defaultPreferences.locale,
-      lastPvpCharacter: isCharacterRef(parsed.lastPvpCharacter)
-        ? {
-            region: parsed.lastPvpCharacter.region,
-            realm: parsed.lastPvpCharacter.realm,
-            name: parsed.lastPvpCharacter.name,
-          }
-        : defaultPreferences.lastPvpCharacter,
+      lastPvpCharacter: pageRef(parsed.lastPvpCharacter),
+      lastPveCharacter: pageRef(parsed.lastPveCharacter),
+      lastPveGuild: pageRef(parsed.lastPveGuild),
     };
   } catch {
     return defaultPreferences;

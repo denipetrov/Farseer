@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="currentColor">
   <!-- Guild (horde): a guild tabard with the Horde symbol (accent, edged in silver), traced from
        factions/classic/horde.png. The cloth is a lighter shade of the accent. The border and
-       the emblem's metal use the faction trim: var(--color-trim) when inlined, else the
+       the emblem's metal use the faction trim: the CSS variable color-trim when inlined, else the
        palette's silver 500 (#8f8986). -->
   <path fill-opacity=".35" d="M14 10.5C14 9 14.6 8 16 8H21.8C23.8 11.8 27.6 14 32 14S40.2 11.8 42.2 8H48C49.4 8 50 9 50 10.5V51.5L32 58.8L14 51.5Z"/>
   <path style="fill:var(--color-trim, #8f8986)" fill-rule="evenodd" d="M11 9.5C11 6.5 12.6 5 15.5 5H23.5C24.6 8.6 27.8 11 32 11S39.4 8.6 40.5 5H48.5C51.4 5 53 6.5 53 9.5V53.5L32 62L11 53.5ZM14 10.5C14 9 14.6 8 16 8H21.8C23.8 11.8 27.6 14 32 14S40.2 11.8 42.2 8H48C49.4 8 50 9 50 10.5V51.5L32 58.8L14 51.5Z"/>

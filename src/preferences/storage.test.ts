@@ -19,6 +19,8 @@ describe('preferences storage', () => {
       gameMode: 'pve',
       locale: 'de',
       lastPvpCharacter: { region: 'eu', realm: 'draenor', name: 'Biba' },
+      lastPveCharacter: { region: 'us', realm: 'illidan', name: 'Rooiben' },
+      lastPveGuild: { region: 'eu', realm: 'tarren-mill', name: 'Echo' },
     } as const;
     writePreferences(prefs);
     expect(readPreferences()).toEqual(prefs);
@@ -41,6 +43,8 @@ describe('preferences storage', () => {
       gameMode: 'pvp',
       locale: null,
       lastPvpCharacter: null,
+      lastPveCharacter: null,
+      lastPveGuild: null,
     });
   });
 
@@ -55,6 +59,8 @@ describe('preferences storage', () => {
       gameMode: 'pvp',
       locale: null,
       lastPvpCharacter: null,
+      lastPveCharacter: null,
+      lastPveGuild: null,
     });
   });
 
@@ -81,5 +87,17 @@ describe('preferences storage', () => {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ lastPvpCharacter: bad }));
       expect(readPreferences().lastPvpCharacter).toBeNull();
     }
+  });
+
+  it('keeps the last PvE character and guild apart from the PvP one', () => {
+    const echo = { region: 'eu', realm: 'tarren-mill', name: 'Echo' };
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ lastPveGuild: echo, lastPveCharacter: 'x' }),
+    );
+    const prefs = readPreferences();
+    expect(prefs.lastPveGuild).toEqual(echo);
+    expect(prefs.lastPveCharacter).toBeNull();
+    expect(prefs.lastPvpCharacter).toBeNull();
   });
 });

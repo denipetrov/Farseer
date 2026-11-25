@@ -34,7 +34,7 @@
           "p": "**Technische Daten deines Besuchs.** Wenn dein Browser unsere Server aufruft, erhalten diese deine IP-Adresse und übliche Anfragedaten wie die aufgerufene Adresse, die Uhrzeit und den User-Agent deines Browsers. Mit der IP-Adresse begrenzen wir, wie viele Anfragen ein Besucher pro Minute stellen kann, und unsere Server können diese Angaben in kurzlebigen Protokollen festhalten."
         },
         {
-          "p": "**In deinem Browser gespeicherte Daten.** Rankwarden speichert deine Einstellungen (Fraktion, Symbolstil, PvP oder PvE, Sprache, zuletzt geöffnete Charakterseite) und ein anonymes Zugriffstoken für unsere API im lokalen Speicher deines Browsers. Diese Daten bleiben auf deinem Gerät; siehe den Abschnitt über Cookies und lokalen Speicher."
+          "p": "**In deinem Browser gespeicherte Daten.** Rankwarden speichert deine Einstellungen (Fraktion, Symbolstil, PvP oder PvE, Sprache, zuletzt geöffnete Charakter- und Gildenseiten) und ein anonymes Zugriffstoken für unsere API im lokalen Speicher deines Browsers. Diese Daten bleiben auf deinem Gerät; siehe den Abschnitt über Cookies und lokalen Speicher."
         },
         {
           "p": "**Nachrichten an uns.** Wenn du uns eine E-Mail schreibst, erhalten wir deine E-Mail-Adresse und den Inhalt deiner Nachricht."
@@ -72,7 +72,7 @@
         },
         {
           "list": [
-            "farseer:preferences — die von dir gewählte Fraktion, der Symbolstil, der Spielmodus und die Sprache sowie die zuletzt geöffnete PvP-Charakterseite, damit dich der Menüpunkt „Charakter“ dorthin zurückbringen kann.",
+            "farseer:preferences — die von dir gewählte Fraktion, der Symbolstil, der Spielmodus und die Sprache sowie die zuletzt geöffnete PvP-Charakterseite, PvE-Charakterseite und Gildenseite, damit dich die Menüpunkte „Charakter“ und „Gilde“ dorthin zurückbringen können.",
             "farseer:auth — ein anonymes Zugriffstoken, mit dem die Seite Daten aus unserer API lesen kann. Es kennzeichnet eine Browsersitzung, keine Person, gilt etwa 10 Minuten und wird höchstens 12 Stunden lang erneuert."
           ]
         },

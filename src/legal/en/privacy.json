@@ -31,7 +31,7 @@
           "p": "**Technical data from your visit.** When your browser contacts our servers, they receive your IP address and standard request details such as the address requested, the time and your browser's user agent. We use the IP address to limit how many requests one visitor can make per minute, and our servers may write these details to short-lived logs."
         },
         {
-          "p": "**Data stored in your browser.** Rankwarden keeps your settings (faction, icon style, PvP or PvE, language, the last character page you opened) and an anonymous access token for our API in your browser's local storage. This stays on your device; see the section on cookies and local storage."
+          "p": "**Data stored in your browser.** Rankwarden keeps your settings (faction, icon style, PvP or PvE, language, the last character and guild pages you opened) and an anonymous access token for our API in your browser's local storage. This stays on your device; see the section on cookies and local storage."
         },
         {
           "p": "**Messages you send us.** If you email us, we receive your email address and whatever your message contains."
@@ -69,7 +69,7 @@
         },
         {
           "list": [
-            "farseer:preferences — your chosen faction, icon style, game mode and language, and the last PvP character page you opened, so the menu's Character link can take you back to it.",
+            "farseer:preferences — your chosen faction, icon style, game mode and language, and the last PvP character, PvE character and guild pages you opened, so the menu's Character and Guild links can take you back to them.",
             "farseer:auth — an anonymous access token that lets the site read data from our API. It identifies a browser session, not a person, is valid for about 10 minutes and is renewed for at most 12 hours."
           ]
         },

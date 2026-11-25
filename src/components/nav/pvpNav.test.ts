@@ -1,10 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { iconUrl } from '@/lib/assets';
-import { isNavGroup, pvpNav } from './pvpNav';
+import { isNavGroup, type NavGroup, type NavLink } from './navTypes';
+import { pvpNav } from './pvpNav';
 
 describe('PvP menu', () => {
   const items = pvpNav('en');
-  const all = items.flatMap((item) => (isNavGroup(item) ? [item, ...item.children] : [item]));
+  // PvP is two levels deep: links, and sections of links
+  const all = items.flatMap((item): (NavLink | NavGroup)[] =>
+    isNavGroup(item) ? [item, ...(item.children as NavLink[])] : [item as NavLink],
+  );
 
   it('has every entry in the designed order', () => {
     expect(items.map((i) => i.id)).toEqual([
@@ -19,7 +23,7 @@ describe('PvP menu', () => {
   });
 
   it('every icon is a file that exists', () => {
-    for (const entry of all) expect(iconUrl(entry.icon), entry.id).toBeDefined();
+    for (const entry of all) expect(iconUrl(entry.icon as string), entry.id).toBeDefined();
   });
 
   it('brackets, Spec Representation and Cutoffs use their own SVGs', () => {

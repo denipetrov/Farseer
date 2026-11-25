@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { usePveCatalogue } from '@/api/pve';
 import { AppFooter } from '@/components/AppFooter';
 import { AppHeader } from '@/components/AppHeader';
-import { hasSideNav } from '@/components/nav/pvpNav';
 import { SideNav } from '@/components/nav/SideNav';
 import { ScrollTopButton } from '@/components/ScrollTopButton';
 import { Page, PageTitle, Muted } from '@/components/Page';
@@ -88,13 +87,11 @@ function RootLayout() {
     <>
       <AppHeader />
       <Body>
-        {hasSideNav(mode) && (
-          <Sidebar>
-            <SidebarInner>
-              <SideNav />
-            </SidebarInner>
-          </Sidebar>
-        )}
+        <Sidebar>
+          <SidebarInner>
+            <SideNav />
+          </SidebarInner>
+        </Sidebar>
         <Content>
           <Outlet />
         </Content>

@@ -3,6 +3,9 @@ import { describe, expect, it } from 'vitest';
 import { iconNames } from '@/lib/assets';
 import {
   ROLE_KINDS,
+  classRoleKinds,
+  roleKindOfSlug,
+  roleSlug,
   resolveRole,
   resolveRoleKind,
   resolveSubRole,
@@ -108,5 +111,24 @@ describe('role icons', () => {
     expect(specRoleIconUrl(255)).toMatch(/roles\/dps-melee\.png/); // Survival
     expect(specRoleIconUrl(1473)).toMatch(/roles\/dps-ranged\.png/); // Augmentation
     expect(specRoleIconUrl('blood', 'deathknight')).toMatch(/roles\/tank\.png/);
+  });
+});
+
+describe('class roles', () => {
+  const slugs = (cls: string) => classRoleKinds(cls).map(roleSlug);
+
+  it('lists what each class plays, damage split into melee and ranged', () => {
+    expect(slugs('druid')).toEqual(['tank', 'healer', 'melee', 'ranged']);
+    expect(slugs('mage')).toEqual(['ranged']);
+    expect(slugs('hunter')).toEqual(['melee', 'ranged']);
+    expect(slugs('paladin')).toEqual(['tank', 'healer', 'melee']);
+    expect(slugs('evoker')).toEqual(['healer', 'ranged']);
+    expect(slugs('nope')).toEqual([]);
+  });
+
+  it('reads a role back from its URL segment', () => {
+    expect(roleKindOfSlug('melee')).toEqual({ role: 'dps', subRole: 'melee' });
+    expect(roleKindOfSlug('tank')).toEqual({ role: 'tank', subRole: null });
+    expect(roleKindOfSlug('dps-melee')).toBeNull();
   });
 });

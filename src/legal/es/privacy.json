@@ -34,7 +34,7 @@
           "p": "**Datos técnicos de tu visita.** Cuando tu navegador se conecta a nuestros servidores, estos reciben tu dirección IP y los datos habituales de la solicitud, como la dirección solicitada, la hora y el agente de usuario de tu navegador. Usamos la dirección IP para limitar cuántas solicitudes puede hacer un visitante por minuto, y nuestros servidores pueden anotar estos datos en registros de corta duración."
         },
         {
-          "p": "**Datos guardados en tu navegador.** Rankwarden guarda tus ajustes (facción, estilo de iconos, JcJ o JcE, idioma, la última página de personaje que abriste) y un token de acceso anónimo para nuestra API en el almacenamiento local de tu navegador. Esto permanece en tu dispositivo; consulta la sección sobre cookies y almacenamiento local."
+          "p": "**Datos guardados en tu navegador.** Rankwarden guarda tus ajustes (facción, estilo de iconos, JcJ o JcE, idioma, las últimas páginas de personaje y de hermandad que abriste) y un token de acceso anónimo para nuestra API en el almacenamiento local de tu navegador. Esto permanece en tu dispositivo; consulta la sección sobre cookies y almacenamiento local."
         },
         {
           "p": "**Mensajes que nos envías.** Si nos escribes por correo electrónico, recibimos tu dirección de correo y el contenido de tu mensaje."
@@ -72,7 +72,7 @@
         },
         {
           "list": [
-            "farseer:preferences — la facción, el estilo de iconos, el modo de juego y el idioma que has elegido, y la última página de personaje JcJ que abriste, para que el enlace «Personaje» del menú pueda llevarte de vuelta a ella.",
+            "farseer:preferences — la facción, el estilo de iconos, el modo de juego y el idioma que has elegido, y las últimas páginas de personaje JcJ, de personaje JcE y de hermandad que abriste, para que los enlaces «Personaje» y «Hermandad» del menú puedan llevarte de vuelta a ellas.",
             "farseer:auth — un token de acceso anónimo que permite al sitio leer datos de nuestra API. Identifica una sesión del navegador, no a una persona, es válido durante unos 10 minutos y se renueva como máximo durante 12 horas."
           ]
         },

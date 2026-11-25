@@ -1,36 +1,7 @@
-import { linkOptions, type LinkOptions } from '@tanstack/react-router';
+import { linkOptions } from '@tanstack/react-router';
 import { PVP_BRACKETS } from '@/api/pvp';
 import type { LocaleSlug } from '@/i18n/locales';
-import type { MessageKey } from '@/i18n/messages';
-
-/**
- * A menu icon: the path under `icons/` of a single-colour SVG (`nav/home`,
- * `pvp/brackets/svg/2v2`), drawn in the text colour so it follows hover and active states.
- */
-export type NavIcon = string;
-
-export interface NavLink {
-  id: string;
-  label: MessageKey;
-  icon: NavIcon;
-  link: LinkOptions;
-  /** Active only on this exact page (Home), not on pages below it */
-  exact?: boolean;
-}
-
-export interface NavGroup {
-  id: string;
-  label: MessageKey;
-  icon: NavIcon;
-  children: NavLink[];
-}
-
-export type NavItem = NavLink | NavGroup;
-
-export const isNavGroup = (item: NavItem): item is NavGroup => 'children' in item;
-
-/** Whether a game mode has a left menu yet (PvE's comes later). */
-export const hasSideNav = (mode: string) => mode === 'pvp';
+import type { NavItem } from './navTypes';
 
 /**
  * The PvP menu, top to bottom, as the user designed it:

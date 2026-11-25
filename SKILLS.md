@@ -258,8 +258,8 @@ menu's drawer, `header/MobileMenu`, one below the other with a label each:
   backdrop or the close button closes it and focus returns to the menu button; the page
   behind doesn't scroll. Escape on the open language list closes only the list.
 - Any navigation closes it (mode, language, the logo, a link); faction and style don't.
-- **The left menu** (site navigation, not built yet) goes in as `<MobileMenu>{…}</MobileMenu>`
-  in `AppHeader`: it shows below the settings, after a trim divider.
+- **The left menu** (`SideNav`) goes in as `<MobileMenu>{…}</MobileMenu>` in `AppHeader`: it
+  shows below the settings, after a trim divider.
 - Measured 2026-11-25: above 820px the desktop header fits without overlaps in every
   language; at 820px and below its two sides don't, hence the drawer. After a header
   change, scan widths 360–1400 for overlapping controls (compare the bounding boxes of
@@ -342,9 +342,15 @@ below).
 - **Where:** a sidebar on desktop (`Sidebar` in `__root.tsx`, 17.5rem). The column runs the
   full height down to the footer and carries the border; the menu inside (`SidebarInner`)
   is sticky right below the header and scrolls on its own. Don't make the column itself
-  sticky: its border then stops where the menu ends, which looked cut off. and the bottom of the mobile drawer (`<MobileMenu>`
-  children in `AppHeader`) at 820px and below. Only PvP has one (`hasSideNav(mode)`); PvE
-  shows none until its menu is built.
+  sticky: its border then stops where the menu ends, which looked cut off. At 820px and
+  below it is the bottom of the mobile drawer (`<MobileMenu>` children in `AppHeader`).
+  Both modes have one; `SideNav` picks `pvpNav` or `pveNav`.
+- **The model** (`navTypes.ts`): `NavLink`, `NavGroup` (children nest to any depth;
+  `defaultOpen` opens it on arrival) and `NavNote` (a muted line: "Loading raids…"). A
+  label is a message key or `{ text }` (a game name already translated). An icon is a
+  single-colour SVG path (drawn by `NavGlyph`) or game art drawn as it is:
+  `{ kind: 'class' | 'spec' | 'role' | 'image' }` (`image` is a URL from the data, null or
+  broken → the unknown icon). Art sits in a slot of the glyphs' width so labels line up.
 - **The PvP menu** (`pvpNav.ts`, the user's order): Home · Character · Leaderboards (2v2,
   3v3, Solo Shuffle, Battleground Blitz, Rated Battlegrounds) · Stats (Spec Representation,
   Hero Talents, Cutoffs) · FOTM · Tier List · Archives. Links are `linkOptions(...)`, so
@@ -352,8 +358,40 @@ below).
   their path under `icons/` (`nav/home`, `pvp/brackets/svg/2v2`, `nav/spec-representation`,
   `nav/cutoffs`), drawn as masks by `NavGlyph` so they follow the text, hover and accent
   colours. `pvpNav.test.ts` fails if an icon file is missing.
+- **The PvE menu** (`pveNav.ts`, the user's list of 2026-11-25, with Home first as on PvP):
+  Home · Character · Guild · Mythic+ (All Characters, Runs, Specs → each class → its specs,
+  Classes & Roles → each class → the roles it plays: tank, healer, melee, ranged) · Raids
+  (each expansion of the catalogue, newest first and open by default → each raid, with
+  Raider.io's icon → Hall of Fame, Boss Rankings → each boss) · Stats (Mythic+ → Spec
+  Representation, Compositions, Cutoffs) · Tier List. Raids come from `raidsQuery()` (the
+  catalogue the root layout fetches on PvE); until then the section shows a note.
+  - **Icons still to draw** use a stand-in from the set (`PVE_ICONS`, `want(path,
+standIn)`): `nav/mythic-plus`, `nav/runs`, `nav/spec-leaderboard`,
+    `nav/class-role-leaderboard`, `nav/raids`, `nav/hall-of-fame`, `nav/compositions`. Drop
+    the SVG in `icons/nav/` with that name and it is used, no code change (then re-measure
+    its optical size). Expansions have no icon.
+  - **Boss icons** are each boss's "Mythic: <boss>" achievement icon on Raider.io's server
+    (the user's example: The Lost Explorers → `inv_121_raid_achievement_tortollans`).
+    Raider.io's data names none, so `scripts/boss-icons.mjs` builds
+    `src/data/bossIcons.json` (`<raid>/<boss>` slug → icon) from Wowhead's search and checks
+    each on Raider.io; `bossIconUrl` reads it. Fated / Awakened bosses take the original's.
+    223 of 245 have one (2026-11-25); missing (unknown icon): Blackrock Depths (an event
+    raid, no Mythic achievements) and 14 whose achievement names didn't match (the script
+    lists them). **Rerun it when a raid is added.** It keeps what the file has and only
+    searches the rest; Wowhead rate-limits (403), and the script then stops searching and
+    writes what it has. `NO_SEARCH=1` rebuilds without asking Wowhead.
+  - **The guild icon** follows the faction preference: `nav/guild-horde` / `nav/guild-alliance`.
+  - **Raid icons:** `https://cdn.raiderio.net/images/wow/icons/large/<icon>.jpg`
+    (`raidIconUrl`); the catalogue's `icon` is a name or a numeric file id, both served
+    there (every raid since BfA checked: 200). Legion raids come with `icon: null`, so
+    `RAID_ICON_FALLBACK` (`src/api/pve.ts`) names theirs by raid slug (the user gave the
+    pattern, `achievement_thenighthold`; all five checked). A raid added without an icon
+    needs an entry there, else it shows the unknown icon.
 - **Sizes** (the user chose the larger set): 17px text, 15.5px sub-items, 26px icons, 46px
-  rows, 42px sub-item rows (`ICON_SIZE`, `ROW_GAP` in `SideNav.tsx`).
+  rows, 42px sub-item rows (`ICON_SIZE`, `ROW_GAP` in `SideNav.tsx`). Level 1 lines its
+  icons up under the section's label (52px); each deeper level steps in only 14px
+  (`INDENT_STEP`), with 22px icons and 38px rows, so PvE's five levels fit 17.5rem. Long
+  names wrap. A section renders its rows only while open (PvE has hundreds of links).
 - **Optical sizing** (`src/lib/iconOptics.ts`): tall, thin icons (the Character helm, the
   Solo Shuffle sword) cover far less of their square than wide ones and read as smaller,
   so `NavGlyph` draws them larger (`transform: scale`, art untouched, layout unchanged). The
@@ -387,6 +425,24 @@ below).
   the current `seasonId`; then `/pvp/leaderboard?region=world&bracket=shuffle&pageSize=1`).
   It shows "Finding the top Solo Shuffle player…" while that loads, and a hint to use the
   search if it fails. `src/api/pvp.ts` holds these queries and the bracket list.
+
+**PvE pages** (`src/routes/$locale/pve/`), placeholders like PvP's:
+
+- `character/$region/$realm/$name` and `guild/$region/$realm/$name` (moved here from
+  `/<lang>/character/…` and `/<lang>/guild/…`, which now redirect). Opening one saves
+  `lastPveCharacter` / `lastPveGuild`. PvE search results open them.
+- `character/` redirects to `lastPveCharacter`, else the World Mythic+ #1
+  (`mplusLeaderboardQuery({ pageSize: 1 })`). `guild/` redirects to `lastPveGuild`, else the
+  first stored guild of `/pve/raid?raidSlug=current` (Mythic, World).
+- `mythic-plus/characters`, `mythic-plus/runs` (`mythic-plus/` opens characters),
+  `mythic-plus/specs/$class/$spec` (Soulseeker's slugs, `resolveSpec` or not found),
+  `mythic-plus/roles/$class/$role` (`tank`, `healer`, `melee`, `ranged`, only those the
+  class plays: `classRoleKinds`, `roleSlug`, `roleKindOfSlug` in `lib/wow/roles.ts`).
+- `raids/$raid/hall-of-fame` (`/pve/raid`) and `raids/$raid/bosses/$boss` (`/pve/bosses`);
+  the loader checks the raid and boss against the catalogue (`ensureQueryData(raidsQuery())`)
+  and is not found otherwise. Names: `raidName` / `bossName` (`/i18n/names`, else English).
+- `stats/mythic-plus/{representation,compositions,cutoffs}` (`stats/` opens the first),
+  `tier-list`.
 
 **Back to top** (`src/components/ScrollTopButton.tsx`, in `__root.tsx`): a 48px round button
 fixed at the bottom right (desktop and mobile, clear of the phone's safe areas) with
@@ -609,8 +665,9 @@ README. `src/assets/README.md` has the rules. The key concept:
     avoid a colour flash. It reads the same key, so keep it in step if the structure changes.
 - **Preferences now:** `faction` (horde | alliance), `assetStyle` (modern | classic),
   `gameMode` (pvp | pve, default pvp), `locale` (a language slug, or null until one is
-  chosen, so a first visit follows the browser) and `lastPvpCharacter` (`{ region, realm,
-name }` of the last PvP character page opened, or null). The privacy policy lists what is
+  chosen, so a first visit follows the browser), and `lastPvpCharacter`,
+  `lastPveCharacter`, `lastPveGuild` (`{ region, realm, name }` of the last such page
+  opened, or null). The privacy policy lists what is
   stored: **update it in all eight languages when a preference is added.** `gameMode` and `locale` are read outside
   React by the redirects.
   `readPreferences` validates each field on its own and drops unknown keys.
@@ -640,6 +697,11 @@ name }` of the last PvP character page opened, or null). The privacy policy list
 ---
 
 ## 9. Traps on this machine (Windows)
+
+- **An SVG that isn't well-formed XML shows nothing**, with no error: as a mask or an
+  `<img>` it is just blank. The usual cause is `--` inside a comment (`<!-- uses
+var(--color-trim) -->`), which XML forbids; the guild icons had it (fixed 2026-11-25).
+  `src/lib/svgAssets.test.ts` parses every SVG under `src/assets/` and fails on one.
 
 - **Drive-letter case.** Git Bash's working directory is `/d/...` (lowercase), while
   PowerShell and Node use `D:\`. Two consequences:
@@ -750,13 +812,13 @@ cluster has been done.
   - the complete auth flow and API client;
   - the `ApiStatus` indicator (`GET /session`) on the mode homes;
   - CI/CD and the chart.
-- **Placeholders:** the `/pvp` and `/pve` homes (`ModeHome`), every PvP menu page, the PvP
-  character page, and the PvE character and guild pages render their titles or parameters
-  but don't fetch data yet.
-- **Routing decision (2026-11-25):** each mode's pages live under its prefix. The PvP
-  character page is `/<lang>/pvp/character/…`. PvE character and guild pages are still at
-  `/<lang>/character/…` and `/<lang>/guild/…`; move them under `/pve` with the PvE menu.
-- **Not built yet:** the PvE menu, most of `src/api/pvp.ts` (only seasons and the
+- **Placeholders:** the `/pvp` and `/pve` homes (`ModeHome`), every PvP and PvE menu page,
+  and the character and guild pages render their titles or parameters but don't fetch data
+  yet.
+- **Routing decision (2026-11-25):** each mode's pages live under its prefix:
+  `/<lang>/pvp/character/…`, `/<lang>/pve/character/…`, `/<lang>/pve/guild/…`. The old
+  `/<lang>/character/…` and `/<lang>/guild/…` redirect to the PvE ones.
+- **Not built yet:** the menu icons listed under "The PvE menu", most of `src/api/pvp.ts` (only seasons and the
   leaderboard so far), the rest of `pve.ts` (only the catalogue so far), Turnstile support on the
   token request (Soulseeker has it off), and logout or revocation (`POST /oidc/token/revocation`).
 

@@ -10,6 +10,8 @@
  * with `/i18n/names` (raids and bosses by slug, dungeons by slug, affixes by id).
  */
 import { queryOptions, useQuery } from '@tanstack/react-query';
+import BOSS_ICONS from '@/data/bossIcons.json';
+import type { GameNamesResponse } from './gameNames';
 import { api } from '.';
 
 /** A PvE region key in `starts` / `ends` / `cutoffs`. */
@@ -167,3 +169,138 @@ export function isRunningIn(
   const starts = entry.starts[region];
   return starts !== undefined && Date.parse(starts) <= now.getTime() && !entry.ends[region];
 }
+
+/** PvE boards' regions: one of Raider.io's, or `world` for all of them together. */
+export type PveBoard = PveRegion | 'world';
+
+/** One row of `GET /pve/mplus-leaderboard`: only what the site reads so far. */
+export interface MplusLeaderboardEntry {
+  rank: number;
+  characterName: string;
+  realmName: string;
+  realmSlug: string;
+  region: PveRegion;
+  faction: string | null;
+  mythicScore: number;
+}
+
+export interface MplusLeaderboardResponse {
+  region: PveBoard;
+  season: string;
+  current: boolean;
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
+  entries: MplusLeaderboardEntry[];
+}
+
+export interface MplusLeaderboardParams {
+  region?: PveBoard;
+  /** A season slug, or `current` */
+  season?: string;
+  page?: number;
+  pageSize?: number;
+}
+
+export const mplusLeaderboardQuery = ({
+  region = 'world',
+  season = 'current',
+  page = 1,
+  pageSize = 50,
+}: MplusLeaderboardParams = {}) =>
+  queryOptions({
+    queryKey: ['pve', 'mplus-leaderboard', region, season, page, pageSize],
+    queryFn: ({ signal }) =>
+      api.get<MplusLeaderboardResponse>(
+        '/pve/mplus-leaderboard',
+        { region, season, page, pageSize },
+        signal,
+      ),
+    staleTime: 60_000,
+  });
+
+/** A guild as the PvE boards name it. Fields other than `id` are null for a guild not stored. */
+export interface PveGuildRef {
+  id: number;
+  name: string | null;
+  faction: string | null;
+  logo: string | null;
+  realm: string | null;
+  realmSlug: string | null;
+  region: PveRegion | null;
+}
+
+/** `GET /pve/raid`: one raid's top hundred guilds. Only what the site reads so far. */
+export interface RaidBoardResponse {
+  region: PveBoard;
+  difficulty: 'mythic' | 'heroic' | 'normal';
+  raid: { slug: string; name: string; icon: string | null; encounters: RaidEncounter[] };
+  updatedAt: string | null;
+  guilds: { rank: number; regionRank?: number; guild: PveGuildRef }[];
+}
+
+export interface RaidBoardParams {
+  /** A catalogue raid, or `current` (the tier's main raid) */
+  raidSlug: string;
+  region?: Exclude<PveBoard, 'cn'>;
+  difficulty?: RaidBoardResponse['difficulty'];
+}
+
+export const raidBoardQuery = ({
+  raidSlug,
+  region = 'world',
+  difficulty = 'mythic',
+}: RaidBoardParams) =>
+  queryOptions({
+    queryKey: ['pve', 'raid', raidSlug, region, difficulty],
+    queryFn: ({ signal }) =>
+      api.get<RaidBoardResponse>('/pve/raid', { raidSlug, region, difficulty }, signal),
+    staleTime: 5 * 60_000,
+  });
+
+/**
+ * Icons for raids the catalogue has none for (Raider.io sends null before Battle for
+ * Azeroth), by raid slug: the names the user gave (2026-11-25) and their pattern, each
+ * checked on Raider.io's image server.
+ */
+export const RAID_ICON_FALLBACK: Readonly<Record<string, string>> = {
+  'the-emerald-nightmare': 'achievement_emeraldnightmare',
+  'trial-of-valor': 'achievement_raid_trialofvalor',
+  'the-nighthold': 'achievement_thenighthold',
+  'tomb-of-sargeras': 'achievement_raid_tombofsargeras',
+  'antorus-the-burning-throne': 'achievement_raid_argusraid',
+};
+
+/**
+ * A raid's icon on Raider.io's image server: the catalogue's `icon` (an icon name or a
+ * numeric file id, both served under the same path), else `RAID_ICON_FALLBACK`. Null when
+ * neither has one: show the unknown icon.
+ */
+export function raidIconUrl(raid: Pick<Raid, 'slug' | 'icon'>): string | null {
+  return gameIconUrl(raid.icon ?? RAID_ICON_FALLBACK[raid.slug]);
+}
+
+/**
+ * A boss's icon (its "Mythic: <boss>" achievement's) on Raider.io's image server, from
+ * `src/data/bossIcons.json`, which `scripts/boss-icons.mjs` builds (by `<raid>/<boss>` slug).
+ * Null for a boss without one (Blackrock Depths, a few others): show the unknown icon.
+ */
+export function bossIconUrl(raid: Pick<Raid, 'slug'>, boss: Pick<RaidEncounter, 'slug'>) {
+  return gameIconUrl((BOSS_ICONS as Record<string, string>)[`${raid.slug}/${boss.slug}`]);
+}
+
+/** A game icon by its name (`achievement_zone_azjkahet`) or file id, as Raider.io serves it */
+const gameIconUrl = (icon: string | undefined | null): string | null =>
+  icon ? `https://cdn.raiderio.net/images/wow/icons/large/${encodeURIComponent(icon)}.jpg` : null;
+
+/** A raid's name in the page's language (`/i18n/names`), else Raider.io's English one. */
+export const raidName = (names: GameNamesResponse | undefined, raid: Raid): string =>
+  names?.raids[raid.slug]?.name || raid.name;
+
+/** A boss's name in the page's language, else Raider.io's English one. */
+export const bossName = (
+  names: GameNamesResponse | undefined,
+  raid: Raid,
+  boss: RaidEncounter,
+): string => names?.raids[raid.slug]?.bosses[boss.slug] || boss.name;

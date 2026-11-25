@@ -1,26 +1,8 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { Page, PageTitle, Panel, Muted } from '@/components/Page';
-import { regionLabel } from '@/i18n/labels';
-import { useI18n } from '@/i18n/useI18n';
-import { realmLabel } from '@/lib/wow/regions';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 
+/** The character page's old address (before the PvE menu): now `/<lang>/pve/character/…`. */
 export const Route = createFileRoute('/$locale/character/$region/$realm/$name')({
-  component: CharacterPage,
+  beforeLoad: ({ params }) => {
+    throw redirect({ to: '/$locale/pve/character/$region/$realm/$name', params, replace: true });
+  },
 });
-
-function CharacterPage() {
-  const { region, realm, name } = Route.useParams();
-  const { t } = useI18n();
-
-  return (
-    <Page>
-      <PageTitle>{name}</PageTitle>
-      <Muted>
-        {realmLabel(realm)} · {regionLabel(t, region)}
-      </Muted>
-      <Panel>
-        <Muted>{t('character.placeholder')}</Muted>
-      </Panel>
-    </Page>
-  );
-}

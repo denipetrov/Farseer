@@ -142,3 +142,26 @@ export function specRoleIconUrl(spec: SpecInput, cls?: ClassInput): string | und
   const kind = roleOfSpec(spec, cls);
   return kind ? iconUrl(`roles/${roleIconFile(kind)}`) : undefined;
 }
+
+/** A role as one URL segment: `tank`, `healer`, `dps`, or a sub-role (`melee`, `ranged`). */
+export type RoleSlug = 'tank' | 'healer' | 'dps' | 'melee' | 'ranged';
+
+export const roleSlug = ({ role, subRole }: RoleKind): RoleSlug => subRole ?? role;
+
+/** `melee` → dps / melee; `tank` → tank; anything else → null. */
+export const roleKindOfSlug = (slug: string): RoleKind | null =>
+  ROLE_KINDS.find((k) => roleSlug(k) === slug) ?? null;
+
+/**
+ * The roles a class plays, in display order: tank, healer, then damage split into melee and
+ * ranged (a druid: tank, healer, melee, ranged; a mage: ranged). Empty for an unknown class.
+ */
+export function classRoleKinds(cls: ClassInput): RoleKind[] {
+  const specs = specsMatching({ class: cls });
+  return ROLE_KINDS.filter(
+    (k) =>
+      // Plain "dps" is never listed: damage is always split into melee and ranged
+      !(k.role === SpecRole.Dps && !k.subRole) &&
+      specs.some((sp) => sp.role === k.role && (!k.subRole || sp.subRole === k.subRole)),
+  );
+}

@@ -34,7 +34,7 @@
           "p": "**Dados técnicos da sua visita.** Quando seu navegador acessa nossos servidores, eles recebem seu endereço IP e os dados comuns da requisição, como o endereço solicitado, o horário e o agente de usuário do navegador. Usamos o endereço IP para limitar quantas requisições um visitante pode fazer por minuto, e nossos servidores podem registrar esses dados em logs de curta duração."
         },
         {
-          "p": "**Dados guardados no seu navegador.** O Rankwarden guarda suas configurações (facção, estilo de ícones, JxJ ou JxA, idioma, a última página de personagem que você abriu) e um token de acesso anônimo para a nossa API no armazenamento local do navegador. Isso fica no seu dispositivo; veja a seção sobre cookies e armazenamento local."
+          "p": "**Dados guardados no seu navegador.** O Rankwarden guarda suas configurações (facção, estilo de ícones, JxJ ou JxA, idioma, as últimas páginas de personagem e de guilda que você abriu) e um token de acesso anônimo para a nossa API no armazenamento local do navegador. Isso fica no seu dispositivo; veja a seção sobre cookies e armazenamento local."
         },
         {
           "p": "**Mensagens que você nos envia.** Se você nos mandar um e-mail, recebemos seu endereço de e-mail e o conteúdo da mensagem."
@@ -72,7 +72,7 @@
         },
         {
           "list": [
-            "farseer:preferences — a facção, o estilo de ícones, o modo de jogo e o idioma que você escolheu, e a última página de personagem JxJ que você abriu, para que o link \"Personagem\" do menu possa levar você de volta a ela.",
+            "farseer:preferences — a facção, o estilo de ícones, o modo de jogo e o idioma que você escolheu, e as últimas páginas de personagem JxJ, de personagem JxA e de guilda que você abriu, para que os links \"Personagem\" e \"Guilda\" do menu possam levar você de volta a elas.",
             "farseer:auth — um token de acesso anônimo que permite ao site ler dados da nossa API. Ele identifica uma sessão do navegador, não uma pessoa, vale por cerca de 10 minutos e é renovado por no máximo 12 horas."
           ]
         },

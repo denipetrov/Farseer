@@ -15,7 +15,7 @@ export const isGameMode = (v: unknown): v is GameMode =>
 
 /**
  * The mode a path belongs to, after its language (`/de/pve/...` → `pve`; `/pve` → `pve`),
- * or null for shared pages (`/de/character/...`).
+ * or null for pages outside both (`/de/privacy`).
  */
 export function gameModeOfPath(pathname: string): GameMode | null {
   const [, first, second] = pathname.split('/');
