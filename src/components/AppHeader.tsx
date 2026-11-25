@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router';
+import { useLayoutEffect, useRef } from 'react';
 import styled from 'styled-components';
 import logoUrl from '@/assets/images/logo/rankwarden-logo.svg';
 import { useI18n } from '@/i18n/useI18n';
@@ -8,6 +9,7 @@ import { AssetStyleToggle } from './header/AssetStyleToggle';
 import { GameModeToggle } from './header/GameModeToggle';
 import { LanguageSelect } from './header/LanguageSelect';
 import { MobileMenu } from './header/MobileMenu';
+import { SideNav } from './nav/SideNav';
 import { SearchBar } from './header/SearchBar';
 
 /**
@@ -22,12 +24,30 @@ import { SearchBar } from './header/SearchBar';
 export function AppHeader() {
   const [mode] = useGameMode();
   const { locale, t } = useI18n();
+  const ref = useRef<HTMLElement>(null);
+
+  // Publish the header's height as --header-height: the sticky sidebar sits right below it
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const root = document.documentElement;
+    const observer = new ResizeObserver(([entry]) => {
+      root.style.setProperty(
+        '--header-height',
+        `${Math.round(entry!.borderBoxSize[0]!.blockSize)}px`,
+      );
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <Header>
+    <Header ref={ref}>
       <Inner>
         <Menu>
-          <MobileMenu />
+          <MobileMenu>
+            <SideNav />
+          </MobileMenu>
         </Menu>
 
         <Start>

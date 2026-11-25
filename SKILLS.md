@@ -159,7 +159,7 @@ Through CORS, the browser can read the `retry-after` and `www-authenticate` head
   so a page can be shared and the back button works.
 - `validateSearch` with a plain function: TanStack treats its output type as the input
   type for `<Link search>`. So **make every search field optional** and apply defaults
-  when reading (see `leaderboards.tsx`). Drop invalid values to `undefined` instead of throwing.
+  when reading (see `$locale/pvp/leaderboards/$bracket.tsx`). Drop invalid values to `undefined` instead of throwing.
 - The router context carries `queryClient`. A loader can prime data with
   `context.queryClient.ensureQueryData(someQuery(...))`.
 - Route files are code-split by the plugin (`autoCodeSplitting`), and the
@@ -324,6 +324,57 @@ below).
 - In development the TanStack devtools buttons sit over the footer's corners; they are not
   in the production build.
 
+**The left menu** (`src/components/nav/`): the current game mode's site navigation.
+
+- **Where:** a sidebar on desktop (`Sidebar` in `__root.tsx`, 17.5rem). The column runs the
+  full height down to the footer and carries the border; the menu inside (`SidebarInner`)
+  is sticky right below the header and scrolls on its own. Don't make the column itself
+  sticky: its border then stops where the menu ends, which looked cut off. and the bottom of the mobile drawer (`<MobileMenu>`
+  children in `AppHeader`) at 820px and below. Only PvP has one (`hasSideNav(mode)`); PvE
+  shows none until its menu is built.
+- **The PvP menu** (`pvpNav.ts`, the user's order): Home · Character · Leaderboards (2v2,
+  3v3, Solo Shuffle, Battleground Blitz, Rated Battlegrounds) · Stats (Spec Representation,
+  Hero Talents, Cutoffs) · FOTM · Tier List · Archives. Links are `linkOptions(...)`, so
+  every target is type-checked against the routes. Icons are single-colour SVGs given by
+  their path under `icons/` (`nav/home`, `pvp/brackets/svg/2v2`, `nav/spec-representation`,
+  `nav/cutoffs`), drawn as masks by `NavGlyph` so they follow the text, hover and accent
+  colours. `pvpNav.test.ts` fails if an icon file is missing.
+- **Sizes** (the user chose the larger set): 17px text, 15.5px sub-items, 26px icons, 46px
+  rows, 42px sub-item rows (`ICON_SIZE`, `ROW_GAP` in `SideNav.tsx`).
+- **Optical sizing** (`src/lib/iconOptics.ts`): tall, thin icons (the Character helm, the
+  Solo Shuffle sword) cover far less of their square than wide ones and read as smaller,
+  so `NavGlyph` draws them larger (`transform: scale`, art untouched, layout unchanged). The
+  user chose "equal visual size": `factor = min(1.4, 0.87 / √(width × height))`, where width
+  and height are the share of the 64px canvas the drawing covers (render the SVG at 256px,
+  measure the alpha bounding box). **Re-measure when an icon is added or redrawn**, and add
+  it to the table if its factor is 1.02 or more.
+- **Behaviour:** the current page has the accent bar (TanStack's `data-status='active'`;
+  Home is exact). A section (Leaderboards, Stats) is a button with `aria-expanded`; it
+  opens on click and by itself when its page is opened another way. A collapsed list uses
+  `hidden`, which needs `&[hidden] { display: none }` because the list's own `display: flex`
+  overrides the browser's default.
+- **Styling a router Link:** `styled(Link)` loses the router's types (a typed `to` or a
+  spread `linkOptions` won't compile). Wrap a plain `<Link>` in a styled element that
+  styles its `> a` (`RowFrame`), or pass a plain string `to` (the logo links).
+- **`--header-height`:** `AppHeader` publishes its height as this CSS variable (a
+  ResizeObserver), for anything that must sit right below the sticky header.
+
+**PvP pages** (`src/routes/$locale/pvp/`), all placeholders (`ComingSoonPage`: title, icon,
+"being built") until their content is built:
+
+- `leaderboards/$bracket` (`2v2`, `3v3`, `shuffle`, `blitz`, `rbg`; anything else is not
+  found; search params `region` and `page`, both optional). `leaderboards/` opens 2v2.
+- `stats/representation`, `stats/hero-talents`, `stats/cutoffs`; `stats/` opens Spec
+  Representation. `fotm` (will read `/pvp/spec-representation/history`), `tier-list`,
+  `archives`.
+- `character/$region/$realm/$name`: the PvP character page. Opening one saves it as the
+  preference `lastPvpCharacter`. PvP search results open it.
+- `character/` (the menu's Character link) has no page: it redirects to `lastPvpCharacter`,
+  else to the World Solo Shuffle #1 (`currentSeasonQuery`: `/pvp/cutoffs?region=world` gives
+  the current `seasonId`; then `/pvp/leaderboard?region=world&bracket=shuffle&pageSize=1`).
+  It shows "Finding the top Solo Shuffle player…" while that loads, and a hint to use the
+  search if it fails. `src/api/pvp.ts` holds these queries and the bracket list.
+
 **Back to top** (`src/components/ScrollTopButton.tsx`, in `__root.tsx`): a 48px round button
 fixed at the bottom right (desktop and mobile, clear of the phone's safe areas) with
 `nav/scroll-top.svg` drawn in the accent. It appears after 600px of scrolling, so short
@@ -395,7 +446,8 @@ Navigation icons (`icons/nav/*.svg`) are monochrome `currentColor` SVGs coloured
 faction accent, except `bosses.svg` (fixed fel green) and `guild-{alliance,horde}.svg`
 (metal via `var(--color-trim)`), which must be inlined. One-look PNG families read by path
 with `iconUrl()`: `game-modes/` (pvp, pve, mplus, raid), `places/` (place-1..3 badges) and
-`info/` (item-level, deaths, vantus-rune, gems, embellishments, enchants, tier-set, unknown, in the role icons' round frame) `pvp/brackets/` (named by bracket slug: 2v2, 3v3, rbg, shuffle, blitz), `styles/`
+`info/` (item-level, deaths, vantus-rune, gems, embellishments, enchants, tier-set, unknown, in the role icons' round frame) `pvp/brackets/` (named by bracket slug: 2v2, 3v3, rbg, shuffle, blitz; single-colour SVG
+versions in `pvp/brackets/svg/`), `styles/`
 (classic/modern header switch, per faction: `<style>-<faction>`) and `difficulty/`
 (normal, heroic, mythic; SVG versions in `difficulty/svg/`, because `iconUrl` keys by path
 without extension, so a same-named .png and .svg in one folder clash). See the assets
@@ -543,8 +595,10 @@ README. `src/assets/README.md` has the rules. The key concept:
   - The inline script in `index.html` applies the faction before the page first draws, to
     avoid a colour flash. It reads the same key, so keep it in step if the structure changes.
 - **Preferences now:** `faction` (horde | alliance), `assetStyle` (modern | classic),
-  `gameMode` (pvp | pve, default pvp) and `locale` (a language slug, or null until one is
-  chosen, so a first visit follows the browser). `gameMode` and `locale` are read outside
+  `gameMode` (pvp | pve, default pvp), `locale` (a language slug, or null until one is
+  chosen, so a first visit follows the browser) and `lastPvpCharacter` (`{ region, realm,
+name }` of the last PvP character page opened, or null). The privacy policy lists what is
+  stored: **update it in all eight languages when a preference is added.** `gameMode` and `locale` are read outside
   React by the redirects.
   `readPreferences` validates each field on its own and drops unknown keys.
 - **localStorage keys:** `farseer:preferences` and `farseer:auth`. Prefix new keys with `farseer:`.
@@ -683,14 +737,14 @@ cluster has been done.
   - the complete auth flow and API client;
   - the `ApiStatus` indicator (`GET /session`) on the mode homes;
   - CI/CD and the chart.
-- **Placeholders:** the `/pvp` and `/pve` homes (`ModeHome`), and the leaderboards, character and guild pages render their parameters
-  but don't fetch data yet. The `/leaderboards` search is `region`, `realm`, `page`, and
-  must change to what `/pvp/leaderboard` needs (`seasonId`, `bracket`, optional
-  `class`/`spec`, `pageSize`), plus a way to choose PvP or Mythic+.
-- **Open question:** character and guild pages sit outside `/pvp` and `/pve`, but Soulseeker
-  has separate PvP and PvE character endpoints. Decide whether they move under the mode
-  prefixes before building them.
-- **Not built yet:** endpoint modules (`pvp.ts`, `pve.ts`), Turnstile support on the
+- **Placeholders:** the `/pvp` and `/pve` homes (`ModeHome`), every PvP menu page, the PvP
+  character page, and the PvE character and guild pages render their titles or parameters
+  but don't fetch data yet.
+- **Routing decision (2026-11-25):** each mode's pages live under its prefix. The PvP
+  character page is `/<lang>/pvp/character/…`. PvE character and guild pages are still at
+  `/<lang>/character/…` and `/<lang>/guild/…`; move them under `/pve` with the PvE menu.
+- **Not built yet:** the PvE menu, most of `src/api/pvp.ts` (only seasons and the
+  leaderboard so far), `pve.ts`, Turnstile support on the
   token request (Soulseeker has it off), and logout or revocation (`POST /oidc/token/revocation`).
 
 ---

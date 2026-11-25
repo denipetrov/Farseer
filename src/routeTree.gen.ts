@@ -12,13 +12,23 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LocaleRouteRouteImport } from './routes/$locale/route'
 import { Route as LocaleIndexRouteImport } from './routes/$locale/index'
-import { Route as LocaleLeaderboardsRouteImport } from './routes/$locale/leaderboards'
 import { Route as LocalePrivacyRouteImport } from './routes/$locale/privacy'
 import { Route as LocaleTermsRouteImport } from './routes/$locale/terms'
 import { Route as LocalePveIndexRouteImport } from './routes/$locale/pve/index'
 import { Route as LocalePvpIndexRouteImport } from './routes/$locale/pvp/index'
+import { Route as LocalePvpArchivesRouteImport } from './routes/$locale/pvp/archives'
+import { Route as LocalePvpFotmRouteImport } from './routes/$locale/pvp/fotm'
+import { Route as LocalePvpTierListRouteImport } from './routes/$locale/pvp/tier-list'
+import { Route as LocalePvpCharacterIndexRouteImport } from './routes/$locale/pvp/character/index'
+import { Route as LocalePvpLeaderboardsIndexRouteImport } from './routes/$locale/pvp/leaderboards/index'
+import { Route as LocalePvpLeaderboardsBracketRouteImport } from './routes/$locale/pvp/leaderboards/$bracket'
+import { Route as LocalePvpStatsIndexRouteImport } from './routes/$locale/pvp/stats/index'
+import { Route as LocalePvpStatsCutoffsRouteImport } from './routes/$locale/pvp/stats/cutoffs'
+import { Route as LocalePvpStatsHeroTalentsRouteImport } from './routes/$locale/pvp/stats/hero-talents'
+import { Route as LocalePvpStatsRepresentationRouteImport } from './routes/$locale/pvp/stats/representation'
 import { Route as LocaleCharacterRegionRealmNameRouteImport } from './routes/$locale/character/$region.$realm.$name'
 import { Route as LocaleGuildRegionRealmNameRouteImport } from './routes/$locale/guild/$region.$realm.$name'
+import { Route as LocalePvpCharacterRegionRealmNameRouteImport } from './routes/$locale/pvp/character/$region.$realm.$name'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -33,11 +43,6 @@ const LocaleRouteRoute = LocaleRouteRouteImport.update({
 const LocaleIndexRoute = LocaleIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => LocaleRouteRoute,
-} as any)
-const LocaleLeaderboardsRoute = LocaleLeaderboardsRouteImport.update({
-  id: '/leaderboards',
-  path: '/leaderboards',
   getParentRoute: () => LocaleRouteRoute,
 } as any)
 const LocalePrivacyRoute = LocalePrivacyRouteImport.update({
@@ -60,6 +65,60 @@ const LocalePvpIndexRoute = LocalePvpIndexRouteImport.update({
   path: '/pvp/',
   getParentRoute: () => LocaleRouteRoute,
 } as any)
+const LocalePvpArchivesRoute = LocalePvpArchivesRouteImport.update({
+  id: '/pvp/archives',
+  path: '/pvp/archives',
+  getParentRoute: () => LocaleRouteRoute,
+} as any)
+const LocalePvpFotmRoute = LocalePvpFotmRouteImport.update({
+  id: '/pvp/fotm',
+  path: '/pvp/fotm',
+  getParentRoute: () => LocaleRouteRoute,
+} as any)
+const LocalePvpTierListRoute = LocalePvpTierListRouteImport.update({
+  id: '/pvp/tier-list',
+  path: '/pvp/tier-list',
+  getParentRoute: () => LocaleRouteRoute,
+} as any)
+const LocalePvpCharacterIndexRoute = LocalePvpCharacterIndexRouteImport.update({
+  id: '/pvp/character/',
+  path: '/pvp/character/',
+  getParentRoute: () => LocaleRouteRoute,
+} as any)
+const LocalePvpLeaderboardsIndexRoute =
+  LocalePvpLeaderboardsIndexRouteImport.update({
+    id: '/pvp/leaderboards/',
+    path: '/pvp/leaderboards/',
+    getParentRoute: () => LocaleRouteRoute,
+  } as any)
+const LocalePvpLeaderboardsBracketRoute =
+  LocalePvpLeaderboardsBracketRouteImport.update({
+    id: '/pvp/leaderboards/$bracket',
+    path: '/pvp/leaderboards/$bracket',
+    getParentRoute: () => LocaleRouteRoute,
+  } as any)
+const LocalePvpStatsIndexRoute = LocalePvpStatsIndexRouteImport.update({
+  id: '/pvp/stats/',
+  path: '/pvp/stats/',
+  getParentRoute: () => LocaleRouteRoute,
+} as any)
+const LocalePvpStatsCutoffsRoute = LocalePvpStatsCutoffsRouteImport.update({
+  id: '/pvp/stats/cutoffs',
+  path: '/pvp/stats/cutoffs',
+  getParentRoute: () => LocaleRouteRoute,
+} as any)
+const LocalePvpStatsHeroTalentsRoute =
+  LocalePvpStatsHeroTalentsRouteImport.update({
+    id: '/pvp/stats/hero-talents',
+    path: '/pvp/stats/hero-talents',
+    getParentRoute: () => LocaleRouteRoute,
+  } as any)
+const LocalePvpStatsRepresentationRoute =
+  LocalePvpStatsRepresentationRouteImport.update({
+    id: '/pvp/stats/representation',
+    path: '/pvp/stats/representation',
+    getParentRoute: () => LocaleRouteRoute,
+  } as any)
 const LocaleCharacterRegionRealmNameRoute =
   LocaleCharacterRegionRealmNameRouteImport.update({
     id: '/character/$region/$realm/$name',
@@ -72,79 +131,145 @@ const LocaleGuildRegionRealmNameRoute =
     path: '/guild/$region/$realm/$name',
     getParentRoute: () => LocaleRouteRoute,
   } as any)
+const LocalePvpCharacterRegionRealmNameRoute =
+  LocalePvpCharacterRegionRealmNameRouteImport.update({
+    id: '/pvp/character/$region/$realm/$name',
+    path: '/pvp/character/$region/$realm/$name',
+    getParentRoute: () => LocaleRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$locale': typeof LocaleRouteRouteWithChildren
-  '/$locale/leaderboards': typeof LocaleLeaderboardsRoute
   '/$locale/privacy': typeof LocalePrivacyRoute
   '/$locale/terms': typeof LocaleTermsRoute
   '/$locale/': typeof LocaleIndexRoute
+  '/$locale/pvp/archives': typeof LocalePvpArchivesRoute
+  '/$locale/pvp/fotm': typeof LocalePvpFotmRoute
+  '/$locale/pvp/tier-list': typeof LocalePvpTierListRoute
   '/$locale/pve/': typeof LocalePveIndexRoute
   '/$locale/pvp/': typeof LocalePvpIndexRoute
+  '/$locale/pvp/leaderboards/$bracket': typeof LocalePvpLeaderboardsBracketRoute
+  '/$locale/pvp/stats/cutoffs': typeof LocalePvpStatsCutoffsRoute
+  '/$locale/pvp/stats/hero-talents': typeof LocalePvpStatsHeroTalentsRoute
+  '/$locale/pvp/stats/representation': typeof LocalePvpStatsRepresentationRoute
+  '/$locale/pvp/character/': typeof LocalePvpCharacterIndexRoute
+  '/$locale/pvp/leaderboards/': typeof LocalePvpLeaderboardsIndexRoute
+  '/$locale/pvp/stats/': typeof LocalePvpStatsIndexRoute
   '/$locale/character/$region/$realm/$name': typeof LocaleCharacterRegionRealmNameRoute
   '/$locale/guild/$region/$realm/$name': typeof LocaleGuildRegionRealmNameRoute
+  '/$locale/pvp/character/$region/$realm/$name': typeof LocalePvpCharacterRegionRealmNameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/$locale/leaderboards': typeof LocaleLeaderboardsRoute
   '/$locale/privacy': typeof LocalePrivacyRoute
   '/$locale/terms': typeof LocaleTermsRoute
   '/$locale': typeof LocaleIndexRoute
+  '/$locale/pvp/archives': typeof LocalePvpArchivesRoute
+  '/$locale/pvp/fotm': typeof LocalePvpFotmRoute
+  '/$locale/pvp/tier-list': typeof LocalePvpTierListRoute
   '/$locale/pve': typeof LocalePveIndexRoute
   '/$locale/pvp': typeof LocalePvpIndexRoute
+  '/$locale/pvp/leaderboards/$bracket': typeof LocalePvpLeaderboardsBracketRoute
+  '/$locale/pvp/stats/cutoffs': typeof LocalePvpStatsCutoffsRoute
+  '/$locale/pvp/stats/hero-talents': typeof LocalePvpStatsHeroTalentsRoute
+  '/$locale/pvp/stats/representation': typeof LocalePvpStatsRepresentationRoute
+  '/$locale/pvp/character': typeof LocalePvpCharacterIndexRoute
+  '/$locale/pvp/leaderboards': typeof LocalePvpLeaderboardsIndexRoute
+  '/$locale/pvp/stats': typeof LocalePvpStatsIndexRoute
   '/$locale/character/$region/$realm/$name': typeof LocaleCharacterRegionRealmNameRoute
   '/$locale/guild/$region/$realm/$name': typeof LocaleGuildRegionRealmNameRoute
+  '/$locale/pvp/character/$region/$realm/$name': typeof LocalePvpCharacterRegionRealmNameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$locale': typeof LocaleRouteRouteWithChildren
-  '/$locale/leaderboards': typeof LocaleLeaderboardsRoute
   '/$locale/privacy': typeof LocalePrivacyRoute
   '/$locale/terms': typeof LocaleTermsRoute
   '/$locale/': typeof LocaleIndexRoute
+  '/$locale/pvp/archives': typeof LocalePvpArchivesRoute
+  '/$locale/pvp/fotm': typeof LocalePvpFotmRoute
+  '/$locale/pvp/tier-list': typeof LocalePvpTierListRoute
   '/$locale/pve/': typeof LocalePveIndexRoute
   '/$locale/pvp/': typeof LocalePvpIndexRoute
+  '/$locale/pvp/leaderboards/$bracket': typeof LocalePvpLeaderboardsBracketRoute
+  '/$locale/pvp/stats/cutoffs': typeof LocalePvpStatsCutoffsRoute
+  '/$locale/pvp/stats/hero-talents': typeof LocalePvpStatsHeroTalentsRoute
+  '/$locale/pvp/stats/representation': typeof LocalePvpStatsRepresentationRoute
+  '/$locale/pvp/character/': typeof LocalePvpCharacterIndexRoute
+  '/$locale/pvp/leaderboards/': typeof LocalePvpLeaderboardsIndexRoute
+  '/$locale/pvp/stats/': typeof LocalePvpStatsIndexRoute
   '/$locale/character/$region/$realm/$name': typeof LocaleCharacterRegionRealmNameRoute
   '/$locale/guild/$region/$realm/$name': typeof LocaleGuildRegionRealmNameRoute
+  '/$locale/pvp/character/$region/$realm/$name': typeof LocalePvpCharacterRegionRealmNameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/$locale'
-    | '/$locale/leaderboards'
     | '/$locale/privacy'
     | '/$locale/terms'
     | '/$locale/'
+    | '/$locale/pvp/archives'
+    | '/$locale/pvp/fotm'
+    | '/$locale/pvp/tier-list'
     | '/$locale/pve/'
     | '/$locale/pvp/'
+    | '/$locale/pvp/leaderboards/$bracket'
+    | '/$locale/pvp/stats/cutoffs'
+    | '/$locale/pvp/stats/hero-talents'
+    | '/$locale/pvp/stats/representation'
+    | '/$locale/pvp/character/'
+    | '/$locale/pvp/leaderboards/'
+    | '/$locale/pvp/stats/'
     | '/$locale/character/$region/$realm/$name'
     | '/$locale/guild/$region/$realm/$name'
+    | '/$locale/pvp/character/$region/$realm/$name'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/$locale/leaderboards'
     | '/$locale/privacy'
     | '/$locale/terms'
     | '/$locale'
+    | '/$locale/pvp/archives'
+    | '/$locale/pvp/fotm'
+    | '/$locale/pvp/tier-list'
     | '/$locale/pve'
     | '/$locale/pvp'
+    | '/$locale/pvp/leaderboards/$bracket'
+    | '/$locale/pvp/stats/cutoffs'
+    | '/$locale/pvp/stats/hero-talents'
+    | '/$locale/pvp/stats/representation'
+    | '/$locale/pvp/character'
+    | '/$locale/pvp/leaderboards'
+    | '/$locale/pvp/stats'
     | '/$locale/character/$region/$realm/$name'
     | '/$locale/guild/$region/$realm/$name'
+    | '/$locale/pvp/character/$region/$realm/$name'
   id:
     | '__root__'
     | '/'
     | '/$locale'
-    | '/$locale/leaderboards'
     | '/$locale/privacy'
     | '/$locale/terms'
     | '/$locale/'
+    | '/$locale/pvp/archives'
+    | '/$locale/pvp/fotm'
+    | '/$locale/pvp/tier-list'
     | '/$locale/pve/'
     | '/$locale/pvp/'
+    | '/$locale/pvp/leaderboards/$bracket'
+    | '/$locale/pvp/stats/cutoffs'
+    | '/$locale/pvp/stats/hero-talents'
+    | '/$locale/pvp/stats/representation'
+    | '/$locale/pvp/character/'
+    | '/$locale/pvp/leaderboards/'
+    | '/$locale/pvp/stats/'
     | '/$locale/character/$region/$realm/$name'
     | '/$locale/guild/$region/$realm/$name'
+    | '/$locale/pvp/character/$region/$realm/$name'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -175,13 +300,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocaleIndexRouteImport
       parentRoute: typeof LocaleRouteRoute
     }
-    '/$locale/leaderboards': {
-      id: '/$locale/leaderboards'
-      path: '/leaderboards'
-      fullPath: '/$locale/leaderboards'
-      preLoaderRoute: typeof LocaleLeaderboardsRouteImport
-      parentRoute: typeof LocaleRouteRoute
-    }
     '/$locale/privacy': {
       id: '/$locale/privacy'
       path: '/privacy'
@@ -210,6 +328,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocalePvpIndexRouteImport
       parentRoute: typeof LocaleRouteRoute
     }
+    '/$locale/pvp/archives': {
+      id: '/$locale/pvp/archives'
+      path: '/pvp/archives'
+      fullPath: '/$locale/pvp/archives'
+      preLoaderRoute: typeof LocalePvpArchivesRouteImport
+      parentRoute: typeof LocaleRouteRoute
+    }
+    '/$locale/pvp/fotm': {
+      id: '/$locale/pvp/fotm'
+      path: '/pvp/fotm'
+      fullPath: '/$locale/pvp/fotm'
+      preLoaderRoute: typeof LocalePvpFotmRouteImport
+      parentRoute: typeof LocaleRouteRoute
+    }
+    '/$locale/pvp/tier-list': {
+      id: '/$locale/pvp/tier-list'
+      path: '/pvp/tier-list'
+      fullPath: '/$locale/pvp/tier-list'
+      preLoaderRoute: typeof LocalePvpTierListRouteImport
+      parentRoute: typeof LocaleRouteRoute
+    }
+    '/$locale/pvp/character/': {
+      id: '/$locale/pvp/character/'
+      path: '/pvp/character'
+      fullPath: '/$locale/pvp/character/'
+      preLoaderRoute: typeof LocalePvpCharacterIndexRouteImport
+      parentRoute: typeof LocaleRouteRoute
+    }
+    '/$locale/pvp/leaderboards/': {
+      id: '/$locale/pvp/leaderboards/'
+      path: '/pvp/leaderboards'
+      fullPath: '/$locale/pvp/leaderboards/'
+      preLoaderRoute: typeof LocalePvpLeaderboardsIndexRouteImport
+      parentRoute: typeof LocaleRouteRoute
+    }
+    '/$locale/pvp/leaderboards/$bracket': {
+      id: '/$locale/pvp/leaderboards/$bracket'
+      path: '/pvp/leaderboards/$bracket'
+      fullPath: '/$locale/pvp/leaderboards/$bracket'
+      preLoaderRoute: typeof LocalePvpLeaderboardsBracketRouteImport
+      parentRoute: typeof LocaleRouteRoute
+    }
+    '/$locale/pvp/stats/': {
+      id: '/$locale/pvp/stats/'
+      path: '/pvp/stats'
+      fullPath: '/$locale/pvp/stats/'
+      preLoaderRoute: typeof LocalePvpStatsIndexRouteImport
+      parentRoute: typeof LocaleRouteRoute
+    }
+    '/$locale/pvp/stats/cutoffs': {
+      id: '/$locale/pvp/stats/cutoffs'
+      path: '/pvp/stats/cutoffs'
+      fullPath: '/$locale/pvp/stats/cutoffs'
+      preLoaderRoute: typeof LocalePvpStatsCutoffsRouteImport
+      parentRoute: typeof LocaleRouteRoute
+    }
+    '/$locale/pvp/stats/hero-talents': {
+      id: '/$locale/pvp/stats/hero-talents'
+      path: '/pvp/stats/hero-talents'
+      fullPath: '/$locale/pvp/stats/hero-talents'
+      preLoaderRoute: typeof LocalePvpStatsHeroTalentsRouteImport
+      parentRoute: typeof LocaleRouteRoute
+    }
+    '/$locale/pvp/stats/representation': {
+      id: '/$locale/pvp/stats/representation'
+      path: '/pvp/stats/representation'
+      fullPath: '/$locale/pvp/stats/representation'
+      preLoaderRoute: typeof LocalePvpStatsRepresentationRouteImport
+      parentRoute: typeof LocaleRouteRoute
+    }
     '/$locale/character/$region/$realm/$name': {
       id: '/$locale/character/$region/$realm/$name'
       path: '/character/$region/$realm/$name'
@@ -224,29 +412,57 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocaleGuildRegionRealmNameRouteImport
       parentRoute: typeof LocaleRouteRoute
     }
+    '/$locale/pvp/character/$region/$realm/$name': {
+      id: '/$locale/pvp/character/$region/$realm/$name'
+      path: '/pvp/character/$region/$realm/$name'
+      fullPath: '/$locale/pvp/character/$region/$realm/$name'
+      preLoaderRoute: typeof LocalePvpCharacterRegionRealmNameRouteImport
+      parentRoute: typeof LocaleRouteRoute
+    }
   }
 }
 
 interface LocaleRouteRouteChildren {
-  LocaleLeaderboardsRoute: typeof LocaleLeaderboardsRoute
   LocalePrivacyRoute: typeof LocalePrivacyRoute
   LocaleTermsRoute: typeof LocaleTermsRoute
   LocaleIndexRoute: typeof LocaleIndexRoute
+  LocalePvpArchivesRoute: typeof LocalePvpArchivesRoute
+  LocalePvpFotmRoute: typeof LocalePvpFotmRoute
+  LocalePvpTierListRoute: typeof LocalePvpTierListRoute
   LocalePveIndexRoute: typeof LocalePveIndexRoute
   LocalePvpIndexRoute: typeof LocalePvpIndexRoute
+  LocalePvpLeaderboardsBracketRoute: typeof LocalePvpLeaderboardsBracketRoute
+  LocalePvpStatsCutoffsRoute: typeof LocalePvpStatsCutoffsRoute
+  LocalePvpStatsHeroTalentsRoute: typeof LocalePvpStatsHeroTalentsRoute
+  LocalePvpStatsRepresentationRoute: typeof LocalePvpStatsRepresentationRoute
+  LocalePvpCharacterIndexRoute: typeof LocalePvpCharacterIndexRoute
+  LocalePvpLeaderboardsIndexRoute: typeof LocalePvpLeaderboardsIndexRoute
+  LocalePvpStatsIndexRoute: typeof LocalePvpStatsIndexRoute
   LocaleCharacterRegionRealmNameRoute: typeof LocaleCharacterRegionRealmNameRoute
   LocaleGuildRegionRealmNameRoute: typeof LocaleGuildRegionRealmNameRoute
+  LocalePvpCharacterRegionRealmNameRoute: typeof LocalePvpCharacterRegionRealmNameRoute
 }
 
 const LocaleRouteRouteChildren: LocaleRouteRouteChildren = {
-  LocaleLeaderboardsRoute: LocaleLeaderboardsRoute,
   LocalePrivacyRoute: LocalePrivacyRoute,
   LocaleTermsRoute: LocaleTermsRoute,
   LocaleIndexRoute: LocaleIndexRoute,
+  LocalePvpArchivesRoute: LocalePvpArchivesRoute,
+  LocalePvpFotmRoute: LocalePvpFotmRoute,
+  LocalePvpTierListRoute: LocalePvpTierListRoute,
   LocalePveIndexRoute: LocalePveIndexRoute,
   LocalePvpIndexRoute: LocalePvpIndexRoute,
+  LocalePvpLeaderboardsBracketRoute: LocalePvpLeaderboardsBracketRoute,
+  LocalePvpStatsCutoffsRoute: LocalePvpStatsCutoffsRoute,
+  LocalePvpStatsHeroTalentsRoute: LocalePvpStatsHeroTalentsRoute,
+  LocalePvpStatsRepresentationRoute: LocalePvpStatsRepresentationRoute,
+  LocalePvpCharacterIndexRoute: LocalePvpCharacterIndexRoute,
+  LocalePvpLeaderboardsIndexRoute: LocalePvpLeaderboardsIndexRoute,
+  LocalePvpStatsIndexRoute: LocalePvpStatsIndexRoute,
   LocaleCharacterRegionRealmNameRoute: LocaleCharacterRegionRealmNameRoute,
   LocaleGuildRegionRealmNameRoute: LocaleGuildRegionRealmNameRoute,
+  LocalePvpCharacterRegionRealmNameRoute:
+    LocalePvpCharacterRegionRealmNameRoute,
 }
 
 const LocaleRouteRouteWithChildren = LocaleRouteRoute._addFileChildren(

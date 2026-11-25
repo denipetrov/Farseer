@@ -21,6 +21,18 @@ export interface Preferences {
    * a first visit then follows the browser's language.
    */
   locale: LocaleSlug | null;
+  /**
+   * The last PvP character page opened, so the menu's Character link can return to it.
+   * Null until one is opened (the link then opens the top Solo Shuffle player).
+   */
+  lastPvpCharacter: CharacterRef | null;
+}
+
+/** A character page's address: region, realm slug and name as in its URL. */
+export interface CharacterRef {
+  region: string;
+  realm: string;
+  name: string;
 }
 
 export const defaultPreferences: Preferences = {
@@ -28,9 +40,24 @@ export const defaultPreferences: Preferences = {
   assetStyle: DEFAULT_ASSET_STYLE,
   gameMode: DEFAULT_GAME_MODE,
   locale: null,
+  lastPvpCharacter: null,
 };
 
 const isFaction = (v: unknown): v is Faction => v === 'horde' || v === 'alliance';
+
+const isShortText = (v: unknown): v is string =>
+  typeof v === 'string' && v.length > 0 && v.length <= 64;
+
+export const isCharacterRef = (v: unknown): v is CharacterRef => {
+  const r = v as Partial<CharacterRef> | null;
+  return (
+    typeof r === 'object' &&
+    r !== null &&
+    isShortText(r.region) &&
+    isShortText(r.realm) &&
+    isShortText(r.name)
+  );
+};
 
 /** Each field is validated on its own: one bad value never resets the others. */
 export function readPreferences(): Preferences {
@@ -45,6 +72,13 @@ export function readPreferences(): Preferences {
         : defaultPreferences.assetStyle,
       gameMode: isGameMode(parsed.gameMode) ? parsed.gameMode : defaultPreferences.gameMode,
       locale: isLocaleSlug(parsed.locale) ? parsed.locale : defaultPreferences.locale,
+      lastPvpCharacter: isCharacterRef(parsed.lastPvpCharacter)
+        ? {
+            region: parsed.lastPvpCharacter.region,
+            realm: parsed.lastPvpCharacter.realm,
+            name: parsed.lastPvpCharacter.name,
+          }
+        : defaultPreferences.lastPvpCharacter,
     };
   } catch {
     return defaultPreferences;

@@ -18,6 +18,7 @@ describe('preferences storage', () => {
       assetStyle: 'classic',
       gameMode: 'pve',
       locale: 'de',
+      lastPvpCharacter: { region: 'eu', realm: 'draenor', name: 'Biba' },
     } as const;
     writePreferences(prefs);
     expect(readPreferences()).toEqual(prefs);
@@ -39,6 +40,7 @@ describe('preferences storage', () => {
       assetStyle: 'modern',
       gameMode: 'pvp',
       locale: null,
+      lastPvpCharacter: null,
     });
   });
 
@@ -52,6 +54,7 @@ describe('preferences storage', () => {
       assetStyle: 'classic',
       gameMode: 'pvp',
       locale: null,
+      lastPvpCharacter: null,
     });
   });
 
@@ -61,5 +64,22 @@ describe('preferences storage', () => {
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ faction: 'scourge' }));
     expect(readPreferences().faction).toBe('horde');
+  });
+
+  it('keeps a valid last PvP character and drops a malformed one', () => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ lastPvpCharacter: { region: 'us', realm: 'illidan', name: 'X', extra: 1 } }),
+    );
+    expect(readPreferences().lastPvpCharacter).toEqual({
+      region: 'us',
+      realm: 'illidan',
+      name: 'X',
+    });
+
+    for (const bad of [{ region: 'us' }, 'Biba', { region: '', realm: 'a', name: 'b' }, 7]) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ lastPvpCharacter: bad }));
+      expect(readPreferences().lastPvpCharacter).toBeNull();
+    }
   });
 });

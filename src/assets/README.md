@@ -127,6 +127,12 @@ gold (mythic, fanged skull with red eyes).
 - `shuffle.png`: a classic orange-guarded sword with a glowing coin (cut from a model
   render, set upright), on a dark red field in the DPS frame.
 - Read them by path with `iconUrl('pvp/brackets/2v2')`.
+- SVG versions in `pvp/brackets/svg/<bracket>.svg` (a subfolder, because `iconUrl` keys by
+  path without extension): single-colour `currentColor` drawings without the round frame,
+  detail from a lighter shade (`fill-opacity`) and cut-out gaps, like the nav icons. `2v2`
+  two crossed battle axes; `3v3` three swords pointing down; `shuffle` the classic sword,
+  upright; `rbg` the charging flag carrier traced from the RBG/Blitz art; `blitz` the same
+  carrier with a stopwatch behind it. Mask ids are `rw-<bracket>-…`.
 
 ### Specs and hero talents
 
@@ -168,6 +174,11 @@ accent in both factions. No frame, no text.
 - `stats.svg`: a line graph (L axes, rising line with data points, area under it in a lighter
   shade).
 - `rating.svg`: the stats line graph ending in a star instead of a last data point.
+- `spec-representation.svg`: a bar chart on the stats axes, five columns tallest to
+  shortest, rounded solid tops over lighter bodies.
+- `cutoffs.svg`: a straight rising line on the stats axes (area under it lighter) ending at
+  an open treasure chest full of gold (lid open, coins, lighter wood, hasp and lock) with two
+  sparkles.
 - `flavour-of-the-month.svg`: the most popular specs right now. A calendar page (lighter)
   with a flame on it as the dates and a small rising trend arrow in the header band as the
   month (kept apart from the band by a gap).

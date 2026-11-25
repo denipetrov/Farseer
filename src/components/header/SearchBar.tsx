@@ -81,10 +81,18 @@ export function SearchBar() {
     (document.activeElement as HTMLElement | null)?.blur();
     const { region, realmSlug } = item.data;
     if (item.kind === 'character') {
-      void navigate({
-        to: '/$locale/character/$region/$realm/$name',
-        params: { locale: locale.slug, region, realm: realmSlug, name: item.data.characterName },
-      });
+      const params = {
+        locale: locale.slug,
+        region,
+        realm: realmSlug,
+        name: item.data.characterName,
+      };
+      // PvP characters have their page under /pvp; PvE's stay at /character until the PvE menu
+      void navigate(
+        mode === 'pvp'
+          ? { to: '/$locale/pvp/character/$region/$realm/$name', params }
+          : { to: '/$locale/character/$region/$realm/$name', params },
+      );
     } else {
       void navigate({
         to: '/$locale/guild/$region/$realm/$name',
