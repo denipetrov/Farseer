@@ -4,6 +4,7 @@ import { lazy, Suspense } from 'react';
 import styled from 'styled-components';
 import { AppFooter } from '@/components/AppFooter';
 import { AppHeader } from '@/components/AppHeader';
+import { ScrollTopButton } from '@/components/ScrollTopButton';
 import { Page, PageTitle, Muted } from '@/components/Page';
 import { resolveLocaleSlug } from '@/i18n/locales';
 import { preferredLocale } from '@/i18n/preferredLocale';
@@ -22,7 +23,11 @@ const Devtools = import.meta.env.DEV
       return {
         default: () => (
           <>
-            <TanStackRouterDevtools position="bottom-right" />
+            {/* Bottom left, beside React Query's button: bottom right is the back-to-top button */}
+            <TanStackRouterDevtools
+              position="bottom-left"
+              toggleButtonProps={{ style: { left: '84px' } }}
+            />
             <ReactQueryDevtools buttonPosition="bottom-left" />
           </>
         ),
@@ -79,6 +84,7 @@ function RootLayout() {
         <Outlet />
       </Content>
       <AppFooter />
+      <ScrollTopButton />
       <Suspense>
         <Devtools />
       </Suspense>

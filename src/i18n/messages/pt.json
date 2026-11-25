@@ -66,5 +66,6 @@
   "legal.updated": "Última atualização: {date}",
   "legal.contents": "Índice",
   "legal.inShort": "Em resumo:",
-  "legal.englishOnly": "Este documento está disponível no momento em inglês. Em breve haverá uma tradução."
+  "legal.englishOnly": "Este documento está disponível no momento em inglês. Em breve haverá uma tradução.",
+  "scrollTop": "Voltar ao topo"
 }

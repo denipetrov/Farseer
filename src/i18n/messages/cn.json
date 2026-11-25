@@ -66,5 +66,6 @@
   "legal.updated": "最后更新：{date}",
   "legal.contents": "目录",
   "legal.inShort": "简而言之：",
-  "legal.englishOnly": "本文档目前仅提供英文版本，译文即将推出。"
+  "legal.englishOnly": "本文档目前仅提供英文版本，译文即将推出。",
+  "scrollTop": "返回顶部"
 }

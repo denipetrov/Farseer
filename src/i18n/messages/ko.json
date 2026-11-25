@@ -66,5 +66,6 @@
   "legal.updated": "최종 업데이트: {date}",
   "legal.contents": "목차",
   "legal.inShort": "요약:",
-  "legal.englishOnly": "이 문서는 현재 영어로만 제공됩니다. 번역이 곧 추가됩니다."
+  "legal.englishOnly": "이 문서는 현재 영어로만 제공됩니다. 번역이 곧 추가됩니다.",
+  "scrollTop": "맨 위로"
 }

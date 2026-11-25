@@ -324,6 +324,13 @@ below).
 - In development the TanStack devtools buttons sit over the footer's corners; they are not
   in the production build.
 
+**Back to top** (`src/components/ScrollTopButton.tsx`, in `__root.tsx`): a 48px round button
+fixed at the bottom right (desktop and mobile, clear of the phone's safe areas) with
+`nav/scroll-top.svg` drawn in the accent. It appears after 600px of scrolling, so short
+pages never show it, and is out of the tab order and hidden from screen readers until then.
+It scrolls smoothly (instantly with reduced motion) and moves focus to the top. The dev-only
+TanStack devtools sit at the bottom left so they don't cover it.
+
 **Search** (`header/SearchBar`, `src/api/search.ts`): `GET /search/suggestions?type=<mode>&q=`
 as the visitor types (debounced 250ms), as an ARIA combobox (arrows, Enter opens the
 highlighted or first entry, Escape closes then clears).

@@ -66,5 +66,6 @@
   "legal.updated": "Zuletzt aktualisiert: {date}",
   "legal.contents": "Inhalt",
   "legal.inShort": "Kurz gesagt:",
-  "legal.englishOnly": "Dieses Dokument ist derzeit auf Englisch verfügbar. Eine Übersetzung folgt."
+  "legal.englishOnly": "Dieses Dokument ist derzeit auf Englisch verfügbar. Eine Übersetzung folgt.",
+  "scrollTop": "Nach oben"
 }
