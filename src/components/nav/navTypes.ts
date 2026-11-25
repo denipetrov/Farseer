@@ -9,14 +9,18 @@ import type { SpecRole, SpecSubRole } from '@/lib/wow/roles';
  * - A string is the path under `icons/` of a single-colour SVG (`nav/home`,
  *   `pvp/brackets/svg/2v2`), drawn in the text colour so it follows hover and active states.
  * - The objects are game art, drawn as it is: a class (in the visitor's icon style), a spec,
- *   a role, or an image from the data (a raid's icon on Raider.io; null when it has none,
- *   which shows the unknown icon).
+ *   a role, one of our own image files by its path under `icons/` (`game-modes/raid`), or an
+ *   image from the data (a raid's icon on Raider.io; null when it has none, which shows the
+ *   unknown icon).
  */
 export type NavIcon =
   | string
   | { kind: 'class'; cls: ClassSlug }
   | { kind: 'spec'; specId: number }
   | { kind: 'role'; role: SpecRole; subRole: SpecSubRole | null }
+  /** `round`: self-framed round art (`roles/all`), sized and drawn as the role and class icons */
+  /** `wide`: a logo (`expansions/midnight`): a 64×30 slot instead of the square (WIDE_ART) */
+  | { kind: 'art'; path: string; round?: boolean; wide?: boolean }
   | { kind: 'image'; src: string | null };
 
 /** A menu label: static text by its message key, or text already resolved (a game name). */

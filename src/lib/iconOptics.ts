@@ -15,6 +15,10 @@
  *   nav/talents          0.73 × 0.88  → 1.09   pvp/brackets/svg/blitz   0.93 × 0.71 → 1.07
  *   pvp/brackets/svg/2v2 0.96 × 0.72  → 1.05
  *
+ * The PvE menu's game-mode banners (PNG art, `game-modes/mplus`, `game-modes/raid`) are
+ * 0.65 × 1.0 of their square but read lighter than the solid glyphs; the user picked 1.4
+ * from a side-by-side in the menu (2026-11-25), the same as the other tall, thin icons.
+ *
  * Re-measure when an icon is added or redrawn (SKILLS.md, "The left menu").
  */
 export const ICON_OPTICAL_SCALE: Readonly<Record<string, number>> = {
@@ -25,6 +29,8 @@ export const ICON_OPTICAL_SCALE: Readonly<Record<string, number>> = {
   'nav/talents': 1.09,
   'pvp/brackets/svg/blitz': 1.07,
   'pvp/brackets/svg/2v2': 1.05,
+  'game-modes/mplus': 1.4,
+  'game-modes/raid': 1.4,
 };
 
 /** How much larger to draw an icon (by its path under `icons/`) so it looks as big as the rest. */

@@ -10,6 +10,8 @@ import { RoleIcon } from '@/components/RoleIcon';
 import { SpecIcon } from '@/components/SpecIcon';
 import { UnknownIcon } from '@/components/UnknownIcon';
 import { useI18n } from '@/i18n/useI18n';
+import { iconUrl } from '@/lib/assets';
+import { opticalScale } from '@/lib/iconOptics';
 import { usePreferences } from '@/preferences/PreferencesProvider';
 import { useGameMode } from '@/preferences/useGameMode';
 import {
@@ -55,20 +57,26 @@ export function SideNav() {
   );
 }
 
+const isWide = (icon: NavIcon | undefined) =>
+  typeof icon === 'object' && icon.kind === 'art' && !!icon.wide;
+
 function Items({ items, depth, id }: { items: NavItem[]; depth: number; id?: string }) {
   const ListAt = depth === 0 ? List : SubList;
+  // A list with logos (Raids: the expansions) gives every row the logos' slot, so icons
+  // centre under them and labels line up (Guild beside the expansions)
+  const wide = items.some((item) => !isNavNote(item) && isWide(item.icon));
   return (
     <ListAt id={id}>
       {items.map((item) => (
         <li key={item.id}>
           {isNavGroup(item) ? (
-            <Group group={item} depth={depth} />
+            <Group group={item} depth={depth} wide={wide} />
           ) : isNavNote(item) ? (
             <Note style={indent(depth)}>
               <Label label={item.note} />
             </Note>
           ) : (
-            <Item item={item} depth={depth} />
+            <Item item={item} depth={depth} wide={wide} />
           )}
         </li>
       ))}
@@ -81,12 +89,12 @@ function Label({ label }: { label: NavLabel }) {
   return <>{typeof label === 'string' ? t(label) : label.text}</>;
 }
 
-function Item({ item, depth }: { item: NavLink; depth: number }) {
+function Item({ item, depth, wide }: { item: NavLink; depth: number; wide?: boolean }) {
   return (
     // A plain Link keeps the router's types; RowFrame styles the <a> it renders
     <RowFrame data-depth={Math.min(depth, 2)} style={indent(depth)}>
       <Link {...item.link} activeOptions={{ exact: item.exact ?? false }}>
-        {item.icon && <Icon icon={item.icon} depth={depth} />}
+        {item.icon && <Icon icon={item.icon} depth={depth} wide={wide} />}
         <span>
           <Label label={item.label} />
         </span>
@@ -100,7 +108,7 @@ function Item({ item, depth }: { item: NavLink; depth: number }) {
  * one of its pages, and on arrival when it is `defaultOpen` (the current expansion). Its
  * rows are only rendered while it is open: PvE's sections hold hundreds of links.
  */
-function Group({ group, depth }: { group: NavGroup; depth: number }) {
+function Group({ group, depth, wide }: { group: NavGroup; depth: number; wide?: boolean }) {
   const matchRoute = useMatchRoute();
   const listId = useId();
   const childActive = navLinks(group.children).some(
@@ -126,7 +134,7 @@ function Group({ group, depth }: { group: NavGroup; depth: number }) {
         style={indent(depth)}
         onClick={() => setOpen((o) => !o)}
       >
-        {group.icon && <Icon icon={group.icon} depth={depth} />}
+        {group.icon && <Icon icon={group.icon} depth={depth} wide={wide} />}
         <span>
           <Label label={group.label} />
         </span>
@@ -141,18 +149,45 @@ function Group({ group, depth }: { group: NavGroup; depth: number }) {
   );
 }
 
-function Icon({ icon, depth }: { icon: NavIcon; depth: number }) {
+/** `wide`: a sibling has a logo, so this icon is centred in the logos' slot */
+function Icon({ icon, depth, wide }: { icon: NavIcon; depth: number; wide?: boolean }) {
+  if (wide && !isWide(icon)) {
+    return (
+      <WideSlot aria-hidden>
+        <Icon icon={icon} depth={depth} />
+      </WideSlot>
+    );
+  }
   if (typeof icon === 'string') {
     return <NavGlyph icon={icon} size={depth >= 2 ? DEEP_ICON_SIZE : ICON_SIZE} />;
   }
   // Game art, drawn as it is; hidden from screen readers, as the label follows
+  if (icon.kind === 'art' && icon.wide) {
+    const src = iconUrl(icon.path);
+    return src ? <WideArt aria-hidden src={src} alt="" /> : null;
+  }
   return (
     <ArtSlot aria-hidden style={{ width: depth >= 2 ? DEEP_ICON_SIZE : ICON_SIZE }}>
       {icon.kind === 'class' && <ClassIcon cls={icon.cls} />}
       {icon.kind === 'spec' && <SpecIcon spec={icon.specId} />}
       {icon.kind === 'role' && <RoleIcon role={icon.role} subRole={icon.subRole} />}
       {icon.kind === 'image' && <RemoteArt src={icon.src} />}
+      {icon.kind === 'art' && <OwnArt path={icon.path} round={icon.round} />}
     </ArtSlot>
+  );
+}
+
+/**
+ * One of our own image files (`game-modes/raid`), at the slot's size, untouched. Tall,
+ * thin art is drawn larger, as the glyphs are (`iconOptics.ts`); the layout box stays.
+ */
+function OwnArt({ path, round }: { path: string; round?: boolean }) {
+  const src = iconUrl(path);
+  if (!src) return <UnknownIcon label="" />;
+  if (round) return <GameIcon src={src} label="" shape="round" />;
+  const scale = opticalScale(path);
+  return (
+    <ArtImage src={src} alt="" style={scale !== 1 ? { transform: `scale(${scale})` } : undefined} />
   );
 }
 
@@ -292,6 +327,37 @@ const ArtSlot = styled.span`
   display: inline-flex;
   flex: none;
   justify-content: center;
+`;
+
+/**
+ * A logo (the expansions, the user's pick of 2026-11-26): 64×30 beside the label. The files
+ * are 128px squares with the logo across the middle, so the square is scaled to the width
+ * and its empty top and bottom are trimmed (object-fit: cover); the logo is untouched.
+ */
+const WIDE_ART = { width: 64, height: 30 };
+
+const WideArt = styled.img`
+  display: block;
+  flex: none;
+  width: ${WIDE_ART.width}px;
+  height: ${WIDE_ART.height}px;
+  object-fit: cover;
+`;
+
+/** The logos' slot, for a plain icon in a list that has logos */
+const WideSlot = styled.span`
+  display: inline-flex;
+  flex: none;
+  justify-content: center;
+  align-items: center;
+  width: ${WIDE_ART.width}px;
+`;
+
+const ArtImage = styled.img`
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: contain;
 `;
 
 const Note = styled.p`

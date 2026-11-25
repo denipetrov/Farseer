@@ -1,12 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { ComingSoonPage } from '@/components/ComingSoonPage';
-import { useI18n } from '@/i18n/useI18n';
-import { PVE_ICONS } from '@/components/nav/pveNav';
+import { MplusBoardPage } from '@/components/pve/MplusPages';
 
-/** The best timed runs of the season. */
+/** The best timed runs: the current season's board. */
 export const Route = createFileRoute('/$locale/pve/mythic-plus/runs')({
-  component: function Page() {
-    const { t } = useI18n();
-    return <ComingSoonPage title={t('nav.mplusRuns')} icon={PVE_ICONS.mplusRuns} />;
-  },
+  component: () => <MplusBoardPage board="runs" />,
 });

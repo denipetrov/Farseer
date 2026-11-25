@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { Raid } from '@/api/pve';
 import { iconUrl } from '@/lib/assets';
 import { isNavGroup, isNavNote, navLinks, type NavGroup, type NavItem } from './navTypes';
-import { PVE_ICONS, guildIcon, pveNav } from './pveNav';
+import { EXPANSION_ART, PVE_ART, PVE_ICONS, guildIcon, pveNav } from './pveNav';
 
 const raid = (slug: string, expansionId: number, bosses: string[]): Raid => ({
   slug,
@@ -36,16 +36,22 @@ const group = (items: NavItem[], id: string) =>
 
 describe('PvE menu', () => {
   const items = build({ status: 'success', data: RAIDS });
+  const leaderboards = group(group(items, 'mplus').children, 'mplus-leaderboards');
 
   it('has every entry in the designed order', () => {
-    expect(items.map((i) => i.id)).toEqual([
-      'home',
+    expect(items.map((i) => i.id)).toEqual(['home', 'mplus', 'raids']);
+    expect(group(items, 'mplus').children.map((i) => i.id)).toEqual([
       'character',
-      'guild',
-      'mplus',
-      'raids',
+      'mplus-leaderboards',
       'stats',
       'tier-list',
+      'archives',
+    ]);
+    expect(leaderboards.children.map((i) => i.id)).toEqual([
+      'mplus-characters',
+      'mplus-runs',
+      'mplus-specs',
+      'mplus-roles',
     ]);
   });
 
@@ -53,28 +59,33 @@ describe('PvE menu', () => {
     for (const icon of [...Object.values(PVE_ICONS), guildIcon('horde'), guildIcon('alliance')]) {
       expect(iconUrl(icon), icon).toBeDefined();
     }
+    for (const art of Object.values(PVE_ART)) expect(iconUrl(art.path), art.path).toBeDefined();
+    for (const logo of Object.values(EXPANSION_ART)) expect(iconUrl(logo), logo).toBeDefined();
   });
 
   it('lists every class with its specs, and with the roles it plays', () => {
-    const specs = group(group(items, 'mplus').children, 'mplus-specs');
+    const specs = group(leaderboards.children, 'mplus-specs');
     expect(specs.children).toHaveLength(13);
-    expect(navLinks(specs.children)).toHaveLength(40);
+    // 40 specs, and each class's All row
+    expect(navLinks(specs.children)).toHaveLength(40 + 13);
+    expect(navLinks(specs.children).filter((l) => l.id.endsWith('-all'))).toHaveLength(13);
 
-    const druid = group(
-      group(group(items, 'mplus').children, 'mplus-roles').children,
-      'mplus-roles-druid',
-    );
+    const druid = group(group(leaderboards.children, 'mplus-roles').children, 'mplus-roles-druid');
     expect(druid.children.map((c) => c.id)).toEqual([
       'mplus-roles-druid-tank',
       'mplus-roles-druid-healer',
       'mplus-roles-druid-melee',
       'mplus-roles-druid-ranged',
+      'mplus-roles-druid-all',
     ]);
   });
 
   it('groups raids by expansion, newest first and open, each with its bosses', () => {
-    const expansions = group(items, 'raids').children as NavGroup[];
+    const [guild, ...rest] = group(items, 'raids').children;
+    expect(guild?.id).toBe('guild');
+    const expansions = rest as NavGroup[];
     const [midnight, , legion] = expansions as [NavGroup, NavGroup, NavGroup];
+    expect(expansions[0]?.icon).toEqual({ kind: 'art', path: 'expansions/midnight', wide: true });
     expect(expansions.map((e) => [e.id, e.defaultOpen])).toEqual([
       ['raids-x11', true],
       ['raids-x10', false],
@@ -101,17 +112,39 @@ describe('PvE menu', () => {
       ['pending', 'nav.raidsLoading'],
       ['error', 'nav.raidsUnavailable'],
     ] as const) {
-      const [only] = group(build({ status, data: undefined }), 'raids').children as [NavItem];
+      const [guild, only] = group(build({ status, data: undefined }), 'raids').children as [
+        NavItem,
+        NavItem,
+      ];
+      expect(guild.id).toBe('guild');
       expect(isNavNote(only) && only.note).toBe(note);
     }
   });
 
+  it('has Archives: the same leaderboards and stats for past seasons', () => {
+    const archives = group(group(items, 'mplus').children, 'archives');
+    expect(archives.children.map((i) => i.id)).toEqual([
+      'archives-mplus-leaderboards',
+      'archives-stats',
+    ]);
+    const current = navLinks(leaderboards.children);
+    const past = navLinks((archives.children[0] as NavGroup).children);
+    expect(past).toHaveLength(current.length);
+    expect(past.map((l) => l.id)).toEqual(current.map((l) => `archives-${l.id}`));
+    expect(past.every((l) => String(l.link.to).includes('/mythic-plus/archives/'))).toBe(true);
+    expect(navLinks((archives.children[1] as NavGroup).children).map((l) => l.id)).toEqual([
+      'archives-stats-representation',
+      'archives-stats-compositions',
+      'archives-stats-cutoffs',
+    ]);
+  });
+
   it('nests Stats under Mythic+', () => {
-    const stats = group(items, 'stats');
+    const stats = group(group(items, 'mplus').children, 'stats');
     expect(navLinks(stats.children).map((l) => l.id)).toEqual([
-      'stats-mplus-representation',
-      'stats-mplus-compositions',
-      'stats-mplus-cutoffs',
+      'stats-representation',
+      'stats-compositions',
+      'stats-cutoffs',
     ]);
   });
 });

@@ -1,12 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { ComingSoonPage } from '@/components/ComingSoonPage';
-import { useI18n } from '@/i18n/useI18n';
-import { PVE_ICONS } from '@/components/nav/pveNav';
+import { MplusBoardPage } from '@/components/pve/MplusPages';
 
-/** Every character of the season by Mythic+ score. */
+/** Every character by Mythic+ score: the current season's board. */
 export const Route = createFileRoute('/$locale/pve/mythic-plus/characters')({
-  component: function Page() {
-    const { t } = useI18n();
-    return <ComingSoonPage title={t('nav.mplusCharacters')} icon={PVE_ICONS.mplusCharacters} />;
-  },
+  component: () => <MplusBoardPage board="characters" />,
 });

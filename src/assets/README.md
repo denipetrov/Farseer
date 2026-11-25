@@ -98,6 +98,14 @@ icons/races/crests/<alliance|horde>/<name>-crest.png
 - `src/lib/wow/pvpRank.ts` maps both `pvpHistory` titles and current ratings to them. Use
   `<PvpRankIcon rank />`.
 
+### Expansions
+
+`icons/expansions/<name>.png`, one look, 128 px: each expansion's logo, trimmed, shrunk to fit
+and centred on a transparent square (the logos are wide, so most are 50–62 px tall). Names:
+`vanilla`, `tbc`, `wotlk`, `cataclysm`, `mop`, `wod`, `legion`, `bfa`, `shadowlands`,
+`dragonflight`, `tww`, `midnight`, `tlt` (The Last Titan) and `forever`. Read them by path:
+`iconUrl('expansions/tww')`.
+
 ### Raid difficulty
 
 `icons/difficulty/<normal|heroic|mythic>.png` (128 px) and `icons/difficulty/svg/<…>.svg`:

@@ -358,29 +358,54 @@ below).
   their path under `icons/` (`nav/home`, `pvp/brackets/svg/2v2`, `nav/spec-representation`,
   `nav/cutoffs`), drawn as masks by `NavGlyph` so they follow the text, hover and accent
   colours. `pvpNav.test.ts` fails if an icon file is missing.
-- **The PvE menu** (`pveNav.ts`, the user's list of 2026-11-25, with Home first as on PvP):
-  Home · Character · Guild · Mythic+ (All Characters, Runs, Specs → each class → its specs,
-  Classes & Roles → each class → the roles it plays: tank, healer, melee, ranged) · Raids
-  (each expansion of the catalogue, newest first and open by default → each raid, with
-  Raider.io's icon → Hall of Fame, Boss Rankings → each boss) · Stats (Mythic+ → Spec
-  Representation, Compositions, Cutoffs) · Tier List. Raids come from `raidsQuery()` (the
-  catalogue the root layout fetches on PvE); until then the section shows a note.
+- **The PvE menu** (`pveNav.ts`, restructured by the user 2026-11-26): three sections at the
+  top. Home · Mythic+ (Character, Leaderboards → All Characters, Runs, Specs → each class →
+  its specs, Classes & Roles → each class → the roles it plays: tank, healer, melee, ranged;
+  Stats →
+  Spec Representation, Compositions, Cutoffs, Tier List, Archives → the same Leaderboards
+  and Stats, for past seasons: each season in `/pve/mplus-seasons` carries its own cutoffs,
+  empty before TWW 3) · Raids (Guild, then each
+  expansion of the catalogue, newest first and open by default → each raid, with
+  Raider.io's icon → Hall of Fame, Boss Rankings → each boss). Page addresses did not move
+  with the menu (`/pve/character`, `/pve/guild`, `/pve/stats/mythic-plus/…`, `/pve/tier-list`).
+  Raids come from `raidsQuery()` (the catalogue the root layout fetches on PvE); until then
+  the section shows Guild and a note.
   - **Icons still to draw** use a stand-in from the set (`PVE_ICONS`, `want(path,
-standIn)`): `nav/mythic-plus`, `nav/runs`, `nav/spec-leaderboard`,
-    `nav/class-role-leaderboard`, `nav/raids`, `nav/hall-of-fame`, `nav/compositions`. Drop
+standIn)`): `nav/runs`, `nav/spec-leaderboard`,
+    `nav/class-role-leaderboard`, `nav/hall-of-fame`, `nav/compositions`. Drop
     the SVG in `icons/nav/` with that name and it is used, no code change (then re-measure
-    its optical size). Expansions have no icon.
+    its optical size).
+  - **Expansion logos** (`icons/expansions/`, `EXPANSION_ART` by Raider.io id: legion, bfa,
+    shadowlands, dragonflight, tww, midnight; the folder also has vanilla … wod, `tlt`,
+    `forever`): 64×30 beside the translated name (the user's pick of 2026-11-26 from
+    mockups: logo + name, not squeezed into the icon square, not replacing the name, as
+    the logos are English). Icon `{ kind: 'art', path, wide: true }`; `object-fit: cover`
+    trims the square file's empty top and bottom.
+    In a list with logos, every row's icon sits centred in the same 64px slot (`WideSlot`),
+    so Guild's icon and label line up with the expansions'.
   - **Boss icons** are each boss's "Mythic: <boss>" achievement icon on Raider.io's server
     (the user's example: The Lost Explorers → `inv_121_raid_achievement_tortollans`).
     Raider.io's data names none, so `scripts/boss-icons.mjs` builds
     `src/data/bossIcons.json` (`<raid>/<boss>` slug → icon) from Wowhead's search and checks
     each on Raider.io; `bossIconUrl` reads it. Fated / Awakened bosses take the original's.
-    223 of 245 have one (2026-11-25); missing (unknown icon): Blackrock Depths (an event
-    raid, no Mythic achievements) and 14 whose achievement names didn't match (the script
-    lists them). **Rerun it when a raid is added.** It keeps what the file has and only
+    237 of 245 have one (2026-11-25): 223 found by the script, 14 given by the user
+    where the achievement names didn't match (Sikran, Dimensius, Kith'ix …). Missing (unknown
+    icon): the 8 Blackrock Depths bosses, an event raid with no Mythic achievements. Entries
+    added by hand stay: the script keeps what the file has. **Rerun it when a raid is added.** It keeps what the file has and only
     searches the rest; Wowhead rate-limits (403), and the script then stops searching and
     writes what it has. `NO_SEARCH=1` rebuilds without asking Wowhead.
+  - **Mythic+ and Raids** use the game-mode art, `game-modes/mplus.png` and
+    `game-modes/raid.png` (the user's choice, 2026-11-25; their "Mythic+" / "Raid" lettering
+    removed and the emblem enlarged to fill the 128px square), drawn 1.4× in the menu
+    (`iconOptics.ts`, the user's pick from a side-by-side), otherwise as they are: icon
+    `{ kind: 'art', path }` (`PVE_ART`), an `<img>` at the slot's size, no frame or tint.
   - **The guild icon** follows the faction preference: `nav/guild-horde` / `nav/guild-alliance`.
+  - **Multi-colour icons** can't be masks, which flatten them to the text colour.
+    `nav/bosses` (fel-green warglaives) is drawn inline by `NavGlyph`
+    (`src/lib/inlineIcons.ts`, source bundled), so `currentColor` still follows the text and
+    the green stays. The guild icons also have colours (faction trim) but stay masks on
+    purpose (`MASKED_ON_PURPOSE`): inline, they stood out too much (the user, 2026-11-25).
+    `inlineIcons.test.ts` fails if a `nav/` SVG with its own colours is in neither list.
   - **Raid icons:** `https://cdn.raiderio.net/images/wow/icons/large/<icon>.jpg`
     (`raidIconUrl`); the catalogue's `icon` is a name or a numeric file id, both served
     there (every raid since BfA checked: 200). Legion raids come with `icon: null`, so
@@ -443,6 +468,21 @@ standIn)`): `nav/mythic-plus`, `nav/runs`, `nav/spec-leaderboard`,
   and is not found otherwise. Names: `raidName` / `bossName` (`/i18n/names`, else English).
 - `stats/mythic-plus/{representation,compositions,cutoffs}` (`stats/` opens the first),
   `tier-list`.
+- **Archives** (past seasons): `mythic-plus/archives/{characters,runs}`,
+  `…/archives/specs/$class/$spec`, `…/archives/roles/$class/$role`,
+  `…/archives/stats/{representation,compositions}` (no Cutoffs); `archives/` opens
+  characters. Each takes an optional `?season=<slug>` (`validateArchiveSearch`; a
+  malformed value is dropped; checking it against the catalogue is the page's job). Every
+  board and stat Soulseeker serves takes `season`, and `/pve/spec-representation` lists the
+  seasons it has (`getSeasons=true`), for a season picker.
+- **"All" under a class** (the last row in Specs and in Classes & Roles, current and
+  archived): `…/specs/<class>/all` and `…/roles/<class>/all` (`ALL` in `mplusParams.ts`; no
+  spec or role has that slug). Both are the whole class's board (Soulseeker's `class=`
+  alone); two addresses so the menu highlights the row that was clicked. Icons: the class
+  for Specs, `roles/all.png` (a green flag, drawn round like the role icons) for Roles.
+- The current and archived pages share their components (`src/components/pve/MplusPages.tsx`)
+  and URL checks (`src/lib/mplusParams.ts`); the menu builds both Leaderboards from one
+  `leaderboardsGroup(locale, name, archive)`, archive ids prefixed `archives-`.
 
 **Back to top** (`src/components/ScrollTopButton.tsx`, in `__root.tsx`): a 48px round button
 fixed at the bottom right (desktop and mobile, clear of the phone's safe areas) with
@@ -632,8 +672,8 @@ README. `src/assets/README.md` has the rules. The key concept:
   - `md` 40px, inside clickable filter pickers; the button adds padding to reach a 48px hit target;
   - `lg` 64px, page headers.
   - **Shape:** the default `square` box has a background and a 1px CSS border
-    (`borderColor`). Classes, specs, hero talents and races are round art with their own frame
-    (class-colour rim; faction trim on races), so their components pass `shape="round"`:
+    (`borderColor`). Classes, specs, hero talents, races and roles are round art with their own
+    frame (class-colour rim; faction trim on races; a bronze ring on roles), so their components pass `shape="round"`:
     a circle with no CSS border or background. Use `round` for any new self-framed round art.
 
   Source files should be 128x128 (2x of `lg`). Never give an icon a pixel size of its own.

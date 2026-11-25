@@ -38,5 +38,6 @@ export function RoleIcon({ size, ...props }: RoleIconProps) {
   const url = kind ? iconUrl(`roles/${roleIconFile(kind)}`) : undefined;
   if (!kind || !url) return null;
 
-  return <GameIcon src={url} label={roleText(t, kind)} size={size} />;
+  // Round art with its own frame (as classes): no box border or background behind it
+  return <GameIcon src={url} label={roleText(t, kind)} size={size} shape="round" />;
 }
