@@ -1,0 +1,202 @@
+{
+  "updated": "2026-11-25",
+  "intro": [
+    {
+      "p": "Ceci est une traduction. En cas de divergence, la version anglaise prévaut."
+    },
+    {
+      "p": "Les présentes conditions s’appliquent à votre utilisation de Rankwarden : le site rankwarden.gg et l’API qui le fait fonctionner (ensemble, le « service »). Rankwarden est exploité par Deni Emilov Petrov, un particulier résidant en Bulgarie (« nous »). En utilisant le service, vous acceptez ces conditions ; si vous ne les acceptez pas, merci de ne pas l’utiliser."
+    }
+  ],
+  "sections": [
+    {
+      "id": "service",
+      "heading": "Ce qu’est Rankwarden",
+      "summary": "Un site de fans gratuit proposant des classements World of Warcraft, établis à partir de données de jeu publiques.",
+      "blocks": [
+        {
+          "p": "Rankwarden présente des classements JcJ et JcE, des personnages, des guildes, des seuils, des tier lists et des statistiques de World of Warcraft. Ses données proviennent de l’API officielle de Blizzard Entertainment et de Raider.io ; elles sont collectées et servies par notre propre API. Le service est gratuit et ne nécessite aucun compte."
+        }
+      ]
+    },
+    {
+      "id": "eligibility",
+      "heading": "Qui peut l’utiliser",
+      "summary": "Toute personne âgée de 13 ans ou plus.",
+      "blocks": [
+        {
+          "p": "Vous devez avoir au moins 13 ans pour utiliser Rankwarden. Si la loi de votre pays fixe un âge plus élevé pour utiliser des services en ligne sans l’accord d’un parent, cet accord vous est également nécessaire."
+        }
+      ]
+    },
+    {
+      "id": "use",
+      "heading": "Utiliser Rankwarden",
+      "summary": "Utilisez-le librement à des fins personnelles et non commerciales ; partager des liens et des captures d’écran est bienvenu.",
+      "blocks": [
+        {
+          "p": "Nous vous accordons une autorisation personnelle, non exclusive et révocable de consulter et d’utiliser Rankwarden à des fins personnelles et non commerciales. Vous pouvez partager des liens et des captures d’écran des pages de Rankwarden, par exemple avec votre guilde ou sur les réseaux sociaux, à condition de ne pas les présenter comme votre propre travail."
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use",
+      "heading": "Ce que vous ne devez pas faire",
+      "summary": "N’aspirez pas nos données, ne contournez pas nos limites, n’utilisez pas notre API de façon abusive, ne nuisez pas au service et ne l’utilisez pas contre d’autres joueurs.",
+      "blocks": [
+        {
+          "p": "En utilisant Rankwarden, vous vous engagez à ne pas :"
+        },
+        {
+          "list": [
+            "copier nos données en masse, aspirer le site ou l’API, ni en tirer une base de données, un miroir ou un service concurrent sans notre autorisation écrite ;",
+            "utiliser des bots, des scripts ou d’autres outils automatisés pour accéder au service, à l’exception des navigateurs web ordinaires et des technologies d’assistance ;",
+            "contourner nos limites de requêtes, nos jetons d’accès ou d’autres mesures de protection, ni utiliser nos jetons d’accès en dehors du site Rankwarden ;",
+            "utiliser notre API pour alimenter un autre site, une application, un addon ou un bot sans notre autorisation écrite ;",
+            "surcharger, perturber ou attaquer le service, y rechercher des failles, ou tenter d’accéder à des parties qui ne vous sont pas destinées ;",
+            "décompiler le service ou en faire de l’ingénierie inverse, sauf dans la mesure où la loi l’autorise indépendamment des présentes conditions ;",
+            "utiliser des informations de Rankwarden pour harceler, menacer, traquer ou nuire à quiconque ;",
+            "utiliser Rankwarden en violation de la loi ou des conditions de Blizzard Entertainment pour World of Warcraft ;",
+            "vous faire passer pour nous, ou prétendre que nous vous soutenons, vous ou votre travail ;",
+            "supprimer ou masquer les mentions de droits d’auteur et de marques présentes sur le site."
+          ]
+        },
+        {
+          "p": "Si vous enfreignez ces règles, nous pouvons bloquer votre accès au service, y compris par adresse IP, sans préavis."
+        }
+      ]
+    },
+    {
+      "id": "game-data",
+      "heading": "Données de jeu et exactitude",
+      "summary": "Nous affichons ce que rapportent Blizzard et Raider.io, qui peut être en retard, incomplet ou erroné.",
+      "blocks": [
+        {
+          "p": "Les classements, les cotes et les informations sur les personnages proviennent de Blizzard et de Raider.io et dépendent de leur disponibilité et de leur exactitude. Les données peuvent être en retard, incomplètes ou parfois erronées, et nous pouvons les corriger, les modifier ou les supprimer à tout moment sans préavis. Ne considérez pas Rankwarden comme une source officielle ; ce rôle revient au jeu et aux services de Blizzard."
+        },
+        {
+          "p": "Si vous souhaitez que votre personnage ou votre guilde soit retiré de Rankwarden, consultez notre [Politique de confidentialité](/privacy)."
+        }
+      ]
+    },
+    {
+      "id": "ip",
+      "heading": "Propriété intellectuelle",
+      "summary": "World of Warcraft appartient à Blizzard ; le design, le code et les illustrations propres à Rankwarden nous appartiennent.",
+      "blocks": [
+        {
+          "p": "World of Warcraft, Warcraft, Blizzard Entertainment ainsi que l’ensemble des noms, logos, illustrations et ressources de jeu associés sont des marques ou la propriété de Blizzard Entertainment, Inc. Rankwarden est un projet de fans indépendant ; il n’est ni affilié à Blizzard Entertainment, ni approuvé, ni parrainé par elle. Les données et images de Raider.io, y compris les logos de guilde, appartiennent à Raider.io ou à leurs propriétaires respectifs."
+        },
+        {
+          "p": "Le nom et le logo Rankwarden, le design du site, ses illustrations et textes originaux et son code source nous appartiennent. Vous ne pouvez pas les copier, les redistribuer ni en créer des œuvres dérivées sans notre autorisation, sauf dans la mesure permise par les présentes conditions."
+        }
+      ]
+    },
+    {
+      "id": "copyright",
+      "heading": "Réclamations relatives aux droits d’auteur",
+      "summary": "Si un contenu de Rankwarden porte atteinte à vos droits, écrivez-nous et nous l’examinerons rapidement.",
+      "blocks": [
+        {
+          "p": "Nous respectons les droits d’autrui. Si vous estimez qu’un contenu de Rankwarden porte atteinte à vos droits d’auteur ou à d’autres droits, écrivez à [rankwardengg@gmail.com](mailto:rankwardengg@gmail.com) en indiquant : vos coordonnées ; une description de l’œuvre et de vos droits sur celle-ci ; l’endroit où le contenu apparaît sur Rankwarden ; et une déclaration attestant que les informations fournies sont exactes et que vous êtes titulaire des droits ou autorisé à agir en son nom. Nous examinerons chaque notification complète et retirerons ou désactiverons le contenu le cas échéant."
+        }
+      ]
+    },
+    {
+      "id": "third-parties",
+      "heading": "Autres sites et services",
+      "summary": "Nous ne sommes pas responsables des sites vers lesquels nous renvoyons ni des services dont nous dépendons.",
+      "blocks": [
+        {
+          "p": "Rankwarden renvoie vers d’autres services et affiche du contenu qui en provient, comme Blizzard, Raider.io et Wowhead. Nous ne les contrôlons pas et ne sommes pas responsables de leur contenu, de leur disponibilité ni de leurs politiques. Leur utilisation est régie par leurs propres conditions."
+        }
+      ]
+    },
+    {
+      "id": "availability",
+      "heading": "Évolution du service",
+      "summary": "Rankwarden est gratuit et peut évoluer, être interrompu ou fermer à tout moment.",
+      "blocks": [
+        {
+          "p": "Nous pouvons modifier, ajouter ou supprimer des fonctionnalités, interrompre le service pour maintenance ou y mettre fin, à tout moment et sans préavis. Nous faisons de notre mieux pour que Rankwarden reste disponible, mais nous ne garantissons pas qu’il sera toujours en ligne ni exempt d’erreurs."
+        }
+      ]
+    },
+    {
+      "id": "disclaimer",
+      "heading": "Absence de garantie",
+      "summary": "Le service est fourni « en l’état ».",
+      "blocks": [
+        {
+          "p": "Rankwarden est fourni gratuitement, « en l’état » et « selon disponibilité ». Dans la mesure permise par la loi, nous n’accordons aucune garantie, expresse ou implicite, notamment quant à l’exactitude, l’exhaustivité, la disponibilité ou l’adéquation à un usage particulier."
+        }
+      ]
+    },
+    {
+      "id": "liability",
+      "heading": "Limitation de responsabilité",
+      "summary": "Le service étant gratuit, nous limitons notre responsabilité autant que la loi le permet, mais pas en cas de faute intentionnelle, de faute lourde ou d’atteinte à la vie ou à la santé.",
+      "blocks": [
+        {
+          "p": "Dans la mesure permise par la loi, nous ne sommes pas responsables des dommages indirects ou consécutifs, ni de la perte de données, de bénéfices, de places au classement ou d’opportunités, résultant de votre utilisation de Rankwarden ou de l’impossibilité de l’utiliser."
+        },
+        {
+          "p": "Rien dans les présentes conditions ne limite ni n’exclut la responsabilité pour les dommages causés intentionnellement ou par faute lourde, pour les atteintes à la vie, à l’intégrité physique ou à la santé, ni toute autre responsabilité qui ne peut être limitée en vertu du droit applicable. Si vous êtes un consommateur, vous conservez tous les droits auxquels la loi de votre pays ne permet pas de renoncer."
+        }
+      ]
+    },
+    {
+      "id": "termination",
+      "heading": "Fin de l’utilisation",
+      "summary": "Vous pouvez cesser d’utiliser Rankwarden à tout moment ; nous pouvons bloquer tout accès qui enfreint ces conditions.",
+      "blocks": [
+        {
+          "p": "Vous pouvez cesser d’utiliser Rankwarden quand vous le souhaitez. Nous pouvons suspendre ou bloquer l’accès au service de toute personne qui enfreint ces conditions ou met en danger le service ou ses utilisateurs. Les sections relatives à la propriété intellectuelle, à l’absence de garantie, à la limitation de responsabilité et au droit applicable continuent de s’appliquer après la fin de votre utilisation."
+        }
+      ]
+    },
+    {
+      "id": "law",
+      "heading": "Droit applicable et litiges",
+      "summary": "Le droit bulgare s’applique, sans vous priver de la protection du droit de la consommation de votre propre pays.",
+      "blocks": [
+        {
+          "p": "Les présentes conditions sont régies par le droit de la République de Bulgarie. Les litiges relèvent des juridictions compétentes de Bulgarie. Si vous êtes un consommateur résidant dans un autre pays de l’Union européenne, vous conservez également la protection des dispositions impératives du droit de la consommation de ce pays et pouvez saisir ses juridictions."
+        },
+        {
+          "p": "Si vous rencontrez un problème avec Rankwarden, contactez-nous d’abord ; la plupart des difficultés se règlent rapidement par e-mail."
+        }
+      ]
+    },
+    {
+      "id": "changes",
+      "heading": "Modification des présentes conditions",
+      "summary": "Nous pouvons mettre à jour ces conditions ; la date en haut de page indique la dernière version.",
+      "blocks": [
+        {
+          "p": "Nous pouvons modifier ces conditions de temps à autre, par exemple lorsque nous ajoutons des fonctionnalités ou que la loi évolue. La date de « Dernière mise à jour » indique leur dernière modification, et les changements importants seront annoncés sur le site. Si vous continuez à utiliser Rankwarden après l’entrée en vigueur d’une modification, les conditions mises à jour s’appliquent à vous."
+        }
+      ]
+    },
+    {
+      "id": "general",
+      "heading": "Dispositions générales",
+      "summary": "Les mentions juridiques habituelles, en bref.",
+      "blocks": [
+        {
+          "p": "Les présentes conditions, ainsi que notre [Politique de confidentialité](/privacy), constituent l’intégralité de l’accord entre vous et nous concernant Rankwarden. Si une partie est jugée invalide, le reste demeure en vigueur. Le fait de ne pas exercer immédiatement un droit ne vaut pas renonciation à ce droit. Nous pouvons transférer nos droits et obligations au titre des présentes conditions à toute personne qui reprendrait Rankwarden, à condition que vos droits n’en soient pas réduits. Nous ne sommes pas responsables des retards ou manquements dus à des événements échappant à notre contrôle raisonnable."
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "heading": "Contact",
+      "summary": "Par e-mail : rankwardengg@gmail.com.",
+      "blocks": [
+        {
+          "p": "Questions sur ces conditions : [rankwardengg@gmail.com](mailto:rankwardengg@gmail.com). Rankwarden est exploité par Deni Emilov Petrov, Bulgarie."
+        }
+      ]
+    }
+  ]
+}

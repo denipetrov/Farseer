@@ -1,0 +1,199 @@
+{
+  "updated": "2026-11-25",
+  "intro": [
+    {
+      "p": "Dies ist eine Übersetzung. Bei Abweichungen gilt die englische Fassung."
+    },
+    {
+      "p": "Rankwarden (rankwarden.gg) ist eine kostenlose Fanseite mit Ranglisten, Charakteren und Gilden aus World of Warcraft. Betrieben wird sie von Deni Emilov Petrov, einer Privatperson mit Sitz in Bulgarien („wir“). Diese Erklärung beschreibt, welche Informationen die Website und der dahinterstehende Dienst verarbeiten, warum, wie lange sie gespeichert werden und welche Möglichkeiten du hast."
+    },
+    {
+      "p": "Kurz gesagt: Rankwarden hat keine Konten, keine Cookies, keine Werbung und keine Webanalyse. Wir zeigen Spieldaten, die Blizzard und Raider.io bereits öffentlich machen, und speichern nur die wenigen technischen Informationen, die eine Website für einen sicheren Betrieb braucht."
+    }
+  ],
+  "sections": [
+    {
+      "id": "controller",
+      "heading": "Wer ist für deine Daten verantwortlich?",
+      "summary": "Deni Emilov Petrov, der Betreiber von Rankwarden, ist der Verantwortliche.",
+      "blocks": [
+        {
+          "p": "Verantwortlicher im Sinne der Datenschutz-Grundverordnung der EU (DSGVO) ist Deni Emilov Petrov, Bulgarien. Zu allen Fragen dieser Erklärung erreichst du uns unter [rankwardengg@gmail.com](mailto:rankwardengg@gmail.com)."
+        }
+      ]
+    },
+    {
+      "id": "collect",
+      "heading": "Welche Daten verarbeiten wir?",
+      "summary": "Öffentliche Spieldaten über Charaktere und Gilden, grundlegende technische Daten deines Besuchs, einige Einstellungen in deinem eigenen Browser und alles, was du uns per E-Mail schickst.",
+      "blocks": [
+        {
+          "p": "**Öffentliche Spieldaten.** Für die Ranglisten lesen wir Daten aus der World-of-Warcraft-API von Blizzard und von Raider.io. Sie beschreiben Charaktere und Gilden im Spiel: Charakter- und Gildennamen, Realm und Region, Fraktion, Volk, Geschlecht, Klasse, Spezialisierung und Talente, Ausrüstung, Wertungen, Platzierungen, Mythisch+-Durchläufe, Schlachtzugsfortschritt, Titel und Erfolge sowie Gildenlogos. All das ist bereits öffentlich im Spiel, im offiziellen Arsenal oder auf Raider.io sichtbar. Ein Charaktername ist kein echter Name; da aber jeder Charakter einem Spieler gehört, behandeln wir diese Daten als personenbezogene Daten."
+        },
+        {
+          "p": "**Technische Daten deines Besuchs.** Wenn dein Browser unsere Server aufruft, erhalten diese deine IP-Adresse und übliche Anfragedaten wie die aufgerufene Adresse, die Uhrzeit und den User-Agent deines Browsers. Mit der IP-Adresse begrenzen wir, wie viele Anfragen ein Besucher pro Minute stellen kann, und unsere Server können diese Angaben in kurzlebigen Protokollen festhalten."
+        },
+        {
+          "p": "**In deinem Browser gespeicherte Daten.** Rankwarden speichert deine Einstellungen (Fraktion, Symbolstil, PvP oder PvE, Sprache) und ein anonymes Zugriffstoken für unsere API im lokalen Speicher deines Browsers. Diese Daten bleiben auf deinem Gerät; siehe den Abschnitt über Cookies und lokalen Speicher."
+        },
+        {
+          "p": "**Nachrichten an uns.** Wenn du uns eine E-Mail schreibst, erhalten wir deine E-Mail-Adresse und den Inhalt deiner Nachricht."
+        },
+        {
+          "p": "**Was wir nicht erheben:** Wir fragen nicht nach deinem Namen, haben keine Konten oder Passwörter, verbinden uns nicht mit deinem Battle.net-Konto, nehmen keine Zahlungen an und verfolgen deinen Standort nicht über das hinaus, was sich aus einer IP-Adresse ableiten lässt."
+        }
+      ]
+    },
+    {
+      "id": "use",
+      "heading": "Wofür nutzen wir die Daten und auf welcher Rechtsgrundlage?",
+      "summary": "Um Ranglisten anzuzeigen, die Seite sicher zu betreiben, deine Einstellungen zu speichern und dir zu antworten. Wir verkaufen sie nie und nutzen sie nie für Werbung.",
+      "blocks": [
+        {
+          "list": [
+            "Anzeige von Ranglisten sowie Charakter-, Gilden- und Statistikseiten auf Grundlage öffentlicher Spieldaten. Rechtsgrundlage: unser berechtigtes Interesse und das der Community, öffentliche Spielinformationen nützlich aufzubereiten (Art. 6 Abs. 1 lit. f DSGVO).",
+            "Betrieb und Schutz des Dienstes: Anfragebegrenzung, Verhinderung von Missbrauch und massenhaftem Auslesen sowie Fehlerbehebung. Rechtsgrundlage: unser berechtigtes Interesse an einem sicheren, verfügbaren Dienst (Art. 6 Abs. 1 lit. f DSGVO).",
+            "Speichern deiner Einstellungen und Aufrechterhalten deiner anonymen Sitzung. Diese Speicherung ist für die von dir genutzten Funktionen unbedingt erforderlich und bedarf daher keiner Einwilligung.",
+            "Beantwortung deiner Nachrichten und Bearbeitung von Anfragen zu deinen Rechten. Rechtsgrundlage: unser berechtigtes Interesse, dir zu antworten, und unsere rechtlichen Pflichten, wenn du deine Rechte ausübst (Art. 6 Abs. 1 lit. c und f DSGVO)."
+          ]
+        },
+        {
+          "p": "Wir verkaufen oder vermieten keine Daten, erstellen keine Werbeprofile und treffen keine automatisierten Entscheidungen über dich."
+        }
+      ]
+    },
+    {
+      "id": "storage",
+      "heading": "Verwenden wir Cookies?",
+      "summary": "Nein. Rankwarden verwendet überhaupt keine Cookies; es speichert zwei Einträge im lokalen Speicher deines Browsers, die du jederzeit löschen kannst.",
+      "blocks": [
+        {
+          "p": "Rankwarden setzt keine Cookies und lädt keine Tracking-Pixel, Analyse- oder Werbeskripte. Es speichert zwei Einträge im lokalen Speicher deines Browsers:"
+        },
+        {
+          "list": [
+            "farseer:preferences — die von dir gewählte Fraktion, der Symbolstil, der Spielmodus und die Sprache.",
+            "farseer:auth — ein anonymes Zugriffstoken, mit dem die Seite Daten aus unserer API lesen kann. Es kennzeichnet eine Browsersitzung, keine Person, gilt etwa 10 Minuten und wird höchstens 12 Stunden lang erneuert."
+          ]
+        },
+        {
+          "p": "Beide bleiben auf deinem Gerät, und du kannst sie entfernen, indem du die Daten dieser Seite in deinem Browser löschst. Die Seite startet dann einfach wieder mit den Standardeinstellungen. Da wir dich nicht über Websites hinweg verfolgen, ändert ein „Do Not Track“-Signal hier nichts: Es gibt nichts abzuschalten."
+        }
+      ]
+    },
+    {
+      "id": "sharing",
+      "heading": "An wen geben wir Daten weiter?",
+      "summary": "Nur an unseren Hosting-Anbieter und an Raider.io, wenn dein Browser dort Gildenlogos lädt. Niemals an Werbetreibende oder Datenhändler.",
+      "blocks": [
+        {
+          "list": [
+            "**Hosting**: Unsere Server und Datenbanken laufen bei DigitalOcean, LLC, in dessen Rechenzentrum in Frankfurt (Deutschland). DigitalOcean verarbeitet Daten in unserem Auftrag nach seinen Bedingungen zur Auftragsverarbeitung.",
+            "**Raider.io**: Gildenlogos lädt dein Browser direkt von den Bildservern von Raider.io; Raider.io erhält dabei deine IP-Adresse und Browserangaben, wenn du sie ansiehst. Dafür gilt die Datenschutzerklärung von Raider.io.",
+            "**Blizzard Entertainment und Raider.io als Datenquellen**: Wir rufen bei ihnen öffentliche Spieldaten ab. Wir übermitteln ihnen keine Informationen über unsere Besucher.",
+            "**Behörden**: Wir geben Daten nur heraus, wenn das Gesetz es verlangt, etwa auf eine gültige gerichtliche Anordnung hin."
+          ]
+        },
+        {
+          "p": "Wir verkaufen personenbezogene Daten nicht und geben sie nicht an Dritte für deren eigenes Marketing oder Werbung weiter, egal wo du lebst."
+        }
+      ]
+    },
+    {
+      "id": "transfers",
+      "heading": "Werden Daten außerhalb der EU übermittelt?",
+      "summary": "Unsere Server stehen in der EU; wenn ein Anbieter mit Sitz außerhalb der EU auf Daten zugreifen kann, ist die Übermittlung durch von der EU anerkannte Garantien geschützt.",
+      "blocks": [
+        {
+          "p": "Unsere Server stehen in Frankfurt, Deutschland. DigitalOcean ist ein Unternehmen mit Sitz in den USA und kann daher auch von außerhalb des Europäischen Wirtschaftsraums auf Daten zugreifen, etwa für den Support. Solche Übermittlungen stützen sich auf die EU-Standardvertragsklauseln oder das EU-US Data Privacy Framework. Wenn dein Browser Gildenlogos von Raider.io lädt, geht diese Anfrage direkt an Raider.io mit Sitz in den USA."
+        }
+      ]
+    },
+    {
+      "id": "retention",
+      "heading": "Wie lange speichern wir Daten?",
+      "summary": "Technische Daten Minuten bis wenige Wochen, Spieldaten so lange, wie sie für Ranglisten nützlich sind, und E-Mails, bis deine Anfrage erledigt ist.",
+      "blocks": [
+        {
+          "list": [
+            "**Zähler der Anfragebegrenzung (je IP-Adresse)**: etwa eine Minute.",
+            "**Zugriffstoken**: etwa 10 Minuten; die Sitzung, die sie erneuert, höchstens 12 Stunden.",
+            "**Serverprotokolle**: höchstens 30 Tage.",
+            "**Öffentliche Spieldaten**: so lange, wie sie für aktuelle und historische Ranglisten benötigt werden, oder bis sie auf deine Anfrage hin entfernt werden.",
+            "**E-Mails**: bis deine Anfrage bearbeitet ist, in jedem Fall höchstens 12 Monate, sofern wir sie nicht wegen einer gesetzlichen Pflicht länger aufbewahren müssen.",
+            "**Der lokale Speicher deines Browsers**: bis du ihn löschst."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "heading": "Wie schützen wir die Daten?",
+      "summary": "Verschlüsselte Verbindungen, beschränkter Zugriff und Schutz vor Missbrauch, auch wenn kein System vollkommen sicher ist.",
+      "blocks": [
+        {
+          "p": "Der gesamte Datenverkehr zu Rankwarden ist per HTTPS verschlüsselt, unsere Datenbanken sind aus dem Internet nicht erreichbar, der Zugang zu den Servern ist beschränkt, und unsere API begrenzt und überwacht Anfragen, um Missbrauch zu verhindern. Keine Methode der Speicherung oder Übertragung ist vollkommen sicher, aber wir schützen, was wir verarbeiten, und speichern so wenig wie möglich."
+        }
+      ]
+    },
+    {
+      "id": "rights",
+      "heading": "Welche Rechte hast du?",
+      "summary": "Du kannst erfragen, welche Daten wir über dich haben, sie berichtigen oder löschen lassen und der Anzeige widersprechen. Schreib uns, wir antworten innerhalb eines Monats.",
+      "blocks": [
+        {
+          "p": "Nach der DSGVO hast du das Recht auf Auskunft über die personenbezogenen Daten, die wir über dich speichern, auf Berichtigung, auf Löschung, auf Einschränkung der Verarbeitung, auf Widerspruch gegen die Verarbeitung und, soweit anwendbar, auf Datenübertragbarkeit."
+        },
+        {
+          "p": "**Charaktere ausblenden oder entfernen.** Wenn dein Charakter oder deine Gilde nicht auf Rankwarden erscheinen soll, schreib an [rankwardengg@gmail.com](mailto:rankwardengg@gmail.com) und nenne Namen, Realm und Region des Charakters. Wir bitten dich eventuell nachzuweisen, dass der Charakter dir gehört, etwa durch eine kleine, vorübergehende Änderung im Spiel, die wir dir beschreiben. Nach der Bestätigung entfernen wir den Charakter von Rankwarden und treffen angemessene Maßnahmen, damit er nicht wieder auftaucht. Das ändert nichts daran, was Blizzard oder Raider.io veröffentlichen; was Blizzards Dienste teilen, steuern Blizzards eigene Datenschutzeinstellungen."
+        },
+        {
+          "p": "Um ein Recht auszuüben, schreib uns, um welches Recht und welche Daten es geht. Wir antworten innerhalb eines Monats; bei komplexen Anfragen kann sich diese Frist um bis zu zwei weitere Monate verlängern, worüber wir dich informieren. Die Ausübung deiner Rechte ist kostenlos."
+        },
+        {
+          "p": "Wenn du meinst, dass wir deine Daten rechtswidrig verarbeiten, kannst du dich bei einer Datenschutzaufsichtsbehörde beschweren. In Bulgarien ist das die Kommission für den Schutz personenbezogener Daten ([cpdp.bg](https://www.cpdp.bg)); du kannst dich auch an die Behörde des EU-Landes wenden, in dem du lebst oder arbeitest. Wir würden uns freuen, wenn du uns zuerst die Gelegenheit gibst, dein Anliegen zu klären."
+        }
+      ]
+    },
+    {
+      "id": "children",
+      "heading": "Verarbeiten wir Daten von Kindern?",
+      "summary": "Rankwarden richtet sich nicht an Kinder unter 13 Jahren, und wir erheben wissentlich keine Daten von ihnen.",
+      "blocks": [
+        {
+          "p": "Rankwarden richtet sich an Personen ab 13 Jahren. Wir erheben wissentlich keine personenbezogenen Daten von Kindern unter 13 Jahren. Wenn du glaubst, dass uns ein Kind unter 13 Jahren personenbezogene Daten geschickt hat, melde dich bei uns und wir löschen sie."
+        }
+      ]
+    },
+    {
+      "id": "links",
+      "heading": "Was ist mit anderen Websites?",
+      "summary": "Für Links zu anderen Websites gelten deren eigene Richtlinien.",
+      "blocks": [
+        {
+          "p": "Rankwarden verlinkt auf andere Dienste und zeigt Inhalte von ihnen an, etwa von Blizzard und Raider.io. Wie diese mit deinen Daten umgehen, regeln ihre eigenen Datenschutzerklärungen, nicht diese, und wir sind dafür nicht verantwortlich."
+        }
+      ]
+    },
+    {
+      "id": "changes",
+      "heading": "Wird sich diese Erklärung ändern?",
+      "summary": "Ja, wenn sich die Seite oder das Recht ändert; das Datum oben zeigt immer die aktuelle Fassung.",
+      "blocks": [
+        {
+          "p": "Wir passen diese Erklärung an, wenn sich Rankwarden ändert, etwa wenn wir eines Tages Konten, Webanalyse oder Werbung einführen, oder wenn das Recht es verlangt. Das Datum „Zuletzt aktualisiert“ zeigt die letzte Änderung. Über wesentliche Änderungen informieren wir zusätzlich auf der Seite."
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "heading": "Wie erreichst du uns?",
+      "summary": "Per E-Mail: rankwardengg@gmail.com.",
+      "blocks": [
+        {
+          "p": "Für Fragen zu dieser Erklärung, Anfragen zu deinen Daten oder Löschanfragen: [rankwardengg@gmail.com](mailto:rankwardengg@gmail.com). Rankwarden wird von Deni Emilov Petrov, Bulgarien, betrieben."
+        }
+      ]
+    }
+  ]
+}
