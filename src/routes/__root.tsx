@@ -2,6 +2,7 @@ import { createRootRouteWithContext, Outlet, redirect } from '@tanstack/react-ro
 import type { QueryClient } from '@tanstack/react-query';
 import { lazy, Suspense } from 'react';
 import styled from 'styled-components';
+import { usePveCatalogue } from '@/api/pve';
 import { AppFooter } from '@/components/AppFooter';
 import { AppHeader } from '@/components/AppHeader';
 import { hasSideNav } from '@/components/nav/pvpNav';
@@ -81,6 +82,8 @@ function ErrorPage({ error }: { error: unknown }) {
 
 function RootLayout() {
   const [mode] = useGameMode();
+  // Raids and Mythic+ seasons: needed across the PvE side (menu, pages), fetched on entering it
+  usePveCatalogue(mode === 'pve');
   return (
     <>
       <AppHeader />

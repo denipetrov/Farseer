@@ -89,6 +89,9 @@ src/api/
   errors.ts             ApiError { status, code, message, retryAfterSeconds?, issues? }
   queryClient.ts        QueryClient defaults and the retry policy
   session.ts            GET /session: the example to copy for new endpoints
+  pvp.ts                PvP seasons, leaderboard, bracket list
+  pve.ts                PvE catalogue: GET /pve/raids, GET /pve/mplus-seasons
+  gameNames.ts          GET /i18n/names
 ```
 
 ### Adding an endpoint
@@ -208,6 +211,16 @@ Through CORS, the browser can read the `retry-after` and `www-authenticate` head
 englishFallback)` looks up classes, specs, races, hero talents, affixes and dungeons by
   the ids the API sends; until the answer arrives, and for anything Blizzard has no name
   for, our English name is used. Icon labels (class, spec, race, hero talent) use it.
+- **PvE catalogue**: `GET /pve/raids` (every raid with bosses, icon, `starts`/`ends` per
+  region) and `GET /pve/mplus-seasons` (every season with dungeons and cutoffs, plus all
+  affixes), in `src/api/pve.ts`. The PvE menu and many PvE pages need them, so
+  `usePveCatalogue(mode === 'pve')` in `RootLayout` fetches both as soon as the visitor is
+  on the PvE side (a `/pve/...` URL, or PvE chosen on a shared page) and never on PvP.
+  Readers use `useQuery(raidsQuery())` / `useQuery(mplusSeasonsQuery())`: the same cache
+  entries, no second request. Raids are stale after 6 h, seasons after 30 min (live
+  cutoffs). Both are newest first; `ends.<region>` null means still open, and
+  `isRunningIn(entry, region)` says whether a raid or season runs there now. Names are
+  English: translate raids, bosses and dungeons by slug and affixes by id with `/i18n/names`.
 - **Codes the API sends** get translated labels from `src/i18n/labels.ts`: `regionLabel(t,
 'eu')`, `roleText(t, kind)`. The English helpers in `src/lib/wow/` stay for code without
   a translator.
@@ -744,7 +757,7 @@ cluster has been done.
   character page is `/<lang>/pvp/character/…`. PvE character and guild pages are still at
   `/<lang>/character/…` and `/<lang>/guild/…`; move them under `/pve` with the PvE menu.
 - **Not built yet:** the PvE menu, most of `src/api/pvp.ts` (only seasons and the
-  leaderboard so far), `pve.ts`, Turnstile support on the
+  leaderboard so far), the rest of `pve.ts` (only the catalogue so far), Turnstile support on the
   token request (Soulseeker has it off), and logout or revocation (`POST /oidc/token/revocation`).
 
 ---
