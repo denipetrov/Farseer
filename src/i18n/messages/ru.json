@@ -106,5 +106,19 @@
   "expansion.10": "The War Within",
   "expansion.11": "Midnight",
   "nav.allSpecs": "Все",
-  "nav.allRoles": "Все"
+  "nav.allRoles": "Все",
+  "region.world": "Мир",
+  "widget.region": "Регион",
+  "widget.rank": "Место",
+  "widget.player": "Игрок",
+  "widget.rating": "Рейтинг",
+  "widget.viewFullLeaderboard": "Весь рейтинг",
+  "widget.unavailable": "Не удалось загрузить рейтинг.",
+  "widget.empty": "В этом рейтинге пока нет игроков.",
+  "widget.unnamed": "Неизвестный игрок",
+  "widget.faction": "Фракция",
+  "widget.winRate": "% побед",
+  "widget.record": "Победы: {won} · поражения: {lost}",
+  "bracketShort.blitz": "Блиц",
+  "bracketShort.rbg": "РПБ"
 }

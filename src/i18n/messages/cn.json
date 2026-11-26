@@ -106,5 +106,19 @@
   "expansion.10": "地心之战",
   "expansion.11": "至暗之夜",
   "nav.allSpecs": "全部",
-  "nav.allRoles": "全部"
+  "nav.allRoles": "全部",
+  "region.world": "全球",
+  "widget.region": "地区",
+  "widget.rank": "排名",
+  "widget.player": "玩家",
+  "widget.rating": "评分",
+  "widget.viewFullLeaderboard": "查看完整排行榜",
+  "widget.unavailable": "无法加载排行榜。",
+  "widget.empty": "该排行榜暂无玩家。",
+  "widget.unnamed": "未知玩家",
+  "widget.faction": "阵营",
+  "widget.winRate": "胜率",
+  "widget.record": "{won} 胜 · {lost} 负",
+  "bracketShort.blitz": "闪电战场",
+  "bracketShort.rbg": "评级战场"
 }

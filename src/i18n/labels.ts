@@ -5,7 +5,8 @@
 import type { RoleKind } from '@/lib/wow/roles';
 import type { Translate } from './messages';
 
-const REGIONS = ['us', 'eu', 'kr', 'tw', 'cn'] as const;
+// `world`: every region together, the boards' default
+const REGIONS = ['us', 'eu', 'kr', 'tw', 'cn', 'world'] as const;
 
 /** "eu" → "Europe" / "Europa" / "유럽"; an unknown region is shown as its code in capitals. */
 export function regionLabel(t: Translate, region: string): string {

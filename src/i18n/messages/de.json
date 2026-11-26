@@ -106,5 +106,19 @@
   "expansion.10": "The War Within",
   "expansion.11": "Midnight",
   "nav.allSpecs": "Alle",
-  "nav.allRoles": "Alle"
+  "nav.allRoles": "Alle",
+  "region.world": "Welt",
+  "widget.region": "Region",
+  "widget.rank": "Rang",
+  "widget.player": "Spieler",
+  "widget.rating": "Wertung",
+  "widget.viewFullLeaderboard": "Gesamte Rangliste ansehen",
+  "widget.unavailable": "Die Rangliste konnte nicht geladen werden.",
+  "widget.empty": "Noch keine Spieler in dieser Rangliste.",
+  "widget.unnamed": "Unbekannter Spieler",
+  "widget.faction": "Fraktion",
+  "widget.winRate": "Siegquote",
+  "widget.record": "{won} Siege · {lost} Niederlagen",
+  "bracketShort.blitz": "SF-Blitz",
+  "bracketShort.rbg": "RBG"
 }

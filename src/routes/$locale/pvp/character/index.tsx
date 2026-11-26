@@ -27,10 +27,11 @@ export const Route = createFileRoute('/$locale/pvp/character/')({
       currentSeasonQuery('world', 'shuffle'),
     );
     const board = await context.queryClient.fetchQuery(
-      leaderboardQuery({ region: 'world', seasonId, bracket: 'shuffle', pageSize: 1 }),
+      leaderboardQuery({ region: 'world', seasonId, bracket: 'shuffle', pageSize: 10 }),
     );
-    const top = board.entries[0];
-    if (!top) throw new Error('The Solo Shuffle board is empty');
+    // A character Blizzard gives no name or realm can't be opened: take the first that has both
+    const top = board.entries.find((e) => e.characterName && e.realmSlug);
+    if (!top?.characterName || !top.realmSlug) throw new Error('The Solo Shuffle board is empty');
     throw redirect({
       to: '/$locale/pvp/character/$region/$realm/$name',
       params: {

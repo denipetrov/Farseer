@@ -34,7 +34,7 @@
           "p": "**Données techniques liées à votre visite.** Lorsque votre navigateur contacte nos serveurs, ceux-ci reçoivent votre adresse IP et les informations habituelles de la requête, comme l’adresse demandée, l’heure et l’agent utilisateur de votre navigateur. Nous utilisons l’adresse IP pour limiter le nombre de requêtes qu’un visiteur peut effectuer par minute, et nos serveurs peuvent enregistrer ces informations dans des journaux de courte durée."
         },
         {
-          "p": "**Données stockées dans votre navigateur.** Rankwarden conserve vos réglages (faction, style des icônes, JcJ ou JcE, langue, dernières pages de personnage et de guilde ouvertes) et un jeton d’accès anonyme pour notre API dans le stockage local de votre navigateur. Ces données restent sur votre appareil ; voir la section sur les cookies et le stockage local."
+          "p": "**Données stockées dans votre navigateur.** Rankwarden conserve vos réglages (faction, style des icônes, JcJ ou JcE, langue, régions des classements, dernières pages de personnage et de guilde ouvertes) et un jeton d’accès anonyme pour notre API dans le stockage local de votre navigateur. Ces données restent sur votre appareil ; voir la section sur les cookies et le stockage local."
         },
         {
           "p": "**Messages que vous nous envoyez.** Si vous nous écrivez par e-mail, nous recevons votre adresse e-mail et le contenu de votre message."
@@ -72,7 +72,7 @@
         },
         {
           "list": [
-            "farseer:preferences — la faction, le style des icônes, le mode de jeu et la langue que vous avez choisis, ainsi que les dernières pages de personnage JcJ, de personnage JcE et de guilde que vous avez ouvertes, pour que les liens « Personnage » et « Guilde » du menu puissent vous y ramener.",
+            "farseer:preferences — la faction, le style des icônes, le mode de jeu, la langue et la région de chaque classement que vous avez choisis, ainsi que les dernières pages de personnage JcJ, de personnage JcE et de guilde que vous avez ouvertes, pour que les liens « Personnage » et « Guilde » du menu puissent vous y ramener.",
             "farseer:auth — un jeton d’accès anonyme qui permet au site de lire des données depuis notre API. Il identifie une session de navigateur, et non une personne, est valable environ 10 minutes et est renouvelé pendant 12 heures au plus."
           ]
         },

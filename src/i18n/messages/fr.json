@@ -106,5 +106,19 @@
   "expansion.10": "The War Within",
   "expansion.11": "Midnight",
   "nav.allSpecs": "Toutes",
-  "nav.allRoles": "Tous"
+  "nav.allRoles": "Tous",
+  "region.world": "Monde",
+  "widget.region": "Région",
+  "widget.rank": "Rang",
+  "widget.player": "Joueur",
+  "widget.rating": "Cote",
+  "widget.viewFullLeaderboard": "Voir le classement complet",
+  "widget.unavailable": "Impossible de charger le classement.",
+  "widget.empty": "Aucun joueur dans ce classement pour l’instant.",
+  "widget.unnamed": "Joueur inconnu",
+  "widget.faction": "Faction",
+  "widget.winRate": "% victoires",
+  "widget.record": "{won} victoires · {lost} défaites",
+  "bracketShort.blitz": "Blitz CB",
+  "bracketShort.rbg": "CB cotés"
 }

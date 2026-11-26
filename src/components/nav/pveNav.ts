@@ -6,8 +6,8 @@ import type { LocaleSlug } from '@/i18n/locales';
 import type { MessageKey } from '@/i18n/messages';
 import { iconUrl } from '@/lib/assets';
 import { CLASSES } from '@/lib/wow/classes';
-import { classRoleKinds, roleSlug } from '@/lib/wow/roles';
-import { SPECS } from '@/lib/wow/specs';
+import { classRoleKinds, roleLabel, roleSlug, type RoleKind } from '@/lib/wow/roles';
+import { SPECS, type Spec } from '@/lib/wow/specs';
 import type { Faction } from '@/styles/palette';
 import { ALL } from '@/lib/mplusParams';
 import type { NavGroup, NavIcon, NavItem, NavLabel } from './navTypes';
@@ -24,10 +24,10 @@ export const PVE_ICONS = {
   home: 'nav/home',
   character: 'nav/character',
   leaderboards: 'nav/leaderboards',
-  mplusCharacters: 'nav/leaderboards',
-  mplusRuns: want('nav/runs', 'nav/rating'),
-  mplusSpecs: want('nav/spec-leaderboard', 'nav/talents'),
-  mplusClassRoles: want('nav/class-role-leaderboard', 'nav/character'),
+  mplusCharacters: want('nav/mplus-characters', 'nav/leaderboards'),
+  mplusRuns: want('nav/mplus-runs', 'nav/rating'),
+  mplusSpecs: want('nav/mplus-specs', 'nav/talents'),
+  mplusClassRoles: want('nav/mplus-class-roles', 'nav/character'),
   hallOfFame: want('nav/hall-of-fame', 'nav/tier-list'),
   bossRankings: 'nav/bosses',
   stats: 'nav/stats',
@@ -216,12 +216,12 @@ function leaderboardsGroup(locale: LocaleSlug, name: GameName, archive: boolean)
         id: id('mplus-specs'),
         label: 'nav.mplusSpecs',
         icon: PVE_ICONS.mplusSpecs,
-        children: CLASSES.map((c) => ({
+        children: CLASSES_AZ.map((c) => ({
           id: id(`mplus-specs-${c.slug}`),
           label: className(c),
           icon: { kind: 'class', cls: c.slug },
           children: [
-            ...SPECS.filter((sp) => sp.classSlug === c.slug).map((sp) => ({
+            ...specsAz(c.slug).map((sp) => ({
               slug: sp.slug,
               label: { text: name('specs', sp.id, sp.name) } as NavLabel,
               icon: { kind: 'spec', specId: sp.id } as NavIcon,
@@ -252,12 +252,12 @@ function leaderboardsGroup(locale: LocaleSlug, name: GameName, archive: boolean)
         id: id('mplus-roles'),
         label: 'nav.mplusClassRoles',
         icon: PVE_ICONS.mplusClassRoles,
-        children: CLASSES.map((c) => ({
+        children: CLASSES_AZ.map((c) => ({
           id: id(`mplus-roles-${c.slug}`),
           label: className(c),
           icon: { kind: 'class', cls: c.slug },
           children: [
-            ...classRoleKinds(c.slug).map((kind) => ({
+            ...rolesAz(c.slug).map((kind) => ({
               slug: roleSlug(kind) as string,
               label: ROLE_LABEL[roleSlug(kind)] as NavLabel,
               icon: { kind: 'role', role: kind.role, subRole: kind.subRole } as NavIcon,
@@ -287,6 +287,19 @@ function leaderboardsGroup(locale: LocaleSlug, name: GameName, archive: boolean)
     ],
   };
 }
+
+/**
+ * The menu lists classes, specs and roles A–Z by their English names (the user's choice,
+ * 2026-11-26), in every language, so the order never moves when the language changes.
+ */
+const byEnglishName = (a: { name: string }, b: { name: string }) =>
+  a.name.localeCompare(b.name, 'en');
+const CLASSES_AZ = [...CLASSES].sort(byEnglishName);
+const specsAz = (classSlug: string): Spec[] =>
+  SPECS.filter((sp) => sp.classSlug === classSlug).sort(byEnglishName);
+/** Healer, Melee DPS, Ranged DPS, Tank */
+const rolesAz = (classSlug: string): RoleKind[] =>
+  classRoleKinds(classSlug).sort((a, b) => roleLabel(a).localeCompare(roleLabel(b), 'en'));
 
 const ROLE_LABEL: Record<ReturnType<typeof roleSlug>, MessageKey> = {
   tank: 'role.tank',

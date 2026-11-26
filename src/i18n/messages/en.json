@@ -106,5 +106,19 @@
   "expansion.10": "The War Within",
   "expansion.11": "Midnight",
   "nav.allSpecs": "All",
-  "nav.allRoles": "All"
+  "nav.allRoles": "All",
+  "region.world": "World",
+  "widget.region": "Region",
+  "widget.rank": "Rank",
+  "widget.player": "Player",
+  "widget.rating": "Rating",
+  "widget.viewFullLeaderboard": "View full leaderboard",
+  "widget.unavailable": "The leaderboard couldn't be loaded.",
+  "widget.empty": "No players on this board yet.",
+  "widget.unnamed": "Unknown player",
+  "widget.faction": "Faction",
+  "widget.winRate": "Win %",
+  "widget.record": "{won} wins · {lost} losses",
+  "bracketShort.blitz": "BG Blitz",
+  "bracketShort.rbg": "RBG"
 }

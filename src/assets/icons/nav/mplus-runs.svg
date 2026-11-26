@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="currentColor">
+  <!-- Mythic+ Runs: the keystone pentagram. A pentagon with a rune node at each corner (a rune
+       on each lighter face), two rune rings (thin rings, the runes as
+       lighter dashes), and the medallion in the middle: a ring, a lighter face with an hourglass,
+       diamond points left and right. -->
+  <path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M37.34 8.68L53.67 20.54M56.97 30.70L50.73 49.90M42.09 56.18L21.91 56.18M13.27 49.90L7.03 30.70M10.33 20.54L26.66 8.68"/>
+  <circle cx="32" cy="33.2" r="21.6" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="32" cy="33.2" r="16.8" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="32" cy="33.2" r="19.200000000000003" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="2.6" stroke-dasharray="1.6 2.2" transform="rotate(4 32 33.2)"/>
+  <circle cx="32" cy="33.2" r="14.6" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="32" cy="33.2" r="11.6" fill="none" stroke="currentColor" stroke-width="0.9"/><circle cx="32" cy="33.2" r="13.1" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.8" stroke-dasharray="1.2 1.9" transform="rotate(0 32 33.2)"/>
+  <path fill-rule="evenodd" d="M26.80 4.80a5.2 5.2 0 1 0 10.4 0a5.2 5.2 0 1 0 -10.4 0ZM28.30 4.80a3.7 3.7 0 1 0 7.4 0a3.7 3.7 0 1 0 -7.4 0ZM53.81 24.42a5.2 5.2 0 1 0 10.4 0a5.2 5.2 0 1 0 -10.4 0ZM55.31 24.42a3.7 3.7 0 1 0 7.4 0a3.7 3.7 0 1 0 -7.4 0ZM43.49 56.18a5.2 5.2 0 1 0 10.4 0a5.2 5.2 0 1 0 -10.4 0ZM44.99 56.18a3.7 3.7 0 1 0 7.4 0a3.7 3.7 0 1 0 -7.4 0ZM10.11 56.18a5.2 5.2 0 1 0 10.4 0a5.2 5.2 0 1 0 -10.4 0ZM11.61 56.18a3.7 3.7 0 1 0 7.4 0a3.7 3.7 0 1 0 -7.4 0ZM-0.21 24.42a5.2 5.2 0 1 0 10.4 0a5.2 5.2 0 1 0 -10.4 0ZM1.29 24.42a3.7 3.7 0 1 0 7.4 0a3.7 3.7 0 1 0 -7.4 0Z"/>
+  <path fill-opacity=".35" d="M28.30 4.80a3.7 3.7 0 1 0 7.4 0a3.7 3.7 0 1 0 -7.4 0ZM55.31 24.42a3.7 3.7 0 1 0 7.4 0a3.7 3.7 0 1 0 -7.4 0ZM44.99 56.18a3.7 3.7 0 1 0 7.4 0a3.7 3.7 0 1 0 -7.4 0ZM11.61 56.18a3.7 3.7 0 1 0 7.4 0a3.7 3.7 0 1 0 -7.4 0ZM1.29 24.42a3.7 3.7 0 1 0 7.4 0a3.7 3.7 0 1 0 -7.4 0Z"/>
+  <path fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" d="M 32.00 7.60 V 2.00 M 32.00 4.60 L 29.90 2.20 M 32.00 4.60 L 34.10 2.20M 57.81 27.22 V 21.62 M 57.81 21.62 L 60.71 23.22 M 57.81 23.92 L 60.71 25.52M 47.39 58.98 V 53.38 L 50.29 54.88 L 47.39 56.38 L 50.39 58.98M 15.31 53.38 L 17.31 55.48 L 13.61 58.98 M 15.31 53.38 L 13.31 55.48 L 17.01 58.98M 2.79 22.22 V 26.62 L 7.19 22.22 V 26.62 Z"/>
+  <path d="M23.4 30.800000000000004L19.4 33.2L23.4 35.6ZM40.6 30.800000000000004L44.6 33.2L40.6 35.6ZM30.6 24.700000000000003L32 22.6L33.4 24.700000000000003ZM30.6 41.7L32 43.800000000000004L33.4 41.7Z"/>
+  <path fill-rule="evenodd" d="M23.80 33.20a8.2 8.2 0 1 0 16.4 0a8.2 8.2 0 1 0 -16.4 0ZM25.80 33.20a6.2 6.2 0 1 0 12.4 0a6.2 6.2 0 1 0 -12.4 0Z"/>
+  <path fill-opacity=".35" d="M25.80 33.20a6.2 6.2 0 1 0 12.4 0a6.2 6.2 0 1 0 -12.4 0Z"/>
+  <path d="M28.8 28.800000000000004H35.2V29.800000000000004H34.4C34.4 31.800000000000004 32.9 32.7 32.9 33.2C32.9 33.7 34.4 34.6 34.4 36.6H35.2V37.6H28.8V36.6H29.6C29.6 34.6 31.1 33.7 31.1 33.2C31.1 32.7 29.6 31.800000000000004 29.6 29.800000000000004H28.8Z"/>
+</svg>

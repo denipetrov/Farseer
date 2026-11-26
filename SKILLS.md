@@ -370,11 +370,10 @@ below).
   with the menu (`/pve/character`, `/pve/guild`, `/pve/stats/mythic-plus/…`, `/pve/tier-list`).
   Raids come from `raidsQuery()` (the catalogue the root layout fetches on PvE); until then
   the section shows Guild and a note.
-  - **Icons still to draw** use a stand-in from the set (`PVE_ICONS`, `want(path,
-standIn)`): `nav/runs`, `nav/spec-leaderboard`,
-    `nav/class-role-leaderboard`, `nav/hall-of-fame`, `nav/compositions`. Drop
-    the SVG in `icons/nav/` with that name and it is used, no code change (then re-measure
-    its optical size).
+  - **Every PvE menu icon is drawn** (2026-11-26). `PVE_ICONS` still wraps them in
+    `want(path, standIn)`, so a new entry can point at a file that does not exist yet and
+    show a stand-in until it does: drop the SVG in `icons/nav/` with that name and it is
+    used, no code change (then re-measure its optical size).
   - **Expansion logos** (`icons/expansions/`, `EXPANSION_ART` by Raider.io id: legion, bfa,
     shadowlands, dragonflight, tww, midnight; the folder also has vanilla … wod, `tlt`,
     `forever`): 64×30 beside the translated name (the user's pick of 2026-11-26 from
@@ -475,6 +474,10 @@ standIn)`): `nav/runs`, `nav/spec-leaderboard`,
   malformed value is dropped; checking it against the catalogue is the page's job). Every
   board and stat Soulseeker serves takes `season`, and `/pve/spec-representation` lists the
   seasons it has (`getSeasons=true`), for a season picker.
+- **Order:** classes, specs and roles are A–Z by their English names (`CLASSES_AZ`,
+  `specsAz`, `rolesAz` in `pveNav.ts`; the user's choice, 2026-11-26) in every language, so
+  the order never moves with the language; roles read Healer, Melee DPS, Ranged DPS, Tank.
+  The All row stays last.
 - **"All" under a class** (the last row in Specs and in Classes & Roles, current and
   archived): `…/specs/<class>/all` and `…/roles/<class>/all` (`ALL` in `mplusParams.ts`; no
   spec or role has that slug). Both are the whole class's board (Soulseeker's `class=`
@@ -483,6 +486,47 @@ standIn)`): `nav/runs`, `nav/spec-leaderboard`,
 - The current and archived pages share their components (`src/components/pve/MplusPages.tsx`)
   and URL checks (`src/lib/mplusParams.ts`); the menu builds both Leaderboards from one
   `leaderboardsGroup(locale, name, archive)`, archive ids prefixed `archives-`.
+
+**Widgets** (`src/components/widgets/`): the content of the pages, built one widget at a time
+(the user's plan, 2026-11-26).
+
+- **Sizes** (`WidgetGrid.tsx`): `small` (three across), `medium` (two across), `large` (full
+  width), in a six-column `WidgetGrid`; a widget's root carries `data-size`. The steps follow
+  the grid's own width (a container query), not the window's, because the left menu takes
+  17.5rem: smalls go two across under 1000px (a small one needs ~320px for names to read;
+  three across from a ~1330px window), everything one across under 600px.
+- **Frame:** `WidgetFrame` (panel, accent line on top), `WidgetHeader` / `WidgetTitle`,
+  `WidgetFooter`.
+- **Icons in the centre content are the coloured game art** (the user, 2026-11-26): the
+  bracket PNGs (`pvp/brackets/<bracket>.png`, round), not the menu's single-colour SVGs, which
+  stay for the left menu.
+- **Leaderboard** (`LeaderboardWidget`, the user's example): the bracket's PNG and name, a region dropdown (native `<select>`, `PVP_BOARDS`, World first and default), then
+  per row the place, spec and hero talent icons (unknown icon when absent: many characters
+  aren't enriched yet), the name in its class colour linking to the PvP character page
+  (plain text when Blizzard gives no name or realm), the rating in its PvP rank's colour
+  (`rankOfLadderRow` + `PVP_RANKS[].color` in `pvpRank.ts`: the bands of the rankedpvp icons,
+  Rank 1 when `inTitleRange` (its own region's Rank 1 title cutoff) and the rating is Elite,
+  2300+, since a tiny ladder's cutoff can be far lower: Korea 3v3 576; rows have no title
+  history, so Gladiator (the user's rule) is an Elite rating with 150+ wins this season
+  or a 2650+ rating (`GLADIATOR_ROW_WINS`, `GLADIATOR_ROW_RATING`), below the Rank 1 cutoff; each colour is its icon's main tone, ≥ 5.8:1 on the panel),
+  and the faction icon; the line under each row is in that character's faction trim
+  (`factionColorVars(faction).trim`: Alliance gold, Horde silver; neutral when unknown) (the
+  user swapped it in for the win %; the visitor's icon style, unknown icon when absent),
+  and "View full leaderboard" (keeps the region). Rows are numbered by position: on Shuffle and Blitz Blizzard's `rank` is the rank
+  within the spec. 10 rows on small and medium, 25 on large.
+  - **Medium** (and large, for now) adds the race portrait first among the icons and the win
+    % after the rating (`DETAILED`; whole percent, won ÷ (won + lost), the record on hover). The table is `table-layout: fixed` with widths in a `<colgroup>` (the
+    header row is screen-reader only, so a fixed layout would otherwise split the columns
+    evenly), so long names shorten with "…".
+- **Region dropdown remembered** per bracket (preference `pvpBoardRegions`): kept after
+  navigating or reloading, shared by every widget of that bracket. The bracket and region
+  lists live in `src/lib/pvpBoards.ts` (no API code, so the preferences can validate them;
+  `api/pvp.ts` re-exports them).
+- **Short names** on small widgets, where the full ones don't fit: "BG Blitz", "RBG"
+  (`bracketShort.*`; the full name on hover and as the widget's label).
+- **The PvP home** (the user's layout): Solo Shuffle and 3v3 as medium boards, then 2v2,
+  Blitz and RBG as small ones (`ModeHome` takes children).
+- **`.sr-only`** (GlobalStyle): read by screen readers, not shown.
 
 **Back to top** (`src/components/ScrollTopButton.tsx`, in `__root.tsx`): a 48px round button
 fixed at the bottom right (desktop and mobile, clear of the phone's safe areas) with
@@ -707,7 +751,8 @@ README. `src/assets/README.md` has the rules. The key concept:
   `gameMode` (pvp | pve, default pvp), `locale` (a language slug, or null until one is
   chosen, so a first visit follows the browser), and `lastPvpCharacter`,
   `lastPveCharacter`, `lastPveGuild` (`{ region, realm, name }` of the last such page
-  opened, or null). The privacy policy lists what is
+  opened, or null). `pvpBoardRegions` (`{ shuffle: 'eu' }`: the region last
+  picked on each PvP bracket's leaderboard widget; unknown brackets or regions are dropped). The privacy policy lists what is
   stored: **update it in all eight languages when a preference is added.** `gameMode` and `locale` are read outside
   React by the redirects.
   `readPreferences` validates each field on its own and drops unknown keys.

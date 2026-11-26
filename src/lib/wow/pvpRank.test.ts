@@ -7,6 +7,7 @@ import {
   rankForRating,
   rankOfHistoryEntry,
   type PvpHistoryInput,
+  rankOfLadderRow,
 } from './pvpRank';
 
 const SEASON = 42;
@@ -122,5 +123,38 @@ describe('rank icons', () => {
     }
     const used = new Set(PVP_RANKS.map((r) => `rankedpvp_0${r.icon}`));
     expect(iconNames('pvp/ranked').filter((n) => !used.has(n))).toEqual([]);
+  });
+});
+
+describe('leaderboard row rank', () => {
+  it('follows the rating bands, and Rank 1 for a row in title range', () => {
+    expect(rankOfLadderRow({ rating: 1650 }).id).toBe('challenger');
+    expect(rankOfLadderRow({ rating: 2250, inTitleRange: false }).id).toBe('duelist');
+    expect(rankOfLadderRow({ rating: 2500, inTitleRange: false }).id).toBe('elite');
+    expect(rankOfLadderRow({ rating: 3100, inTitleRange: true }).id).toBe('rank-one');
+  });
+
+  it('gives Gladiator to an Elite rating with 150+ wins or a 2650+ rating, below Rank 1', () => {
+    expect(rankOfLadderRow({ rating: 2400, inTitleRange: false, won: 150 }).id).toBe('gladiator');
+    expect(rankOfLadderRow({ rating: 2400, inTitleRange: false, won: 149 }).id).toBe('elite');
+    expect(rankOfLadderRow({ rating: 2649, inTitleRange: false, won: null }).id).toBe('elite');
+    expect(rankOfLadderRow({ rating: 2650, inTitleRange: false, won: 10 }).id).toBe('gladiator');
+    expect(rankOfLadderRow({ rating: 3613, inTitleRange: false, won: 130 }).id).toBe('gladiator');
+    expect(rankOfLadderRow({ rating: 3565, inTitleRange: true, won: 400 }).id).toBe('rank-one');
+    // Wins don't lift a rating below Elite
+    expect(rankOfLadderRow({ rating: 2250, won: 900 }).id).toBe('duelist');
+  });
+
+  it('gives Rank 1 only from an Elite rating, whatever a tiny ladder cutoff says', () => {
+    // Korea 3v3, Midnight season 2: the Rank 1 cutoff is 576
+    expect(rankOfLadderRow({ rating: 1200, inTitleRange: true }).id).toBe('combatant');
+    expect(rankOfLadderRow({ rating: 2299, inTitleRange: true }).id).toBe('duelist');
+    expect(rankOfLadderRow({ rating: 2300, inTitleRange: true }).id).toBe('rank-one');
+  });
+
+  it('gives every rank its own colour', () => {
+    const colors = PVP_RANKS.map((r) => r.color);
+    expect(new Set(colors).size).toBe(PVP_RANKS.length);
+    for (const c of colors) expect(c).toMatch(/^#[0-9a-f]{6}$/);
   });
 });

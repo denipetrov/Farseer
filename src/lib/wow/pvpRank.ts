@@ -30,20 +30,26 @@ export interface PvpRank {
   icon: number;
   /** Lowest current rating in this band; null for ranks a rating alone can't give */
   minRating: number | null;
+  /**
+   * Text colour for a rating of this rank (leaderboards): the icon's main tone, lightened
+   * to read on the dark panels (contrast 5.8–11 : 1 on --color-surface).
+   */
+  color: string;
 }
 
 /** In ascending order. */
 export const PVP_RANKS: readonly PvpRank[] = [
-  { id: 'unranked', name: 'Unranked', icon: 1, minRating: 0 },
-  { id: 'combatant', name: 'Combatant', icon: 2, minRating: 1000 },
-  { id: 'challenger', name: 'Challenger', icon: 3, minRating: 1400 },
-  { id: 'rival', name: 'Rival', icon: 4, minRating: 1800 },
-  { id: 'duelist', name: 'Duelist', icon: 5, minRating: 2100 },
-  { id: 'elite', name: 'Elite', icon: 6, minRating: 2300 },
+  // Colours from each icon (2026-11-26): bronze, silver, gold, ice, blue, purple, gold, orange
+  { id: 'unranked', name: 'Unranked', icon: 1, minRating: 0, color: '#b8927f' },
+  { id: 'combatant', name: 'Combatant', icon: 2, minRating: 1000, color: '#c3c8d0' },
+  { id: 'challenger', name: 'Challenger', icon: 3, minRating: 1400, color: '#e2b85b' },
+  { id: 'rival', name: 'Rival', icon: 4, minRating: 1800, color: '#a9cdef' },
+  { id: 'duelist', name: 'Duelist', icon: 5, minRating: 2100, color: '#4cb0f0' },
+  { id: 'elite', name: 'Elite', icon: 6, minRating: 2300, color: '#b47cf2' },
   // Elite rating plus this season's Gladiator-type title
-  { id: 'gladiator', name: 'Gladiator', icon: 7, minRating: null },
+  { id: 'gladiator', name: 'Gladiator', icon: 7, minRating: null, color: '#ffc53d' },
   // Elite rating at or above the ladder's Rank 1 cutoff
-  { id: 'rank-one', name: 'Rank 1', icon: 8, minRating: null },
+  { id: 'rank-one', name: 'Rank 1', icon: 8, minRating: null, color: '#ff8a24' },
 ];
 
 const byId = new Map(PVP_RANKS.map((r) => [r.id, r]));
@@ -129,6 +135,39 @@ export function rankForRating({
   if (rankOneCutoff != null && r >= rankOneCutoff) return rank('rank-one');
   const season = seasonId != null ? bestRankInSeason(history, seasonId) : null;
   if (season && season.icon >= rank('gladiator').icon) return season;
+  return band;
+}
+
+/**
+ * When a leaderboard row with an Elite rating counts as this season's Gladiator-type title
+ * (Gladiator, Legend, Strategist): this many wins this season, or a rating at least this
+ * high. Rows carry no title history, so this stands in for it: the user's rule (2026-11-26).
+ */
+export const GLADIATOR_ROW_WINS = 150;
+export const GLADIATOR_ROW_RATING = 2650;
+
+/**
+ * The rank of a leaderboard row (Soulseeker's LeaderboardEntry), from an Elite rating (2300+)
+ * upwards:
+ * - Rank 1 when `inTitleRange` (rating at or above its own region's title cutoff, which is
+ *   the Rank 1 title: "Venomous Gladiator: Midnight Season 2"). Only from Elite, as
+ *   `rankForRating` does with a cutoff: a tiny ladder's cutoff can sit far below 2300
+ *   (Korea 3v3: 576).
+ * - Else Gladiator with at least GLADIATOR_ROW_WINS wins this season, or a rating of at least
+ *   GLADIATOR_ROW_RATING (the row has no title history; the character page has the real one).
+ * - Else Elite. Below 2300, the rating's band.
+ */
+export function rankOfLadderRow(row: {
+  rating: number;
+  inTitleRange?: boolean;
+  won?: number | null;
+}): PvpRank {
+  const band = rankForRating({ rating: row.rating });
+  if (band.id !== 'elite') return band;
+  if (row.inTitleRange) return rank('rank-one');
+  if ((row.won ?? 0) >= GLADIATOR_ROW_WINS || row.rating >= GLADIATOR_ROW_RATING) {
+    return rank('gladiator');
+  }
   return band;
 }
 

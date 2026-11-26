@@ -72,10 +72,10 @@ describe('PvE menu', () => {
 
     const druid = group(group(leaderboards.children, 'mplus-roles').children, 'mplus-roles-druid');
     expect(druid.children.map((c) => c.id)).toEqual([
-      'mplus-roles-druid-tank',
       'mplus-roles-druid-healer',
       'mplus-roles-druid-melee',
       'mplus-roles-druid-ranged',
+      'mplus-roles-druid-tank',
       'mplus-roles-druid-all',
     ]);
   });
@@ -119,6 +119,32 @@ describe('PvE menu', () => {
       expect(guild.id).toBe('guild');
       expect(isNavNote(only) && only.note).toBe(note);
     }
+  });
+
+  it('lists classes, specs and roles A-Z by English name, All last', () => {
+    const specs = group(leaderboards.children, 'mplus-specs');
+    expect(specs.children.map((c) => c.id.replace('mplus-specs-', ''))).toEqual([
+      'deathknight',
+      'demonhunter',
+      'druid',
+      'evoker',
+      'hunter',
+      'mage',
+      'monk',
+      'paladin',
+      'priest',
+      'rogue',
+      'shaman',
+      'warlock',
+      'warrior',
+    ]);
+    const hunter = group(specs.children, 'mplus-specs-hunter');
+    expect(hunter.children.map((c) => c.id.replace('mplus-specs-hunter-', ''))).toEqual([
+      'beastmastery',
+      'marksmanship',
+      'survival',
+      'all',
+    ]);
   });
 
   it('has Archives: the same leaderboards and stats for past seasons', () => {

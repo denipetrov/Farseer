@@ -6,6 +6,7 @@ import type { Faction } from '@/styles/palette';
 import { DEFAULT_ASSET_STYLE, isAssetStyle, type AssetStyle } from '@/lib/assets';
 import { DEFAULT_GAME_MODE, isGameMode, type GameMode } from '@/lib/gameMode';
 import { isLocaleSlug, type LocaleSlug } from '@/i18n/locales';
+import { isPvpBoard, isPvpBracket, type PvpBoard, type PvpBracket } from '@/lib/pvpBoards';
 
 export const STORAGE_KEY = 'farseer:preferences';
 
@@ -30,6 +31,11 @@ export interface Preferences {
   lastPveCharacter: CharacterRef | null;
   /** The last guild page opened (else the link opens the current raid's top guild) */
   lastPveGuild: CharacterRef | null;
+  /**
+   * The region last picked on each PvP bracket's leaderboard widget (`{ shuffle: 'eu' }`), so
+   * it stays after navigating or reloading. A bracket not listed opens on its default (World).
+   */
+  pvpBoardRegions: Partial<Record<PvpBracket, PvpBoard>>;
 }
 
 /** A character or guild page's address: region, realm slug and name as in its URL. */
@@ -47,6 +53,7 @@ export const defaultPreferences: Preferences = {
   lastPvpCharacter: null,
   lastPveCharacter: null,
   lastPveGuild: null,
+  pvpBoardRegions: {},
 };
 
 const isFaction = (v: unknown): v is Faction => v === 'horde' || v === 'alliance';
@@ -69,6 +76,14 @@ export const isCharacterRef = (v: unknown): v is CharacterRef => {
 const pageRef = (v: unknown): CharacterRef | null =>
   isCharacterRef(v) ? { region: v.region, realm: v.realm, name: v.name } : null;
 
+/** Only known brackets with known regions are kept; anything else is dropped */
+function boardRegions(v: unknown): Partial<Record<PvpBracket, PvpBoard>> {
+  if (typeof v !== 'object' || v === null) return {};
+  return Object.fromEntries(
+    Object.entries(v).filter(([bracket, region]) => isPvpBracket(bracket) && isPvpBoard(region)),
+  );
+}
+
 /** Each field is validated on its own: one bad value never resets the others. */
 export function readPreferences(): Preferences {
   try {
@@ -85,6 +100,7 @@ export function readPreferences(): Preferences {
       lastPvpCharacter: pageRef(parsed.lastPvpCharacter),
       lastPveCharacter: pageRef(parsed.lastPveCharacter),
       lastPveGuild: pageRef(parsed.lastPveGuild),
+      pvpBoardRegions: boardRegions(parsed.pvpBoardRegions),
     };
   } catch {
     return defaultPreferences;

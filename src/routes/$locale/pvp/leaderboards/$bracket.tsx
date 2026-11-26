@@ -1,9 +1,7 @@
 import { createFileRoute, notFound } from '@tanstack/react-router';
-import { isPvpBracket, type PvpBoard } from '@/api/pvp';
+import { PVP_BOARDS, isPvpBracket, type PvpBoard } from '@/api/pvp';
 import { ComingSoonPage } from '@/components/ComingSoonPage';
 import { useI18n } from '@/i18n/useI18n';
-
-const REGIONS = ['world', 'us', 'eu', 'kr', 'tw'] as const satisfies readonly PvpBoard[];
 
 /**
  * URL search params are the board's filters. All optional, so links stay clean; read them
@@ -20,7 +18,9 @@ export const Route = createFileRoute('/$locale/pvp/leaderboards/$bracket')({
     if (!isPvpBracket(params.bracket)) throw notFound();
   },
   validateSearch: (search: Record<string, unknown>): LeaderboardSearch => ({
-    region: REGIONS.includes(search.region as PvpBoard) ? (search.region as PvpBoard) : undefined,
+    region: PVP_BOARDS.includes(search.region as PvpBoard)
+      ? (search.region as PvpBoard)
+      : undefined,
     page: Number(search.page) > 1 ? Math.floor(Number(search.page)) : undefined,
   }),
   component: LeaderboardPage,

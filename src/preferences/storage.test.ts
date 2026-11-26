@@ -21,6 +21,7 @@ describe('preferences storage', () => {
       lastPvpCharacter: { region: 'eu', realm: 'draenor', name: 'Biba' },
       lastPveCharacter: { region: 'us', realm: 'illidan', name: 'Rooiben' },
       lastPveGuild: { region: 'eu', realm: 'tarren-mill', name: 'Echo' },
+      pvpBoardRegions: { shuffle: 'eu', '3v3': 'us' },
     } as const;
     writePreferences(prefs);
     expect(readPreferences()).toEqual(prefs);
@@ -45,6 +46,7 @@ describe('preferences storage', () => {
       lastPvpCharacter: null,
       lastPveCharacter: null,
       lastPveGuild: null,
+      pvpBoardRegions: {},
     });
   });
 
@@ -61,6 +63,7 @@ describe('preferences storage', () => {
       lastPvpCharacter: null,
       lastPveCharacter: null,
       lastPveGuild: null,
+      pvpBoardRegions: {},
     });
   });
 
@@ -99,5 +102,20 @@ describe('preferences storage', () => {
     expect(prefs.lastPveGuild).toEqual(echo);
     expect(prefs.lastPveCharacter).toBeNull();
     expect(prefs.lastPvpCharacter).toBeNull();
+  });
+
+  it('keeps a known region per known bracket, and drops the rest', () => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        pvpBoardRegions: { shuffle: 'eu', blitz: 'cn', '5v5': 'us', rbg: 'world', '3v3': 7 },
+      }),
+    );
+    expect(readPreferences().pvpBoardRegions).toEqual({ shuffle: 'eu', rbg: 'world' });
+
+    for (const bad of ['eu', null, [1], 3]) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ pvpBoardRegions: bad }));
+      expect(readPreferences().pvpBoardRegions).toEqual({});
+    }
   });
 });

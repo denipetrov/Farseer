@@ -47,4 +47,14 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   ::selection { background: var(--color-accent-muted); color: var(--color-text-highlight); }
+
+  /* Read by screen readers, not shown: labels and table headers the design leaves out */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 `;

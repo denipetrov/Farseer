@@ -182,8 +182,28 @@ accent in both factions. No frame, no text.
 - `stats.svg`: a line graph (L axes, rising line with data points, area under it in a lighter
   shade).
 - `rating.svg`: the stats line graph ending in a star instead of a last data point.
+- `mplus-characters.svg`: Mythic+ All Characters. A warrior silhouette (traced from the user's
+  art, its highlights cut out) with a sword, a trophy on the ground between his feet (a gleam
+  and a star cut out, a gap from the legs).
+- `mplus-runs.svg`: Mythic+ Runs. The keystone pentagram: a pentagon with a rune in a node at
+  each corner, two rune rings (thin rings, the runes as lighter dashes) and the hourglass
+  medallion with diamond points in the middle.
+- `mplus-class-roles.svg`: Mythic+ Classes & Roles. The same group: the paladin class icon on
+  top, the Healer, Melee DPS and Tank role icons below, all traced from the art by tone (the
+  healer's cross by how pale it is, so its shaded lower arm stays solid).
+- `mplus-specs.svg`: Mythic+ Specs. A class and its specs: the warrior class icon in a large
+  node on top, Arms, Fury and Protection below in a shallow arc (no connecting lines, so the
+  icons are as large as the square allows; at the menu's 22 px the lines made them too small to
+  recognise). Each icon is traced from the game art by tone (light solid, mid tones lighter,
+  dark empty).
 - `spec-representation.svg`: a bar chart on the stats axes, five columns tallest to
   shortest, rounded solid tops over lighter bodies.
+- `hall-of-fame.svg`: a red carpet in perspective (lighter, its trims solid) up three steps
+  to a pedestal with a trophy (star and gleam cut out), stanchions with sagging ropes on both
+  sides.
+- `compositions.svg`: Compositions. Five role icons packed in a quincunx (Tank and Healer on
+  top, Melee DPS in the middle and lower left, Ranged DPS lower right), each traced from its
+  role icon by tone.
 - `cutoffs.svg`: a straight rising line on the stats axes (area under it lighter) ending at
   an open treasure chest full of gold (lid open, coins, lighter wood, hasp and lock) with two
   sparkles.

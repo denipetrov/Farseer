@@ -3,16 +3,17 @@
  * more of each answer (Soulseeker's `src/pvp/**\/*.types.ts` are the source).
  */
 import { queryOptions } from '@tanstack/react-query';
+import type { PvpBoard, PvpBracket } from '@/lib/pvpBoards';
 import { api } from '.';
 
-/** Ladder families, in the game's order. Each has its own leaderboard page. */
-export const PVP_BRACKETS = ['2v2', '3v3', 'shuffle', 'blitz', 'rbg'] as const;
-export type PvpBracket = (typeof PVP_BRACKETS)[number];
-export const isPvpBracket = (v: unknown): v is PvpBracket =>
-  typeof v === 'string' && (PVP_BRACKETS as readonly string[]).includes(v);
-
-/** A PvP board's region: one of Blizzard's, or `world` for all of them together. */
-export type PvpBoard = 'us' | 'eu' | 'kr' | 'tw' | 'world';
+export {
+  PVP_BOARDS,
+  PVP_BRACKETS,
+  isPvpBoard,
+  isPvpBracket,
+  type PvpBoard,
+  type PvpBracket,
+} from '@/lib/pvpBoards';
 
 /** `GET /pvp/cutoffs`: here only the season it describes (the current one). */
 export interface CutoffsSeason {
@@ -28,15 +29,29 @@ export const currentSeasonQuery = (region: PvpBoard = 'world', bracket: PvpBrack
     staleTime: 10 * 60_000,
   });
 
-/** One row of a ladder. */
+/** One row of a ladder (Soulseeker's `src/pvp/leaderboard/leaderboard.types.ts`). */
 export interface LeaderboardEntry {
   region: string;
-  characterName: string;
-  realmSlug: string;
+  characterId: number;
+  /** Null when Blizzard gives no name: show "Unknown player", with no link */
+  characterName: string | null;
+  realmSlug: string | null;
   /** The spec ladder on Shuffle and Blitz (`shuffle-monk-mistweaver`), else the family */
   bracket: string;
   rating: number;
-  rank: number;
+  /**
+   * Blizzard's rank on the row's own ladder. On an all-specs Shuffle or Blitz board that is
+   * the rank within the spec, not the place on this board: number such boards by position.
+   */
+  rank: number | null;
+  /** Games (rounds, on Shuffle) this season */
+  played: number | null;
+  won: number | null;
+  lost: number | null;
+  /** At or above the title cutoff of its own ladder and region */
+  inTitleRange: boolean;
+  /** The rating before Rankwarden's latest write; null on a first appearance (current season only) */
+  previousRating?: number | null;
   faction: string | null;
   class?: string | null;
   classId?: number | null;
