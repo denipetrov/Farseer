@@ -62,6 +62,21 @@ export interface LeaderboardEntry {
   race?: string | null;
   raceId?: number | null;
   gender?: string | null;
+  /** The realm's display name (`Tarren Mill`); `realmSlug` is the slug */
+  realmName?: string | null;
+  /** The active loadout of each spec the character has one for; empty before enrichment */
+  talentLoadouts?: LeaderboardTalentLoadout[];
+}
+
+/** One spec's active talent loadout */
+export interface LeaderboardTalentLoadout {
+  /** Soulseeker's spec slug (`mistweaver`) */
+  spec: string | null;
+  specId: number | null;
+  heroTalents: string | null;
+  heroTalentId: number | null;
+  /** The in-game export string, as Wowhead's talent calculator reads it */
+  talentLoadoutCode: string | null;
 }
 
 export interface LeaderboardResponse {

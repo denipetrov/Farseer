@@ -120,5 +120,22 @@
   "widget.winRate": "% побед",
   "widget.record": "Победы: {won} · поражения: {lost}",
   "bracketShort.blitz": "Блиц",
-  "bracketShort.rbg": "РПБ"
+  "bracketShort.rbg": "РПБ",
+  "widget.previousRating": "Было",
+  "widget.won": "Победы",
+  "widget.lost": "Поражения",
+  "widget.talents": "Таланты",
+  "widget.loadoutLink": "Набор талантов {name} на Wowhead (откроется в новой вкладке)",
+  "widget.noLoadout": "Набор талантов пока неизвестен",
+  "widget.trendUp": "Рост на {diff} с {previous}",
+  "widget.trendDown": "Падение на {diff} с {previous}",
+  "widget.trendSame": "Без изменений",
+  "pagination.aria": "Страницы",
+  "pagination.first": "Первая страница",
+  "pagination.prev": "Предыдущая страница",
+  "pagination.next": "Следующая страница",
+  "pagination.last": "Последняя страница",
+  "pagination.page": "Страница {page}",
+  "pagination.summary": "Страница {page} из {pages} · игроков: {total}",
+  "pagination.goTo": "Перейти на страницу"
 }

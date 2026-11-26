@@ -3,7 +3,6 @@
  *
  *   <span data-class-color="death-knight">   the class colour (classColorKey in classes.ts)
  *   <td data-rank="elite">                    the PvP rank colour (PvpRank.id in pvpRank.ts)
- *   <tr data-faction-line="alliance">         a divider in the faction trim (gold / silver)
  *
  * Each rule starts with :root so it outranks a component's own default (`.name { color }`
  * in a CSS module has the same specificity as an attribute selector, and loads later).
@@ -73,11 +72,4 @@
 }
 :root [data-rank='rank-one'] {
   color: var(--color-rank-rank-one);
-}
-
-:root [data-faction-line='horde'] {
-  border-bottom-color: var(--color-horde-trim);
-}
-:root [data-faction-line='alliance'] {
-  border-bottom-color: var(--color-alliance-trim);
 }

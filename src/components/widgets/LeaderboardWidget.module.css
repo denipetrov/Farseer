@@ -1,3 +1,12 @@
+/* Jumped to from the bottom page controls: clear the sticky header */
+.frame {
+  scroll-margin-top: calc(var(--header-height, 90px) + var(--space-4));
+}
+
+.pagingBottom {
+  border-top: 1px solid var(--color-border-muted);
+}
+
 .regionSelect {
   flex: none;
   max-width: 9rem;
@@ -33,7 +42,14 @@
 .table {
   width: 100%;
   table-layout: fixed;
-  border-collapse: collapse;
+  /*
+   * Separate borders, drawn on the cells: Chrome paints a collapsed table's row borders at
+   * the row's exact, often fractional, position without snapping to the pixel grid, so on a
+   * scaled display (125%, 150%) one widget's lines came out crisp and another's smeared over
+   * two pixels, bold here and thin there. Cell borders snap, so every line looks the same.
+   */
+  border-collapse: separate;
+  border-spacing: 0;
   font-variant-numeric: tabular-nums;
   transition: opacity var(--transition-fast);
 }
@@ -43,35 +59,124 @@
   opacity: 0.55;
 }
 
-.colPlace {
+/* Column widths (the classes come from the column names: styles['col-rating']) */
+.col-place {
   width: 2.5rem;
 }
 
-.colRating {
+.col-rating {
   width: 4.25rem;
 }
 
-.colWinRate {
+.col-previous {
+  width: 4.75rem;
+}
+
+.col-won,
+.col-lost {
+  width: 4.75rem;
+}
+
+.col-winRate {
   width: 3.75rem;
 }
 
-.colFaction {
+.col-faction {
   width: 3rem;
 }
 
-/* The line under a character is in its faction's trim (data-faction-line, gameColors.css) */
-.row {
-  height: 52px;
-  border-bottom: 1px solid var(--color-border-muted);
+.col-talents {
+  width: 5.5rem;
 }
 
-.row:last-child {
-  border-bottom: 0;
+/* Large: room for deep places (page 4,000 reaches 200,000) */
+.table[data-size='large'] .col-place {
+  width: 5.25rem;
+}
+
+/* Large: room for the trend arrow before the rating, and a wider win % for its title */
+.table[data-size='large'] .col-rating {
+  width: 6rem;
+}
+
+.table[data-size='large'] .col-won,
+.table[data-size='large'] .col-lost,
+.table[data-size='large'] .col-winRate {
+  width: 5.5rem;
+}
+
+/* Room for its title ("Faction", "Fraktion") over the emblem */
+.table[data-size='large'] .col-faction {
+  width: 5.5rem;
+}
+
+/* The large table keeps its columns and scrolls sideways when the page is narrower */
+.scroll[data-size='large'] {
+  overflow-x: auto;
+}
+
+.table[data-size='large'] {
+  min-width: 56rem;
+}
+
+/*
+ * Column titles (large size): small capitals over each column, aligned like its values.
+ * Long ones (German "Niederlagen", French "% victoires") wrap onto a second line, hyphenated
+ * in the page's language, rather than widen every column for every language; titles sit on
+ * the bottom line.
+ */
+.head th {
+  padding: var(--space-3) 6px var(--space-2);
+  border-bottom: 1px solid var(--color-border-muted);
+  color: var(--color-trim-strong);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  text-align: right;
+  text-transform: uppercase;
+  vertical-align: bottom;
+  /* Split long words at the page language's syllables (NIEDER-LAGEN), never mid-letter */
+  hyphens: auto;
+}
+
+.head th:first-child {
+  padding-left: var(--space-4);
+}
+
+.head th:last-child {
+  padding-right: var(--space-4);
+}
+
+/* Each title centred over its column, whose values are centred too (the player stays left) */
+.head th {
+  text-align: center;
+}
+
+.head .th-player {
+  text-align: left;
+}
+
+.table[data-size='large'] .row > td:not(:nth-child(2)) {
+  text-align: center;
+}
+
+/*
+ * The line under each character is in the trim of the faction chosen in the header (the
+ * user's call, 2026-11-26: not the character's own): gold for Alliance, silver for Horde.
+ */
+.row {
+  height: 52px;
 }
 
 .row > td {
   padding: 0 6px;
+  border-bottom: 1px solid var(--color-trim-muted);
   vertical-align: middle;
+}
+
+.row:last-child > td {
+  border-bottom: 0;
 }
 
 .row > td:first-child {
@@ -84,6 +189,7 @@
 
 .place {
   color: var(--color-text-subtle);
+  white-space: nowrap;
 }
 
 .player {
@@ -166,4 +272,107 @@
 .fullLink > a:hover {
   color: var(--color-accent-hover);
   text-decoration: underline;
+}
+
+/* The realm beside the name (large size) */
+.realm {
+  flex: none;
+  max-width: 45%;
+  overflow: hidden;
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Previous rating, wins (green), losses (red) */
+.number {
+  color: var(--color-text-muted);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.won {
+  color: var(--color-success);
+}
+
+.lost {
+  color: var(--color-danger);
+}
+
+/* The win rate: red below 50%, grey from 50% to 55%, green above (winRateTier) */
+.rate[data-tier='low'] {
+  color: var(--color-danger);
+}
+
+.rate[data-tier='high'] {
+  color: var(--color-success);
+}
+
+/* The rating's trend: a triangle up (green) or down (red), a short line when unchanged */
+.trend {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: var(--space-2);
+  vertical-align: 1px;
+}
+
+.trend-up {
+  background: var(--color-success);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.trend-down {
+  background: var(--color-danger);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.trend-same {
+  height: 2px;
+  border-radius: 1px;
+  background: var(--color-text-subtle);
+  vertical-align: 3px;
+}
+
+.talents {
+  text-align: center;
+}
+
+.table[data-size='large'] .faction {
+  text-align: center;
+}
+
+.head .th-faction {
+  text-align: center;
+}
+
+/*
+ * Opens Wowhead's talent calculator: the external-link icon in a square button, drawn in
+ * the text colour (the accent on hover); dimmed when the character has no loadout yet.
+ */
+.talentButton {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-trim-muted);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-sunken);
+  color: var(--color-text-muted);
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+a.talentButton:hover {
+  border-color: var(--color-trim);
+  color: var(--color-accent-strong);
+}
+
+.talentButton[aria-disabled] {
+  border-style: dashed;
+  color: var(--color-text-subtle);
+  cursor: not-allowed;
+  opacity: 0.6;
 }

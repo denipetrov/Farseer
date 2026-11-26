@@ -532,15 +532,49 @@ below).
   2300+, since a tiny ladder's cutoff can be far lower: Korea 3v3 576; rows have no title
   history, so Gladiator (the user's rule) is an Elite rating with 150+ wins this season
   or a 2650+ rating (`GLADIATOR_ROW_WINS`, `GLADIATOR_ROW_RATING`), below the Rank 1 cutoff; each colour is its icon's main tone, ≥ 5.8:1 on the panel),
-  and the faction icon; the line under each row is in that character's faction trim
-  (`factionColorVars(faction).trim`: Alliance gold, Horde silver; neutral when unknown) (the
+  and the faction icon; the line under each row is in the trim of the faction chosen in
+  the header (`--color-trim-muted`: Alliance gold, Horde silver; the user's call, not the
+  character's own faction). **Draw table dividers on the cells, with
+  `border-collapse: separate; border-spacing: 0`**: Chrome paints a collapsed table's row
+  borders at the row's fractional position without pixel snapping, so on scaled displays
+  (125%, 150%) lines came out bold in one widget and thin in another (measured 2026-11-26) (the
   user swapped it in for the win %; the visitor's icon style, unknown icon when absent),
   and "View full leaderboard" (keeps the region). Rows are numbered by position: on Shuffle and Blitz Blizzard's `rank` is the rank
   within the spec. 10 rows on small and medium, 25 on large.
-  - **Medium** (and large, for now) adds the race portrait first among the icons and the win
-    % after the rating (`DETAILED`; whole percent, won ÷ (won + lost), the record on hover). The table is `table-layout: fixed` with widths in a `<colgroup>` (the
-    header row is screen-reader only, so a fixed layout would otherwise split the columns
-    evenly), so long names shorten with "…".
+  - **Columns per size** (`COLUMNS` in the widget; the user's design, 2026-11-26):
+    - small: place · spec + hero talent icons, name · rating · faction;
+    - medium: + the race portrait first among the icons, + win % after the rating (whole
+      percent, won ÷ (won + lost), the record on hover; red below 50%, grey 50–55%, green
+      above 55% on the exact rate: `winRateTier` in `src/lib/wow/winRate.ts`);
+    - large: + the realm beside the name (`realmName`), a trend before the rating (green ▲
+      up, red ▼ down, grey — unchanged or no `previousRating`; CSS shapes, the change on
+      hover), the previous rating, wins (green) and losses (red) before the win %, and a **Talents**
+      button (the `nav/external` icon; its name and hover text say what it opens) that opens Wowhead's talent calculator in a new tab, in the site's language
+      (`wowheadTalentUrl`: `https://<www|de|…>.wowhead.com/talent-calc/blizzard/<code>`),
+      with the row's spec's `talentLoadoutCode` (`rowLoadoutCode`: by `specId`, else spec
+      slug). No loadout yet: a dimmed, dashed button. Its column titles are visible
+      (`#` for the place, "Rank" for screen readers), each centred over its centred values
+      (the player column stays left); long titles wrap, hyphenated in the page's language. It needs ~56rem and scrolls sideways below that.
+  - **The full leaderboard pages** (`/pvp/leaderboards/<bracket>`) show the large widget,
+    **50 rows a page**, with **page controls above and below** (`Pagination`:
+    `src/components/Pagination.tsx`; first, previous, the pages around the current one from
+    `pageWindow`, next, last, with the nav/page-* icons, "Page 3 of 4,000 · 265,120
+    players", and a **Go to page** field: digits only, Enter or the arrow button (no "Go" text: it translates badly), out-of-range pages
+    brought to the nearest end (`typedPage`, `src/lib/pageInput.ts`), emptied after the jump). No "View
+    full leaderboard" link there (`fullLink={false}`).
+    - The page is in the URL (`?page=3`, left out on page 1): shareable, the back button
+      works. The widget pages when given `page` and `onPageChange`; rows are numbered on
+      (page 2 starts at 51). The bottom controls scroll back to the board's top.
+    - A `?region=` opens on that region and becomes the bracket's remembered choice; picking
+      a region (`onRegionChange`) puts it in the URL and goes back to page 1 (World is left
+      out). The URL's region must follow the dropdown, or it would take the choice back.
+    - **Soulseeker serves rows up to 200,000 only** (a page starting past it is a 400), but
+      its PvP `totalPages` counts every row (World Shuffle: 265,120 rows, 5,303 pages). So
+      the last page offered is `lastReachablePage` (4,000 at 50 a page; the summary still
+      shows the true number of players), a request never asks past it, and a link past the end moves to
+      the last page. Soulseeker could cap `totalPages` itself, as its Mythic+ boards do. The table is `table-layout: fixed` with widths in a `<colgroup>` (the
+      header row is screen-reader only, so a fixed layout would otherwise split the columns
+      evenly), so long names shorten with "…".
 - **Region dropdown remembered** per bracket (preference `pvpBoardRegions`): kept after
   navigating or reloading, shared by every widget of that bracket. The bracket and region
   lists live in `src/lib/pvpBoards.ts` (no API code, so the preferences can validate them;
@@ -624,7 +658,7 @@ Colours are defined in three layers. Don't skip one.
   `iconOptics.css`.
 - **Colours from data** go through data attributes and `gameColors.css`, never `style`:
   `data-class-color={classColorKey(cls)}` (class colour), `data-rank={rank.id}` (PvP rank
-  colour), `data-faction-line={faction}` (faction trim divider). Its rules start with `:root`
+  colour). Its rules start with `:root`
   so they outrank a module's own default colour (a module class and an attribute selector
   have the same specificity, and modules load later).
 - **No `style={…}`.** The one exception is a value CSS can't know: `NavGlyph` sets

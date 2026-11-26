@@ -120,5 +120,22 @@
   "widget.winRate": "Siegquote",
   "widget.record": "{won} Siege · {lost} Niederlagen",
   "bracketShort.blitz": "SF-Blitz",
-  "bracketShort.rbg": "RBG"
+  "bracketShort.rbg": "RBG",
+  "widget.previousRating": "Vorher",
+  "widget.won": "Siege",
+  "widget.lost": "Niederlagen",
+  "widget.talents": "Talente",
+  "widget.loadoutLink": "Talentkonfiguration von {name} auf Wowhead (öffnet in neuem Tab)",
+  "widget.noLoadout": "Noch keine Talentkonfiguration",
+  "widget.trendUp": "{diff} gestiegen seit {previous}",
+  "widget.trendDown": "{diff} gefallen seit {previous}",
+  "widget.trendSame": "Unverändert",
+  "pagination.aria": "Seiten",
+  "pagination.first": "Erste Seite",
+  "pagination.prev": "Vorherige Seite",
+  "pagination.next": "Nächste Seite",
+  "pagination.last": "Letzte Seite",
+  "pagination.page": "Seite {page}",
+  "pagination.summary": "Seite {page} von {pages} · {total} Spieler",
+  "pagination.goTo": "Gehe zu Seite"
 }

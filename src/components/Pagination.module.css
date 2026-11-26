@@ -1,0 +1,124 @@
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-3) var(--space-4);
+}
+
+/* The summary takes the free space on the left; the controls and "Go to page" sit right */
+.range {
+  flex: 1;
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.arrow,
+.page {
+  display: inline-grid;
+  place-items: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-trim-muted);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-sunken);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.arrow:hover:not(:disabled),
+.page:hover {
+  border-color: var(--color-trim);
+  color: var(--color-text-highlight);
+}
+
+.arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* The current page: in the accent, like the menu's current page */
+.page[aria-current='page'] {
+  border-color: var(--color-accent);
+  background: var(--color-accent-subtle);
+  color: var(--color-text-highlight);
+  font-weight: 700;
+}
+
+/* Go to page: a label, a short number field and a button */
+.goTo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+}
+
+.goTo label {
+  white-space: nowrap;
+}
+
+.input {
+  width: 5rem;
+  height: 36px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-trim-muted);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-sunken);
+  color: var(--color-text-highlight);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.input::placeholder {
+  color: var(--color-text-subtle);
+}
+
+.input:focus-visible {
+  border-color: var(--color-accent);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-accent-subtle);
+}
+
+.go {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--color-trim-muted);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-sunken);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.go:hover {
+  border-color: var(--color-trim);
+  color: var(--color-text-highlight);
+}
+
+.gap {
+  min-width: 1.5rem;
+  color: var(--color-text-subtle);
+  text-align: center;
+}

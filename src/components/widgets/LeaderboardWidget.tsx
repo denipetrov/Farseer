@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
-import { useId } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import {
   currentSeasonQuery,
   leaderboardQuery,
@@ -12,6 +12,8 @@ import {
 import { FactionIcon } from '@/components/FactionIcon';
 import { GameIcon } from '@/components/GameIcon';
 import { HeroTalentIcon } from '@/components/HeroTalentIcon';
+import { NavGlyph } from '@/components/NavGlyph';
+import { Pagination } from '@/components/Pagination';
 import { RaceIcon } from '@/components/RaceIcon';
 import { SpecIcon } from '@/components/SpecIcon';
 import { UnknownIcon } from '@/components/UnknownIcon';
@@ -19,27 +21,54 @@ import { regionLabel } from '@/i18n/labels';
 import type { MessageKey } from '@/i18n/messages';
 import { useI18n } from '@/i18n/useI18n';
 import { iconUrl } from '@/lib/assets';
+import { cx } from '@/lib/cx';
+import { lastReachablePage } from '@/lib/pagination';
+import { useSite } from '@/lib/site';
 import { classColorKey } from '@/lib/wow/classes';
-import { factionIconUrl, resolveFaction } from '@/lib/wow/factions';
+import { factionIconUrl } from '@/lib/wow/factions';
 import { heroTreeIconUrl } from '@/lib/wow/heroTalents';
 import { rankOfLadderRow } from '@/lib/wow/pvpRank';
 import { raceIconUrl } from '@/lib/wow/races';
-import { usePreferences } from '@/preferences/PreferencesProvider';
+import { realmLabel } from '@/lib/wow/regions';
 import { specIconUrl } from '@/lib/wow/specs';
+import { rowLoadoutCode, wowheadTalentUrl } from '@/lib/wow/talents';
+import { winRateTier } from '@/lib/wow/winRate';
+import { usePreferences } from '@/preferences/PreferencesProvider';
 import { WidgetFooter, WidgetFrame, WidgetHeader, WidgetTitle } from './Widget';
 import type { WidgetSize } from './WidgetGrid';
 import styles from './LeaderboardWidget.module.css';
-import { useSite } from '@/lib/site';
 
 /** PvP character pages exist for these regions only (Blizzard's PvP API has no China) */
 const CHARACTER_REGIONS = new Set(['us', 'eu', 'kr', 'tw']);
 
+type Column =
+  'place' | 'player' | 'rating' | 'previous' | 'won' | 'lost' | 'winRate' | 'faction' | 'talents';
+
 /**
- * What each size adds (the user's design, 2026-11-26):
- * - small: place, spec + hero talent, name, rating, faction;
- * - medium: the race portrait first among the icons, and the win % after the rating.
+ * The columns of each size, in order (the user's design, 2026-11-26):
+ * - small: place, spec + hero talent and name, rating, faction;
+ * - medium: adds the race portrait before the spec, and the win % after the rating;
+ * - large: adds the realm beside the name, a trend arrow before the rating (against the
+ *   previous rating), the previous rating, wins and losses before the win %, and a talent
+ *   loadout button at the end; its column titles are shown.
  */
-const DETAILED: Record<WidgetSize, boolean> = { small: false, medium: true, large: true };
+const COLUMNS: Record<WidgetSize, readonly Column[]> = {
+  small: ['place', 'player', 'rating', 'faction'],
+  medium: ['place', 'player', 'rating', 'winRate', 'faction'],
+  large: ['place', 'player', 'rating', 'previous', 'won', 'lost', 'winRate', 'faction', 'talents'],
+};
+
+const HEADINGS: Record<Column, MessageKey> = {
+  place: 'widget.rank',
+  player: 'widget.player',
+  rating: 'widget.rating',
+  previous: 'widget.previousRating',
+  won: 'widget.won',
+  lost: 'widget.lost',
+  winRate: 'widget.winRate',
+  faction: 'widget.faction',
+  talents: 'widget.talents',
+};
 
 /** Brackets whose full name is too long for a small widget (the user, 2026-11-26) */
 const SHORT_NAMES: Partial<Record<PvpBracket, MessageKey>> = {
@@ -47,33 +76,43 @@ const SHORT_NAMES: Partial<Record<PvpBracket, MessageKey>> = {
   rbg: 'bracketShort.rbg',
 };
 
-/** How many rows each size shows */
-const ROWS: Record<WidgetSize, number> = { small: 10, medium: 10, large: 25 };
+/** How many rows each size shows (a page, on the large size) */
+const ROWS: Record<WidgetSize, number> = { small: 10, medium: 10, large: 50 };
 
 interface LeaderboardWidgetProps {
   bracket: PvpBracket;
   size?: WidgetSize;
   /** The region it opens on until the visitor picks one for this bracket (then remembered) */
   region?: PvpBoard;
+  /** The "View full leaderboard" link; off on the full leaderboard page itself */
+  fullLink?: boolean;
+  /** The page shown (1-based), when the widget pages through the board */
+  page?: number;
+  /**
+   * Turns paging on: controls above and below the rows (the full leaderboard page, which
+   * keeps the page in its URL).
+   */
+  onPageChange?: (page: number) => void;
+  /** A region was picked (after it is remembered): the full page puts it in its URL, page 1 */
+  onRegionChange?: (region: PvpBoard) => void;
 }
 
 /**
  * A PvP ladder's top rows, as a widget (the user's example, 2026-11-26): the bracket's icon
- * and name, a region dropdown, then per row the place, spec and hero talent icons, the name
- * in its class colour (a link to the character), the rating in its PvP rank's colour and the
- * faction, and a link
- * to the full board.
+ * and name, a region dropdown, then one row per character (COLUMNS: what each size shows),
+ * and a link to the full board.
  *
  * Rows are numbered by position. On Shuffle and Blitz, Blizzard's own rank is the rank
  * within the spec ladder (several "1"s on one board), so it is not used here.
- *
- * Sizes add columns (DETAILED): `medium` the race portrait and the win %; `large` will get
- * more.
  */
 export function LeaderboardWidget({
   bracket,
   size = 'small',
   region: initialRegion = 'world',
+  fullLink = true,
+  page = 1,
+  onPageChange,
+  onRegionChange,
 }: LeaderboardWidgetProps) {
   const { t, locale } = useI18n();
   const site = useSite();
@@ -81,9 +120,12 @@ export function LeaderboardWidget({
   // it stays after navigating or reloading, and every widget of the bracket shows it
   const { preferences, setPreference } = usePreferences();
   const region = preferences.pvpBoardRegions[bracket] ?? initialRegion;
-  const setRegion = (next: PvpBoard) =>
+  const setRegion = (next: PvpBoard) => {
     setPreference('pvpBoardRegions', { ...preferences.pvpBoardRegions, [bracket]: next });
+    onRegionChange?.(next);
+  };
   const selectId = useId();
+  const frameRef = useRef<HTMLElement>(null);
 
   // Season ids are global: the World board's current season is every region's
   const season = useQuery(currentSeasonQuery('world'));
@@ -92,6 +134,8 @@ export function LeaderboardWidget({
       region,
       seasonId: season.data?.seasonId ?? 0,
       bracket,
+      // Never past the last page Soulseeker serves, whatever the URL asks for
+      page: onPageChange ? Math.min(page, lastReachablePage(Infinity, ROWS[size])) : 1,
       pageSize: ROWS[size],
     }),
     enabled: !!season.data,
@@ -99,16 +143,40 @@ export function LeaderboardWidget({
     placeholderData: (previous) => previous,
   });
 
-  const detailed = DETAILED[size];
+  const columns = COLUMNS[size];
   const title = t(`bracket.${bracket}`);
   // A small widget has no room for "Battleground Blitz": its short name ("BG Blitz", "RBG")
   const shown = size === 'small' && bracket in SHORT_NAMES ? t(SHORT_NAMES[bracket]!) : title;
   const bracketArt = iconUrl(`pvp/brackets/${bracket}`);
   const failed = season.isError || board.isError;
   const entries = board.data?.entries;
+  // Rows are numbered on from earlier pages: page 2 starts at 51
+  const offset = onPageChange ? (page - 1) * ROWS[size] : 0;
+  // Soulseeker serves rows up to 200,000 only: the last page offered is the last it serves
+  const lastPage = board.data ? lastReachablePage(board.data.totalPages, ROWS[size]) : null;
+
+  // A page past the end (an old or edited link) moves back to the last one
+  useEffect(() => {
+    if (onPageChange && lastPage != null && page > lastPage) onPageChange(lastPage);
+  }, [onPageChange, lastPage, page]);
+  const paging =
+    onPageChange &&
+    board.data &&
+    ((where: 'top' | 'bottom') => (
+      <Pagination
+        page={page}
+        totalPages={lastPage!}
+        total={board.data!.total}
+        onChange={(next) => {
+          onPageChange(next);
+          // From the bottom controls, back up to the board's first row
+          if (where === 'bottom') frameRef.current?.scrollIntoView({ block: 'start' });
+        }}
+      />
+    ));
 
   return (
-    <WidgetFrame size={size} aria-label={title}>
+    <WidgetFrame ref={frameRef} size={size} aria-label={title} className={styles.frame}>
       <WidgetHeader>
         <WidgetTitle>
           {/* Centre content uses the coloured game art (the user, 2026-11-26), not the menu glyphs */}
@@ -132,6 +200,8 @@ export function LeaderboardWidget({
         </select>
       </WidgetHeader>
 
+      {paging && paging('top')}
+
       {failed ? (
         <p className={styles.message} role="alert">
           {t('widget.unavailable')}
@@ -139,78 +209,142 @@ export function LeaderboardWidget({
       ) : entries && entries.length === 0 ? (
         <p className={styles.message}>{t('widget.empty')}</p>
       ) : (
-        <table
-          className={styles.table}
-          aria-busy={!entries || board.isFetching}
-          data-stale={board.isPlaceholderData || undefined}
-        >
-          {/* Fixed widths for place, rating and faction; the player takes the rest */}
-          <colgroup>
-            <col className={styles.colPlace} />
-            <col />
-            <col className={styles.colRating} />
-            {detailed && <col className={styles.colWinRate} />}
-            <col className={styles.colFaction} />
-          </colgroup>
-          <thead className="sr-only">
-            <tr>
-              <th scope="col">{t('widget.rank')}</th>
-              <th scope="col">{t('widget.player')}</th>
-              <th scope="col">{t('widget.rating')}</th>
-              {detailed && <th scope="col">{t('widget.winRate')}</th>}
-              <th scope="col">{t('widget.faction')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {entries
-              ? entries.map((entry, i) => (
-                  <tr
-                    key={`${entry.region}-${entry.characterId}-${entry.bracket}`}
-                    className={styles.row}
-                    // The line under a character in its faction's trim: Alliance gold, Horde silver
-                    data-faction-line={resolveFaction(entry.faction)?.slug}
-                  >
-                    <td className={styles.place}>{i + 1}</td>
-                    <PlayerCell entry={entry} withRace={detailed} />
-                    {/* In its rank's colour (pvpRank.ts): Duelist blue, Elite purple, Rank 1 orange… */}
-                    <td className={styles.rating} data-rank={rankOfLadderRow(entry).id}>
-                      {entry.rating.toLocaleString(locale.htmlLang)}
-                    </td>
-                    {detailed && <WinRate entry={entry} />}
-                    <FactionCell entry={entry} />
-                  </tr>
-                ))
-              : Array.from({ length: ROWS[size] }, (_, i) => (
-                  <tr key={i} className={styles.row} aria-hidden>
-                    <td className={styles.place}>{i + 1}</td>
-                    <td colSpan={detailed ? 4 : 3}>
-                      <span className={styles.skeleton} />
-                    </td>
-                  </tr>
+        // The large table scrolls sideways on narrow screens instead of squeezing its columns
+        <div className={styles.scroll} data-size={size}>
+          <table
+            className={styles.table}
+            data-size={size}
+            aria-busy={!entries || board.isFetching}
+            data-stale={board.isPlaceholderData || undefined}
+          >
+            {/* Fixed widths per column; the player takes the rest */}
+            <colgroup>
+              {columns.map((c) => (
+                <col key={c} className={styles[`col-${c}`]} />
+              ))}
+            </colgroup>
+            {/* Column titles: shown on the large size, for screen readers on the others */}
+            <thead className={size === 'large' ? styles.head : 'sr-only'}>
+              <tr>
+                {columns.map((c) => (
+                  <th key={c} scope="col" className={styles[`th-${c}`]}>
+                    {c === 'place' ? (
+                      // The narrow place column shows "#"; screen readers hear "Rank"
+                      <>
+                        <span aria-hidden>#</span>
+                        <span className="sr-only">{t(HEADINGS[c])}</span>
+                      </>
+                    ) : (
+                      t(HEADINGS[c])
+                    )}
+                  </th>
                 ))}
-          </tbody>
-        </table>
+              </tr>
+            </thead>
+            <tbody>
+              {entries
+                ? entries.map((entry, i) => (
+                    <tr
+                      key={`${entry.region}-${entry.characterId}-${entry.bracket}`}
+                      className={styles.row}
+                    >
+                      {columns.map((c) => (
+                        <Cell key={c} column={c} entry={entry} place={offset + i + 1} size={size} />
+                      ))}
+                    </tr>
+                  ))
+                : Array.from({ length: ROWS[size] }, (_, i) => (
+                    <tr key={i} className={styles.row} aria-hidden>
+                      <td className={styles.place}>
+                        {(offset + i + 1).toLocaleString(locale.htmlLang)}
+                      </td>
+                      <td colSpan={columns.length - 1}>
+                        <span className={styles.skeleton} />
+                      </td>
+                    </tr>
+                  ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
-      <WidgetFooter>
-        {/* A plain Link keeps the router's types; the class styles the <a> it renders */}
-        <span className={styles.fullLink}>
-          <Link
-            to="/$game/$locale/pvp/leaderboards/$bracket"
-            params={{ ...site, bracket }}
-            search={region === 'world' ? {} : { region }}
-          >
-            {t('widget.viewFullLeaderboard')}
-            <span aria-hidden>→</span>
-          </Link>
-        </span>
-      </WidgetFooter>
+      {paging && <div className={styles.pagingBottom}>{paging('bottom')}</div>}
+
+      {fullLink && (
+        <WidgetFooter>
+          {/* A plain Link keeps the router's types; the class styles the <a> it renders */}
+          <span className={styles.fullLink}>
+            <Link
+              to="/$game/$locale/pvp/leaderboards/$bracket"
+              params={{ ...site, bracket }}
+              search={region === 'world' ? {} : { region }}
+            >
+              {t('widget.viewFullLeaderboard')}
+              <span aria-hidden>→</span>
+            </Link>
+          </span>
+        </WidgetFooter>
+      )}
     </WidgetFrame>
   );
 }
 
-/** Spec and hero talent icons, then the name in the class colour (a link when it can be one) */
-function PlayerCell({ entry, withRace }: { entry: LeaderboardEntry; withRace: boolean }) {
+function Cell({
+  column,
+  entry,
+  place,
+  size,
+}: {
+  column: Column;
+  entry: LeaderboardEntry;
+  place: number;
+  size: WidgetSize;
+}) {
+  const { locale } = useI18n();
+  const number = (n: number | null | undefined) =>
+    n == null ? '–' : n.toLocaleString(locale.htmlLang);
+
+  switch (column) {
+    case 'place':
+      return <td className={styles.place}>{number(place)}</td>;
+    case 'player':
+      return <PlayerCell entry={entry} withRace={size !== 'small'} withRealm={size === 'large'} />;
+    case 'rating':
+      return (
+        // In its rank's colour (pvpRank.ts): Duelist blue, Elite purple, Rank 1 orange…
+        <td className={styles.rating} data-rank={rankOfLadderRow(entry).id}>
+          {size === 'large' && <Trend entry={entry} />}
+          {number(entry.rating)}
+        </td>
+      );
+    case 'previous':
+      return <td className={styles.number}>{number(entry.previousRating)}</td>;
+    case 'won':
+      return <td className={cx(styles.number, styles.won)}>{number(entry.won)}</td>;
+    case 'lost':
+      return <td className={cx(styles.number, styles.lost)}>{number(entry.lost)}</td>;
+    case 'winRate':
+      return <WinRate entry={entry} />;
+    case 'faction':
+      return <FactionCell entry={entry} />;
+    case 'talents':
+      return <TalentsCell entry={entry} />;
+  }
+}
+
+/**
+ * Race (medium and up), spec and hero talent icons, then the name in the class colour (a
+ * link when it can be one), and on the large size the realm beside it.
+ */
+function PlayerCell({
+  entry,
+  withRace,
+  withRealm,
+}: {
+  entry: LeaderboardEntry;
+  withRace: boolean;
+  withRealm: boolean;
+}) {
   const { t } = useI18n();
   const site = useSite();
   const { assetStyle: style } = usePreferences().preferences;
@@ -222,6 +356,7 @@ function PlayerCell({ entry, withRace }: { entry: LeaderboardEntry; withRace: bo
   const name = entry.characterName ?? t('widget.unnamed');
   const classColor = classColorKey(cls);
   const linkable = entry.characterName && entry.realmSlug && CHARACTER_REGIONS.has(entry.region);
+  const realm = entry.realmName ?? (entry.realmSlug ? realmLabel(entry.realmSlug) : null);
 
   return (
     <td>
@@ -264,8 +399,36 @@ function PlayerCell({ entry, withRace }: { entry: LeaderboardEntry; withRace: bo
             {name}
           </span>
         )}
+        {withRealm && realm && <span className={styles.realm}>{realm}</span>}
       </span>
     </td>
+  );
+}
+
+/**
+ * The rating against the previous one: green arrow up, red arrow down, or a grey line when
+ * unchanged or unknown (a first appearance); by how much on hover.
+ */
+function Trend({ entry }: { entry: LeaderboardEntry }) {
+  const { t, locale } = useI18n();
+  const previous = entry.previousRating;
+  const diff = previous == null ? 0 : entry.rating - previous;
+  const direction = diff > 0 ? 'up' : diff < 0 ? 'down' : 'same';
+  const fmt = (n: number) => n.toLocaleString(locale.htmlLang);
+  const label =
+    direction === 'same'
+      ? t('widget.trendSame')
+      : t(direction === 'up' ? 'widget.trendUp' : 'widget.trendDown', {
+          diff: fmt(Math.abs(diff)),
+          previous: fmt(previous!),
+        });
+  return (
+    <span
+      className={cx(styles.trend, styles[`trend-${direction}`])}
+      role="img"
+      aria-label={label}
+      title={label}
+    />
   );
 }
 
@@ -274,12 +437,17 @@ function WinRate({ entry }: { entry: LeaderboardEntry }) {
   const { t, locale } = useI18n();
   const { won, lost } = entry;
   if (won == null || lost == null || won + lost === 0) return <td className={styles.rate}>–</td>;
+  const ratio = won / (won + lost);
   const rate = new Intl.NumberFormat(locale.htmlLang, {
     style: 'percent',
     maximumFractionDigits: 0,
-  }).format(won / (won + lost));
+  }).format(ratio);
   return (
-    <td className={styles.rate} title={t('widget.record', { won, lost })}>
+    <td
+      className={styles.rate}
+      data-tier={winRateTier(ratio)}
+      title={t('widget.record', { won, lost })}
+    >
       {rate}
     </td>
   );
@@ -295,6 +463,44 @@ function FactionCell({ entry }: { entry: LeaderboardEntry }) {
         <FactionIcon faction={entry.faction} />
       ) : (
         <UnknownIcon label={t('unknown.faction')} />
+      )}
+    </td>
+  );
+}
+
+/**
+ * The talent loadout of the row's spec, on Wowhead's talent calculator in a new tab (the
+ * user's request, 2026-11-26), as the external-link icon (`nav/external`); its name and
+ * hover text say what it opens. Without a loadout yet (the character not enriched), the
+ * button is shown disabled, so the column keeps its shape.
+ */
+function TalentsCell({ entry }: { entry: LeaderboardEntry }) {
+  const { t, locale } = useI18n();
+  const code = rowLoadoutCode(entry);
+  const name = entry.characterName ?? t('widget.unnamed');
+  return (
+    <td className={styles.talents}>
+      {code ? (
+        <a
+          className={styles.talentButton}
+          href={wowheadTalentUrl(code, locale.slug)}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={t('widget.loadoutLink', { name })}
+          title={t('widget.loadoutLink', { name })}
+        >
+          <NavGlyph icon="nav/external" />
+        </a>
+      ) : (
+        <span
+          className={styles.talentButton}
+          role="img"
+          aria-disabled
+          aria-label={t('widget.noLoadout')}
+          title={t('widget.noLoadout')}
+        >
+          <NavGlyph icon="nav/external" />
+        </span>
       )}
     </td>
   );

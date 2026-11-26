@@ -120,5 +120,22 @@
   "widget.winRate": "Win %",
   "widget.record": "{won} wins · {lost} losses",
   "bracketShort.blitz": "BG Blitz",
-  "bracketShort.rbg": "RBG"
+  "bracketShort.rbg": "RBG",
+  "widget.previousRating": "Previous",
+  "widget.won": "Wins",
+  "widget.lost": "Losses",
+  "widget.talents": "Talents",
+  "widget.loadoutLink": "{name}'s talent loadout on Wowhead (opens in a new tab)",
+  "widget.noLoadout": "No talent loadout yet",
+  "widget.trendUp": "Up {diff} from {previous}",
+  "widget.trendDown": "Down {diff} from {previous}",
+  "widget.trendSame": "No change",
+  "pagination.aria": "Pages",
+  "pagination.first": "First page",
+  "pagination.prev": "Previous page",
+  "pagination.next": "Next page",
+  "pagination.last": "Last page",
+  "pagination.page": "Page {page}",
+  "pagination.summary": "Page {page} of {pages} · {total} players",
+  "pagination.goTo": "Go to page"
 }

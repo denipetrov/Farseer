@@ -120,5 +120,22 @@
   "widget.winRate": "胜率",
   "widget.record": "{won} 胜 · {lost} 负",
   "bracketShort.blitz": "闪电战场",
-  "bracketShort.rbg": "评级战场"
+  "bracketShort.rbg": "评级战场",
+  "widget.previousRating": "之前",
+  "widget.won": "胜",
+  "widget.lost": "负",
+  "widget.talents": "天赋",
+  "widget.loadoutLink": "{name} 在 Wowhead 上的天赋配置（在新标签页中打开）",
+  "widget.noLoadout": "暂无天赋配置",
+  "widget.trendUp": "较 {previous} 上升 {diff}",
+  "widget.trendDown": "较 {previous} 下降 {diff}",
+  "widget.trendSame": "无变化",
+  "pagination.aria": "分页",
+  "pagination.first": "第一页",
+  "pagination.prev": "上一页",
+  "pagination.next": "下一页",
+  "pagination.last": "最后一页",
+  "pagination.page": "第 {page} 页",
+  "pagination.summary": "第 {page} 页，共 {pages} 页 · {total} 名玩家",
+  "pagination.goTo": "跳转到页"
 }

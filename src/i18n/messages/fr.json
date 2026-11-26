@@ -120,5 +120,22 @@
   "widget.winRate": "% victoires",
   "widget.record": "{won} victoires · {lost} défaites",
   "bracketShort.blitz": "Blitz CB",
-  "bracketShort.rbg": "CB cotés"
+  "bracketShort.rbg": "CB cotés",
+  "widget.previousRating": "Précédente",
+  "widget.won": "Victoires",
+  "widget.lost": "Défaites",
+  "widget.talents": "Talents",
+  "widget.loadoutLink": "Configuration de talents de {name} sur Wowhead (s’ouvre dans un nouvel onglet)",
+  "widget.noLoadout": "Pas encore de configuration de talents",
+  "widget.trendUp": "En hausse de {diff} depuis {previous}",
+  "widget.trendDown": "En baisse de {diff} depuis {previous}",
+  "widget.trendSame": "Aucun changement",
+  "pagination.aria": "Pages",
+  "pagination.first": "Première page",
+  "pagination.prev": "Page précédente",
+  "pagination.next": "Page suivante",
+  "pagination.last": "Dernière page",
+  "pagination.page": "Page {page}",
+  "pagination.summary": "Page {page} sur {pages} · {total} joueurs",
+  "pagination.goTo": "Aller à la page"
 }
