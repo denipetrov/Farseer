@@ -29,6 +29,7 @@ import { specIconUrl } from '@/lib/wow/specs';
 import { WidgetFooter, WidgetFrame, WidgetHeader, WidgetTitle } from './Widget';
 import type { WidgetSize } from './WidgetGrid';
 import styles from './LeaderboardWidget.module.css';
+import { useSite } from '@/lib/site';
 
 /** PvP character pages exist for these regions only (Blizzard's PvP API has no China) */
 const CHARACTER_REGIONS = new Set(['us', 'eu', 'kr', 'tw']);
@@ -75,6 +76,7 @@ export function LeaderboardWidget({
   region: initialRegion = 'world',
 }: LeaderboardWidgetProps) {
   const { t, locale } = useI18n();
+  const site = useSite();
   // The region last picked for this bracket is remembered (preference `pvpBoardRegions`), so
   // it stays after navigating or reloading, and every widget of the bracket shows it
   const { preferences, setPreference } = usePreferences();
@@ -194,8 +196,8 @@ export function LeaderboardWidget({
         {/* A plain Link keeps the router's types; the class styles the <a> it renders */}
         <span className={styles.fullLink}>
           <Link
-            to="/$locale/pvp/leaderboards/$bracket"
-            params={{ locale: locale.slug, bracket }}
+            to="/$game/$locale/pvp/leaderboards/$bracket"
+            params={{ ...site, bracket }}
             search={region === 'world' ? {} : { region }}
           >
             {t('widget.viewFullLeaderboard')}
@@ -209,7 +211,8 @@ export function LeaderboardWidget({
 
 /** Spec and hero talent icons, then the name in the class colour (a link when it can be one) */
 function PlayerCell({ entry, withRace }: { entry: LeaderboardEntry; withRace: boolean }) {
-  const { t, locale } = useI18n();
+  const { t } = useI18n();
+  const site = useSite();
   const { assetStyle: style } = usePreferences().preferences;
   const race = entry.raceId ?? entry.race;
   const gender = entry.gender ?? undefined;
@@ -244,9 +247,9 @@ function PlayerCell({ entry, withRace }: { entry: LeaderboardEntry; withRace: bo
         {linkable ? (
           <span className={styles.nameLink}>
             <Link
-              to="/$locale/pvp/character/$region/$realm/$name"
+              to="/$game/$locale/pvp/character/$region/$realm/$name"
               params={{
-                locale: locale.slug,
+                ...site,
                 region: entry.region,
                 realm: entry.realmSlug!,
                 name: entry.characterName!,

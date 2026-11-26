@@ -10,578 +10,582 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as LocaleRouteRouteImport } from './routes/$locale/route'
-import { Route as LocaleIndexRouteImport } from './routes/$locale/index'
-import { Route as LocalePrivacyRouteImport } from './routes/$locale/privacy'
-import { Route as LocaleTermsRouteImport } from './routes/$locale/terms'
-import { Route as LocalePveIndexRouteImport } from './routes/$locale/pve/index'
-import { Route as LocalePveTierListRouteImport } from './routes/$locale/pve/tier-list'
-import { Route as LocalePvpIndexRouteImport } from './routes/$locale/pvp/index'
-import { Route as LocalePvpArchivesRouteImport } from './routes/$locale/pvp/archives'
-import { Route as LocalePvpFotmRouteImport } from './routes/$locale/pvp/fotm'
-import { Route as LocalePvpTierListRouteImport } from './routes/$locale/pvp/tier-list'
-import { Route as LocalePveCharacterIndexRouteImport } from './routes/$locale/pve/character/index'
-import { Route as LocalePveGuildIndexRouteImport } from './routes/$locale/pve/guild/index'
-import { Route as LocalePveMythicPlusIndexRouteImport } from './routes/$locale/pve/mythic-plus/index'
-import { Route as LocalePveMythicPlusCharactersRouteImport } from './routes/$locale/pve/mythic-plus/characters'
-import { Route as LocalePveMythicPlusRunsRouteImport } from './routes/$locale/pve/mythic-plus/runs'
-import { Route as LocalePveStatsIndexRouteImport } from './routes/$locale/pve/stats/index'
-import { Route as LocalePvpCharacterIndexRouteImport } from './routes/$locale/pvp/character/index'
-import { Route as LocalePvpLeaderboardsIndexRouteImport } from './routes/$locale/pvp/leaderboards/index'
-import { Route as LocalePvpLeaderboardsBracketRouteImport } from './routes/$locale/pvp/leaderboards/$bracket'
-import { Route as LocalePvpStatsIndexRouteImport } from './routes/$locale/pvp/stats/index'
-import { Route as LocalePvpStatsCutoffsRouteImport } from './routes/$locale/pvp/stats/cutoffs'
-import { Route as LocalePvpStatsHeroTalentsRouteImport } from './routes/$locale/pvp/stats/hero-talents'
-import { Route as LocalePvpStatsRepresentationRouteImport } from './routes/$locale/pvp/stats/representation'
-import { Route as LocaleCharacterRegionRealmNameRouteImport } from './routes/$locale/character/$region.$realm.$name'
-import { Route as LocaleGuildRegionRealmNameRouteImport } from './routes/$locale/guild/$region.$realm.$name'
-import { Route as LocalePveMythicPlusArchivesIndexRouteImport } from './routes/$locale/pve/mythic-plus/archives/index'
-import { Route as LocalePveMythicPlusArchivesCharactersRouteImport } from './routes/$locale/pve/mythic-plus/archives/characters'
-import { Route as LocalePveMythicPlusArchivesRunsRouteImport } from './routes/$locale/pve/mythic-plus/archives/runs'
-import { Route as LocalePveRaidsRaidHallOfFameRouteImport } from './routes/$locale/pve/raids/$raid/hall-of-fame'
-import { Route as LocalePveStatsMythicPlusCompositionsRouteImport } from './routes/$locale/pve/stats/mythic-plus/compositions'
-import { Route as LocalePveStatsMythicPlusCutoffsRouteImport } from './routes/$locale/pve/stats/mythic-plus/cutoffs'
-import { Route as LocalePveStatsMythicPlusRepresentationRouteImport } from './routes/$locale/pve/stats/mythic-plus/representation'
-import { Route as LocalePveCharacterRegionRealmNameRouteImport } from './routes/$locale/pve/character/$region.$realm.$name'
-import { Route as LocalePveGuildRegionRealmNameRouteImport } from './routes/$locale/pve/guild/$region.$realm.$name'
-import { Route as LocalePveMythicPlusArchivesStatsCompositionsRouteImport } from './routes/$locale/pve/mythic-plus/archives/stats/compositions'
-import { Route as LocalePveMythicPlusArchivesStatsCutoffsRouteImport } from './routes/$locale/pve/mythic-plus/archives/stats/cutoffs'
-import { Route as LocalePveMythicPlusArchivesStatsRepresentationRouteImport } from './routes/$locale/pve/mythic-plus/archives/stats/representation'
-import { Route as LocalePveMythicPlusRolesClassRoleRouteImport } from './routes/$locale/pve/mythic-plus/roles/$class.$role'
-import { Route as LocalePveMythicPlusSpecsClassSpecRouteImport } from './routes/$locale/pve/mythic-plus/specs/$class.$spec'
-import { Route as LocalePveRaidsRaidBossesBossRouteImport } from './routes/$locale/pve/raids/$raid/bosses/$boss'
-import { Route as LocalePvpCharacterRegionRealmNameRouteImport } from './routes/$locale/pvp/character/$region.$realm.$name'
-import { Route as LocalePveMythicPlusArchivesRolesClassRoleRouteImport } from './routes/$locale/pve/mythic-plus/archives/roles/$class.$role'
-import { Route as LocalePveMythicPlusArchivesSpecsClassSpecRouteImport } from './routes/$locale/pve/mythic-plus/archives/specs/$class.$spec'
+import { Route as GameLocaleRouteRouteImport } from './routes/$game/$locale/route'
+import { Route as GameLocaleIndexRouteImport } from './routes/$game/$locale/index'
+import { Route as GameLocalePrivacyRouteImport } from './routes/$game/$locale/privacy'
+import { Route as GameLocaleTermsRouteImport } from './routes/$game/$locale/terms'
+import { Route as GameLocalePveIndexRouteImport } from './routes/$game/$locale/pve/index'
+import { Route as GameLocalePveTierListRouteImport } from './routes/$game/$locale/pve/tier-list'
+import { Route as GameLocalePvpIndexRouteImport } from './routes/$game/$locale/pvp/index'
+import { Route as GameLocalePvpArchivesRouteImport } from './routes/$game/$locale/pvp/archives'
+import { Route as GameLocalePvpFotmRouteImport } from './routes/$game/$locale/pvp/fotm'
+import { Route as GameLocalePvpTierListRouteImport } from './routes/$game/$locale/pvp/tier-list'
+import { Route as GameLocalePveCharacterIndexRouteImport } from './routes/$game/$locale/pve/character/index'
+import { Route as GameLocalePveGuildIndexRouteImport } from './routes/$game/$locale/pve/guild/index'
+import { Route as GameLocalePveMythicPlusIndexRouteImport } from './routes/$game/$locale/pve/mythic-plus/index'
+import { Route as GameLocalePveMythicPlusCharactersRouteImport } from './routes/$game/$locale/pve/mythic-plus/characters'
+import { Route as GameLocalePveMythicPlusRunsRouteImport } from './routes/$game/$locale/pve/mythic-plus/runs'
+import { Route as GameLocalePveStatsIndexRouteImport } from './routes/$game/$locale/pve/stats/index'
+import { Route as GameLocalePvpCharacterIndexRouteImport } from './routes/$game/$locale/pvp/character/index'
+import { Route as GameLocalePvpLeaderboardsIndexRouteImport } from './routes/$game/$locale/pvp/leaderboards/index'
+import { Route as GameLocalePvpLeaderboardsBracketRouteImport } from './routes/$game/$locale/pvp/leaderboards/$bracket'
+import { Route as GameLocalePvpStatsIndexRouteImport } from './routes/$game/$locale/pvp/stats/index'
+import { Route as GameLocalePvpStatsCutoffsRouteImport } from './routes/$game/$locale/pvp/stats/cutoffs'
+import { Route as GameLocalePvpStatsHeroTalentsRouteImport } from './routes/$game/$locale/pvp/stats/hero-talents'
+import { Route as GameLocalePvpStatsRepresentationRouteImport } from './routes/$game/$locale/pvp/stats/representation'
+import { Route as GameLocaleCharacterRegionRealmNameRouteImport } from './routes/$game/$locale/character/$region.$realm.$name'
+import { Route as GameLocaleGuildRegionRealmNameRouteImport } from './routes/$game/$locale/guild/$region.$realm.$name'
+import { Route as GameLocalePveMythicPlusArchivesIndexRouteImport } from './routes/$game/$locale/pve/mythic-plus/archives/index'
+import { Route as GameLocalePveMythicPlusArchivesCharactersRouteImport } from './routes/$game/$locale/pve/mythic-plus/archives/characters'
+import { Route as GameLocalePveMythicPlusArchivesRunsRouteImport } from './routes/$game/$locale/pve/mythic-plus/archives/runs'
+import { Route as GameLocalePveRaidsRaidHallOfFameRouteImport } from './routes/$game/$locale/pve/raids/$raid/hall-of-fame'
+import { Route as GameLocalePveStatsMythicPlusCompositionsRouteImport } from './routes/$game/$locale/pve/stats/mythic-plus/compositions'
+import { Route as GameLocalePveStatsMythicPlusCutoffsRouteImport } from './routes/$game/$locale/pve/stats/mythic-plus/cutoffs'
+import { Route as GameLocalePveStatsMythicPlusRepresentationRouteImport } from './routes/$game/$locale/pve/stats/mythic-plus/representation'
+import { Route as GameLocalePveCharacterRegionRealmNameRouteImport } from './routes/$game/$locale/pve/character/$region.$realm.$name'
+import { Route as GameLocalePveGuildRegionRealmNameRouteImport } from './routes/$game/$locale/pve/guild/$region.$realm.$name'
+import { Route as GameLocalePveMythicPlusArchivesStatsCompositionsRouteImport } from './routes/$game/$locale/pve/mythic-plus/archives/stats/compositions'
+import { Route as GameLocalePveMythicPlusArchivesStatsCutoffsRouteImport } from './routes/$game/$locale/pve/mythic-plus/archives/stats/cutoffs'
+import { Route as GameLocalePveMythicPlusArchivesStatsRepresentationRouteImport } from './routes/$game/$locale/pve/mythic-plus/archives/stats/representation'
+import { Route as GameLocalePveMythicPlusRolesClassRoleRouteImport } from './routes/$game/$locale/pve/mythic-plus/roles/$class.$role'
+import { Route as GameLocalePveMythicPlusSpecsClassSpecRouteImport } from './routes/$game/$locale/pve/mythic-plus/specs/$class.$spec'
+import { Route as GameLocalePveRaidsRaidBossesBossRouteImport } from './routes/$game/$locale/pve/raids/$raid/bosses/$boss'
+import { Route as GameLocalePvpCharacterRegionRealmNameRouteImport } from './routes/$game/$locale/pvp/character/$region.$realm.$name'
+import { Route as GameLocalePveMythicPlusArchivesRolesClassRoleRouteImport } from './routes/$game/$locale/pve/mythic-plus/archives/roles/$class.$role'
+import { Route as GameLocalePveMythicPlusArchivesSpecsClassSpecRouteImport } from './routes/$game/$locale/pve/mythic-plus/archives/specs/$class.$spec'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LocaleRouteRoute = LocaleRouteRouteImport.update({
-  id: '/$locale',
-  path: '/$locale',
+const GameLocaleRouteRoute = GameLocaleRouteRouteImport.update({
+  id: '/$game/$locale',
+  path: '/$game/$locale',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LocaleIndexRoute = LocaleIndexRouteImport.update({
+const GameLocaleIndexRoute = GameLocaleIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => LocaleRouteRoute,
+  getParentRoute: () => GameLocaleRouteRoute,
 } as any)
-const LocalePrivacyRoute = LocalePrivacyRouteImport.update({
+const GameLocalePrivacyRoute = GameLocalePrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
-  getParentRoute: () => LocaleRouteRoute,
+  getParentRoute: () => GameLocaleRouteRoute,
 } as any)
-const LocaleTermsRoute = LocaleTermsRouteImport.update({
+const GameLocaleTermsRoute = GameLocaleTermsRouteImport.update({
   id: '/terms',
   path: '/terms',
-  getParentRoute: () => LocaleRouteRoute,
+  getParentRoute: () => GameLocaleRouteRoute,
 } as any)
-const LocalePveIndexRoute = LocalePveIndexRouteImport.update({
+const GameLocalePveIndexRoute = GameLocalePveIndexRouteImport.update({
   id: '/pve/',
   path: '/pve/',
-  getParentRoute: () => LocaleRouteRoute,
+  getParentRoute: () => GameLocaleRouteRoute,
 } as any)
-const LocalePveTierListRoute = LocalePveTierListRouteImport.update({
+const GameLocalePveTierListRoute = GameLocalePveTierListRouteImport.update({
   id: '/pve/tier-list',
   path: '/pve/tier-list',
-  getParentRoute: () => LocaleRouteRoute,
+  getParentRoute: () => GameLocaleRouteRoute,
 } as any)
-const LocalePvpIndexRoute = LocalePvpIndexRouteImport.update({
+const GameLocalePvpIndexRoute = GameLocalePvpIndexRouteImport.update({
   id: '/pvp/',
   path: '/pvp/',
-  getParentRoute: () => LocaleRouteRoute,
+  getParentRoute: () => GameLocaleRouteRoute,
 } as any)
-const LocalePvpArchivesRoute = LocalePvpArchivesRouteImport.update({
+const GameLocalePvpArchivesRoute = GameLocalePvpArchivesRouteImport.update({
   id: '/pvp/archives',
   path: '/pvp/archives',
-  getParentRoute: () => LocaleRouteRoute,
+  getParentRoute: () => GameLocaleRouteRoute,
 } as any)
-const LocalePvpFotmRoute = LocalePvpFotmRouteImport.update({
+const GameLocalePvpFotmRoute = GameLocalePvpFotmRouteImport.update({
   id: '/pvp/fotm',
   path: '/pvp/fotm',
-  getParentRoute: () => LocaleRouteRoute,
+  getParentRoute: () => GameLocaleRouteRoute,
 } as any)
-const LocalePvpTierListRoute = LocalePvpTierListRouteImport.update({
+const GameLocalePvpTierListRoute = GameLocalePvpTierListRouteImport.update({
   id: '/pvp/tier-list',
   path: '/pvp/tier-list',
-  getParentRoute: () => LocaleRouteRoute,
+  getParentRoute: () => GameLocaleRouteRoute,
 } as any)
-const LocalePveCharacterIndexRoute = LocalePveCharacterIndexRouteImport.update({
-  id: '/pve/character/',
-  path: '/pve/character/',
-  getParentRoute: () => LocaleRouteRoute,
-} as any)
-const LocalePveGuildIndexRoute = LocalePveGuildIndexRouteImport.update({
+const GameLocalePveCharacterIndexRoute =
+  GameLocalePveCharacterIndexRouteImport.update({
+    id: '/pve/character/',
+    path: '/pve/character/',
+    getParentRoute: () => GameLocaleRouteRoute,
+  } as any)
+const GameLocalePveGuildIndexRoute = GameLocalePveGuildIndexRouteImport.update({
   id: '/pve/guild/',
   path: '/pve/guild/',
-  getParentRoute: () => LocaleRouteRoute,
+  getParentRoute: () => GameLocaleRouteRoute,
 } as any)
-const LocalePveMythicPlusIndexRoute =
-  LocalePveMythicPlusIndexRouteImport.update({
+const GameLocalePveMythicPlusIndexRoute =
+  GameLocalePveMythicPlusIndexRouteImport.update({
     id: '/pve/mythic-plus/',
     path: '/pve/mythic-plus/',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePveMythicPlusCharactersRoute =
-  LocalePveMythicPlusCharactersRouteImport.update({
+const GameLocalePveMythicPlusCharactersRoute =
+  GameLocalePveMythicPlusCharactersRouteImport.update({
     id: '/pve/mythic-plus/characters',
     path: '/pve/mythic-plus/characters',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePveMythicPlusRunsRoute = LocalePveMythicPlusRunsRouteImport.update({
-  id: '/pve/mythic-plus/runs',
-  path: '/pve/mythic-plus/runs',
-  getParentRoute: () => LocaleRouteRoute,
-} as any)
-const LocalePveStatsIndexRoute = LocalePveStatsIndexRouteImport.update({
+const GameLocalePveMythicPlusRunsRoute =
+  GameLocalePveMythicPlusRunsRouteImport.update({
+    id: '/pve/mythic-plus/runs',
+    path: '/pve/mythic-plus/runs',
+    getParentRoute: () => GameLocaleRouteRoute,
+  } as any)
+const GameLocalePveStatsIndexRoute = GameLocalePveStatsIndexRouteImport.update({
   id: '/pve/stats/',
   path: '/pve/stats/',
-  getParentRoute: () => LocaleRouteRoute,
+  getParentRoute: () => GameLocaleRouteRoute,
 } as any)
-const LocalePvpCharacterIndexRoute = LocalePvpCharacterIndexRouteImport.update({
-  id: '/pvp/character/',
-  path: '/pvp/character/',
-  getParentRoute: () => LocaleRouteRoute,
-} as any)
-const LocalePvpLeaderboardsIndexRoute =
-  LocalePvpLeaderboardsIndexRouteImport.update({
+const GameLocalePvpCharacterIndexRoute =
+  GameLocalePvpCharacterIndexRouteImport.update({
+    id: '/pvp/character/',
+    path: '/pvp/character/',
+    getParentRoute: () => GameLocaleRouteRoute,
+  } as any)
+const GameLocalePvpLeaderboardsIndexRoute =
+  GameLocalePvpLeaderboardsIndexRouteImport.update({
     id: '/pvp/leaderboards/',
     path: '/pvp/leaderboards/',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePvpLeaderboardsBracketRoute =
-  LocalePvpLeaderboardsBracketRouteImport.update({
+const GameLocalePvpLeaderboardsBracketRoute =
+  GameLocalePvpLeaderboardsBracketRouteImport.update({
     id: '/pvp/leaderboards/$bracket',
     path: '/pvp/leaderboards/$bracket',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePvpStatsIndexRoute = LocalePvpStatsIndexRouteImport.update({
+const GameLocalePvpStatsIndexRoute = GameLocalePvpStatsIndexRouteImport.update({
   id: '/pvp/stats/',
   path: '/pvp/stats/',
-  getParentRoute: () => LocaleRouteRoute,
+  getParentRoute: () => GameLocaleRouteRoute,
 } as any)
-const LocalePvpStatsCutoffsRoute = LocalePvpStatsCutoffsRouteImport.update({
-  id: '/pvp/stats/cutoffs',
-  path: '/pvp/stats/cutoffs',
-  getParentRoute: () => LocaleRouteRoute,
-} as any)
-const LocalePvpStatsHeroTalentsRoute =
-  LocalePvpStatsHeroTalentsRouteImport.update({
+const GameLocalePvpStatsCutoffsRoute =
+  GameLocalePvpStatsCutoffsRouteImport.update({
+    id: '/pvp/stats/cutoffs',
+    path: '/pvp/stats/cutoffs',
+    getParentRoute: () => GameLocaleRouteRoute,
+  } as any)
+const GameLocalePvpStatsHeroTalentsRoute =
+  GameLocalePvpStatsHeroTalentsRouteImport.update({
     id: '/pvp/stats/hero-talents',
     path: '/pvp/stats/hero-talents',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePvpStatsRepresentationRoute =
-  LocalePvpStatsRepresentationRouteImport.update({
+const GameLocalePvpStatsRepresentationRoute =
+  GameLocalePvpStatsRepresentationRouteImport.update({
     id: '/pvp/stats/representation',
     path: '/pvp/stats/representation',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocaleCharacterRegionRealmNameRoute =
-  LocaleCharacterRegionRealmNameRouteImport.update({
+const GameLocaleCharacterRegionRealmNameRoute =
+  GameLocaleCharacterRegionRealmNameRouteImport.update({
     id: '/character/$region/$realm/$name',
     path: '/character/$region/$realm/$name',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocaleGuildRegionRealmNameRoute =
-  LocaleGuildRegionRealmNameRouteImport.update({
+const GameLocaleGuildRegionRealmNameRoute =
+  GameLocaleGuildRegionRealmNameRouteImport.update({
     id: '/guild/$region/$realm/$name',
     path: '/guild/$region/$realm/$name',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePveMythicPlusArchivesIndexRoute =
-  LocalePveMythicPlusArchivesIndexRouteImport.update({
+const GameLocalePveMythicPlusArchivesIndexRoute =
+  GameLocalePveMythicPlusArchivesIndexRouteImport.update({
     id: '/pve/mythic-plus/archives/',
     path: '/pve/mythic-plus/archives/',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePveMythicPlusArchivesCharactersRoute =
-  LocalePveMythicPlusArchivesCharactersRouteImport.update({
+const GameLocalePveMythicPlusArchivesCharactersRoute =
+  GameLocalePveMythicPlusArchivesCharactersRouteImport.update({
     id: '/pve/mythic-plus/archives/characters',
     path: '/pve/mythic-plus/archives/characters',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePveMythicPlusArchivesRunsRoute =
-  LocalePveMythicPlusArchivesRunsRouteImport.update({
+const GameLocalePveMythicPlusArchivesRunsRoute =
+  GameLocalePveMythicPlusArchivesRunsRouteImport.update({
     id: '/pve/mythic-plus/archives/runs',
     path: '/pve/mythic-plus/archives/runs',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePveRaidsRaidHallOfFameRoute =
-  LocalePveRaidsRaidHallOfFameRouteImport.update({
+const GameLocalePveRaidsRaidHallOfFameRoute =
+  GameLocalePveRaidsRaidHallOfFameRouteImport.update({
     id: '/pve/raids/$raid/hall-of-fame',
     path: '/pve/raids/$raid/hall-of-fame',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePveStatsMythicPlusCompositionsRoute =
-  LocalePveStatsMythicPlusCompositionsRouteImport.update({
+const GameLocalePveStatsMythicPlusCompositionsRoute =
+  GameLocalePveStatsMythicPlusCompositionsRouteImport.update({
     id: '/pve/stats/mythic-plus/compositions',
     path: '/pve/stats/mythic-plus/compositions',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePveStatsMythicPlusCutoffsRoute =
-  LocalePveStatsMythicPlusCutoffsRouteImport.update({
+const GameLocalePveStatsMythicPlusCutoffsRoute =
+  GameLocalePveStatsMythicPlusCutoffsRouteImport.update({
     id: '/pve/stats/mythic-plus/cutoffs',
     path: '/pve/stats/mythic-plus/cutoffs',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePveStatsMythicPlusRepresentationRoute =
-  LocalePveStatsMythicPlusRepresentationRouteImport.update({
+const GameLocalePveStatsMythicPlusRepresentationRoute =
+  GameLocalePveStatsMythicPlusRepresentationRouteImport.update({
     id: '/pve/stats/mythic-plus/representation',
     path: '/pve/stats/mythic-plus/representation',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePveCharacterRegionRealmNameRoute =
-  LocalePveCharacterRegionRealmNameRouteImport.update({
+const GameLocalePveCharacterRegionRealmNameRoute =
+  GameLocalePveCharacterRegionRealmNameRouteImport.update({
     id: '/pve/character/$region/$realm/$name',
     path: '/pve/character/$region/$realm/$name',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePveGuildRegionRealmNameRoute =
-  LocalePveGuildRegionRealmNameRouteImport.update({
+const GameLocalePveGuildRegionRealmNameRoute =
+  GameLocalePveGuildRegionRealmNameRouteImport.update({
     id: '/pve/guild/$region/$realm/$name',
     path: '/pve/guild/$region/$realm/$name',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePveMythicPlusArchivesStatsCompositionsRoute =
-  LocalePveMythicPlusArchivesStatsCompositionsRouteImport.update({
+const GameLocalePveMythicPlusArchivesStatsCompositionsRoute =
+  GameLocalePveMythicPlusArchivesStatsCompositionsRouteImport.update({
     id: '/pve/mythic-plus/archives/stats/compositions',
     path: '/pve/mythic-plus/archives/stats/compositions',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePveMythicPlusArchivesStatsCutoffsRoute =
-  LocalePveMythicPlusArchivesStatsCutoffsRouteImport.update({
+const GameLocalePveMythicPlusArchivesStatsCutoffsRoute =
+  GameLocalePveMythicPlusArchivesStatsCutoffsRouteImport.update({
     id: '/pve/mythic-plus/archives/stats/cutoffs',
     path: '/pve/mythic-plus/archives/stats/cutoffs',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePveMythicPlusArchivesStatsRepresentationRoute =
-  LocalePveMythicPlusArchivesStatsRepresentationRouteImport.update({
+const GameLocalePveMythicPlusArchivesStatsRepresentationRoute =
+  GameLocalePveMythicPlusArchivesStatsRepresentationRouteImport.update({
     id: '/pve/mythic-plus/archives/stats/representation',
     path: '/pve/mythic-plus/archives/stats/representation',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePveMythicPlusRolesClassRoleRoute =
-  LocalePveMythicPlusRolesClassRoleRouteImport.update({
+const GameLocalePveMythicPlusRolesClassRoleRoute =
+  GameLocalePveMythicPlusRolesClassRoleRouteImport.update({
     id: '/pve/mythic-plus/roles/$class/$role',
     path: '/pve/mythic-plus/roles/$class/$role',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePveMythicPlusSpecsClassSpecRoute =
-  LocalePveMythicPlusSpecsClassSpecRouteImport.update({
+const GameLocalePveMythicPlusSpecsClassSpecRoute =
+  GameLocalePveMythicPlusSpecsClassSpecRouteImport.update({
     id: '/pve/mythic-plus/specs/$class/$spec',
     path: '/pve/mythic-plus/specs/$class/$spec',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePveRaidsRaidBossesBossRoute =
-  LocalePveRaidsRaidBossesBossRouteImport.update({
+const GameLocalePveRaidsRaidBossesBossRoute =
+  GameLocalePveRaidsRaidBossesBossRouteImport.update({
     id: '/pve/raids/$raid/bosses/$boss',
     path: '/pve/raids/$raid/bosses/$boss',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePvpCharacterRegionRealmNameRoute =
-  LocalePvpCharacterRegionRealmNameRouteImport.update({
+const GameLocalePvpCharacterRegionRealmNameRoute =
+  GameLocalePvpCharacterRegionRealmNameRouteImport.update({
     id: '/pvp/character/$region/$realm/$name',
     path: '/pvp/character/$region/$realm/$name',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePveMythicPlusArchivesRolesClassRoleRoute =
-  LocalePveMythicPlusArchivesRolesClassRoleRouteImport.update({
+const GameLocalePveMythicPlusArchivesRolesClassRoleRoute =
+  GameLocalePveMythicPlusArchivesRolesClassRoleRouteImport.update({
     id: '/pve/mythic-plus/archives/roles/$class/$role',
     path: '/pve/mythic-plus/archives/roles/$class/$role',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
-const LocalePveMythicPlusArchivesSpecsClassSpecRoute =
-  LocalePveMythicPlusArchivesSpecsClassSpecRouteImport.update({
+const GameLocalePveMythicPlusArchivesSpecsClassSpecRoute =
+  GameLocalePveMythicPlusArchivesSpecsClassSpecRouteImport.update({
     id: '/pve/mythic-plus/archives/specs/$class/$spec',
     path: '/pve/mythic-plus/archives/specs/$class/$spec',
-    getParentRoute: () => LocaleRouteRoute,
+    getParentRoute: () => GameLocaleRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/$locale': typeof LocaleRouteRouteWithChildren
-  '/$locale/privacy': typeof LocalePrivacyRoute
-  '/$locale/terms': typeof LocaleTermsRoute
-  '/$locale/': typeof LocaleIndexRoute
-  '/$locale/pve/tier-list': typeof LocalePveTierListRoute
-  '/$locale/pvp/archives': typeof LocalePvpArchivesRoute
-  '/$locale/pvp/fotm': typeof LocalePvpFotmRoute
-  '/$locale/pvp/tier-list': typeof LocalePvpTierListRoute
-  '/$locale/pve/': typeof LocalePveIndexRoute
-  '/$locale/pvp/': typeof LocalePvpIndexRoute
-  '/$locale/pve/mythic-plus/characters': typeof LocalePveMythicPlusCharactersRoute
-  '/$locale/pve/mythic-plus/runs': typeof LocalePveMythicPlusRunsRoute
-  '/$locale/pvp/leaderboards/$bracket': typeof LocalePvpLeaderboardsBracketRoute
-  '/$locale/pvp/stats/cutoffs': typeof LocalePvpStatsCutoffsRoute
-  '/$locale/pvp/stats/hero-talents': typeof LocalePvpStatsHeroTalentsRoute
-  '/$locale/pvp/stats/representation': typeof LocalePvpStatsRepresentationRoute
-  '/$locale/pve/character/': typeof LocalePveCharacterIndexRoute
-  '/$locale/pve/guild/': typeof LocalePveGuildIndexRoute
-  '/$locale/pve/mythic-plus/': typeof LocalePveMythicPlusIndexRoute
-  '/$locale/pve/stats/': typeof LocalePveStatsIndexRoute
-  '/$locale/pvp/character/': typeof LocalePvpCharacterIndexRoute
-  '/$locale/pvp/leaderboards/': typeof LocalePvpLeaderboardsIndexRoute
-  '/$locale/pvp/stats/': typeof LocalePvpStatsIndexRoute
-  '/$locale/character/$region/$realm/$name': typeof LocaleCharacterRegionRealmNameRoute
-  '/$locale/guild/$region/$realm/$name': typeof LocaleGuildRegionRealmNameRoute
-  '/$locale/pve/mythic-plus/archives/characters': typeof LocalePveMythicPlusArchivesCharactersRoute
-  '/$locale/pve/mythic-plus/archives/runs': typeof LocalePveMythicPlusArchivesRunsRoute
-  '/$locale/pve/raids/$raid/hall-of-fame': typeof LocalePveRaidsRaidHallOfFameRoute
-  '/$locale/pve/stats/mythic-plus/compositions': typeof LocalePveStatsMythicPlusCompositionsRoute
-  '/$locale/pve/stats/mythic-plus/cutoffs': typeof LocalePveStatsMythicPlusCutoffsRoute
-  '/$locale/pve/stats/mythic-plus/representation': typeof LocalePveStatsMythicPlusRepresentationRoute
-  '/$locale/pve/mythic-plus/archives/': typeof LocalePveMythicPlusArchivesIndexRoute
-  '/$locale/pve/character/$region/$realm/$name': typeof LocalePveCharacterRegionRealmNameRoute
-  '/$locale/pve/guild/$region/$realm/$name': typeof LocalePveGuildRegionRealmNameRoute
-  '/$locale/pve/mythic-plus/archives/stats/compositions': typeof LocalePveMythicPlusArchivesStatsCompositionsRoute
-  '/$locale/pve/mythic-plus/archives/stats/cutoffs': typeof LocalePveMythicPlusArchivesStatsCutoffsRoute
-  '/$locale/pve/mythic-plus/archives/stats/representation': typeof LocalePveMythicPlusArchivesStatsRepresentationRoute
-  '/$locale/pve/mythic-plus/roles/$class/$role': typeof LocalePveMythicPlusRolesClassRoleRoute
-  '/$locale/pve/mythic-plus/specs/$class/$spec': typeof LocalePveMythicPlusSpecsClassSpecRoute
-  '/$locale/pve/raids/$raid/bosses/$boss': typeof LocalePveRaidsRaidBossesBossRoute
-  '/$locale/pvp/character/$region/$realm/$name': typeof LocalePvpCharacterRegionRealmNameRoute
-  '/$locale/pve/mythic-plus/archives/roles/$class/$role': typeof LocalePveMythicPlusArchivesRolesClassRoleRoute
-  '/$locale/pve/mythic-plus/archives/specs/$class/$spec': typeof LocalePveMythicPlusArchivesSpecsClassSpecRoute
+  '/$game/$locale': typeof GameLocaleRouteRouteWithChildren
+  '/$game/$locale/privacy': typeof GameLocalePrivacyRoute
+  '/$game/$locale/terms': typeof GameLocaleTermsRoute
+  '/$game/$locale/': typeof GameLocaleIndexRoute
+  '/$game/$locale/pve/tier-list': typeof GameLocalePveTierListRoute
+  '/$game/$locale/pvp/archives': typeof GameLocalePvpArchivesRoute
+  '/$game/$locale/pvp/fotm': typeof GameLocalePvpFotmRoute
+  '/$game/$locale/pvp/tier-list': typeof GameLocalePvpTierListRoute
+  '/$game/$locale/pve/': typeof GameLocalePveIndexRoute
+  '/$game/$locale/pvp/': typeof GameLocalePvpIndexRoute
+  '/$game/$locale/pve/mythic-plus/characters': typeof GameLocalePveMythicPlusCharactersRoute
+  '/$game/$locale/pve/mythic-plus/runs': typeof GameLocalePveMythicPlusRunsRoute
+  '/$game/$locale/pvp/leaderboards/$bracket': typeof GameLocalePvpLeaderboardsBracketRoute
+  '/$game/$locale/pvp/stats/cutoffs': typeof GameLocalePvpStatsCutoffsRoute
+  '/$game/$locale/pvp/stats/hero-talents': typeof GameLocalePvpStatsHeroTalentsRoute
+  '/$game/$locale/pvp/stats/representation': typeof GameLocalePvpStatsRepresentationRoute
+  '/$game/$locale/pve/character/': typeof GameLocalePveCharacterIndexRoute
+  '/$game/$locale/pve/guild/': typeof GameLocalePveGuildIndexRoute
+  '/$game/$locale/pve/mythic-plus/': typeof GameLocalePveMythicPlusIndexRoute
+  '/$game/$locale/pve/stats/': typeof GameLocalePveStatsIndexRoute
+  '/$game/$locale/pvp/character/': typeof GameLocalePvpCharacterIndexRoute
+  '/$game/$locale/pvp/leaderboards/': typeof GameLocalePvpLeaderboardsIndexRoute
+  '/$game/$locale/pvp/stats/': typeof GameLocalePvpStatsIndexRoute
+  '/$game/$locale/character/$region/$realm/$name': typeof GameLocaleCharacterRegionRealmNameRoute
+  '/$game/$locale/guild/$region/$realm/$name': typeof GameLocaleGuildRegionRealmNameRoute
+  '/$game/$locale/pve/mythic-plus/archives/characters': typeof GameLocalePveMythicPlusArchivesCharactersRoute
+  '/$game/$locale/pve/mythic-plus/archives/runs': typeof GameLocalePveMythicPlusArchivesRunsRoute
+  '/$game/$locale/pve/raids/$raid/hall-of-fame': typeof GameLocalePveRaidsRaidHallOfFameRoute
+  '/$game/$locale/pve/stats/mythic-plus/compositions': typeof GameLocalePveStatsMythicPlusCompositionsRoute
+  '/$game/$locale/pve/stats/mythic-plus/cutoffs': typeof GameLocalePveStatsMythicPlusCutoffsRoute
+  '/$game/$locale/pve/stats/mythic-plus/representation': typeof GameLocalePveStatsMythicPlusRepresentationRoute
+  '/$game/$locale/pve/mythic-plus/archives/': typeof GameLocalePveMythicPlusArchivesIndexRoute
+  '/$game/$locale/pve/character/$region/$realm/$name': typeof GameLocalePveCharacterRegionRealmNameRoute
+  '/$game/$locale/pve/guild/$region/$realm/$name': typeof GameLocalePveGuildRegionRealmNameRoute
+  '/$game/$locale/pve/mythic-plus/archives/stats/compositions': typeof GameLocalePveMythicPlusArchivesStatsCompositionsRoute
+  '/$game/$locale/pve/mythic-plus/archives/stats/cutoffs': typeof GameLocalePveMythicPlusArchivesStatsCutoffsRoute
+  '/$game/$locale/pve/mythic-plus/archives/stats/representation': typeof GameLocalePveMythicPlusArchivesStatsRepresentationRoute
+  '/$game/$locale/pve/mythic-plus/roles/$class/$role': typeof GameLocalePveMythicPlusRolesClassRoleRoute
+  '/$game/$locale/pve/mythic-plus/specs/$class/$spec': typeof GameLocalePveMythicPlusSpecsClassSpecRoute
+  '/$game/$locale/pve/raids/$raid/bosses/$boss': typeof GameLocalePveRaidsRaidBossesBossRoute
+  '/$game/$locale/pvp/character/$region/$realm/$name': typeof GameLocalePvpCharacterRegionRealmNameRoute
+  '/$game/$locale/pve/mythic-plus/archives/roles/$class/$role': typeof GameLocalePveMythicPlusArchivesRolesClassRoleRoute
+  '/$game/$locale/pve/mythic-plus/archives/specs/$class/$spec': typeof GameLocalePveMythicPlusArchivesSpecsClassSpecRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/$locale/privacy': typeof LocalePrivacyRoute
-  '/$locale/terms': typeof LocaleTermsRoute
-  '/$locale': typeof LocaleIndexRoute
-  '/$locale/pve/tier-list': typeof LocalePveTierListRoute
-  '/$locale/pvp/archives': typeof LocalePvpArchivesRoute
-  '/$locale/pvp/fotm': typeof LocalePvpFotmRoute
-  '/$locale/pvp/tier-list': typeof LocalePvpTierListRoute
-  '/$locale/pve': typeof LocalePveIndexRoute
-  '/$locale/pvp': typeof LocalePvpIndexRoute
-  '/$locale/pve/mythic-plus/characters': typeof LocalePveMythicPlusCharactersRoute
-  '/$locale/pve/mythic-plus/runs': typeof LocalePveMythicPlusRunsRoute
-  '/$locale/pvp/leaderboards/$bracket': typeof LocalePvpLeaderboardsBracketRoute
-  '/$locale/pvp/stats/cutoffs': typeof LocalePvpStatsCutoffsRoute
-  '/$locale/pvp/stats/hero-talents': typeof LocalePvpStatsHeroTalentsRoute
-  '/$locale/pvp/stats/representation': typeof LocalePvpStatsRepresentationRoute
-  '/$locale/pve/character': typeof LocalePveCharacterIndexRoute
-  '/$locale/pve/guild': typeof LocalePveGuildIndexRoute
-  '/$locale/pve/mythic-plus': typeof LocalePveMythicPlusIndexRoute
-  '/$locale/pve/stats': typeof LocalePveStatsIndexRoute
-  '/$locale/pvp/character': typeof LocalePvpCharacterIndexRoute
-  '/$locale/pvp/leaderboards': typeof LocalePvpLeaderboardsIndexRoute
-  '/$locale/pvp/stats': typeof LocalePvpStatsIndexRoute
-  '/$locale/character/$region/$realm/$name': typeof LocaleCharacterRegionRealmNameRoute
-  '/$locale/guild/$region/$realm/$name': typeof LocaleGuildRegionRealmNameRoute
-  '/$locale/pve/mythic-plus/archives/characters': typeof LocalePveMythicPlusArchivesCharactersRoute
-  '/$locale/pve/mythic-plus/archives/runs': typeof LocalePveMythicPlusArchivesRunsRoute
-  '/$locale/pve/raids/$raid/hall-of-fame': typeof LocalePveRaidsRaidHallOfFameRoute
-  '/$locale/pve/stats/mythic-plus/compositions': typeof LocalePveStatsMythicPlusCompositionsRoute
-  '/$locale/pve/stats/mythic-plus/cutoffs': typeof LocalePveStatsMythicPlusCutoffsRoute
-  '/$locale/pve/stats/mythic-plus/representation': typeof LocalePveStatsMythicPlusRepresentationRoute
-  '/$locale/pve/mythic-plus/archives': typeof LocalePveMythicPlusArchivesIndexRoute
-  '/$locale/pve/character/$region/$realm/$name': typeof LocalePveCharacterRegionRealmNameRoute
-  '/$locale/pve/guild/$region/$realm/$name': typeof LocalePveGuildRegionRealmNameRoute
-  '/$locale/pve/mythic-plus/archives/stats/compositions': typeof LocalePveMythicPlusArchivesStatsCompositionsRoute
-  '/$locale/pve/mythic-plus/archives/stats/cutoffs': typeof LocalePveMythicPlusArchivesStatsCutoffsRoute
-  '/$locale/pve/mythic-plus/archives/stats/representation': typeof LocalePveMythicPlusArchivesStatsRepresentationRoute
-  '/$locale/pve/mythic-plus/roles/$class/$role': typeof LocalePveMythicPlusRolesClassRoleRoute
-  '/$locale/pve/mythic-plus/specs/$class/$spec': typeof LocalePveMythicPlusSpecsClassSpecRoute
-  '/$locale/pve/raids/$raid/bosses/$boss': typeof LocalePveRaidsRaidBossesBossRoute
-  '/$locale/pvp/character/$region/$realm/$name': typeof LocalePvpCharacterRegionRealmNameRoute
-  '/$locale/pve/mythic-plus/archives/roles/$class/$role': typeof LocalePveMythicPlusArchivesRolesClassRoleRoute
-  '/$locale/pve/mythic-plus/archives/specs/$class/$spec': typeof LocalePveMythicPlusArchivesSpecsClassSpecRoute
+  '/$game/$locale/privacy': typeof GameLocalePrivacyRoute
+  '/$game/$locale/terms': typeof GameLocaleTermsRoute
+  '/$game/$locale': typeof GameLocaleIndexRoute
+  '/$game/$locale/pve/tier-list': typeof GameLocalePveTierListRoute
+  '/$game/$locale/pvp/archives': typeof GameLocalePvpArchivesRoute
+  '/$game/$locale/pvp/fotm': typeof GameLocalePvpFotmRoute
+  '/$game/$locale/pvp/tier-list': typeof GameLocalePvpTierListRoute
+  '/$game/$locale/pve': typeof GameLocalePveIndexRoute
+  '/$game/$locale/pvp': typeof GameLocalePvpIndexRoute
+  '/$game/$locale/pve/mythic-plus/characters': typeof GameLocalePveMythicPlusCharactersRoute
+  '/$game/$locale/pve/mythic-plus/runs': typeof GameLocalePveMythicPlusRunsRoute
+  '/$game/$locale/pvp/leaderboards/$bracket': typeof GameLocalePvpLeaderboardsBracketRoute
+  '/$game/$locale/pvp/stats/cutoffs': typeof GameLocalePvpStatsCutoffsRoute
+  '/$game/$locale/pvp/stats/hero-talents': typeof GameLocalePvpStatsHeroTalentsRoute
+  '/$game/$locale/pvp/stats/representation': typeof GameLocalePvpStatsRepresentationRoute
+  '/$game/$locale/pve/character': typeof GameLocalePveCharacterIndexRoute
+  '/$game/$locale/pve/guild': typeof GameLocalePveGuildIndexRoute
+  '/$game/$locale/pve/mythic-plus': typeof GameLocalePveMythicPlusIndexRoute
+  '/$game/$locale/pve/stats': typeof GameLocalePveStatsIndexRoute
+  '/$game/$locale/pvp/character': typeof GameLocalePvpCharacterIndexRoute
+  '/$game/$locale/pvp/leaderboards': typeof GameLocalePvpLeaderboardsIndexRoute
+  '/$game/$locale/pvp/stats': typeof GameLocalePvpStatsIndexRoute
+  '/$game/$locale/character/$region/$realm/$name': typeof GameLocaleCharacterRegionRealmNameRoute
+  '/$game/$locale/guild/$region/$realm/$name': typeof GameLocaleGuildRegionRealmNameRoute
+  '/$game/$locale/pve/mythic-plus/archives/characters': typeof GameLocalePveMythicPlusArchivesCharactersRoute
+  '/$game/$locale/pve/mythic-plus/archives/runs': typeof GameLocalePveMythicPlusArchivesRunsRoute
+  '/$game/$locale/pve/raids/$raid/hall-of-fame': typeof GameLocalePveRaidsRaidHallOfFameRoute
+  '/$game/$locale/pve/stats/mythic-plus/compositions': typeof GameLocalePveStatsMythicPlusCompositionsRoute
+  '/$game/$locale/pve/stats/mythic-plus/cutoffs': typeof GameLocalePveStatsMythicPlusCutoffsRoute
+  '/$game/$locale/pve/stats/mythic-plus/representation': typeof GameLocalePveStatsMythicPlusRepresentationRoute
+  '/$game/$locale/pve/mythic-plus/archives': typeof GameLocalePveMythicPlusArchivesIndexRoute
+  '/$game/$locale/pve/character/$region/$realm/$name': typeof GameLocalePveCharacterRegionRealmNameRoute
+  '/$game/$locale/pve/guild/$region/$realm/$name': typeof GameLocalePveGuildRegionRealmNameRoute
+  '/$game/$locale/pve/mythic-plus/archives/stats/compositions': typeof GameLocalePveMythicPlusArchivesStatsCompositionsRoute
+  '/$game/$locale/pve/mythic-plus/archives/stats/cutoffs': typeof GameLocalePveMythicPlusArchivesStatsCutoffsRoute
+  '/$game/$locale/pve/mythic-plus/archives/stats/representation': typeof GameLocalePveMythicPlusArchivesStatsRepresentationRoute
+  '/$game/$locale/pve/mythic-plus/roles/$class/$role': typeof GameLocalePveMythicPlusRolesClassRoleRoute
+  '/$game/$locale/pve/mythic-plus/specs/$class/$spec': typeof GameLocalePveMythicPlusSpecsClassSpecRoute
+  '/$game/$locale/pve/raids/$raid/bosses/$boss': typeof GameLocalePveRaidsRaidBossesBossRoute
+  '/$game/$locale/pvp/character/$region/$realm/$name': typeof GameLocalePvpCharacterRegionRealmNameRoute
+  '/$game/$locale/pve/mythic-plus/archives/roles/$class/$role': typeof GameLocalePveMythicPlusArchivesRolesClassRoleRoute
+  '/$game/$locale/pve/mythic-plus/archives/specs/$class/$spec': typeof GameLocalePveMythicPlusArchivesSpecsClassSpecRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/$locale': typeof LocaleRouteRouteWithChildren
-  '/$locale/privacy': typeof LocalePrivacyRoute
-  '/$locale/terms': typeof LocaleTermsRoute
-  '/$locale/': typeof LocaleIndexRoute
-  '/$locale/pve/tier-list': typeof LocalePveTierListRoute
-  '/$locale/pvp/archives': typeof LocalePvpArchivesRoute
-  '/$locale/pvp/fotm': typeof LocalePvpFotmRoute
-  '/$locale/pvp/tier-list': typeof LocalePvpTierListRoute
-  '/$locale/pve/': typeof LocalePveIndexRoute
-  '/$locale/pvp/': typeof LocalePvpIndexRoute
-  '/$locale/pve/mythic-plus/characters': typeof LocalePveMythicPlusCharactersRoute
-  '/$locale/pve/mythic-plus/runs': typeof LocalePveMythicPlusRunsRoute
-  '/$locale/pvp/leaderboards/$bracket': typeof LocalePvpLeaderboardsBracketRoute
-  '/$locale/pvp/stats/cutoffs': typeof LocalePvpStatsCutoffsRoute
-  '/$locale/pvp/stats/hero-talents': typeof LocalePvpStatsHeroTalentsRoute
-  '/$locale/pvp/stats/representation': typeof LocalePvpStatsRepresentationRoute
-  '/$locale/pve/character/': typeof LocalePveCharacterIndexRoute
-  '/$locale/pve/guild/': typeof LocalePveGuildIndexRoute
-  '/$locale/pve/mythic-plus/': typeof LocalePveMythicPlusIndexRoute
-  '/$locale/pve/stats/': typeof LocalePveStatsIndexRoute
-  '/$locale/pvp/character/': typeof LocalePvpCharacterIndexRoute
-  '/$locale/pvp/leaderboards/': typeof LocalePvpLeaderboardsIndexRoute
-  '/$locale/pvp/stats/': typeof LocalePvpStatsIndexRoute
-  '/$locale/character/$region/$realm/$name': typeof LocaleCharacterRegionRealmNameRoute
-  '/$locale/guild/$region/$realm/$name': typeof LocaleGuildRegionRealmNameRoute
-  '/$locale/pve/mythic-plus/archives/characters': typeof LocalePveMythicPlusArchivesCharactersRoute
-  '/$locale/pve/mythic-plus/archives/runs': typeof LocalePveMythicPlusArchivesRunsRoute
-  '/$locale/pve/raids/$raid/hall-of-fame': typeof LocalePveRaidsRaidHallOfFameRoute
-  '/$locale/pve/stats/mythic-plus/compositions': typeof LocalePveStatsMythicPlusCompositionsRoute
-  '/$locale/pve/stats/mythic-plus/cutoffs': typeof LocalePveStatsMythicPlusCutoffsRoute
-  '/$locale/pve/stats/mythic-plus/representation': typeof LocalePveStatsMythicPlusRepresentationRoute
-  '/$locale/pve/mythic-plus/archives/': typeof LocalePveMythicPlusArchivesIndexRoute
-  '/$locale/pve/character/$region/$realm/$name': typeof LocalePveCharacterRegionRealmNameRoute
-  '/$locale/pve/guild/$region/$realm/$name': typeof LocalePveGuildRegionRealmNameRoute
-  '/$locale/pve/mythic-plus/archives/stats/compositions': typeof LocalePveMythicPlusArchivesStatsCompositionsRoute
-  '/$locale/pve/mythic-plus/archives/stats/cutoffs': typeof LocalePveMythicPlusArchivesStatsCutoffsRoute
-  '/$locale/pve/mythic-plus/archives/stats/representation': typeof LocalePveMythicPlusArchivesStatsRepresentationRoute
-  '/$locale/pve/mythic-plus/roles/$class/$role': typeof LocalePveMythicPlusRolesClassRoleRoute
-  '/$locale/pve/mythic-plus/specs/$class/$spec': typeof LocalePveMythicPlusSpecsClassSpecRoute
-  '/$locale/pve/raids/$raid/bosses/$boss': typeof LocalePveRaidsRaidBossesBossRoute
-  '/$locale/pvp/character/$region/$realm/$name': typeof LocalePvpCharacterRegionRealmNameRoute
-  '/$locale/pve/mythic-plus/archives/roles/$class/$role': typeof LocalePveMythicPlusArchivesRolesClassRoleRoute
-  '/$locale/pve/mythic-plus/archives/specs/$class/$spec': typeof LocalePveMythicPlusArchivesSpecsClassSpecRoute
+  '/$game/$locale': typeof GameLocaleRouteRouteWithChildren
+  '/$game/$locale/privacy': typeof GameLocalePrivacyRoute
+  '/$game/$locale/terms': typeof GameLocaleTermsRoute
+  '/$game/$locale/': typeof GameLocaleIndexRoute
+  '/$game/$locale/pve/tier-list': typeof GameLocalePveTierListRoute
+  '/$game/$locale/pvp/archives': typeof GameLocalePvpArchivesRoute
+  '/$game/$locale/pvp/fotm': typeof GameLocalePvpFotmRoute
+  '/$game/$locale/pvp/tier-list': typeof GameLocalePvpTierListRoute
+  '/$game/$locale/pve/': typeof GameLocalePveIndexRoute
+  '/$game/$locale/pvp/': typeof GameLocalePvpIndexRoute
+  '/$game/$locale/pve/mythic-plus/characters': typeof GameLocalePveMythicPlusCharactersRoute
+  '/$game/$locale/pve/mythic-plus/runs': typeof GameLocalePveMythicPlusRunsRoute
+  '/$game/$locale/pvp/leaderboards/$bracket': typeof GameLocalePvpLeaderboardsBracketRoute
+  '/$game/$locale/pvp/stats/cutoffs': typeof GameLocalePvpStatsCutoffsRoute
+  '/$game/$locale/pvp/stats/hero-talents': typeof GameLocalePvpStatsHeroTalentsRoute
+  '/$game/$locale/pvp/stats/representation': typeof GameLocalePvpStatsRepresentationRoute
+  '/$game/$locale/pve/character/': typeof GameLocalePveCharacterIndexRoute
+  '/$game/$locale/pve/guild/': typeof GameLocalePveGuildIndexRoute
+  '/$game/$locale/pve/mythic-plus/': typeof GameLocalePveMythicPlusIndexRoute
+  '/$game/$locale/pve/stats/': typeof GameLocalePveStatsIndexRoute
+  '/$game/$locale/pvp/character/': typeof GameLocalePvpCharacterIndexRoute
+  '/$game/$locale/pvp/leaderboards/': typeof GameLocalePvpLeaderboardsIndexRoute
+  '/$game/$locale/pvp/stats/': typeof GameLocalePvpStatsIndexRoute
+  '/$game/$locale/character/$region/$realm/$name': typeof GameLocaleCharacterRegionRealmNameRoute
+  '/$game/$locale/guild/$region/$realm/$name': typeof GameLocaleGuildRegionRealmNameRoute
+  '/$game/$locale/pve/mythic-plus/archives/characters': typeof GameLocalePveMythicPlusArchivesCharactersRoute
+  '/$game/$locale/pve/mythic-plus/archives/runs': typeof GameLocalePveMythicPlusArchivesRunsRoute
+  '/$game/$locale/pve/raids/$raid/hall-of-fame': typeof GameLocalePveRaidsRaidHallOfFameRoute
+  '/$game/$locale/pve/stats/mythic-plus/compositions': typeof GameLocalePveStatsMythicPlusCompositionsRoute
+  '/$game/$locale/pve/stats/mythic-plus/cutoffs': typeof GameLocalePveStatsMythicPlusCutoffsRoute
+  '/$game/$locale/pve/stats/mythic-plus/representation': typeof GameLocalePveStatsMythicPlusRepresentationRoute
+  '/$game/$locale/pve/mythic-plus/archives/': typeof GameLocalePveMythicPlusArchivesIndexRoute
+  '/$game/$locale/pve/character/$region/$realm/$name': typeof GameLocalePveCharacterRegionRealmNameRoute
+  '/$game/$locale/pve/guild/$region/$realm/$name': typeof GameLocalePveGuildRegionRealmNameRoute
+  '/$game/$locale/pve/mythic-plus/archives/stats/compositions': typeof GameLocalePveMythicPlusArchivesStatsCompositionsRoute
+  '/$game/$locale/pve/mythic-plus/archives/stats/cutoffs': typeof GameLocalePveMythicPlusArchivesStatsCutoffsRoute
+  '/$game/$locale/pve/mythic-plus/archives/stats/representation': typeof GameLocalePveMythicPlusArchivesStatsRepresentationRoute
+  '/$game/$locale/pve/mythic-plus/roles/$class/$role': typeof GameLocalePveMythicPlusRolesClassRoleRoute
+  '/$game/$locale/pve/mythic-plus/specs/$class/$spec': typeof GameLocalePveMythicPlusSpecsClassSpecRoute
+  '/$game/$locale/pve/raids/$raid/bosses/$boss': typeof GameLocalePveRaidsRaidBossesBossRoute
+  '/$game/$locale/pvp/character/$region/$realm/$name': typeof GameLocalePvpCharacterRegionRealmNameRoute
+  '/$game/$locale/pve/mythic-plus/archives/roles/$class/$role': typeof GameLocalePveMythicPlusArchivesRolesClassRoleRoute
+  '/$game/$locale/pve/mythic-plus/archives/specs/$class/$spec': typeof GameLocalePveMythicPlusArchivesSpecsClassSpecRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/$locale'
-    | '/$locale/privacy'
-    | '/$locale/terms'
-    | '/$locale/'
-    | '/$locale/pve/tier-list'
-    | '/$locale/pvp/archives'
-    | '/$locale/pvp/fotm'
-    | '/$locale/pvp/tier-list'
-    | '/$locale/pve/'
-    | '/$locale/pvp/'
-    | '/$locale/pve/mythic-plus/characters'
-    | '/$locale/pve/mythic-plus/runs'
-    | '/$locale/pvp/leaderboards/$bracket'
-    | '/$locale/pvp/stats/cutoffs'
-    | '/$locale/pvp/stats/hero-talents'
-    | '/$locale/pvp/stats/representation'
-    | '/$locale/pve/character/'
-    | '/$locale/pve/guild/'
-    | '/$locale/pve/mythic-plus/'
-    | '/$locale/pve/stats/'
-    | '/$locale/pvp/character/'
-    | '/$locale/pvp/leaderboards/'
-    | '/$locale/pvp/stats/'
-    | '/$locale/character/$region/$realm/$name'
-    | '/$locale/guild/$region/$realm/$name'
-    | '/$locale/pve/mythic-plus/archives/characters'
-    | '/$locale/pve/mythic-plus/archives/runs'
-    | '/$locale/pve/raids/$raid/hall-of-fame'
-    | '/$locale/pve/stats/mythic-plus/compositions'
-    | '/$locale/pve/stats/mythic-plus/cutoffs'
-    | '/$locale/pve/stats/mythic-plus/representation'
-    | '/$locale/pve/mythic-plus/archives/'
-    | '/$locale/pve/character/$region/$realm/$name'
-    | '/$locale/pve/guild/$region/$realm/$name'
-    | '/$locale/pve/mythic-plus/archives/stats/compositions'
-    | '/$locale/pve/mythic-plus/archives/stats/cutoffs'
-    | '/$locale/pve/mythic-plus/archives/stats/representation'
-    | '/$locale/pve/mythic-plus/roles/$class/$role'
-    | '/$locale/pve/mythic-plus/specs/$class/$spec'
-    | '/$locale/pve/raids/$raid/bosses/$boss'
-    | '/$locale/pvp/character/$region/$realm/$name'
-    | '/$locale/pve/mythic-plus/archives/roles/$class/$role'
-    | '/$locale/pve/mythic-plus/archives/specs/$class/$spec'
+    | '/$game/$locale'
+    | '/$game/$locale/privacy'
+    | '/$game/$locale/terms'
+    | '/$game/$locale/'
+    | '/$game/$locale/pve/tier-list'
+    | '/$game/$locale/pvp/archives'
+    | '/$game/$locale/pvp/fotm'
+    | '/$game/$locale/pvp/tier-list'
+    | '/$game/$locale/pve/'
+    | '/$game/$locale/pvp/'
+    | '/$game/$locale/pve/mythic-plus/characters'
+    | '/$game/$locale/pve/mythic-plus/runs'
+    | '/$game/$locale/pvp/leaderboards/$bracket'
+    | '/$game/$locale/pvp/stats/cutoffs'
+    | '/$game/$locale/pvp/stats/hero-talents'
+    | '/$game/$locale/pvp/stats/representation'
+    | '/$game/$locale/pve/character/'
+    | '/$game/$locale/pve/guild/'
+    | '/$game/$locale/pve/mythic-plus/'
+    | '/$game/$locale/pve/stats/'
+    | '/$game/$locale/pvp/character/'
+    | '/$game/$locale/pvp/leaderboards/'
+    | '/$game/$locale/pvp/stats/'
+    | '/$game/$locale/character/$region/$realm/$name'
+    | '/$game/$locale/guild/$region/$realm/$name'
+    | '/$game/$locale/pve/mythic-plus/archives/characters'
+    | '/$game/$locale/pve/mythic-plus/archives/runs'
+    | '/$game/$locale/pve/raids/$raid/hall-of-fame'
+    | '/$game/$locale/pve/stats/mythic-plus/compositions'
+    | '/$game/$locale/pve/stats/mythic-plus/cutoffs'
+    | '/$game/$locale/pve/stats/mythic-plus/representation'
+    | '/$game/$locale/pve/mythic-plus/archives/'
+    | '/$game/$locale/pve/character/$region/$realm/$name'
+    | '/$game/$locale/pve/guild/$region/$realm/$name'
+    | '/$game/$locale/pve/mythic-plus/archives/stats/compositions'
+    | '/$game/$locale/pve/mythic-plus/archives/stats/cutoffs'
+    | '/$game/$locale/pve/mythic-plus/archives/stats/representation'
+    | '/$game/$locale/pve/mythic-plus/roles/$class/$role'
+    | '/$game/$locale/pve/mythic-plus/specs/$class/$spec'
+    | '/$game/$locale/pve/raids/$raid/bosses/$boss'
+    | '/$game/$locale/pvp/character/$region/$realm/$name'
+    | '/$game/$locale/pve/mythic-plus/archives/roles/$class/$role'
+    | '/$game/$locale/pve/mythic-plus/archives/specs/$class/$spec'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/$locale/privacy'
-    | '/$locale/terms'
-    | '/$locale'
-    | '/$locale/pve/tier-list'
-    | '/$locale/pvp/archives'
-    | '/$locale/pvp/fotm'
-    | '/$locale/pvp/tier-list'
-    | '/$locale/pve'
-    | '/$locale/pvp'
-    | '/$locale/pve/mythic-plus/characters'
-    | '/$locale/pve/mythic-plus/runs'
-    | '/$locale/pvp/leaderboards/$bracket'
-    | '/$locale/pvp/stats/cutoffs'
-    | '/$locale/pvp/stats/hero-talents'
-    | '/$locale/pvp/stats/representation'
-    | '/$locale/pve/character'
-    | '/$locale/pve/guild'
-    | '/$locale/pve/mythic-plus'
-    | '/$locale/pve/stats'
-    | '/$locale/pvp/character'
-    | '/$locale/pvp/leaderboards'
-    | '/$locale/pvp/stats'
-    | '/$locale/character/$region/$realm/$name'
-    | '/$locale/guild/$region/$realm/$name'
-    | '/$locale/pve/mythic-plus/archives/characters'
-    | '/$locale/pve/mythic-plus/archives/runs'
-    | '/$locale/pve/raids/$raid/hall-of-fame'
-    | '/$locale/pve/stats/mythic-plus/compositions'
-    | '/$locale/pve/stats/mythic-plus/cutoffs'
-    | '/$locale/pve/stats/mythic-plus/representation'
-    | '/$locale/pve/mythic-plus/archives'
-    | '/$locale/pve/character/$region/$realm/$name'
-    | '/$locale/pve/guild/$region/$realm/$name'
-    | '/$locale/pve/mythic-plus/archives/stats/compositions'
-    | '/$locale/pve/mythic-plus/archives/stats/cutoffs'
-    | '/$locale/pve/mythic-plus/archives/stats/representation'
-    | '/$locale/pve/mythic-plus/roles/$class/$role'
-    | '/$locale/pve/mythic-plus/specs/$class/$spec'
-    | '/$locale/pve/raids/$raid/bosses/$boss'
-    | '/$locale/pvp/character/$region/$realm/$name'
-    | '/$locale/pve/mythic-plus/archives/roles/$class/$role'
-    | '/$locale/pve/mythic-plus/archives/specs/$class/$spec'
+    | '/$game/$locale/privacy'
+    | '/$game/$locale/terms'
+    | '/$game/$locale'
+    | '/$game/$locale/pve/tier-list'
+    | '/$game/$locale/pvp/archives'
+    | '/$game/$locale/pvp/fotm'
+    | '/$game/$locale/pvp/tier-list'
+    | '/$game/$locale/pve'
+    | '/$game/$locale/pvp'
+    | '/$game/$locale/pve/mythic-plus/characters'
+    | '/$game/$locale/pve/mythic-plus/runs'
+    | '/$game/$locale/pvp/leaderboards/$bracket'
+    | '/$game/$locale/pvp/stats/cutoffs'
+    | '/$game/$locale/pvp/stats/hero-talents'
+    | '/$game/$locale/pvp/stats/representation'
+    | '/$game/$locale/pve/character'
+    | '/$game/$locale/pve/guild'
+    | '/$game/$locale/pve/mythic-plus'
+    | '/$game/$locale/pve/stats'
+    | '/$game/$locale/pvp/character'
+    | '/$game/$locale/pvp/leaderboards'
+    | '/$game/$locale/pvp/stats'
+    | '/$game/$locale/character/$region/$realm/$name'
+    | '/$game/$locale/guild/$region/$realm/$name'
+    | '/$game/$locale/pve/mythic-plus/archives/characters'
+    | '/$game/$locale/pve/mythic-plus/archives/runs'
+    | '/$game/$locale/pve/raids/$raid/hall-of-fame'
+    | '/$game/$locale/pve/stats/mythic-plus/compositions'
+    | '/$game/$locale/pve/stats/mythic-plus/cutoffs'
+    | '/$game/$locale/pve/stats/mythic-plus/representation'
+    | '/$game/$locale/pve/mythic-plus/archives'
+    | '/$game/$locale/pve/character/$region/$realm/$name'
+    | '/$game/$locale/pve/guild/$region/$realm/$name'
+    | '/$game/$locale/pve/mythic-plus/archives/stats/compositions'
+    | '/$game/$locale/pve/mythic-plus/archives/stats/cutoffs'
+    | '/$game/$locale/pve/mythic-plus/archives/stats/representation'
+    | '/$game/$locale/pve/mythic-plus/roles/$class/$role'
+    | '/$game/$locale/pve/mythic-plus/specs/$class/$spec'
+    | '/$game/$locale/pve/raids/$raid/bosses/$boss'
+    | '/$game/$locale/pvp/character/$region/$realm/$name'
+    | '/$game/$locale/pve/mythic-plus/archives/roles/$class/$role'
+    | '/$game/$locale/pve/mythic-plus/archives/specs/$class/$spec'
   id:
     | '__root__'
     | '/'
-    | '/$locale'
-    | '/$locale/privacy'
-    | '/$locale/terms'
-    | '/$locale/'
-    | '/$locale/pve/tier-list'
-    | '/$locale/pvp/archives'
-    | '/$locale/pvp/fotm'
-    | '/$locale/pvp/tier-list'
-    | '/$locale/pve/'
-    | '/$locale/pvp/'
-    | '/$locale/pve/mythic-plus/characters'
-    | '/$locale/pve/mythic-plus/runs'
-    | '/$locale/pvp/leaderboards/$bracket'
-    | '/$locale/pvp/stats/cutoffs'
-    | '/$locale/pvp/stats/hero-talents'
-    | '/$locale/pvp/stats/representation'
-    | '/$locale/pve/character/'
-    | '/$locale/pve/guild/'
-    | '/$locale/pve/mythic-plus/'
-    | '/$locale/pve/stats/'
-    | '/$locale/pvp/character/'
-    | '/$locale/pvp/leaderboards/'
-    | '/$locale/pvp/stats/'
-    | '/$locale/character/$region/$realm/$name'
-    | '/$locale/guild/$region/$realm/$name'
-    | '/$locale/pve/mythic-plus/archives/characters'
-    | '/$locale/pve/mythic-plus/archives/runs'
-    | '/$locale/pve/raids/$raid/hall-of-fame'
-    | '/$locale/pve/stats/mythic-plus/compositions'
-    | '/$locale/pve/stats/mythic-plus/cutoffs'
-    | '/$locale/pve/stats/mythic-plus/representation'
-    | '/$locale/pve/mythic-plus/archives/'
-    | '/$locale/pve/character/$region/$realm/$name'
-    | '/$locale/pve/guild/$region/$realm/$name'
-    | '/$locale/pve/mythic-plus/archives/stats/compositions'
-    | '/$locale/pve/mythic-plus/archives/stats/cutoffs'
-    | '/$locale/pve/mythic-plus/archives/stats/representation'
-    | '/$locale/pve/mythic-plus/roles/$class/$role'
-    | '/$locale/pve/mythic-plus/specs/$class/$spec'
-    | '/$locale/pve/raids/$raid/bosses/$boss'
-    | '/$locale/pvp/character/$region/$realm/$name'
-    | '/$locale/pve/mythic-plus/archives/roles/$class/$role'
-    | '/$locale/pve/mythic-plus/archives/specs/$class/$spec'
+    | '/$game/$locale'
+    | '/$game/$locale/privacy'
+    | '/$game/$locale/terms'
+    | '/$game/$locale/'
+    | '/$game/$locale/pve/tier-list'
+    | '/$game/$locale/pvp/archives'
+    | '/$game/$locale/pvp/fotm'
+    | '/$game/$locale/pvp/tier-list'
+    | '/$game/$locale/pve/'
+    | '/$game/$locale/pvp/'
+    | '/$game/$locale/pve/mythic-plus/characters'
+    | '/$game/$locale/pve/mythic-plus/runs'
+    | '/$game/$locale/pvp/leaderboards/$bracket'
+    | '/$game/$locale/pvp/stats/cutoffs'
+    | '/$game/$locale/pvp/stats/hero-talents'
+    | '/$game/$locale/pvp/stats/representation'
+    | '/$game/$locale/pve/character/'
+    | '/$game/$locale/pve/guild/'
+    | '/$game/$locale/pve/mythic-plus/'
+    | '/$game/$locale/pve/stats/'
+    | '/$game/$locale/pvp/character/'
+    | '/$game/$locale/pvp/leaderboards/'
+    | '/$game/$locale/pvp/stats/'
+    | '/$game/$locale/character/$region/$realm/$name'
+    | '/$game/$locale/guild/$region/$realm/$name'
+    | '/$game/$locale/pve/mythic-plus/archives/characters'
+    | '/$game/$locale/pve/mythic-plus/archives/runs'
+    | '/$game/$locale/pve/raids/$raid/hall-of-fame'
+    | '/$game/$locale/pve/stats/mythic-plus/compositions'
+    | '/$game/$locale/pve/stats/mythic-plus/cutoffs'
+    | '/$game/$locale/pve/stats/mythic-plus/representation'
+    | '/$game/$locale/pve/mythic-plus/archives/'
+    | '/$game/$locale/pve/character/$region/$realm/$name'
+    | '/$game/$locale/pve/guild/$region/$realm/$name'
+    | '/$game/$locale/pve/mythic-plus/archives/stats/compositions'
+    | '/$game/$locale/pve/mythic-plus/archives/stats/cutoffs'
+    | '/$game/$locale/pve/mythic-plus/archives/stats/representation'
+    | '/$game/$locale/pve/mythic-plus/roles/$class/$role'
+    | '/$game/$locale/pve/mythic-plus/specs/$class/$spec'
+    | '/$game/$locale/pve/raids/$raid/bosses/$boss'
+    | '/$game/$locale/pvp/character/$region/$realm/$name'
+    | '/$game/$locale/pve/mythic-plus/archives/roles/$class/$role'
+    | '/$game/$locale/pve/mythic-plus/archives/specs/$class/$spec'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  LocaleRouteRoute: typeof LocaleRouteRouteWithChildren
+  GameLocaleRouteRoute: typeof GameLocaleRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -593,419 +597,425 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/$locale': {
-      id: '/$locale'
-      path: '/$locale'
-      fullPath: '/$locale'
-      preLoaderRoute: typeof LocaleRouteRouteImport
+    '/$game/$locale': {
+      id: '/$game/$locale'
+      path: '/$game/$locale'
+      fullPath: '/$game/$locale'
+      preLoaderRoute: typeof GameLocaleRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/$locale/': {
-      id: '/$locale/'
+    '/$game/$locale/': {
+      id: '/$game/$locale/'
       path: '/'
-      fullPath: '/$locale/'
-      preLoaderRoute: typeof LocaleIndexRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/'
+      preLoaderRoute: typeof GameLocaleIndexRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/privacy': {
-      id: '/$locale/privacy'
+    '/$game/$locale/privacy': {
+      id: '/$game/$locale/privacy'
       path: '/privacy'
-      fullPath: '/$locale/privacy'
-      preLoaderRoute: typeof LocalePrivacyRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/privacy'
+      preLoaderRoute: typeof GameLocalePrivacyRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/terms': {
-      id: '/$locale/terms'
+    '/$game/$locale/terms': {
+      id: '/$game/$locale/terms'
       path: '/terms'
-      fullPath: '/$locale/terms'
-      preLoaderRoute: typeof LocaleTermsRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/terms'
+      preLoaderRoute: typeof GameLocaleTermsRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/': {
-      id: '/$locale/pve/'
+    '/$game/$locale/pve/': {
+      id: '/$game/$locale/pve/'
       path: '/pve'
-      fullPath: '/$locale/pve/'
-      preLoaderRoute: typeof LocalePveIndexRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/'
+      preLoaderRoute: typeof GameLocalePveIndexRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/tier-list': {
-      id: '/$locale/pve/tier-list'
+    '/$game/$locale/pve/tier-list': {
+      id: '/$game/$locale/pve/tier-list'
       path: '/pve/tier-list'
-      fullPath: '/$locale/pve/tier-list'
-      preLoaderRoute: typeof LocalePveTierListRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/tier-list'
+      preLoaderRoute: typeof GameLocalePveTierListRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pvp/': {
-      id: '/$locale/pvp/'
+    '/$game/$locale/pvp/': {
+      id: '/$game/$locale/pvp/'
       path: '/pvp'
-      fullPath: '/$locale/pvp/'
-      preLoaderRoute: typeof LocalePvpIndexRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pvp/'
+      preLoaderRoute: typeof GameLocalePvpIndexRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pvp/archives': {
-      id: '/$locale/pvp/archives'
+    '/$game/$locale/pvp/archives': {
+      id: '/$game/$locale/pvp/archives'
       path: '/pvp/archives'
-      fullPath: '/$locale/pvp/archives'
-      preLoaderRoute: typeof LocalePvpArchivesRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pvp/archives'
+      preLoaderRoute: typeof GameLocalePvpArchivesRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pvp/fotm': {
-      id: '/$locale/pvp/fotm'
+    '/$game/$locale/pvp/fotm': {
+      id: '/$game/$locale/pvp/fotm'
       path: '/pvp/fotm'
-      fullPath: '/$locale/pvp/fotm'
-      preLoaderRoute: typeof LocalePvpFotmRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pvp/fotm'
+      preLoaderRoute: typeof GameLocalePvpFotmRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pvp/tier-list': {
-      id: '/$locale/pvp/tier-list'
+    '/$game/$locale/pvp/tier-list': {
+      id: '/$game/$locale/pvp/tier-list'
       path: '/pvp/tier-list'
-      fullPath: '/$locale/pvp/tier-list'
-      preLoaderRoute: typeof LocalePvpTierListRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pvp/tier-list'
+      preLoaderRoute: typeof GameLocalePvpTierListRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/character/': {
-      id: '/$locale/pve/character/'
+    '/$game/$locale/pve/character/': {
+      id: '/$game/$locale/pve/character/'
       path: '/pve/character'
-      fullPath: '/$locale/pve/character/'
-      preLoaderRoute: typeof LocalePveCharacterIndexRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/character/'
+      preLoaderRoute: typeof GameLocalePveCharacterIndexRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/guild/': {
-      id: '/$locale/pve/guild/'
+    '/$game/$locale/pve/guild/': {
+      id: '/$game/$locale/pve/guild/'
       path: '/pve/guild'
-      fullPath: '/$locale/pve/guild/'
-      preLoaderRoute: typeof LocalePveGuildIndexRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/guild/'
+      preLoaderRoute: typeof GameLocalePveGuildIndexRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/mythic-plus/': {
-      id: '/$locale/pve/mythic-plus/'
+    '/$game/$locale/pve/mythic-plus/': {
+      id: '/$game/$locale/pve/mythic-plus/'
       path: '/pve/mythic-plus'
-      fullPath: '/$locale/pve/mythic-plus/'
-      preLoaderRoute: typeof LocalePveMythicPlusIndexRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/mythic-plus/'
+      preLoaderRoute: typeof GameLocalePveMythicPlusIndexRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/mythic-plus/characters': {
-      id: '/$locale/pve/mythic-plus/characters'
+    '/$game/$locale/pve/mythic-plus/characters': {
+      id: '/$game/$locale/pve/mythic-plus/characters'
       path: '/pve/mythic-plus/characters'
-      fullPath: '/$locale/pve/mythic-plus/characters'
-      preLoaderRoute: typeof LocalePveMythicPlusCharactersRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/mythic-plus/characters'
+      preLoaderRoute: typeof GameLocalePveMythicPlusCharactersRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/mythic-plus/runs': {
-      id: '/$locale/pve/mythic-plus/runs'
+    '/$game/$locale/pve/mythic-plus/runs': {
+      id: '/$game/$locale/pve/mythic-plus/runs'
       path: '/pve/mythic-plus/runs'
-      fullPath: '/$locale/pve/mythic-plus/runs'
-      preLoaderRoute: typeof LocalePveMythicPlusRunsRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/mythic-plus/runs'
+      preLoaderRoute: typeof GameLocalePveMythicPlusRunsRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/stats/': {
-      id: '/$locale/pve/stats/'
+    '/$game/$locale/pve/stats/': {
+      id: '/$game/$locale/pve/stats/'
       path: '/pve/stats'
-      fullPath: '/$locale/pve/stats/'
-      preLoaderRoute: typeof LocalePveStatsIndexRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/stats/'
+      preLoaderRoute: typeof GameLocalePveStatsIndexRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pvp/character/': {
-      id: '/$locale/pvp/character/'
+    '/$game/$locale/pvp/character/': {
+      id: '/$game/$locale/pvp/character/'
       path: '/pvp/character'
-      fullPath: '/$locale/pvp/character/'
-      preLoaderRoute: typeof LocalePvpCharacterIndexRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pvp/character/'
+      preLoaderRoute: typeof GameLocalePvpCharacterIndexRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pvp/leaderboards/': {
-      id: '/$locale/pvp/leaderboards/'
+    '/$game/$locale/pvp/leaderboards/': {
+      id: '/$game/$locale/pvp/leaderboards/'
       path: '/pvp/leaderboards'
-      fullPath: '/$locale/pvp/leaderboards/'
-      preLoaderRoute: typeof LocalePvpLeaderboardsIndexRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pvp/leaderboards/'
+      preLoaderRoute: typeof GameLocalePvpLeaderboardsIndexRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pvp/leaderboards/$bracket': {
-      id: '/$locale/pvp/leaderboards/$bracket'
+    '/$game/$locale/pvp/leaderboards/$bracket': {
+      id: '/$game/$locale/pvp/leaderboards/$bracket'
       path: '/pvp/leaderboards/$bracket'
-      fullPath: '/$locale/pvp/leaderboards/$bracket'
-      preLoaderRoute: typeof LocalePvpLeaderboardsBracketRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pvp/leaderboards/$bracket'
+      preLoaderRoute: typeof GameLocalePvpLeaderboardsBracketRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pvp/stats/': {
-      id: '/$locale/pvp/stats/'
+    '/$game/$locale/pvp/stats/': {
+      id: '/$game/$locale/pvp/stats/'
       path: '/pvp/stats'
-      fullPath: '/$locale/pvp/stats/'
-      preLoaderRoute: typeof LocalePvpStatsIndexRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pvp/stats/'
+      preLoaderRoute: typeof GameLocalePvpStatsIndexRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pvp/stats/cutoffs': {
-      id: '/$locale/pvp/stats/cutoffs'
+    '/$game/$locale/pvp/stats/cutoffs': {
+      id: '/$game/$locale/pvp/stats/cutoffs'
       path: '/pvp/stats/cutoffs'
-      fullPath: '/$locale/pvp/stats/cutoffs'
-      preLoaderRoute: typeof LocalePvpStatsCutoffsRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pvp/stats/cutoffs'
+      preLoaderRoute: typeof GameLocalePvpStatsCutoffsRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pvp/stats/hero-talents': {
-      id: '/$locale/pvp/stats/hero-talents'
+    '/$game/$locale/pvp/stats/hero-talents': {
+      id: '/$game/$locale/pvp/stats/hero-talents'
       path: '/pvp/stats/hero-talents'
-      fullPath: '/$locale/pvp/stats/hero-talents'
-      preLoaderRoute: typeof LocalePvpStatsHeroTalentsRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pvp/stats/hero-talents'
+      preLoaderRoute: typeof GameLocalePvpStatsHeroTalentsRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pvp/stats/representation': {
-      id: '/$locale/pvp/stats/representation'
+    '/$game/$locale/pvp/stats/representation': {
+      id: '/$game/$locale/pvp/stats/representation'
       path: '/pvp/stats/representation'
-      fullPath: '/$locale/pvp/stats/representation'
-      preLoaderRoute: typeof LocalePvpStatsRepresentationRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pvp/stats/representation'
+      preLoaderRoute: typeof GameLocalePvpStatsRepresentationRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/character/$region/$realm/$name': {
-      id: '/$locale/character/$region/$realm/$name'
+    '/$game/$locale/character/$region/$realm/$name': {
+      id: '/$game/$locale/character/$region/$realm/$name'
       path: '/character/$region/$realm/$name'
-      fullPath: '/$locale/character/$region/$realm/$name'
-      preLoaderRoute: typeof LocaleCharacterRegionRealmNameRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/character/$region/$realm/$name'
+      preLoaderRoute: typeof GameLocaleCharacterRegionRealmNameRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/guild/$region/$realm/$name': {
-      id: '/$locale/guild/$region/$realm/$name'
+    '/$game/$locale/guild/$region/$realm/$name': {
+      id: '/$game/$locale/guild/$region/$realm/$name'
       path: '/guild/$region/$realm/$name'
-      fullPath: '/$locale/guild/$region/$realm/$name'
-      preLoaderRoute: typeof LocaleGuildRegionRealmNameRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/guild/$region/$realm/$name'
+      preLoaderRoute: typeof GameLocaleGuildRegionRealmNameRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/mythic-plus/archives/': {
-      id: '/$locale/pve/mythic-plus/archives/'
+    '/$game/$locale/pve/mythic-plus/archives/': {
+      id: '/$game/$locale/pve/mythic-plus/archives/'
       path: '/pve/mythic-plus/archives'
-      fullPath: '/$locale/pve/mythic-plus/archives/'
-      preLoaderRoute: typeof LocalePveMythicPlusArchivesIndexRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/mythic-plus/archives/'
+      preLoaderRoute: typeof GameLocalePveMythicPlusArchivesIndexRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/mythic-plus/archives/characters': {
-      id: '/$locale/pve/mythic-plus/archives/characters'
+    '/$game/$locale/pve/mythic-plus/archives/characters': {
+      id: '/$game/$locale/pve/mythic-plus/archives/characters'
       path: '/pve/mythic-plus/archives/characters'
-      fullPath: '/$locale/pve/mythic-plus/archives/characters'
-      preLoaderRoute: typeof LocalePveMythicPlusArchivesCharactersRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/mythic-plus/archives/characters'
+      preLoaderRoute: typeof GameLocalePveMythicPlusArchivesCharactersRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/mythic-plus/archives/runs': {
-      id: '/$locale/pve/mythic-plus/archives/runs'
+    '/$game/$locale/pve/mythic-plus/archives/runs': {
+      id: '/$game/$locale/pve/mythic-plus/archives/runs'
       path: '/pve/mythic-plus/archives/runs'
-      fullPath: '/$locale/pve/mythic-plus/archives/runs'
-      preLoaderRoute: typeof LocalePveMythicPlusArchivesRunsRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/mythic-plus/archives/runs'
+      preLoaderRoute: typeof GameLocalePveMythicPlusArchivesRunsRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/raids/$raid/hall-of-fame': {
-      id: '/$locale/pve/raids/$raid/hall-of-fame'
+    '/$game/$locale/pve/raids/$raid/hall-of-fame': {
+      id: '/$game/$locale/pve/raids/$raid/hall-of-fame'
       path: '/pve/raids/$raid/hall-of-fame'
-      fullPath: '/$locale/pve/raids/$raid/hall-of-fame'
-      preLoaderRoute: typeof LocalePveRaidsRaidHallOfFameRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/raids/$raid/hall-of-fame'
+      preLoaderRoute: typeof GameLocalePveRaidsRaidHallOfFameRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/stats/mythic-plus/compositions': {
-      id: '/$locale/pve/stats/mythic-plus/compositions'
+    '/$game/$locale/pve/stats/mythic-plus/compositions': {
+      id: '/$game/$locale/pve/stats/mythic-plus/compositions'
       path: '/pve/stats/mythic-plus/compositions'
-      fullPath: '/$locale/pve/stats/mythic-plus/compositions'
-      preLoaderRoute: typeof LocalePveStatsMythicPlusCompositionsRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/stats/mythic-plus/compositions'
+      preLoaderRoute: typeof GameLocalePveStatsMythicPlusCompositionsRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/stats/mythic-plus/cutoffs': {
-      id: '/$locale/pve/stats/mythic-plus/cutoffs'
+    '/$game/$locale/pve/stats/mythic-plus/cutoffs': {
+      id: '/$game/$locale/pve/stats/mythic-plus/cutoffs'
       path: '/pve/stats/mythic-plus/cutoffs'
-      fullPath: '/$locale/pve/stats/mythic-plus/cutoffs'
-      preLoaderRoute: typeof LocalePveStatsMythicPlusCutoffsRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/stats/mythic-plus/cutoffs'
+      preLoaderRoute: typeof GameLocalePveStatsMythicPlusCutoffsRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/stats/mythic-plus/representation': {
-      id: '/$locale/pve/stats/mythic-plus/representation'
+    '/$game/$locale/pve/stats/mythic-plus/representation': {
+      id: '/$game/$locale/pve/stats/mythic-plus/representation'
       path: '/pve/stats/mythic-plus/representation'
-      fullPath: '/$locale/pve/stats/mythic-plus/representation'
-      preLoaderRoute: typeof LocalePveStatsMythicPlusRepresentationRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/stats/mythic-plus/representation'
+      preLoaderRoute: typeof GameLocalePveStatsMythicPlusRepresentationRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/character/$region/$realm/$name': {
-      id: '/$locale/pve/character/$region/$realm/$name'
+    '/$game/$locale/pve/character/$region/$realm/$name': {
+      id: '/$game/$locale/pve/character/$region/$realm/$name'
       path: '/pve/character/$region/$realm/$name'
-      fullPath: '/$locale/pve/character/$region/$realm/$name'
-      preLoaderRoute: typeof LocalePveCharacterRegionRealmNameRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/character/$region/$realm/$name'
+      preLoaderRoute: typeof GameLocalePveCharacterRegionRealmNameRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/guild/$region/$realm/$name': {
-      id: '/$locale/pve/guild/$region/$realm/$name'
+    '/$game/$locale/pve/guild/$region/$realm/$name': {
+      id: '/$game/$locale/pve/guild/$region/$realm/$name'
       path: '/pve/guild/$region/$realm/$name'
-      fullPath: '/$locale/pve/guild/$region/$realm/$name'
-      preLoaderRoute: typeof LocalePveGuildRegionRealmNameRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/guild/$region/$realm/$name'
+      preLoaderRoute: typeof GameLocalePveGuildRegionRealmNameRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/mythic-plus/archives/stats/compositions': {
-      id: '/$locale/pve/mythic-plus/archives/stats/compositions'
+    '/$game/$locale/pve/mythic-plus/archives/stats/compositions': {
+      id: '/$game/$locale/pve/mythic-plus/archives/stats/compositions'
       path: '/pve/mythic-plus/archives/stats/compositions'
-      fullPath: '/$locale/pve/mythic-plus/archives/stats/compositions'
-      preLoaderRoute: typeof LocalePveMythicPlusArchivesStatsCompositionsRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/mythic-plus/archives/stats/compositions'
+      preLoaderRoute: typeof GameLocalePveMythicPlusArchivesStatsCompositionsRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/mythic-plus/archives/stats/cutoffs': {
-      id: '/$locale/pve/mythic-plus/archives/stats/cutoffs'
+    '/$game/$locale/pve/mythic-plus/archives/stats/cutoffs': {
+      id: '/$game/$locale/pve/mythic-plus/archives/stats/cutoffs'
       path: '/pve/mythic-plus/archives/stats/cutoffs'
-      fullPath: '/$locale/pve/mythic-plus/archives/stats/cutoffs'
-      preLoaderRoute: typeof LocalePveMythicPlusArchivesStatsCutoffsRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/mythic-plus/archives/stats/cutoffs'
+      preLoaderRoute: typeof GameLocalePveMythicPlusArchivesStatsCutoffsRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/mythic-plus/archives/stats/representation': {
-      id: '/$locale/pve/mythic-plus/archives/stats/representation'
+    '/$game/$locale/pve/mythic-plus/archives/stats/representation': {
+      id: '/$game/$locale/pve/mythic-plus/archives/stats/representation'
       path: '/pve/mythic-plus/archives/stats/representation'
-      fullPath: '/$locale/pve/mythic-plus/archives/stats/representation'
-      preLoaderRoute: typeof LocalePveMythicPlusArchivesStatsRepresentationRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/mythic-plus/archives/stats/representation'
+      preLoaderRoute: typeof GameLocalePveMythicPlusArchivesStatsRepresentationRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/mythic-plus/roles/$class/$role': {
-      id: '/$locale/pve/mythic-plus/roles/$class/$role'
+    '/$game/$locale/pve/mythic-plus/roles/$class/$role': {
+      id: '/$game/$locale/pve/mythic-plus/roles/$class/$role'
       path: '/pve/mythic-plus/roles/$class/$role'
-      fullPath: '/$locale/pve/mythic-plus/roles/$class/$role'
-      preLoaderRoute: typeof LocalePveMythicPlusRolesClassRoleRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/mythic-plus/roles/$class/$role'
+      preLoaderRoute: typeof GameLocalePveMythicPlusRolesClassRoleRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/mythic-plus/specs/$class/$spec': {
-      id: '/$locale/pve/mythic-plus/specs/$class/$spec'
+    '/$game/$locale/pve/mythic-plus/specs/$class/$spec': {
+      id: '/$game/$locale/pve/mythic-plus/specs/$class/$spec'
       path: '/pve/mythic-plus/specs/$class/$spec'
-      fullPath: '/$locale/pve/mythic-plus/specs/$class/$spec'
-      preLoaderRoute: typeof LocalePveMythicPlusSpecsClassSpecRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/mythic-plus/specs/$class/$spec'
+      preLoaderRoute: typeof GameLocalePveMythicPlusSpecsClassSpecRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/raids/$raid/bosses/$boss': {
-      id: '/$locale/pve/raids/$raid/bosses/$boss'
+    '/$game/$locale/pve/raids/$raid/bosses/$boss': {
+      id: '/$game/$locale/pve/raids/$raid/bosses/$boss'
       path: '/pve/raids/$raid/bosses/$boss'
-      fullPath: '/$locale/pve/raids/$raid/bosses/$boss'
-      preLoaderRoute: typeof LocalePveRaidsRaidBossesBossRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/raids/$raid/bosses/$boss'
+      preLoaderRoute: typeof GameLocalePveRaidsRaidBossesBossRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pvp/character/$region/$realm/$name': {
-      id: '/$locale/pvp/character/$region/$realm/$name'
+    '/$game/$locale/pvp/character/$region/$realm/$name': {
+      id: '/$game/$locale/pvp/character/$region/$realm/$name'
       path: '/pvp/character/$region/$realm/$name'
-      fullPath: '/$locale/pvp/character/$region/$realm/$name'
-      preLoaderRoute: typeof LocalePvpCharacterRegionRealmNameRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pvp/character/$region/$realm/$name'
+      preLoaderRoute: typeof GameLocalePvpCharacterRegionRealmNameRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/mythic-plus/archives/roles/$class/$role': {
-      id: '/$locale/pve/mythic-plus/archives/roles/$class/$role'
+    '/$game/$locale/pve/mythic-plus/archives/roles/$class/$role': {
+      id: '/$game/$locale/pve/mythic-plus/archives/roles/$class/$role'
       path: '/pve/mythic-plus/archives/roles/$class/$role'
-      fullPath: '/$locale/pve/mythic-plus/archives/roles/$class/$role'
-      preLoaderRoute: typeof LocalePveMythicPlusArchivesRolesClassRoleRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/mythic-plus/archives/roles/$class/$role'
+      preLoaderRoute: typeof GameLocalePveMythicPlusArchivesRolesClassRoleRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
-    '/$locale/pve/mythic-plus/archives/specs/$class/$spec': {
-      id: '/$locale/pve/mythic-plus/archives/specs/$class/$spec'
+    '/$game/$locale/pve/mythic-plus/archives/specs/$class/$spec': {
+      id: '/$game/$locale/pve/mythic-plus/archives/specs/$class/$spec'
       path: '/pve/mythic-plus/archives/specs/$class/$spec'
-      fullPath: '/$locale/pve/mythic-plus/archives/specs/$class/$spec'
-      preLoaderRoute: typeof LocalePveMythicPlusArchivesSpecsClassSpecRouteImport
-      parentRoute: typeof LocaleRouteRoute
+      fullPath: '/$game/$locale/pve/mythic-plus/archives/specs/$class/$spec'
+      preLoaderRoute: typeof GameLocalePveMythicPlusArchivesSpecsClassSpecRouteImport
+      parentRoute: typeof GameLocaleRouteRoute
     }
   }
 }
 
-interface LocaleRouteRouteChildren {
-  LocalePrivacyRoute: typeof LocalePrivacyRoute
-  LocaleTermsRoute: typeof LocaleTermsRoute
-  LocaleIndexRoute: typeof LocaleIndexRoute
-  LocalePveTierListRoute: typeof LocalePveTierListRoute
-  LocalePvpArchivesRoute: typeof LocalePvpArchivesRoute
-  LocalePvpFotmRoute: typeof LocalePvpFotmRoute
-  LocalePvpTierListRoute: typeof LocalePvpTierListRoute
-  LocalePveIndexRoute: typeof LocalePveIndexRoute
-  LocalePvpIndexRoute: typeof LocalePvpIndexRoute
-  LocalePveMythicPlusCharactersRoute: typeof LocalePveMythicPlusCharactersRoute
-  LocalePveMythicPlusRunsRoute: typeof LocalePveMythicPlusRunsRoute
-  LocalePvpLeaderboardsBracketRoute: typeof LocalePvpLeaderboardsBracketRoute
-  LocalePvpStatsCutoffsRoute: typeof LocalePvpStatsCutoffsRoute
-  LocalePvpStatsHeroTalentsRoute: typeof LocalePvpStatsHeroTalentsRoute
-  LocalePvpStatsRepresentationRoute: typeof LocalePvpStatsRepresentationRoute
-  LocalePveCharacterIndexRoute: typeof LocalePveCharacterIndexRoute
-  LocalePveGuildIndexRoute: typeof LocalePveGuildIndexRoute
-  LocalePveMythicPlusIndexRoute: typeof LocalePveMythicPlusIndexRoute
-  LocalePveStatsIndexRoute: typeof LocalePveStatsIndexRoute
-  LocalePvpCharacterIndexRoute: typeof LocalePvpCharacterIndexRoute
-  LocalePvpLeaderboardsIndexRoute: typeof LocalePvpLeaderboardsIndexRoute
-  LocalePvpStatsIndexRoute: typeof LocalePvpStatsIndexRoute
-  LocaleCharacterRegionRealmNameRoute: typeof LocaleCharacterRegionRealmNameRoute
-  LocaleGuildRegionRealmNameRoute: typeof LocaleGuildRegionRealmNameRoute
-  LocalePveMythicPlusArchivesCharactersRoute: typeof LocalePveMythicPlusArchivesCharactersRoute
-  LocalePveMythicPlusArchivesRunsRoute: typeof LocalePveMythicPlusArchivesRunsRoute
-  LocalePveRaidsRaidHallOfFameRoute: typeof LocalePveRaidsRaidHallOfFameRoute
-  LocalePveStatsMythicPlusCompositionsRoute: typeof LocalePveStatsMythicPlusCompositionsRoute
-  LocalePveStatsMythicPlusCutoffsRoute: typeof LocalePveStatsMythicPlusCutoffsRoute
-  LocalePveStatsMythicPlusRepresentationRoute: typeof LocalePveStatsMythicPlusRepresentationRoute
-  LocalePveMythicPlusArchivesIndexRoute: typeof LocalePveMythicPlusArchivesIndexRoute
-  LocalePveCharacterRegionRealmNameRoute: typeof LocalePveCharacterRegionRealmNameRoute
-  LocalePveGuildRegionRealmNameRoute: typeof LocalePveGuildRegionRealmNameRoute
-  LocalePveMythicPlusArchivesStatsCompositionsRoute: typeof LocalePveMythicPlusArchivesStatsCompositionsRoute
-  LocalePveMythicPlusArchivesStatsCutoffsRoute: typeof LocalePveMythicPlusArchivesStatsCutoffsRoute
-  LocalePveMythicPlusArchivesStatsRepresentationRoute: typeof LocalePveMythicPlusArchivesStatsRepresentationRoute
-  LocalePveMythicPlusRolesClassRoleRoute: typeof LocalePveMythicPlusRolesClassRoleRoute
-  LocalePveMythicPlusSpecsClassSpecRoute: typeof LocalePveMythicPlusSpecsClassSpecRoute
-  LocalePveRaidsRaidBossesBossRoute: typeof LocalePveRaidsRaidBossesBossRoute
-  LocalePvpCharacterRegionRealmNameRoute: typeof LocalePvpCharacterRegionRealmNameRoute
-  LocalePveMythicPlusArchivesRolesClassRoleRoute: typeof LocalePveMythicPlusArchivesRolesClassRoleRoute
-  LocalePveMythicPlusArchivesSpecsClassSpecRoute: typeof LocalePveMythicPlusArchivesSpecsClassSpecRoute
+interface GameLocaleRouteRouteChildren {
+  GameLocalePrivacyRoute: typeof GameLocalePrivacyRoute
+  GameLocaleTermsRoute: typeof GameLocaleTermsRoute
+  GameLocaleIndexRoute: typeof GameLocaleIndexRoute
+  GameLocalePveTierListRoute: typeof GameLocalePveTierListRoute
+  GameLocalePvpArchivesRoute: typeof GameLocalePvpArchivesRoute
+  GameLocalePvpFotmRoute: typeof GameLocalePvpFotmRoute
+  GameLocalePvpTierListRoute: typeof GameLocalePvpTierListRoute
+  GameLocalePveIndexRoute: typeof GameLocalePveIndexRoute
+  GameLocalePvpIndexRoute: typeof GameLocalePvpIndexRoute
+  GameLocalePveMythicPlusCharactersRoute: typeof GameLocalePveMythicPlusCharactersRoute
+  GameLocalePveMythicPlusRunsRoute: typeof GameLocalePveMythicPlusRunsRoute
+  GameLocalePvpLeaderboardsBracketRoute: typeof GameLocalePvpLeaderboardsBracketRoute
+  GameLocalePvpStatsCutoffsRoute: typeof GameLocalePvpStatsCutoffsRoute
+  GameLocalePvpStatsHeroTalentsRoute: typeof GameLocalePvpStatsHeroTalentsRoute
+  GameLocalePvpStatsRepresentationRoute: typeof GameLocalePvpStatsRepresentationRoute
+  GameLocalePveCharacterIndexRoute: typeof GameLocalePveCharacterIndexRoute
+  GameLocalePveGuildIndexRoute: typeof GameLocalePveGuildIndexRoute
+  GameLocalePveMythicPlusIndexRoute: typeof GameLocalePveMythicPlusIndexRoute
+  GameLocalePveStatsIndexRoute: typeof GameLocalePveStatsIndexRoute
+  GameLocalePvpCharacterIndexRoute: typeof GameLocalePvpCharacterIndexRoute
+  GameLocalePvpLeaderboardsIndexRoute: typeof GameLocalePvpLeaderboardsIndexRoute
+  GameLocalePvpStatsIndexRoute: typeof GameLocalePvpStatsIndexRoute
+  GameLocaleCharacterRegionRealmNameRoute: typeof GameLocaleCharacterRegionRealmNameRoute
+  GameLocaleGuildRegionRealmNameRoute: typeof GameLocaleGuildRegionRealmNameRoute
+  GameLocalePveMythicPlusArchivesCharactersRoute: typeof GameLocalePveMythicPlusArchivesCharactersRoute
+  GameLocalePveMythicPlusArchivesRunsRoute: typeof GameLocalePveMythicPlusArchivesRunsRoute
+  GameLocalePveRaidsRaidHallOfFameRoute: typeof GameLocalePveRaidsRaidHallOfFameRoute
+  GameLocalePveStatsMythicPlusCompositionsRoute: typeof GameLocalePveStatsMythicPlusCompositionsRoute
+  GameLocalePveStatsMythicPlusCutoffsRoute: typeof GameLocalePveStatsMythicPlusCutoffsRoute
+  GameLocalePveStatsMythicPlusRepresentationRoute: typeof GameLocalePveStatsMythicPlusRepresentationRoute
+  GameLocalePveMythicPlusArchivesIndexRoute: typeof GameLocalePveMythicPlusArchivesIndexRoute
+  GameLocalePveCharacterRegionRealmNameRoute: typeof GameLocalePveCharacterRegionRealmNameRoute
+  GameLocalePveGuildRegionRealmNameRoute: typeof GameLocalePveGuildRegionRealmNameRoute
+  GameLocalePveMythicPlusArchivesStatsCompositionsRoute: typeof GameLocalePveMythicPlusArchivesStatsCompositionsRoute
+  GameLocalePveMythicPlusArchivesStatsCutoffsRoute: typeof GameLocalePveMythicPlusArchivesStatsCutoffsRoute
+  GameLocalePveMythicPlusArchivesStatsRepresentationRoute: typeof GameLocalePveMythicPlusArchivesStatsRepresentationRoute
+  GameLocalePveMythicPlusRolesClassRoleRoute: typeof GameLocalePveMythicPlusRolesClassRoleRoute
+  GameLocalePveMythicPlusSpecsClassSpecRoute: typeof GameLocalePveMythicPlusSpecsClassSpecRoute
+  GameLocalePveRaidsRaidBossesBossRoute: typeof GameLocalePveRaidsRaidBossesBossRoute
+  GameLocalePvpCharacterRegionRealmNameRoute: typeof GameLocalePvpCharacterRegionRealmNameRoute
+  GameLocalePveMythicPlusArchivesRolesClassRoleRoute: typeof GameLocalePveMythicPlusArchivesRolesClassRoleRoute
+  GameLocalePveMythicPlusArchivesSpecsClassSpecRoute: typeof GameLocalePveMythicPlusArchivesSpecsClassSpecRoute
 }
 
-const LocaleRouteRouteChildren: LocaleRouteRouteChildren = {
-  LocalePrivacyRoute: LocalePrivacyRoute,
-  LocaleTermsRoute: LocaleTermsRoute,
-  LocaleIndexRoute: LocaleIndexRoute,
-  LocalePveTierListRoute: LocalePveTierListRoute,
-  LocalePvpArchivesRoute: LocalePvpArchivesRoute,
-  LocalePvpFotmRoute: LocalePvpFotmRoute,
-  LocalePvpTierListRoute: LocalePvpTierListRoute,
-  LocalePveIndexRoute: LocalePveIndexRoute,
-  LocalePvpIndexRoute: LocalePvpIndexRoute,
-  LocalePveMythicPlusCharactersRoute: LocalePveMythicPlusCharactersRoute,
-  LocalePveMythicPlusRunsRoute: LocalePveMythicPlusRunsRoute,
-  LocalePvpLeaderboardsBracketRoute: LocalePvpLeaderboardsBracketRoute,
-  LocalePvpStatsCutoffsRoute: LocalePvpStatsCutoffsRoute,
-  LocalePvpStatsHeroTalentsRoute: LocalePvpStatsHeroTalentsRoute,
-  LocalePvpStatsRepresentationRoute: LocalePvpStatsRepresentationRoute,
-  LocalePveCharacterIndexRoute: LocalePveCharacterIndexRoute,
-  LocalePveGuildIndexRoute: LocalePveGuildIndexRoute,
-  LocalePveMythicPlusIndexRoute: LocalePveMythicPlusIndexRoute,
-  LocalePveStatsIndexRoute: LocalePveStatsIndexRoute,
-  LocalePvpCharacterIndexRoute: LocalePvpCharacterIndexRoute,
-  LocalePvpLeaderboardsIndexRoute: LocalePvpLeaderboardsIndexRoute,
-  LocalePvpStatsIndexRoute: LocalePvpStatsIndexRoute,
-  LocaleCharacterRegionRealmNameRoute: LocaleCharacterRegionRealmNameRoute,
-  LocaleGuildRegionRealmNameRoute: LocaleGuildRegionRealmNameRoute,
-  LocalePveMythicPlusArchivesCharactersRoute:
-    LocalePveMythicPlusArchivesCharactersRoute,
-  LocalePveMythicPlusArchivesRunsRoute: LocalePveMythicPlusArchivesRunsRoute,
-  LocalePveRaidsRaidHallOfFameRoute: LocalePveRaidsRaidHallOfFameRoute,
-  LocalePveStatsMythicPlusCompositionsRoute:
-    LocalePveStatsMythicPlusCompositionsRoute,
-  LocalePveStatsMythicPlusCutoffsRoute: LocalePveStatsMythicPlusCutoffsRoute,
-  LocalePveStatsMythicPlusRepresentationRoute:
-    LocalePveStatsMythicPlusRepresentationRoute,
-  LocalePveMythicPlusArchivesIndexRoute: LocalePveMythicPlusArchivesIndexRoute,
-  LocalePveCharacterRegionRealmNameRoute:
-    LocalePveCharacterRegionRealmNameRoute,
-  LocalePveGuildRegionRealmNameRoute: LocalePveGuildRegionRealmNameRoute,
-  LocalePveMythicPlusArchivesStatsCompositionsRoute:
-    LocalePveMythicPlusArchivesStatsCompositionsRoute,
-  LocalePveMythicPlusArchivesStatsCutoffsRoute:
-    LocalePveMythicPlusArchivesStatsCutoffsRoute,
-  LocalePveMythicPlusArchivesStatsRepresentationRoute:
-    LocalePveMythicPlusArchivesStatsRepresentationRoute,
-  LocalePveMythicPlusRolesClassRoleRoute:
-    LocalePveMythicPlusRolesClassRoleRoute,
-  LocalePveMythicPlusSpecsClassSpecRoute:
-    LocalePveMythicPlusSpecsClassSpecRoute,
-  LocalePveRaidsRaidBossesBossRoute: LocalePveRaidsRaidBossesBossRoute,
-  LocalePvpCharacterRegionRealmNameRoute:
-    LocalePvpCharacterRegionRealmNameRoute,
-  LocalePveMythicPlusArchivesRolesClassRoleRoute:
-    LocalePveMythicPlusArchivesRolesClassRoleRoute,
-  LocalePveMythicPlusArchivesSpecsClassSpecRoute:
-    LocalePveMythicPlusArchivesSpecsClassSpecRoute,
+const GameLocaleRouteRouteChildren: GameLocaleRouteRouteChildren = {
+  GameLocalePrivacyRoute: GameLocalePrivacyRoute,
+  GameLocaleTermsRoute: GameLocaleTermsRoute,
+  GameLocaleIndexRoute: GameLocaleIndexRoute,
+  GameLocalePveTierListRoute: GameLocalePveTierListRoute,
+  GameLocalePvpArchivesRoute: GameLocalePvpArchivesRoute,
+  GameLocalePvpFotmRoute: GameLocalePvpFotmRoute,
+  GameLocalePvpTierListRoute: GameLocalePvpTierListRoute,
+  GameLocalePveIndexRoute: GameLocalePveIndexRoute,
+  GameLocalePvpIndexRoute: GameLocalePvpIndexRoute,
+  GameLocalePveMythicPlusCharactersRoute:
+    GameLocalePveMythicPlusCharactersRoute,
+  GameLocalePveMythicPlusRunsRoute: GameLocalePveMythicPlusRunsRoute,
+  GameLocalePvpLeaderboardsBracketRoute: GameLocalePvpLeaderboardsBracketRoute,
+  GameLocalePvpStatsCutoffsRoute: GameLocalePvpStatsCutoffsRoute,
+  GameLocalePvpStatsHeroTalentsRoute: GameLocalePvpStatsHeroTalentsRoute,
+  GameLocalePvpStatsRepresentationRoute: GameLocalePvpStatsRepresentationRoute,
+  GameLocalePveCharacterIndexRoute: GameLocalePveCharacterIndexRoute,
+  GameLocalePveGuildIndexRoute: GameLocalePveGuildIndexRoute,
+  GameLocalePveMythicPlusIndexRoute: GameLocalePveMythicPlusIndexRoute,
+  GameLocalePveStatsIndexRoute: GameLocalePveStatsIndexRoute,
+  GameLocalePvpCharacterIndexRoute: GameLocalePvpCharacterIndexRoute,
+  GameLocalePvpLeaderboardsIndexRoute: GameLocalePvpLeaderboardsIndexRoute,
+  GameLocalePvpStatsIndexRoute: GameLocalePvpStatsIndexRoute,
+  GameLocaleCharacterRegionRealmNameRoute:
+    GameLocaleCharacterRegionRealmNameRoute,
+  GameLocaleGuildRegionRealmNameRoute: GameLocaleGuildRegionRealmNameRoute,
+  GameLocalePveMythicPlusArchivesCharactersRoute:
+    GameLocalePveMythicPlusArchivesCharactersRoute,
+  GameLocalePveMythicPlusArchivesRunsRoute:
+    GameLocalePveMythicPlusArchivesRunsRoute,
+  GameLocalePveRaidsRaidHallOfFameRoute: GameLocalePveRaidsRaidHallOfFameRoute,
+  GameLocalePveStatsMythicPlusCompositionsRoute:
+    GameLocalePveStatsMythicPlusCompositionsRoute,
+  GameLocalePveStatsMythicPlusCutoffsRoute:
+    GameLocalePveStatsMythicPlusCutoffsRoute,
+  GameLocalePveStatsMythicPlusRepresentationRoute:
+    GameLocalePveStatsMythicPlusRepresentationRoute,
+  GameLocalePveMythicPlusArchivesIndexRoute:
+    GameLocalePveMythicPlusArchivesIndexRoute,
+  GameLocalePveCharacterRegionRealmNameRoute:
+    GameLocalePveCharacterRegionRealmNameRoute,
+  GameLocalePveGuildRegionRealmNameRoute:
+    GameLocalePveGuildRegionRealmNameRoute,
+  GameLocalePveMythicPlusArchivesStatsCompositionsRoute:
+    GameLocalePveMythicPlusArchivesStatsCompositionsRoute,
+  GameLocalePveMythicPlusArchivesStatsCutoffsRoute:
+    GameLocalePveMythicPlusArchivesStatsCutoffsRoute,
+  GameLocalePveMythicPlusArchivesStatsRepresentationRoute:
+    GameLocalePveMythicPlusArchivesStatsRepresentationRoute,
+  GameLocalePveMythicPlusRolesClassRoleRoute:
+    GameLocalePveMythicPlusRolesClassRoleRoute,
+  GameLocalePveMythicPlusSpecsClassSpecRoute:
+    GameLocalePveMythicPlusSpecsClassSpecRoute,
+  GameLocalePveRaidsRaidBossesBossRoute: GameLocalePveRaidsRaidBossesBossRoute,
+  GameLocalePvpCharacterRegionRealmNameRoute:
+    GameLocalePvpCharacterRegionRealmNameRoute,
+  GameLocalePveMythicPlusArchivesRolesClassRoleRoute:
+    GameLocalePveMythicPlusArchivesRolesClassRoleRoute,
+  GameLocalePveMythicPlusArchivesSpecsClassSpecRoute:
+    GameLocalePveMythicPlusArchivesSpecsClassSpecRoute,
 }
 
-const LocaleRouteRouteWithChildren = LocaleRouteRoute._addFileChildren(
-  LocaleRouteRouteChildren,
+const GameLocaleRouteRouteWithChildren = GameLocaleRouteRoute._addFileChildren(
+  GameLocaleRouteRouteChildren,
 )
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LocaleRouteRoute: LocaleRouteRouteWithChildren,
+  GameLocaleRouteRoute: GameLocaleRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

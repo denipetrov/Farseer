@@ -4,9 +4,9 @@ import { lazy, Suspense } from 'react';
 import { usePveCatalogue } from '@/api/pve';
 import { AppLayout } from '@/components/AppLayout';
 import { Page, PageTitle, Muted } from '@/components/Page';
-import { resolveLocaleSlug } from '@/i18n/locales';
 import { preferredLocale } from '@/i18n/preferredLocale';
 import { useI18n } from '@/i18n/useI18n';
+import { canonicalPath } from '@/lib/sitePath';
 import { useGameMode } from '@/preferences/useGameMode';
 
 export interface RouterContext {
@@ -36,19 +36,14 @@ const Devtools = import.meta.env.DEV
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   /**
-   * Every page lives under a language. A path whose first segment names none (`/pvp`,
-   * `/character/eu/x/y`, an old link) gets the preferred language put in front. Here, not in
-   * the `$locale` route: a path like `/character/eu/x/y` matches no route under `$locale`, so
-   * its checks would never run. `/` is the index route's own redirect.
+   * Every page lives under its game and language: `/retail/en/pvp/…`. Any other address (an
+   * old `/en/pvp/…` link, `/pvp`, `/forever/…` while Forever is off, `/retail/de_DE/…`) is
+   * redirected to its canonical form (`canonicalPath`). Here, not in a child route: a path
+   * that matches no route would never reach a child's checks. `/` is the index route's own.
    */
   beforeLoad: ({ location }) => {
-    const first = location.pathname.split('/')[1];
-    if (first && !resolveLocaleSlug(first)) {
-      throw redirect({
-        href: `/${preferredLocale()}${location.pathname}${location.searchStr}`,
-        replace: true,
-      });
-    }
+    const path = canonicalPath(location.pathname, preferredLocale());
+    if (path) throw redirect({ href: `${path}${location.searchStr}`, replace: true });
   },
   component: RootLayout,
   notFoundComponent: NotFound,

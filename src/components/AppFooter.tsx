@@ -6,6 +6,7 @@ import logoUrl from '@/assets/images/logo/rankwarden-logo.svg';
 import { useI18n } from '@/i18n/useI18n';
 import { useGameMode } from '@/preferences/useGameMode';
 import styles from './AppFooter.module.css';
+import { useSite } from '@/lib/site';
 
 /**
  * The site footer: the logo (home of the current game mode) with the slogan below it, and
@@ -22,24 +23,25 @@ import styles from './AppFooter.module.css';
  * content between header and footer grows (`__root.tsx`).
  */
 export function AppFooter() {
-  const { locale, t } = useI18n();
+  const { t } = useI18n();
+  const site = useSite();
   const [mode] = useGameMode();
 
   return (
     <footer className={styles.footer}>
       <div className={styles.inner}>
         <div className={styles.brand}>
-          <Link to={`/$locale/${mode}`} params={{ locale: locale.slug }} aria-label={t('app.home')}>
+          <Link to={`/$game/$locale/${mode}`} params={site} aria-label={t('app.home')}>
             <img src={logoUrl} alt="Rankwarden" />
           </Link>
           <p className={styles.slogan}>{t('footer.slogan')}</p>
         </div>
 
         <nav className={styles.legal} aria-label={t('footer.legal')}>
-          <Link to="/$locale/privacy" params={{ locale: locale.slug }}>
+          <Link to="/$game/$locale/privacy" params={site}>
             {t('legal.privacy')}
           </Link>
-          <Link to="/$locale/terms" params={{ locale: locale.slug }}>
+          <Link to="/$game/$locale/terms" params={site}>
             {t('legal.terms')}
           </Link>
         </nav>

@@ -15,6 +15,7 @@ import { useI18n } from '@/i18n/useI18n';
 import { useGameMode } from '@/preferences/useGameMode';
 import type { GameMode } from '@/lib/gameMode';
 import styles from './SearchBar.module.css';
+import { useSite } from '@/lib/site';
 
 /** Each list is up to 100 long; the first few are what a visitor reads. */
 const MAX_SHOWN = 20;
@@ -33,7 +34,8 @@ type Item =
  */
 export function SearchBar() {
   const [mode] = useGameMode();
-  const { locale, t } = useI18n();
+  const { t } = useI18n();
+  const site = useSite();
   const navigate = useNavigate();
   const listId = useId();
 
@@ -81,7 +83,7 @@ export function SearchBar() {
     const { region, realmSlug } = item.data;
     if (item.kind === 'character') {
       const params = {
-        locale: locale.slug,
+        ...site,
         region,
         realm: realmSlug,
         name: item.data.characterName,
@@ -89,13 +91,13 @@ export function SearchBar() {
       // Each mode has its own character page
       void navigate(
         mode === 'pvp'
-          ? { to: '/$locale/pvp/character/$region/$realm/$name', params }
-          : { to: '/$locale/pve/character/$region/$realm/$name', params },
+          ? { to: '/$game/$locale/pvp/character/$region/$realm/$name', params }
+          : { to: '/$game/$locale/pve/character/$region/$realm/$name', params },
       );
     } else {
       void navigate({
-        to: '/$locale/pve/guild/$region/$realm/$name',
-        params: { locale: locale.slug, region, realm: realmSlug, name: item.data.name },
+        to: '/$game/$locale/pve/guild/$region/$realm/$name',
+        params: { ...site, region, realm: realmSlug, name: item.data.name },
       });
     }
   };

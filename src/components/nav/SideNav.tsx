@@ -11,6 +11,7 @@ import { UnknownIcon } from '@/components/UnknownIcon';
 import { useI18n } from '@/i18n/useI18n';
 import { iconUrl } from '@/lib/assets';
 import { cx } from '@/lib/cx';
+import { useSite } from '@/lib/site';
 import { usePreferences } from '@/preferences/PreferencesProvider';
 import { useGameMode } from '@/preferences/useGameMode';
 import {
@@ -36,19 +37,20 @@ export function SideNav() {
   const i18n = useI18n();
   const [mode] = useGameMode();
   const { preferences } = usePreferences();
+  const site = useSite();
   // The catalogue is fetched by the root layout on the PvE side; this reads the same cache
   const raids = useQuery({ ...raidsQuery(), enabled: mode === 'pve' });
 
   const items =
     mode === 'pve'
       ? pveNav({
-          locale: i18n.locale.slug,
+          site,
           faction: preferences.faction,
           name: i18n.name,
           names: i18n.names,
           raids: { status: raids.status, data: raids.data?.raids },
         })
-      : pvpNav(i18n.locale.slug);
+      : pvpNav(site);
 
   return (
     <nav className={styles.nav} aria-label={i18n.t('nav.aria')}>

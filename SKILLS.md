@@ -153,27 +153,46 @@ Through CORS, the browser can read the `retry-after` and `www-authenticate` head
 ## 5. Routing (`src/routes/`)
 
 - File-based. A `$param` segment in a file name is a path parameter, and dots separate
-  segments (`$locale/character/$region.$realm.$name.tsx` →
-  `/$locale/character/$region/$realm/$name`).
-- **Every page lives under its language** (`src/routes/$locale/`): `/de/pvp`,
-  `/en/character/eu/draenor/name`. See "Languages" below. Link with the param:
-  `<Link to="/$locale/leaderboards" params={{ locale: locale.slug }}>`.
+  segments (`$game/$locale/pvp/character/$region.$realm.$name.tsx` →
+  `/$game/$locale/pvp/character/$region/$realm/$name`).
+- **Every page lives under its game, then its language** (`src/routes/$game/$locale/`, the
+  user's choice of 2026-11-26): `/retail/en/pvp`, `/retail/de/pve/character/eu/draenor/x`.
+  - **Games** (`src/lib/games.ts`): `retail` and `forever`, the two WoW games. Only Retail
+    has data, so Forever is defined with `enabled: false`: its addresses redirect to the same
+    page on Retail. To open it: set `enabled: true`, add the game switch to the header (a
+    toggle like PvP/PvE), and pass the game to Soulseeker once its API takes one. The legal
+    pages are per game too (`/retail/en/privacy`), with the same text: a game-independent
+    `/en/privacy` would clash with `/<game>` as the first segment.
+  - **Linking:** `useSite()` (`src/lib/site.ts`) gives `{ game, locale }` for the current
+    page. Pass it as the params: `<Link to="/$game/$locale/pvp" params={site}>`, or
+    `params: { ...site, bracket }`. The menu builders take it (`pvpNav(site)`,
+    `pveNav({ site, … })`).
+  - **Canonical addresses** (`canonicalPath` in `src/lib/sitePath.ts`, run by the root
+    route): `/en/pvp/…` (old links) → `/retail/en/pvp/…`; `/pvp/…` →
+    `/retail/<preferred language>/pvp/…`; `/forever/…` while off → `/retail/…`;
+    `/retail/de_DE/…` → `/retail/de/…`; `/retail` → `/retail/<preferred language>`. Unit
+    tested in `sitePath.test.ts`.
+  - Code that builds paths by hand keeps the game: the PvP/PvE switch, the language switch
+    (swaps the second segment) and links inside legal documents (`/privacy` →
+    `/<game>/<lang>/privacy`). `gameModeOfPath` skips the game and language.
+  - See "Languages" below.
 - **URL search params are the data filters.** Every board keeps its filters in the URL,
   so a page can be shared and the back button works.
 - `validateSearch` with a plain function: TanStack treats its output type as the input
   type for `<Link search>`. So **make every search field optional** and apply defaults
-  when reading (see `$locale/pvp/leaderboards/$bracket.tsx`). Drop invalid values to `undefined` instead of throwing.
+  when reading (see `$game/$locale/pvp/leaderboards/$bracket.tsx`). Drop invalid values to `undefined` instead of throwing.
 - The router context carries `queryClient`. A loader can prime data with
   `context.queryClient.ensureQueryData(someQuery(...))`.
 - Route files are code-split by the plugin (`autoCodeSplitting`), and the
   `react-refresh/only-export-components` lint rule is off for `src/routes/**`.
 - The root route has a `notFoundComponent` and an `errorComponent`.
 - **Game modes.** The site has two halves, PvP and PvE (`src/lib/gameMode.ts`), each with
-  its own home: `/<lang>/pvp` and `/<lang>/pve`. Put each mode's pages under its prefix.
-  - `/` and `/<lang>` have no page: they redirect to the remembered mode (preference
-    `gameMode`, default `pvp`) in the preferred language.
+  its own home: `/<game>/<lang>/pvp` and `/<game>/<lang>/pve`. Put each mode's pages under
+  its prefix.
+  - `/` and `/<game>/<lang>` have no page: they redirect to the remembered mode (preference
+    `gameMode`, default `pvp`), `/` in the default game (Retail) and the preferred language.
   - `useGameMode()` (`src/preferences/useGameMode.ts`) gives the current mode and a
-    switch. Under `/<lang>/pvp/…` or `/<lang>/pve/…` the URL decides and is remembered, so
+    switch. Under `/<game>/<lang>/pvp/…` or `…/pve/…` the URL decides and is remembered, so
     a shared link sets the mode; elsewhere (character, guild, leaderboards) the remembered
     mode applies. Switching remembers the mode and opens its home in the current language.
     The logo links to the current mode's home.
@@ -313,7 +332,7 @@ below).
   Warcraft is a trademark of Blizzard Entertainment.", the year from the clock) and
   `footer.notAffiliated` ("Not affiliated with Blizzard Entertainment."). Names stay in
   English in every language.
-- **Legal pages**: `/<lang>/privacy` and `/<lang>/terms` (`LegalPage`, data in
+- **Legal pages**: `/<game>/<lang>/privacy` and `/<game>/<lang>/terms` (`LegalPage`, data in
   `src/legal/<slug>/{privacy,terms}.json`, typed by `src/legal/types.ts`). English is the
   authoritative version; a language without its own files shows the English text with a
   translated note (`legal.englishOnly`). A translation must keep English's section ids and
@@ -433,12 +452,12 @@ below).
   `SideNav.module.css` sets each depth's indent, row height and icon gap.
 - **Styling a router Link:** give the plain `<Link>` a `className`, or style its `<a>` from a
   wrapper (`.rowFrame > a`) when the link's props are spread from `linkOptions`. The logo
-  links use the typed pattern ``to={`/$locale/${mode}`} params={{ locale }}``: a built
+  links use the typed pattern ``to={`/$game/$locale/${mode}`} params={site}``: a built
   path like `/en/pvp` doesn't type-check.
 - **`--header-height`:** `AppHeader` publishes its height as this CSS variable (a
   ResizeObserver), for anything that must sit right below the sticky header.
 
-**PvP pages** (`src/routes/$locale/pvp/`), all placeholders (`ComingSoonPage`: title, icon,
+**PvP pages** (`src/routes/$game/$locale/pvp/`), all placeholders (`ComingSoonPage`: title, icon,
 "being built") until their content is built:
 
 - `leaderboards/$bracket` (`2v2`, `3v3`, `shuffle`, `blitz`, `rbg`; anything else is not
@@ -454,10 +473,10 @@ below).
   It shows "Finding the top Solo Shuffle player…" while that loads, and a hint to use the
   search if it fails. `src/api/pvp.ts` holds these queries and the bracket list.
 
-**PvE pages** (`src/routes/$locale/pve/`), placeholders like PvP's:
+**PvE pages** (`src/routes/$game/$locale/pve/`), placeholders like PvP's:
 
 - `character/$region/$realm/$name` and `guild/$region/$realm/$name` (moved here from
-  `/<lang>/character/…` and `/<lang>/guild/…`, which now redirect). Opening one saves
+  `/<game>/<lang>/character/…` and `/<game>/<lang>/guild/…`, which now redirect). Opening one saves
   `lastPveCharacter` / `lastPveGuild`. PvE search results open them.
 - `character/` redirects to `lastPveCharacter`, else the World Mythic+ #1
   (`mplusLeaderboardQuery({ pageSize: 1 })`). `guild/` redirects to `lastPveGuild`, else the
@@ -930,8 +949,8 @@ cluster has been done.
   and the character and guild pages render their titles or parameters but don't fetch data
   yet.
 - **Routing decision (2026-11-25):** each mode's pages live under its prefix:
-  `/<lang>/pvp/character/…`, `/<lang>/pve/character/…`, `/<lang>/pve/guild/…`. The old
-  `/<lang>/character/…` and `/<lang>/guild/…` redirect to the PvE ones.
+  `/<game>/<lang>/pvp/character/…`, `/<game>/<lang>/pve/character/…`, `/<game>/<lang>/pve/guild/…`. The old
+  `/<game>/<lang>/character/…` and `/<game>/<lang>/guild/…` redirect to the PvE ones.
 - **Not built yet:** the menu icons listed under "The PvE menu", most of `src/api/pvp.ts` (only seasons and the
   leaderboard so far), the rest of `pve.ts` (only the catalogue so far), Turnstile support on the
   token request (Soulseeker has it off), and logout or revocation (`POST /oidc/token/revocation`).
@@ -942,17 +961,18 @@ cluster has been done.
 
 Newest first.
 
-| Date       | Decision                                                                           | Why                                                                                                                                                                |
-| ---------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 2026-11-25 | Language first in the URL, as a short slug (`/de/pvp`); own JSON text per language | The user's choice: `en es pt fr de ru ko cn`. Game names come from Soulseeker's `/i18n/names` (Blizzard's translations).                                           |
-| 2026-11-24 | PvP and PvE homes at `/pvp` and `/pve`; `/` redirects to the remembered mode       | The user's header design: the mode switch decides the home, remembered in localStorage, PvP by default.                                                            |
-| 2026-11-20 | Race portraits round, framed per faction; two-faction races per-faction files      | The user asked for faction borders (silver+red Horde, gold+blue Alliance). One frame per file, so Pandaren, Dracthyr, Earthen and Haranir need a file per faction. |
-| 2026-11-19 | Specs, roles and sub-roles from spirit-link's `SPECIALIZATIONS`                    | One list shared with Soulseeker and Rankwarden, so role filters and labels can't drift from the API's.                                                             |
-| 2026-11-18 | Faction colours from the emblems; gold/silver trim for frames                      | The user asked for the logo colours. Alliance frames in gold and Horde in silver, as on the emblems.                                                               |
-| 2026-11-17 | Icon families in `modern`/`classic` styles, chosen by the user                     | A general design concept, so one switch changes every icon family. A missing file falls back to the other style.                                                   |
-| 2026-11-17 | Vite alias `@` → `/src` (root-relative)                                            | An absolute alias path loaded modules twice on Windows (§9)                                                                                                        |
-| 2026-11-17 | Tokens in localStorage, with Web Locks across tabs                                 | Survives reloads under the grant limit. Rotating refresh tokens must never be used twice.                                                                          |
-| 2026-11-17 | Runtime `/config.js` instead of build-time env                                     | One image for every environment                                                                                                                                    |
-| 2026-11-17 | Static nginx image + Helm, mirroring Soulseeker's CI/CD                            | Same cluster and operating model as the backend                                                                                                                    |
-| 2026-11-17 | TypeScript 6, not 7                                                                | typescript-eslint doesn't support TS 7                                                                                                                             |
-| 2026-11-17 | Farseer = rankwarden.gg                                                            | Soulseeker's CORS allows only that origin in production, and `localhost:5173` locally                                                                              |
+| Date       | Decision                                                                              | Why                                                                                                                                                                       |
+| ---------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-25 | Language first in the URL, as a short slug (`/de/pvp`); own JSON text per language    | The user's choice: `en es pt fr de ru ko cn`. Game names come from Soulseeker's `/i18n/names` (Blizzard's translations).                                                  |
+| 2026-11-26 | Game first in the URL, then the language: `/retail/en/pvp/…`; Forever defined but off | The user's choice, to prepare for Forever data and a game toggle. Old `/en/…` links redirect (`canonicalPath`). Legal pages are per game to avoid a clash with `/<game>`. |
+| 2026-11-24 | PvP and PvE homes at `/pvp` and `/pve`; `/` redirects to the remembered mode          | The user's header design: the mode switch decides the home, remembered in localStorage, PvP by default.                                                                   |
+| 2026-11-20 | Race portraits round, framed per faction; two-faction races per-faction files         | The user asked for faction borders (silver+red Horde, gold+blue Alliance). One frame per file, so Pandaren, Dracthyr, Earthen and Haranir need a file per faction.        |
+| 2026-11-19 | Specs, roles and sub-roles from spirit-link's `SPECIALIZATIONS`                       | One list shared with Soulseeker and Rankwarden, so role filters and labels can't drift from the API's.                                                                    |
+| 2026-11-18 | Faction colours from the emblems; gold/silver trim for frames                         | The user asked for the logo colours. Alliance frames in gold and Horde in silver, as on the emblems.                                                                      |
+| 2026-11-17 | Icon families in `modern`/`classic` styles, chosen by the user                        | A general design concept, so one switch changes every icon family. A missing file falls back to the other style.                                                          |
+| 2026-11-17 | Vite alias `@` → `/src` (root-relative)                                               | An absolute alias path loaded modules twice on Windows (§9)                                                                                                               |
+| 2026-11-17 | Tokens in localStorage, with Web Locks across tabs                                    | Survives reloads under the grant limit. Rotating refresh tokens must never be used twice.                                                                                 |
+| 2026-11-17 | Runtime `/config.js` instead of build-time env                                        | One image for every environment                                                                                                                                           |
+| 2026-11-17 | Static nginx image + Helm, mirroring Soulseeker's CI/CD                               | Same cluster and operating model as the backend                                                                                                                           |
+| 2026-11-17 | TypeScript 6, not 7                                                                   | typescript-eslint doesn't support TS 7                                                                                                                                    |
+| 2026-11-17 | Farseer = rankwarden.gg                                                               | Soulseeker's CORS allows only that origin in production, and `localhost:5173` locally                                                                                     |

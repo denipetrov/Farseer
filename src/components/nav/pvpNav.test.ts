@@ -4,7 +4,7 @@ import { isNavGroup, type NavGroup, type NavLink } from './navTypes';
 import { pvpNav } from './pvpNav';
 
 describe('PvP menu', () => {
-  const items = pvpNav('en');
+  const items = pvpNav({ game: 'retail', locale: 'en' });
   // PvP is two levels deep: links, and sections of links
   const all = items.flatMap((item): (NavLink | NavGroup)[] =>
     isNavGroup(item) ? [item, ...(item.children as NavLink[])] : [item as NavLink],

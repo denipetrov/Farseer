@@ -24,7 +24,7 @@ const RAIDS = [
 
 const build = (raids: Parameters<typeof pveNav>[0]['raids']) =>
   pveNav({
-    locale: 'en',
+    site: { game: 'retail', locale: 'en' },
     faction: 'alliance',
     name: (_kind, _key, fallback) => fallback,
     names: undefined,

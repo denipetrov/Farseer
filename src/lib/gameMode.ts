@@ -3,6 +3,7 @@
  * Soulseeker's search takes the same values (`/search/suggestions?type=pvp|pve`).
  */
 import { resolveLocaleSlug } from '@/i18n/locales';
+import { isGameSlug } from './games';
 
 export const GAME_MODES = ['pvp', 'pve'] as const;
 export type GameMode = (typeof GAME_MODES)[number];
@@ -14,11 +15,13 @@ export const isGameMode = (v: unknown): v is GameMode =>
   typeof v === 'string' && (GAME_MODES as readonly string[]).includes(v);
 
 /**
- * The mode a path belongs to, after its language (`/de/pve/...` → `pve`; `/pve` → `pve`),
- * or null for pages outside both (`/de/privacy`).
+ * The mode a path belongs to, after its game and language (`/retail/de/pve/...` → `pve`), or
+ * null for pages outside both (`/retail/de/privacy`). Older shapes still read, for links not
+ * yet redirected: `/de/pve`, `/pve`.
  */
 export function gameModeOfPath(pathname: string): GameMode | null {
-  const [, first, second] = pathname.split('/');
-  const segment = resolveLocaleSlug(first) ? second : first;
-  return isGameMode(segment) ? segment : null;
+  const segments = pathname.split('/').filter(Boolean);
+  if (isGameSlug(segments[0])) segments.shift();
+  if (resolveLocaleSlug(segments[0])) segments.shift();
+  return isGameMode(segments[0]) ? segments[0] : null;
 }

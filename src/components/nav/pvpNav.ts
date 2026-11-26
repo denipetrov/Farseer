@@ -1,6 +1,6 @@
 import { linkOptions } from '@tanstack/react-router';
+import type { SiteParams } from '@/lib/site';
 import { PVP_BRACKETS } from '@/api/pvp';
-import type { LocaleSlug } from '@/i18n/locales';
 import type { NavItem } from './navTypes';
 
 /**
@@ -8,20 +8,20 @@ import type { NavItem } from './navTypes';
  * Home, Character, Leaderboards (one page per bracket), Stats (Spec Representation, Hero
  * Talents, Cutoffs), FOTM, Tier List, Archives.
  */
-export function pvpNav(locale: LocaleSlug): NavItem[] {
+export function pvpNav(site: SiteParams): NavItem[] {
   return [
     {
       id: 'home',
       label: 'nav.home',
       icon: 'nav/home',
-      link: linkOptions({ to: '/$locale/pvp', params: { locale } }),
+      link: linkOptions({ to: '/$game/$locale/pvp', params: site }),
       exact: true,
     },
     {
       id: 'character',
       label: 'nav.character',
       icon: 'nav/character',
-      link: linkOptions({ to: '/$locale/pvp/character', params: { locale } }),
+      link: linkOptions({ to: '/$game/$locale/pvp/character', params: site }),
     },
     {
       id: 'leaderboards',
@@ -32,8 +32,8 @@ export function pvpNav(locale: LocaleSlug): NavItem[] {
         label: `bracket.${bracket}` as const,
         icon: `pvp/brackets/svg/${bracket}`,
         link: linkOptions({
-          to: '/$locale/pvp/leaderboards/$bracket',
-          params: { locale, bracket },
+          to: '/$game/$locale/pvp/leaderboards/$bracket',
+          params: { ...site, bracket },
         }),
       })),
     },
@@ -46,19 +46,19 @@ export function pvpNav(locale: LocaleSlug): NavItem[] {
           id: 'representation',
           label: 'nav.representation',
           icon: 'nav/spec-representation',
-          link: linkOptions({ to: '/$locale/pvp/stats/representation', params: { locale } }),
+          link: linkOptions({ to: '/$game/$locale/pvp/stats/representation', params: site }),
         },
         {
           id: 'hero-talents',
           label: 'nav.heroTalents',
           icon: 'nav/talents',
-          link: linkOptions({ to: '/$locale/pvp/stats/hero-talents', params: { locale } }),
+          link: linkOptions({ to: '/$game/$locale/pvp/stats/hero-talents', params: site }),
         },
         {
           id: 'cutoffs',
           label: 'nav.cutoffs',
           icon: 'nav/cutoffs',
-          link: linkOptions({ to: '/$locale/pvp/stats/cutoffs', params: { locale } }),
+          link: linkOptions({ to: '/$game/$locale/pvp/stats/cutoffs', params: site }),
         },
       ],
     },
@@ -66,19 +66,19 @@ export function pvpNav(locale: LocaleSlug): NavItem[] {
       id: 'fotm',
       label: 'nav.fotm',
       icon: 'nav/flavour-of-the-month',
-      link: linkOptions({ to: '/$locale/pvp/fotm', params: { locale } }),
+      link: linkOptions({ to: '/$game/$locale/pvp/fotm', params: site }),
     },
     {
       id: 'tier-list',
       label: 'nav.tierList',
       icon: 'nav/tier-list',
-      link: linkOptions({ to: '/$locale/pvp/tier-list', params: { locale } }),
+      link: linkOptions({ to: '/$game/$locale/pvp/tier-list', params: site }),
     },
     {
       id: 'archives',
       label: 'nav.archives',
       icon: 'nav/archives',
-      link: linkOptions({ to: '/$locale/pvp/archives', params: { locale } }),
+      link: linkOptions({ to: '/$game/$locale/pvp/archives', params: site }),
     },
   ];
 }

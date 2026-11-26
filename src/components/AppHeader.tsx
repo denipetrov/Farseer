@@ -11,6 +11,7 @@ import { MobileMenu } from './header/MobileMenu';
 import { SideNav } from './nav/SideNav';
 import { SearchBar } from './header/SearchBar';
 import styles from './AppHeader.module.css';
+import { useSite } from '@/lib/site';
 
 /**
  * Desktop: left, the logo (home of the current game mode), the language dropdown and the
@@ -23,7 +24,8 @@ import styles from './AppHeader.module.css';
  */
 export function AppHeader() {
   const [mode] = useGameMode();
-  const { locale, t } = useI18n();
+  const { t } = useI18n();
+  const site = useSite();
   const ref = useRef<HTMLElement>(null);
 
   // Publish the header's height as --header-height: the sticky sidebar sits right below it
@@ -54,8 +56,8 @@ export function AppHeader() {
           {/* A plain Link keeps the router's types; the class styles the <a> it renders */}
           <Link
             className={styles.brand}
-            to={`/$locale/${mode}`}
-            params={{ locale: locale.slug }}
+            to={`/$game/$locale/${mode}`}
+            params={site}
             aria-label={t('app.home')}
           >
             <img src={logoUrl} alt="Rankwarden" />

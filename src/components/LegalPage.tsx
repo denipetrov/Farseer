@@ -5,6 +5,7 @@ import { localeBySlug } from '@/i18n/locales';
 import { useI18n } from '@/i18n/useI18n';
 import type { LoadedLegalDocument } from '@/legal/load';
 import type { LegalBlock } from '@/legal/types';
+import { useSite } from '@/lib/site';
 import styles from './LegalPage.module.css';
 
 interface LegalPageProps {
@@ -118,11 +119,12 @@ function Inline({ text }: { text: string }) {
 }
 
 function DocLink({ href, label }: { href: string; label: string }) {
-  const { locale } = useI18n();
+  const { game, locale } = useSite();
   const navigate = useNavigate();
 
+  // A site page (`/privacy`): in this page's game and language
   if (href.startsWith('/')) {
-    const local = `/${locale.slug}${href}`;
+    const local = `/${game}/${locale}${href}`;
     const onClick = (e: MouseEvent) => {
       if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       e.preventDefault();

@@ -1,8 +1,8 @@
 import { linkOptions } from '@tanstack/react-router';
+import type { SiteParams } from '@/lib/site';
 import type { GameNamesResponse } from '@/api/gameNames';
 import { bossIconUrl, bossName, raidIconUrl, raidName, type Raid } from '@/api/pve';
 import type { GameName } from '@/i18n/useI18n';
-import type { LocaleSlug } from '@/i18n/locales';
 import type { MessageKey } from '@/i18n/messages';
 import { iconUrl } from '@/lib/assets';
 import { CLASSES } from '@/lib/wow/classes';
@@ -48,7 +48,7 @@ export const PVE_ART = {
 export const guildIcon = (faction: Faction) => `nav/guild-${faction}`;
 
 export interface PveNavInput {
-  locale: LocaleSlug;
+  site: SiteParams;
   faction: Faction;
   /** Class and spec names in the page's language */
   name: GameName;
@@ -71,21 +71,21 @@ export interface PveNavInput {
  *   Boss Rankings (every boss).
  * Page addresses did not move: Character is `/pve/character`, Stats `/pve/stats/mythic-plus/…`.
  */
-export function pveNav({ locale, faction, name, names, raids }: PveNavInput): NavItem[] {
+export function pveNav({ site, faction, name, names, raids }: PveNavInput): NavItem[] {
   return [
     {
       id: 'home',
       label: 'nav.home',
       icon: PVE_ICONS.home,
-      link: linkOptions({ to: '/$locale/pve', params: { locale } }),
+      link: linkOptions({ to: '/$game/$locale/pve', params: site }),
       exact: true,
     },
-    mythicPlusGroup(locale, name),
-    raidsGroup(locale, faction, names, raids),
+    mythicPlusGroup(site, name),
+    raidsGroup(site, faction, names, raids),
   ];
 }
 
-function mythicPlusGroup(locale: LocaleSlug, name: GameName): NavGroup {
+function mythicPlusGroup(site: SiteParams, name: GameName): NavGroup {
   return {
     id: 'mplus',
     label: 'nav.mythicPlus',
@@ -95,9 +95,9 @@ function mythicPlusGroup(locale: LocaleSlug, name: GameName): NavGroup {
         id: 'character',
         label: 'nav.character',
         icon: PVE_ICONS.character,
-        link: linkOptions({ to: '/$locale/pve/character', params: { locale } }),
+        link: linkOptions({ to: '/$game/$locale/pve/character', params: site }),
       },
-      leaderboardsGroup(locale, name, false),
+      leaderboardsGroup(site, name, false),
       {
         id: 'stats',
         label: 'nav.stats',
@@ -108,8 +108,8 @@ function mythicPlusGroup(locale: LocaleSlug, name: GameName): NavGroup {
             label: 'nav.representation',
             icon: PVE_ICONS.representation,
             link: linkOptions({
-              to: '/$locale/pve/stats/mythic-plus/representation',
-              params: { locale },
+              to: '/$game/$locale/pve/stats/mythic-plus/representation',
+              params: site,
             }),
           },
           {
@@ -117,15 +117,15 @@ function mythicPlusGroup(locale: LocaleSlug, name: GameName): NavGroup {
             label: 'nav.compositions',
             icon: PVE_ICONS.compositions,
             link: linkOptions({
-              to: '/$locale/pve/stats/mythic-plus/compositions',
-              params: { locale },
+              to: '/$game/$locale/pve/stats/mythic-plus/compositions',
+              params: site,
             }),
           },
           {
             id: 'stats-cutoffs',
             label: 'nav.cutoffs',
             icon: PVE_ICONS.cutoffs,
-            link: linkOptions({ to: '/$locale/pve/stats/mythic-plus/cutoffs', params: { locale } }),
+            link: linkOptions({ to: '/$game/$locale/pve/stats/mythic-plus/cutoffs', params: site }),
           },
         ],
       },
@@ -133,14 +133,14 @@ function mythicPlusGroup(locale: LocaleSlug, name: GameName): NavGroup {
         id: 'tier-list',
         label: 'nav.tierList',
         icon: PVE_ICONS.tierList,
-        link: linkOptions({ to: '/$locale/pve/tier-list', params: { locale } }),
+        link: linkOptions({ to: '/$game/$locale/pve/tier-list', params: site }),
       },
       {
         id: 'archives',
         label: 'nav.archives',
         icon: PVE_ICONS.archives,
         children: [
-          leaderboardsGroup(locale, name, true),
+          leaderboardsGroup(site, name, true),
           {
             id: 'archives-stats',
             label: 'nav.stats',
@@ -151,8 +151,8 @@ function mythicPlusGroup(locale: LocaleSlug, name: GameName): NavGroup {
                 label: 'nav.representation',
                 icon: PVE_ICONS.representation,
                 link: linkOptions({
-                  to: '/$locale/pve/mythic-plus/archives/stats/representation',
-                  params: { locale },
+                  to: '/$game/$locale/pve/mythic-plus/archives/stats/representation',
+                  params: site,
                 }),
               },
               {
@@ -160,8 +160,8 @@ function mythicPlusGroup(locale: LocaleSlug, name: GameName): NavGroup {
                 label: 'nav.compositions',
                 icon: PVE_ICONS.compositions,
                 link: linkOptions({
-                  to: '/$locale/pve/mythic-plus/archives/stats/compositions',
-                  params: { locale },
+                  to: '/$game/$locale/pve/mythic-plus/archives/stats/compositions',
+                  params: site,
                 }),
               },
               {
@@ -169,8 +169,8 @@ function mythicPlusGroup(locale: LocaleSlug, name: GameName): NavGroup {
                 label: 'nav.cutoffs',
                 icon: PVE_ICONS.cutoffs,
                 link: linkOptions({
-                  to: '/$locale/pve/mythic-plus/archives/stats/cutoffs',
-                  params: { locale },
+                  to: '/$game/$locale/pve/mythic-plus/archives/stats/cutoffs',
+                  params: site,
                 }),
               },
             ],
@@ -186,7 +186,7 @@ function mythicPlusGroup(locale: LocaleSlug, name: GameName): NavGroup {
  * (each class, the roles it plays inside). The same rows for the current season and, under
  * Archives, for past ones (`archive`: other pages, ids prefixed `archives-`).
  */
-function leaderboardsGroup(locale: LocaleSlug, name: GameName, archive: boolean): NavGroup {
+function leaderboardsGroup(site: SiteParams, name: GameName, archive: boolean): NavGroup {
   const id = (s: string) => (archive ? `archives-${s}` : s);
   const className = (c: (typeof CLASSES)[number]): NavLabel => ({
     text: name('classes', c.id, c.name),
@@ -201,16 +201,16 @@ function leaderboardsGroup(locale: LocaleSlug, name: GameName, archive: boolean)
         label: 'nav.mplusCharacters',
         icon: PVE_ICONS.mplusCharacters,
         link: archive
-          ? linkOptions({ to: '/$locale/pve/mythic-plus/archives/characters', params: { locale } })
-          : linkOptions({ to: '/$locale/pve/mythic-plus/characters', params: { locale } }),
+          ? linkOptions({ to: '/$game/$locale/pve/mythic-plus/archives/characters', params: site })
+          : linkOptions({ to: '/$game/$locale/pve/mythic-plus/characters', params: site }),
       },
       {
         id: id('mplus-runs'),
         label: 'nav.mplusRuns',
         icon: PVE_ICONS.mplusRuns,
         link: archive
-          ? linkOptions({ to: '/$locale/pve/mythic-plus/archives/runs', params: { locale } })
-          : linkOptions({ to: '/$locale/pve/mythic-plus/runs', params: { locale } }),
+          ? linkOptions({ to: '/$game/$locale/pve/mythic-plus/archives/runs', params: site })
+          : linkOptions({ to: '/$game/$locale/pve/mythic-plus/runs', params: site }),
       },
       {
         id: id('mplus-specs'),
@@ -233,17 +233,17 @@ function leaderboardsGroup(locale: LocaleSlug, name: GameName, archive: boolean)
               icon: { kind: 'class', cls: c.slug } as NavIcon,
             },
           ].map(({ slug, label, icon }) => {
-            const params = { locale, class: c.slug, spec: slug };
+            const params = { ...site, class: c.slug, spec: slug };
             return {
               id: id(`mplus-specs-${c.slug}-${slug}`),
               label,
               icon,
               link: archive
                 ? linkOptions({
-                    to: '/$locale/pve/mythic-plus/archives/specs/$class/$spec',
+                    to: '/$game/$locale/pve/mythic-plus/archives/specs/$class/$spec',
                     params,
                   })
-                : linkOptions({ to: '/$locale/pve/mythic-plus/specs/$class/$spec', params }),
+                : linkOptions({ to: '/$game/$locale/pve/mythic-plus/specs/$class/$spec', params }),
             };
           }),
         })),
@@ -269,17 +269,17 @@ function leaderboardsGroup(locale: LocaleSlug, name: GameName, archive: boolean)
               icon: { kind: 'art', path: 'roles/all', round: true } as NavIcon,
             },
           ].map(({ slug, label, icon }) => {
-            const params = { locale, class: c.slug, role: slug };
+            const params = { ...site, class: c.slug, role: slug };
             return {
               id: id(`mplus-roles-${c.slug}-${slug}`),
               label,
               icon,
               link: archive
                 ? linkOptions({
-                    to: '/$locale/pve/mythic-plus/archives/roles/$class/$role',
+                    to: '/$game/$locale/pve/mythic-plus/archives/roles/$class/$role',
                     params,
                   })
-                : linkOptions({ to: '/$locale/pve/mythic-plus/roles/$class/$role', params }),
+                : linkOptions({ to: '/$game/$locale/pve/mythic-plus/roles/$class/$role', params }),
             };
           }),
         })),
@@ -334,7 +334,7 @@ export const EXPANSION_ART: Record<number, string> = {
 };
 
 function raidsGroup(
-  locale: LocaleSlug,
+  site: SiteParams,
   faction: Faction,
   names: GameNamesResponse | undefined,
   raids: PveNavInput['raids'],
@@ -344,7 +344,7 @@ function raidsGroup(
     id: 'guild',
     label: 'nav.guild',
     icon: guildIcon(faction),
-    link: linkOptions({ to: '/$locale/pve/guild', params: { locale } }),
+    link: linkOptions({ to: '/$game/$locale/pve/guild', params: site }),
   };
   if (raids.status !== 'success' || !raids.data) {
     return {
@@ -387,8 +387,8 @@ function raidsGroup(
               label: 'nav.hallOfFame',
               icon: PVE_ICONS.hallOfFame,
               link: linkOptions({
-                to: '/$locale/pve/raids/$raid/hall-of-fame',
-                params: { locale, raid: raid.slug },
+                to: '/$game/$locale/pve/raids/$raid/hall-of-fame',
+                params: { ...site, raid: raid.slug },
               }),
             },
             {
@@ -400,8 +400,8 @@ function raidsGroup(
                 label: { text: bossName(names, raid, boss) },
                 icon: { kind: 'image', src: bossIconUrl(raid, boss) },
                 link: linkOptions({
-                  to: '/$locale/pve/raids/$raid/bosses/$boss',
-                  params: { locale, raid: raid.slug, boss: boss.slug },
+                  to: '/$game/$locale/pve/raids/$raid/bosses/$boss',
+                  params: { ...site, raid: raid.slug, boss: boss.slug },
                 }),
               })),
             },

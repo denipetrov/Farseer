@@ -9,6 +9,7 @@ import { AssetStyleToggle } from './AssetStyleToggle';
 import { GameModeToggle } from './GameModeToggle';
 import { LanguageSelect } from './LanguageSelect';
 import styles from './MobileMenu.module.css';
+import { useSite } from '@/lib/site';
 
 interface MobileMenuProps {
   /**
@@ -28,7 +29,8 @@ interface MobileMenuProps {
  * page behind does not scroll while it is open.
  */
 export function MobileMenu({ children }: MobileMenuProps) {
-  const { t, locale } = useI18n();
+  const { t } = useI18n();
+  const site = useSite();
   const [mode] = useGameMode();
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -119,8 +121,8 @@ export function MobileMenu({ children }: MobileMenuProps) {
                 {/* A plain Link keeps the router's types; the class styles the <a> it renders */}
                 <Link
                   className={styles.brand}
-                  to={`/$locale/${mode}`}
-                  params={{ locale: locale.slug }}
+                  to={`/$game/$locale/${mode}`}
+                  params={site}
                   aria-label={t('app.home')}
                 >
                   <img src={logoUrl} alt="Rankwarden" />

@@ -54,9 +54,10 @@ export function LanguageSelect() {
     buttonRef.current?.focus();
     if (slug === locale.slug) return;
     setPreference('locale', slug);
-    const [, first, ...rest] = pathname.split('/');
-    const path = resolveLocaleSlug(first) ? rest.join('/') : [first, ...rest].join('/');
-    void navigate({ href: `/${slug}/${path}${searchStr}${hash ? `#${hash}` : ''}` });
+    // The same page in the other language: `/<game>/<language>/…` with the language swapped
+    const [, game, current, ...rest] = pathname.split('/');
+    const path = resolveLocaleSlug(current) ? rest.join('/') : [current, ...rest].join('/');
+    void navigate({ href: `/${game}/${slug}/${path}${searchStr}${hash ? `#${hash}` : ''}` });
   };
 
   const onKeyDown = (e: KeyboardEvent) => {
