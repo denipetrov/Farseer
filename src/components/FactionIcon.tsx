@@ -1,10 +1,5 @@
 import { usePreferences } from '@/preferences/PreferencesProvider';
-import {
-  factionColorVars,
-  factionIconUrl,
-  resolveFaction,
-  type FactionInput,
-} from '@/lib/wow/factions';
+import { factionIconUrl, resolveFaction, type FactionInput } from '@/lib/wow/factions';
 import { useI18n } from '@/i18n/useI18n';
 import type { IconSize } from '@/styles/iconSizes';
 import { GameIcon } from './GameIcon';
@@ -31,7 +26,7 @@ export function FactionIcon({ faction, size }: FactionIconProps) {
       src={url}
       label={t(`faction.${resolveFaction(faction)!.slug}`)}
       size={size}
-      borderColor={factionColorVars(faction)!.trim}
+      frame={resolveFaction(faction)!.slug}
     />
   );
 }

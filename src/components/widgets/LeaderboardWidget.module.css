@@ -1,0 +1,169 @@
+.regionSelect {
+  flex: none;
+  max-width: 9rem;
+  padding: var(--space-1) var(--space-6) var(--space-1) var(--space-2);
+  border: 1px solid var(--color-trim-muted);
+  border-radius: var(--radius-md);
+  /* A small chevron, drawn in the background (the native arrow is hidden) */
+  background: var(--color-bg-sunken)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23a3a3a3' stroke-width='1.6'/%3E%3C/svg%3E")
+    no-repeat right var(--space-2) center / 10px 6px;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  appearance: none;
+  cursor: pointer;
+}
+
+.regionSelect:hover {
+  color: var(--color-text-highlight);
+}
+
+.regionSelect:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+/*
+ * Fixed layout (column widths below): the place, rating, win % and faction keep their
+ * widths and the player column takes the rest, so a long name is shortened (…) instead of
+ * pushing the numbers out of the frame. The widths sit on <col>s: the header row is screen
+ * reader only, so a fixed layout would otherwise split the columns evenly.
+ */
+.table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+  transition: opacity var(--transition-fast);
+}
+
+/* The previous region's rows while the next one loads */
+.table[data-stale] {
+  opacity: 0.55;
+}
+
+.colPlace {
+  width: 2.5rem;
+}
+
+.colRating {
+  width: 4.25rem;
+}
+
+.colWinRate {
+  width: 3.75rem;
+}
+
+.colFaction {
+  width: 3rem;
+}
+
+/* The line under a character is in its faction's trim (data-faction-line, gameColors.css) */
+.row {
+  height: 52px;
+  border-bottom: 1px solid var(--color-border-muted);
+}
+
+.row:last-child {
+  border-bottom: 0;
+}
+
+.row > td {
+  padding: 0 6px;
+  vertical-align: middle;
+}
+
+.row > td:first-child {
+  padding-left: var(--space-4);
+}
+
+.row > td:last-child {
+  padding-right: var(--space-4);
+}
+
+.place {
+  color: var(--color-text-subtle);
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.icons {
+  display: flex;
+  flex: none;
+  gap: 2px;
+}
+
+/* In the class colour when known (data-class-color, gameColors.css), else the highlight */
+.name,
+.nameLink > a {
+  overflow: hidden;
+  color: var(--color-text-highlight);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nameLink {
+  display: flex;
+  min-width: 0;
+}
+
+.nameLink > a:hover {
+  text-decoration: underline;
+}
+
+/* In its rank's colour (data-rank, gameColors.css) */
+.rating {
+  font-weight: 700;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.rate {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.faction {
+  text-align: right;
+}
+
+.faction > * {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.skeleton {
+  display: block;
+  height: 14px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-raised);
+}
+
+.message {
+  margin: 0;
+  padding: var(--space-8) var(--space-4);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.fullLink > a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-accent-strong);
+  font-weight: 600;
+}
+
+.fullLink > a:hover {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
+}

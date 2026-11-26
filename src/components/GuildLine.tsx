@@ -7,7 +7,7 @@ import { usePreferences } from '@/preferences/PreferencesProvider';
 import type { IconSize } from '@/styles/iconSizes';
 import { FactionIcon } from './FactionIcon';
 import { GameIcon } from './GameIcon';
-import { End, First, Icons, Name, Row, Second, Text } from './lineParts';
+import styles from './lineParts.module.css';
 import { UnknownIcon } from './UnknownIcon';
 
 export interface GuildLineProps {
@@ -43,8 +43,8 @@ export function GuildLine({ name, realm, region, logo, faction, size = 'sm' }: G
   const showLogo = !!logo && failed !== logo;
 
   return (
-    <Row>
-      <Icons>
+    <span className={styles.row}>
+      <span className={styles.icons}>
         {showLogo ? (
           <GameIcon
             src={logo}
@@ -55,24 +55,24 @@ export function GuildLine({ name, realm, region, logo, faction, size = 'sm' }: G
         ) : (
           <UnknownIcon label={t('unknown.guildLogo')} size={size} />
         )}
-      </Icons>
-      <Text>
-        <First>
-          <Name>{name}</Name>
-        </First>
-        <Second>
+      </span>
+      <span className={styles.text}>
+        <span className={styles.first}>
+          <span className={styles.name}>{name}</span>
+        </span>
+        <span className={styles.second}>
           {realmLabel(realm)} · {regionLabel(t, region)}
-        </Second>
-      </Text>
+        </span>
+      </span>
       {faction !== undefined && (
-        <End>
+        <span className={styles.end}>
           {factionIconUrl(faction, { style }) ? (
             <FactionIcon faction={faction} size={size} />
           ) : (
             <UnknownIcon label={t('unknown.faction')} size={size} />
           )}
-        </End>
+        </span>
       )}
-    </Row>
+    </span>
   );
 }

@@ -1,7 +1,7 @@
-import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { sessionQuery } from '@/api/session';
 import { useI18n } from '@/i18n/useI18n';
+import styles from './ApiStatus.module.css';
 
 /** Shows whether we hold a working Soulseeker session. */
 export function ApiStatus() {
@@ -16,31 +16,9 @@ export function ApiStatus() {
       : t('api.connected', { who: data?.anonymous ? t('api.anonymous') : (data?.subject ?? '') });
 
   return (
-    <Status $state={state} role="status">
-      <Dot />
+    <p className={styles.status} data-state={state} role="status">
+      <span className={styles.dot} />
       {label}
-    </Status>
+    </p>
   );
 }
-
-const Status = styled.p<{ $state: 'pending' | 'ok' | 'error' }>`
-  --status-color: ${(p) =>
-    p.$state === 'ok'
-      ? 'var(--color-success)'
-      : p.$state === 'error'
-        ? 'var(--color-danger)'
-        : 'var(--color-text-subtle)'};
-
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
-`;
-
-const Dot = styled.span`
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--status-color);
-`;

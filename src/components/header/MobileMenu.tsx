@@ -1,7 +1,6 @@
 import { Link, useRouterState } from '@tanstack/react-router';
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import styled from 'styled-components';
 import logoUrl from '@/assets/images/logo/rankwarden-logo.svg';
 import { useI18n } from '@/i18n/useI18n';
 import { useGameMode } from '@/preferences/useGameMode';
@@ -9,6 +8,7 @@ import { FactionToggle } from '../FactionToggle';
 import { AssetStyleToggle } from './AssetStyleToggle';
 import { GameModeToggle } from './GameModeToggle';
 import { LanguageSelect } from './LanguageSelect';
+import styles from './MobileMenu.module.css';
 
 interface MobileMenuProps {
   /**
@@ -50,11 +50,9 @@ export function MobileMenu({ children }: MobileMenuProps) {
   useEffect(() => {
     if (!open) return;
     panelRef.current?.querySelector<HTMLElement>('[data-autofocus]')?.focus();
-    const { overflow } = document.body.style;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = overflow;
-    };
+    // The page behind doesn't scroll (global.css: body.scroll-locked)
+    document.body.classList.add('scroll-locked');
+    return () => document.body.classList.remove('scroll-locked');
   }, [open]);
 
   // Escape and the Tab trap listen on the document, so they work wherever focus is
@@ -90,8 +88,9 @@ export function MobileMenu({ children }: MobileMenuProps) {
 
   return (
     <>
-      <MenuButton
+      <button
         ref={buttonRef}
+        className={styles.menuButton}
         type="button"
         aria-label={t('menu.open')}
         aria-haspopup="dialog"
@@ -102,225 +101,68 @@ export function MobileMenu({ children }: MobileMenuProps) {
           setOpen(true);
         }}
       >
-        <Bars aria-hidden />
-      </MenuButton>
+        <span className={styles.bars} aria-hidden />
+      </button>
 
       {open &&
         createPortal(
-          <Overlay>
-            <Backdrop aria-hidden onClick={close} />
-            <Panel ref={panelRef} role="dialog" aria-modal="true" aria-labelledby={titleId}>
-              <Top>
-                <Brand to={`/${locale.slug}/${mode}`} aria-label={t('app.home')}>
+          <div className={styles.overlay}>
+            <div className={styles.backdrop} aria-hidden onClick={close} />
+            <div
+              ref={panelRef}
+              className={styles.panel}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={titleId}
+            >
+              <div className={styles.top}>
+                {/* A plain Link keeps the router's types; the class styles the <a> it renders */}
+                <Link
+                  className={styles.brand}
+                  to={`/$locale/${mode}`}
+                  params={{ locale: locale.slug }}
+                  aria-label={t('app.home')}
+                >
                   <img src={logoUrl} alt="Rankwarden" />
-                </Brand>
-                <CloseButton
+                </Link>
+                <button
+                  className={styles.menuButton}
                   type="button"
                   aria-label={t('menu.close')}
                   title={t('menu.close')}
                   onClick={close}
                   data-autofocus
                 >
-                  <Cross aria-hidden />
-                </CloseButton>
-              </Top>
-              <Title id={titleId}>{t('menu.title')}</Title>
+                  <span className={styles.cross} aria-hidden />
+                </button>
+              </div>
+              {/* For screen readers: the dialog's name */}
+              <h2 className="sr-only" id={titleId}>
+                {t('menu.title')}
+              </h2>
 
-              <Section>
-                <Label>{t('header.language')}</Label>
+              <section className={styles.section}>
+                <h3 className={styles.label}>{t('header.language')}</h3>
                 <LanguageSelect />
-              </Section>
-              <Section>
-                <Label>{t('header.gameMode')}</Label>
+              </section>
+              <section className={styles.section}>
+                <h3 className={styles.label}>{t('header.gameMode')}</h3>
                 <GameModeToggle />
-              </Section>
-              <Section>
-                <Label>{t('header.iconStyle')}</Label>
+              </section>
+              <section className={styles.section}>
+                <h3 className={styles.label}>{t('header.iconStyle')}</h3>
                 <AssetStyleToggle />
-              </Section>
-              <Section>
-                <Label>{t('header.faction')}</Label>
+              </section>
+              <section className={styles.section}>
+                <h3 className={styles.label}>{t('header.faction')}</h3>
                 <FactionToggle />
-              </Section>
+              </section>
 
-              {children && <NavSlot>{children}</NavSlot>}
-            </Panel>
-          </Overlay>,
+              {children && <div className={styles.navSlot}>{children}</div>}
+            </div>
+          </div>,
           document.body,
         )}
     </>
   );
 }
-
-const MenuButton = styled.button`
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border: 1px solid var(--color-trim-muted);
-  border-radius: var(--radius-md);
-  background: var(--color-bg-sunken);
-  color: var(--color-accent-strong);
-  cursor: pointer;
-  transition: border-color var(--transition-fast);
-
-  &:hover,
-  &[aria-expanded='true'] {
-    border-color: var(--color-trim);
-  }
-`;
-
-/** Three bars, drawn in the current colour */
-const Bars = styled.span`
-  position: relative;
-  width: 20px;
-  height: 2px;
-  border-radius: 1px;
-  background: currentColor;
-
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    width: 20px;
-    height: 2px;
-    border-radius: 1px;
-    background: currentColor;
-  }
-
-  &::before {
-    top: -6px;
-  }
-
-  &::after {
-    top: 6px;
-  }
-`;
-
-const Overlay = styled.div`
-  position: fixed;
-  inset: 0;
-  z-index: 30;
-`;
-
-const Backdrop = styled.div`
-  position: absolute;
-  inset: 0;
-  background: rgb(0 0 0 / 0.6);
-  animation: fade-in var(--transition-fast);
-
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-  }
-`;
-
-const Panel = styled.div`
-  position: absolute;
-  inset: 0 auto 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  width: min(22rem, 88vw);
-  padding: var(--space-3) var(--space-4) var(--space-6);
-  overflow-y: auto;
-  background: var(--color-surface);
-  border-right: 1px solid var(--color-trim-muted);
-  box-shadow:
-    inset -2px 0 0 var(--color-accent),
-    var(--shadow-md);
-  animation: slide-in 160ms ease-out;
-
-  @keyframes slide-in {
-    from {
-      transform: translateX(-100%);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-  }
-`;
-
-const Top = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-`;
-
-const Brand = styled(Link)`
-  display: flex;
-  border-radius: var(--radius-md);
-
-  img {
-    display: block;
-    height: 44px;
-    width: auto;
-  }
-`;
-
-const CloseButton = styled(MenuButton)``;
-
-/** An × drawn in the current colour */
-const Cross = styled.span`
-  position: relative;
-  width: 18px;
-  height: 18px;
-
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: 8px;
-    left: 0;
-    width: 18px;
-    height: 2px;
-    border-radius: 1px;
-    background: currentColor;
-  }
-
-  &::before {
-    transform: rotate(45deg);
-  }
-
-  &::after {
-    transform: rotate(-45deg);
-  }
-`;
-
-/** For screen readers: the dialog's name */
-const Title = styled.h2`
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-`;
-
-const Section = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-2);
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--color-border-muted);
-`;
-
-const Label = styled.h3`
-  color: var(--color-trim-strong);
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-`;
-
-const NavSlot = styled.div`
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--color-trim-muted);
-`;

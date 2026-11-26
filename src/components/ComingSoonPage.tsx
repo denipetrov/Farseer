@@ -1,7 +1,7 @@
-import styled from 'styled-components';
 import { Muted, Page, PageTitle, Panel } from '@/components/Page';
 import { NavGlyph } from '@/components/NavGlyph';
 import { useI18n } from '@/i18n/useI18n';
+import styles from './ComingSoonPage.module.css';
 
 interface ComingSoonPageProps {
   title: string;
@@ -15,38 +15,20 @@ export function ComingSoonPage({ title, subtitle, icon }: ComingSoonPageProps) {
   const { t } = useI18n();
   return (
     <Page>
-      <Heading>
+      <header className={styles.heading}>
         {icon && (
-          <Badge>
-            <NavGlyph icon={icon} size={32} />
-          </Badge>
+          <span className={styles.badge}>
+            <NavGlyph icon={icon} size="lg" />
+          </span>
         )}
         <div>
           <PageTitle>{title}</PageTitle>
           {subtitle && <Muted>{subtitle}</Muted>}
         </div>
-      </Heading>
+      </header>
       <Panel>
         <Muted>{t('page.comingSoon')}</Muted>
       </Panel>
     </Page>
   );
 }
-
-const Heading = styled.header`
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-`;
-
-const Badge = styled.span`
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: var(--icon-size-lg);
-  height: var(--icon-size-lg);
-  border: 1px solid var(--color-trim-muted);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-  color: var(--color-accent-strong);
-`;

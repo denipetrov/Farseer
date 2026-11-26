@@ -1,14 +1,16 @@
-import type { CSSProperties } from 'react';
-import styled from 'styled-components';
-import { ICON_SIZES, type IconSize } from '@/styles/iconSizes';
+import type { IconSize } from '@/styles/iconSizes';
+import type { Faction } from '@/styles/palette';
+import { ICON_SIZES } from '@/styles/iconSizes';
+import { cx } from '@/lib/cx';
+import styles from './GameIcon.module.css';
 
 interface GameIconProps {
   src: string;
   /** Accessible name; also the hover title */
   label: string;
   size?: IconSize;
-  /** Border colour, e.g. a class colour var; defaults to --color-trim-muted. Square only. */
-  borderColor?: string;
+  /** Frames a square icon in this faction's trim (Alliance gold, Horde silver) */
+  frame?: Faction;
   /**
    * `square` (default): the shared box, with background and a CSS border.
    * `round`: for art that is round and carries its own frame (classes, hero talents,
@@ -16,11 +18,10 @@ interface GameIconProps {
    */
   shape?: 'square' | 'round';
   /**
-   * How much of the file the art fills (0–1), for files with transparent padding around
-   * the art (modern class icons: a 63 px circle in an 88 px canvas). The image is scaled
-   * so the art fills the box like every other icon; the art itself is untouched.
+   * The art is padded inside its file (modern class icons: a 63 px circle in an 88 px
+   * canvas): it is scaled so it fills the box like every other icon, untouched.
    */
-  artFill?: number;
+  padded?: boolean;
   /** The image failed to load (an external URL from the data): show a fallback instead */
   onError?: () => void;
 }
@@ -34,14 +35,21 @@ export function GameIcon({
   src,
   label,
   size = 'sm',
-  borderColor,
+  frame,
   shape = 'square',
-  artFill = 1,
+  padded = false,
   onError,
 }: GameIconProps) {
   const px = ICON_SIZES[size];
   return (
-    <Img
+    <img
+      className={cx(
+        styles.icon,
+        styles[size],
+        shape === 'round' && styles.round,
+        padded && styles.padded,
+      )}
+      data-frame={frame}
       src={src}
       alt={label}
       title={label}
@@ -50,38 +58,6 @@ export function GameIcon({
       loading="lazy"
       decoding="async"
       onError={onError}
-      $round={shape === 'round'}
-      style={
-        {
-          '--game-icon-size': `var(--icon-size-${size})`,
-          ...(borderColor && { '--game-icon-border': borderColor }),
-          ...(artFill < 1 && { transform: `scale(${1 / artFill})` }),
-        } as CSSProperties
-      }
     />
   );
 }
-
-const Img = styled.img<{ $round: boolean }>`
-  --game-icon-radius: var(--radius-sm);
-
-  display: inline-block;
-  flex: none;
-  vertical-align: middle;
-  width: var(--game-icon-size);
-  height: var(--game-icon-size);
-  /* Square box for every source; non-square art is letterboxed, never cropped */
-  object-fit: contain;
-  background: var(--color-bg-sunken);
-  border-radius: var(--game-icon-radius);
-  border: 1px solid var(--game-icon-border, var(--color-trim-muted));
-
-  ${({ $round }) =>
-    $round &&
-    `
-    /* The art is round and framed already: no box, no CSS border */
-    border: none;
-    border-radius: 50%;
-    background: none;
-  `}
-`;

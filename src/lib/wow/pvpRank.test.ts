@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { iconNames } from '@/lib/assets';
+import { palette } from '@/styles/palette';
 import {
   PVP_RANKS,
   bestRankInSeason,
@@ -152,9 +153,10 @@ describe('leaderboard row rank', () => {
     expect(rankOfLadderRow({ rating: 2300, inTitleRange: true }).id).toBe('rank-one');
   });
 
-  it('gives every rank its own colour', () => {
-    const colors = PVP_RANKS.map((r) => r.color);
-    expect(new Set(colors).size).toBe(PVP_RANKS.length);
+  it('gives every rank its own colour in the palette (--color-rank-<id>)', () => {
+    const key = (id: string) => id.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase());
+    const colors = PVP_RANKS.map((r) => palette.rank[key(r.id) as keyof typeof palette.rank]);
     for (const c of colors) expect(c).toMatch(/^#[0-9a-f]{6}$/);
+    expect(new Set(colors).size).toBe(PVP_RANKS.length);
   });
 });

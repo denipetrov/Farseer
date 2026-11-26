@@ -1,0 +1,118 @@
+.wrap {
+  position: relative;
+  width: 100%;
+}
+
+.field {
+  --search-bg: var(--color-bg-sunken);
+  --search-border: var(--color-trim-muted);
+
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 44px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--search-border);
+  border-radius: var(--radius-md);
+  background: var(--search-bg);
+  color: var(--color-text-subtle);
+  cursor: text;
+  transition: border-color var(--transition-fast);
+}
+
+.field:hover {
+  --search-border: var(--color-trim);
+}
+
+.field:focus-within {
+  --search-border: var(--color-accent);
+
+  color: var(--color-accent-strong);
+  box-shadow: 0 0 0 3px var(--color-accent-subtle);
+}
+
+/*
+ * nav/search.svg is monochrome (currentColor, lighter glass via fill-opacity), so it is
+ * drawn as a mask in the field's text colour: subtle at rest, the accent when focused.
+ */
+.glyph {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  background: currentColor;
+  mask: url('../../assets/icons/nav/search.svg') center / contain no-repeat;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-highlight);
+  font: inherit;
+}
+
+/* The field draws the focus ring around the whole box */
+.input,
+.input:focus-visible {
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--color-text-subtle);
+}
+
+.input::-webkit-search-cancel-button {
+  filter: grayscale(1);
+}
+
+.popup {
+  position: absolute;
+  top: calc(100% + var(--space-1));
+  right: 0;
+  left: 0;
+  z-index: 20;
+  max-height: min(70vh, 480px);
+  padding: var(--space-1);
+  overflow-y: auto;
+  border: 1px solid var(--color-trim-muted);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-md);
+}
+
+.popup ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.groupLabel {
+  padding: var(--space-2) var(--space-2) var(--space-1);
+  color: var(--color-trim-strong);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.option[aria-selected='true'] {
+  background: var(--color-surface-hover);
+  box-shadow: inset 3px 0 0 var(--color-accent);
+}
+
+.status {
+  padding: var(--space-2);
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+}

@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useId, useMemo, useState, type KeyboardEvent } from 'react';
-import styled from 'styled-components';
 import { ApiError } from '@/api';
 import {
   searchQueryOf,
@@ -11,11 +10,11 @@ import {
 } from '@/api/search';
 import { CharacterLine } from '@/components/CharacterLine';
 import { GuildLine } from '@/components/GuildLine';
-import { iconUrl } from '@/lib/assets';
 import { useDebouncedValue } from '@/lib/useDebouncedValue';
 import { useI18n } from '@/i18n/useI18n';
 import { useGameMode } from '@/preferences/useGameMode';
 import type { GameMode } from '@/lib/gameMode';
+import styles from './SearchBar.module.css';
 
 /** Each list is up to 100 long; the first few are what a visitor reads. */
 const MAX_SHOWN = 20;
@@ -151,8 +150,9 @@ export function SearchBar() {
   const renderItem = (item: Item) => {
     const i = items.indexOf(item);
     return (
-      <Option
+      <li
         key={item.id}
+        className={styles.option}
         id={optionId(i)}
         role="option"
         aria-selected={i === active}
@@ -166,15 +166,16 @@ export function SearchBar() {
         ) : (
           <GuildRow g={item.data} />
         )}
-      </Option>
+      </li>
     );
   };
 
   return (
-    <Wrap>
-      <Field>
-        <SearchGlyph aria-hidden />
-        <Input
+    <div className={styles.wrap}>
+      <label className={styles.field}>
+        <span className={styles.glyph} aria-hidden />
+        <input
+          className={styles.input}
           type="search"
           role="combobox"
           aria-label={t(`search.placeholder.${mode}`)}
@@ -196,14 +197,14 @@ export function SearchBar() {
           onBlur={() => setOpen(false)}
           onKeyDown={onKeyDown}
         />
-      </Field>
+      </label>
 
       {expanded && (
-        <Popup>
+        <div className={styles.popup}>
           <ul id={listId} role="listbox" aria-label={t('search.suggestions')}>
             {characters.length > 0 && (
               <li role="presentation">
-                <GroupLabel>{t('search.characters')}</GroupLabel>
+                <div className={styles.groupLabel}>{t('search.characters')}</div>
                 <ul role="group" aria-label={t('search.characters')}>
                   {characters.map(renderItem)}
                 </ul>
@@ -211,18 +212,22 @@ export function SearchBar() {
             )}
             {guilds.length > 0 && (
               <li role="presentation">
-                <GroupLabel>{t('search.guilds')}</GroupLabel>
+                <div className={styles.groupLabel}>{t('search.guilds')}</div>
                 <ul role="group" aria-label={t('search.guilds')}>
                   {guilds.map(renderItem)}
                 </ul>
               </li>
             )}
           </ul>
-          {status && <Status role="status">{status}</Status>}
-          {!status && truncated && <Status>{t('search.keepTyping')}</Status>}
-        </Popup>
+          {status && (
+            <p className={styles.status} role="status">
+              {status}
+            </p>
+          )}
+          {!status && truncated && <p className={styles.status}>{t('search.keepTyping')}</p>}
+        </div>
       )}
-    </Wrap>
+    </div>
   );
 }
 
@@ -256,128 +261,3 @@ function GuildRow({ g }: { g: GuildSuggestion }) {
     />
   );
 }
-
-/**
- * The prepared `nav/search.svg`, as a CSS `url()` value. Built here, not in the CSS:
- * Vite inlines small SVGs as data: URLs containing single quotes, so the value needs
- * double quotes, and Prettier rewrites quotes inside styled-components CSS to single.
- */
-const searchGlyph = `url("${iconUrl('nav/search')}")`;
-
-const Wrap = styled.div`
-  position: relative;
-  width: 100%;
-`;
-
-const Field = styled.label`
-  --search-bg: var(--color-bg-sunken);
-  --search-border: var(--color-trim-muted);
-
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  height: 44px;
-  padding: 0 var(--space-3);
-  background: var(--search-bg);
-  border: 1px solid var(--search-border);
-  border-radius: var(--radius-md);
-  color: var(--color-text-subtle);
-  cursor: text;
-  transition: border-color var(--transition-fast);
-
-  &:hover {
-    --search-border: var(--color-trim);
-  }
-
-  &:focus-within {
-    --search-border: var(--color-accent);
-    color: var(--color-accent-strong);
-    box-shadow: 0 0 0 3px var(--color-accent-subtle);
-  }
-`;
-
-/**
- * `nav/search.svg` is monochrome (`currentColor`, lighter glass via fill-opacity), so it is
- * drawn as a mask in the field's text colour: subtle at rest, the accent when focused.
- */
-const SearchGlyph = styled.span`
-  flex: none;
-  width: 20px;
-  height: 20px;
-  background: currentColor;
-  mask: ${searchGlyph} center / contain no-repeat;
-`;
-
-const Input = styled.input`
-  flex: 1;
-  min-width: 0;
-  height: 100%;
-  border: 0;
-  background: transparent;
-  color: var(--color-text-highlight);
-  font: inherit;
-
-  /* The field draws the focus ring around the whole box */
-  &,
-  &:focus-visible {
-    outline: none;
-  }
-
-  &::placeholder {
-    color: var(--color-text-subtle);
-  }
-
-  &::-webkit-search-cancel-button {
-    filter: grayscale(1);
-  }
-`;
-
-const Popup = styled.div`
-  position: absolute;
-  top: calc(100% + var(--space-1));
-  left: 0;
-  right: 0;
-  z-index: 20;
-  max-height: min(70vh, 480px);
-  overflow-y: auto;
-  padding: var(--space-1);
-  background: var(--color-surface-raised);
-  border: 1px solid var(--color-trim-muted);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
-
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-`;
-
-const GroupLabel = styled.div`
-  padding: var(--space-2) var(--space-2) var(--space-1);
-  color: var(--color-trim-strong);
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-`;
-
-const Option = styled.li`
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-2);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-
-  &[aria-selected='true'] {
-    background: var(--color-surface-hover);
-    box-shadow: inset 3px 0 0 var(--color-accent);
-  }
-`;
-
-const Status = styled.p`
-  padding: var(--space-2);
-  color: var(--color-text-subtle);
-  font-size: var(--font-size-sm);
-`;

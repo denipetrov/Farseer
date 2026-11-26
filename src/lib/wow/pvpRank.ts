@@ -30,26 +30,22 @@ export interface PvpRank {
   icon: number;
   /** Lowest current rating in this band; null for ranks a rating alone can't give */
   minRating: number | null;
-  /**
-   * Text colour for a rating of this rank (leaderboards): the icon's main tone, lightened
-   * to read on the dark panels (contrast 5.8–11 : 1 on --color-surface).
-   */
-  color: string;
 }
 
 /** In ascending order. */
 export const PVP_RANKS: readonly PvpRank[] = [
-  // Colours from each icon (2026-11-26): bronze, silver, gold, ice, blue, purple, gold, orange
-  { id: 'unranked', name: 'Unranked', icon: 1, minRating: 0, color: '#b8927f' },
-  { id: 'combatant', name: 'Combatant', icon: 2, minRating: 1000, color: '#c3c8d0' },
-  { id: 'challenger', name: 'Challenger', icon: 3, minRating: 1400, color: '#e2b85b' },
-  { id: 'rival', name: 'Rival', icon: 4, minRating: 1800, color: '#a9cdef' },
-  { id: 'duelist', name: 'Duelist', icon: 5, minRating: 2100, color: '#4cb0f0' },
-  { id: 'elite', name: 'Elite', icon: 6, minRating: 2300, color: '#b47cf2' },
+  // Each rank's text colour is --color-rank-<id> (palette.ts `rank`, via data-rank in
+  // gameColors.css): bronze, silver, gold, ice, blue, purple, gold, orange
+  { id: 'unranked', name: 'Unranked', icon: 1, minRating: 0 },
+  { id: 'combatant', name: 'Combatant', icon: 2, minRating: 1000 },
+  { id: 'challenger', name: 'Challenger', icon: 3, minRating: 1400 },
+  { id: 'rival', name: 'Rival', icon: 4, minRating: 1800 },
+  { id: 'duelist', name: 'Duelist', icon: 5, minRating: 2100 },
+  { id: 'elite', name: 'Elite', icon: 6, minRating: 2300 },
   // Elite rating plus this season's Gladiator-type title
-  { id: 'gladiator', name: 'Gladiator', icon: 7, minRating: null, color: '#ffc53d' },
+  { id: 'gladiator', name: 'Gladiator', icon: 7, minRating: null },
   // Elite rating at or above the ladder's Rank 1 cutoff
-  { id: 'rank-one', name: 'Rank 1', icon: 8, minRating: null, color: '#ff8a24' },
+  { id: 'rank-one', name: 'Rank 1', icon: 8, minRating: null },
 ];
 
 const byId = new Map(PVP_RANKS.map((r) => [r.id, r]));

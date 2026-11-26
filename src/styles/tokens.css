@@ -1,0 +1,136 @@
+/*
+ * Design tokens as CSS custom properties: the values of src/styles/palette.ts (the single
+ * source of hex values; tokens.test.ts fails if the two drift apart).
+ * Accent and trim colours switch with <html data-faction="horde|alliance">.
+ *
+ * Borders: --color-trim* for frames and outlines (panels, icons, controls, focus rings);
+ * --color-border* stays neutral for dividers inside content (table rows).
+ * Components may define their own local vars that default to these, e.g.
+ *   --button-bg: var(--color-accent);
+ */
+:root {
+  /* Surfaces */
+  --color-bg: #0d1117;
+  --color-bg-sunken: #07090d;
+  --color-surface: #161b22;
+  --color-surface-raised: #21262d;
+  --color-surface-hover: #1c232c;
+  --color-border: #30363d;
+  --color-border-muted: #21262d;
+
+  /* Text */
+  --color-text: #e6edf3;
+  --color-text-highlight: #ffffff;
+  --color-text-muted: #8b949e;
+  --color-text-subtle: #6e7681;
+  --color-text-on-accent: #ffffff;
+
+  /* Status */
+  --color-success: #3fb950;
+  --color-warning: #d29922;
+  --color-danger: #f85149;
+  --color-info: #58a6ff;
+
+  /* Faction colours (always available, regardless of the active faction) */
+  --color-horde: #cc0000;
+  --color-alliance: #0062cc;
+  --color-horde-trim: #4d4947;
+  --color-alliance-trim: #6b4a10;
+
+  /* Item quality: --color-quality-epic, ... */
+  --color-quality-poor: #9d9d9d;
+  --color-quality-common: #ffffff;
+  --color-quality-uncommon: #1eff00;
+  --color-quality-rare: #0070dd;
+  --color-quality-epic: #a335ee;
+  --color-quality-legendary: #ff8000;
+  --color-quality-artifact: #e6cc80;
+  --color-quality-heirloom: #00ccff;
+
+  /* Class colours: --color-class-death-knight, ... */
+  --color-class-death-knight: #c41e3a;
+  --color-class-demon-hunter: #a330c9;
+  --color-class-druid: #ff7c0a;
+  --color-class-evoker: #33937f;
+  --color-class-hunter: #aad372;
+  --color-class-mage: #3fc7eb;
+  --color-class-monk: #00ff98;
+  --color-class-paladin: #f48cba;
+  --color-class-priest: #ffffff;
+  --color-class-rogue: #fff468;
+  --color-class-shaman: #0070dd;
+  --color-class-warlock: #8788ee;
+  --color-class-warrior: #c69b6d;
+
+  /* Rated PvP ranks: --color-rank-elite, --color-rank-rank-one, ... (gameColors.css) */
+  --color-rank-unranked: #b8927f;
+  --color-rank-combatant: #c3c8d0;
+  --color-rank-challenger: #e2b85b;
+  --color-rank-rival: #a9cdef;
+  --color-rank-duelist: #4cb0f0;
+  --color-rank-elite: #b47cf2;
+  --color-rank-gladiator: #ffc53d;
+  --color-rank-rank-one: #ff8a24;
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+
+  /* Game icon sizes (iconSizes.ts) */
+  --icon-size-sm: 24px;
+  --icon-size-md: 40px;
+  --icon-size-lg: 64px;
+
+  /* Shape & motion */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-md: 0 4px 16px rgb(0 0 0 / 0.4);
+  --transition-fast: 120ms ease;
+
+  --layout-max-width: 1280px;
+
+  /* Accent and trim: Horde by default */
+  --color-accent: #cc0000;
+  --color-accent-hover: #f42525;
+  --color-accent-active: #ad0000;
+  --color-accent-strong: #f87777;
+  --color-accent-muted: #930000;
+  --color-accent-subtle: #290000;
+  --color-accent-emblem: #930000;
+
+  /* Frames and outlines: gold for Alliance, silver for Horde */
+  --color-trim: #8f8986;
+  --color-trim-strong: #d6d1ce;
+  --color-trim-muted: #4d4947;
+}
+
+:root[data-faction='alliance'] {
+  --color-accent: #0062cc;
+  --color-accent-hover: #2589f4;
+  --color-accent-active: #004fa3;
+  --color-accent-strong: #77b5f8;
+  --color-accent-muted: #002853;
+  --color-accent-subtle: #001429;
+  --color-accent-emblem: #002853;
+
+  /* Frames and outlines: gold for Alliance, silver for Horde */
+  --color-trim: #b67b11;
+  --color-trim-strong: #e6bf4a;
+  --color-trim-muted: #6b4a10;
+}

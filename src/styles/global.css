@@ -1,0 +1,95 @@
+/*
+ * Global rules: the reset, element defaults and a few site-wide helpers. Component styles
+ * live next to each component (`Component.module.css`); tokens in tokens.css.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+/*
+ * min-height, never height: #root contains the sticky header, and a sticky element only
+ * sticks within its parent. A fixed-height #root (one window tall) let the header scroll
+ * away after the first screen.
+ */
+#root {
+  min-height: 100%;
+  /* A column: header, content (grows), footer at the bottom of short pages */
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-md);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Korean wraps between words, not inside them (the browser default splits syllables) */
+:lang(ko) {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  color: var(--color-text-highlight);
+  line-height: 1.2;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--color-accent-strong);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-text-highlight);
+}
+
+button {
+  color: inherit;
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-trim);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--color-accent-muted);
+  color: var(--color-text-highlight);
+}
+
+/* Read by screen readers, not shown: labels and table headers the design leaves out */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The page behind an open dialog (the mobile menu) doesn't scroll */
+body.scroll-locked {
+  overflow: hidden;
+}

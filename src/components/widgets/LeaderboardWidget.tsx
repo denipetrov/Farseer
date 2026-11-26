@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { useId } from 'react';
-import styled from 'styled-components';
 import {
   currentSeasonQuery,
   leaderboardQuery,
@@ -20,20 +19,16 @@ import { regionLabel } from '@/i18n/labels';
 import type { MessageKey } from '@/i18n/messages';
 import { useI18n } from '@/i18n/useI18n';
 import { iconUrl } from '@/lib/assets';
-import { classColorVar } from '@/lib/wow/classes';
-import { factionColorVars, factionIconUrl } from '@/lib/wow/factions';
+import { classColorKey } from '@/lib/wow/classes';
+import { factionIconUrl, resolveFaction } from '@/lib/wow/factions';
 import { heroTreeIconUrl } from '@/lib/wow/heroTalents';
 import { rankOfLadderRow } from '@/lib/wow/pvpRank';
 import { raceIconUrl } from '@/lib/wow/races';
 import { usePreferences } from '@/preferences/PreferencesProvider';
 import { specIconUrl } from '@/lib/wow/specs';
-import {
-  WidgetFooter,
-  WidgetFrame,
-  WidgetHeader,
-  WidgetTitle,
-  type WidgetSize,
-} from './WidgetGrid';
+import { WidgetFooter, WidgetFrame, WidgetHeader, WidgetTitle } from './Widget';
+import type { WidgetSize } from './WidgetGrid';
+import styles from './LeaderboardWidget.module.css';
 
 /** PvP character pages exist for these regions only (Blizzard's PvP API has no China) */
 const CHARACTER_REGIONS = new Set(['us', 'eu', 'kr', 'tw']);
@@ -111,7 +106,7 @@ export function LeaderboardWidget({
   const entries = board.data?.entries;
 
   return (
-    <WidgetFrame data-size={size} aria-label={title}>
+    <WidgetFrame size={size} aria-label={title}>
       <WidgetHeader>
         <WidgetTitle>
           {/* Centre content uses the coloured game art (the user, 2026-11-26), not the menu glyphs */}
@@ -121,7 +116,8 @@ export function LeaderboardWidget({
         <label htmlFor={selectId} className="sr-only">
           {t('widget.region')}
         </label>
-        <RegionSelect
+        <select
+          className={styles.regionSelect}
           id={selectId}
           value={region}
           onChange={(e) => setRegion(e.target.value as PvpBoard)}
@@ -131,25 +127,28 @@ export function LeaderboardWidget({
               {regionLabel(t, r)}
             </option>
           ))}
-        </RegionSelect>
+        </select>
       </WidgetHeader>
 
       {failed ? (
-        <Message role="alert">{t('widget.unavailable')}</Message>
+        <p className={styles.message} role="alert">
+          {t('widget.unavailable')}
+        </p>
       ) : entries && entries.length === 0 ? (
-        <Message>{t('widget.empty')}</Message>
+        <p className={styles.message}>{t('widget.empty')}</p>
       ) : (
-        <Table
+        <table
+          className={styles.table}
           aria-busy={!entries || board.isFetching}
           data-stale={board.isPlaceholderData || undefined}
         >
           {/* Fixed widths for place, rating and faction; the player takes the rest */}
           <colgroup>
-            <col style={{ width: '2.5rem' }} />
+            <col className={styles.colPlace} />
             <col />
-            <col style={{ width: '4.25rem' }} />
-            {detailed && <col style={{ width: '3.75rem' }} />}
-            <col style={{ width: '3rem' }} />
+            <col className={styles.colRating} />
+            {detailed && <col className={styles.colWinRate} />}
+            <col className={styles.colFaction} />
           </colgroup>
           <thead className="sr-only">
             <tr>
@@ -163,36 +162,37 @@ export function LeaderboardWidget({
           <tbody>
             {entries
               ? entries.map((entry, i) => (
-                  <Row
+                  <tr
                     key={`${entry.region}-${entry.characterId}-${entry.bracket}`}
+                    className={styles.row}
                     // The line under a character in its faction's trim: Alliance gold, Horde silver
-                    style={{ borderBottomColor: factionColorVars(entry.faction)?.trim }}
+                    data-faction-line={resolveFaction(entry.faction)?.slug}
                   >
-                    <Place>{i + 1}</Place>
+                    <td className={styles.place}>{i + 1}</td>
                     <PlayerCell entry={entry} withRace={detailed} />
                     {/* In its rank's colour (pvpRank.ts): Duelist blue, Elite purple, Rank 1 orange… */}
-                    <Rating style={{ color: rankOfLadderRow(entry).color }}>
+                    <td className={styles.rating} data-rank={rankOfLadderRow(entry).id}>
                       {entry.rating.toLocaleString(locale.htmlLang)}
-                    </Rating>
+                    </td>
                     {detailed && <WinRate entry={entry} />}
                     <FactionCell entry={entry} />
-                  </Row>
+                  </tr>
                 ))
               : Array.from({ length: ROWS[size] }, (_, i) => (
-                  <Row key={i} aria-hidden>
-                    <Place>{i + 1}</Place>
+                  <tr key={i} className={styles.row} aria-hidden>
+                    <td className={styles.place}>{i + 1}</td>
                     <td colSpan={detailed ? 4 : 3}>
-                      <Skeleton />
+                      <span className={styles.skeleton} />
                     </td>
-                  </Row>
+                  </tr>
                 ))}
           </tbody>
-        </Table>
+        </table>
       )}
 
       <WidgetFooter>
-        {/* A plain Link keeps the router's types; FullLink styles the <a> it renders */}
-        <FullLink>
+        {/* A plain Link keeps the router's types; the class styles the <a> it renders */}
+        <span className={styles.fullLink}>
           <Link
             to="/$locale/pvp/leaderboards/$bracket"
             params={{ locale: locale.slug, bracket }}
@@ -201,7 +201,7 @@ export function LeaderboardWidget({
             {t('widget.viewFullLeaderboard')}
             <span aria-hidden>→</span>
           </Link>
-        </FullLink>
+        </span>
       </WidgetFooter>
     </WidgetFrame>
   );
@@ -217,13 +217,13 @@ function PlayerCell({ entry, withRace }: { entry: LeaderboardEntry; withRace: bo
   const spec = entry.specId ?? entry.spec;
   const hero = entry.heroTalentId ?? entry.heroTalents;
   const name = entry.characterName ?? t('widget.unnamed');
-  const color = classColorVar(cls) ?? 'var(--color-text-highlight)';
+  const classColor = classColorKey(cls);
   const linkable = entry.characterName && entry.realmSlug && CHARACTER_REGIONS.has(entry.region);
 
   return (
     <td>
-      <Player>
-        <Icons>
+      <span className={styles.player}>
+        <span className={styles.icons}>
           {withRace &&
             (raceIconUrl(race, gender, { style, faction: entry.faction }) ? (
               <RaceIcon race={race} gender={gender} faction={entry.faction} />
@@ -240,9 +240,9 @@ function PlayerCell({ entry, withRace }: { entry: LeaderboardEntry; withRace: bo
           ) : (
             <UnknownIcon label={t('unknown.heroTalent')} />
           )}
-        </Icons>
+        </span>
         {linkable ? (
-          <NameLink>
+          <span className={styles.nameLink}>
             <Link
               to="/$locale/pvp/character/$region/$realm/$name"
               params={{
@@ -251,15 +251,17 @@ function PlayerCell({ entry, withRace }: { entry: LeaderboardEntry; withRace: bo
                 realm: entry.realmSlug!,
                 name: entry.characterName!,
               }}
-              style={{ color }}
+              data-class-color={classColor}
             >
               {name}
             </Link>
-          </NameLink>
+          </span>
         ) : (
-          <Name style={{ color }}>{name}</Name>
+          <span className={styles.name} data-class-color={classColor}>
+            {name}
+          </span>
         )}
-      </Player>
+      </span>
     </td>
   );
 }
@@ -268,12 +270,16 @@ function PlayerCell({ entry, withRace }: { entry: LeaderboardEntry; withRace: bo
 function WinRate({ entry }: { entry: LeaderboardEntry }) {
   const { t, locale } = useI18n();
   const { won, lost } = entry;
-  if (won == null || lost == null || won + lost === 0) return <Rate>–</Rate>;
+  if (won == null || lost == null || won + lost === 0) return <td className={styles.rate}>–</td>;
   const rate = new Intl.NumberFormat(locale.htmlLang, {
     style: 'percent',
     maximumFractionDigits: 0,
   }).format(won / (won + lost));
-  return <Rate title={t('widget.record', { won, lost })}>{rate}</Rate>;
+  return (
+    <td className={styles.rate} title={t('widget.record', { won, lost })}>
+      {rate}
+    </td>
+  );
 }
 
 /** The character's faction, in the visitor's icon style; the unknown icon when absent */
@@ -281,168 +287,12 @@ function FactionCell({ entry }: { entry: LeaderboardEntry }) {
   const { t } = useI18n();
   const { assetStyle: style } = usePreferences().preferences;
   return (
-    <Faction>
+    <td className={styles.faction}>
       {factionIconUrl(entry.faction, { style }) ? (
         <FactionIcon faction={entry.faction} />
       ) : (
         <UnknownIcon label={t('unknown.faction')} />
       )}
-    </Faction>
+    </td>
   );
 }
-
-const RegionSelect = styled.select`
-  flex: none;
-  max-width: 9rem;
-  padding: var(--space-1) var(--space-6) var(--space-1) var(--space-2);
-  border: 1px solid var(--color-trim-muted);
-  border-radius: var(--radius-md);
-  background: var(--color-bg-sunken)
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23a3a3a3' stroke-width='1.6'/%3E%3C/svg%3E")
-    no-repeat right var(--space-2) center / 10px 6px;
-  color: var(--color-text-muted);
-  font: inherit;
-  font-size: var(--font-size-sm);
-  appearance: none;
-  cursor: pointer;
-
-  &:hover {
-    color: var(--color-text-highlight);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 1px;
-  }
-`;
-
-/**
- * Fixed layout (widths in the <colgroup>): the place, rating and faction keep their widths
- * and the player column takes the rest, so a long name is shortened (…) instead of pushing
- * the numbers out of the frame.
- */
-const Table = styled.table`
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
-  font-variant-numeric: tabular-nums;
-  transition: opacity var(--transition-fast);
-
-  &[data-stale] {
-    opacity: 0.55;
-  }
-`;
-
-const Row = styled.tr`
-  height: 52px;
-  border-bottom: 1px solid var(--color-border-muted);
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  > td {
-    padding: 0 6px;
-    vertical-align: middle;
-  }
-
-  > td:first-child {
-    padding-left: var(--space-4);
-  }
-
-  > td:last-child {
-    padding-right: var(--space-4);
-  }
-`;
-
-const Place = styled.td`
-  color: var(--color-text-subtle);
-`;
-
-const Player = styled.span`
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-width: 0;
-`;
-
-const Icons = styled.span`
-  display: flex;
-  flex: none;
-  gap: 2px;
-`;
-
-const nameStyles = `
-  overflow: hidden;
-  font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-const Name = styled.span`
-  ${nameStyles}
-`;
-
-const NameLink = styled.span`
-  display: flex;
-  min-width: 0;
-
-  > a {
-    ${nameStyles}
-  }
-
-  > a:hover {
-    text-decoration: underline;
-  }
-`;
-
-const Rating = styled.td`
-  font-weight: 700;
-  text-align: right;
-  white-space: nowrap;
-`;
-
-const Rate = styled.td`
-  color: var(--color-text-subtle);
-  font-size: var(--font-size-sm);
-  text-align: right;
-  white-space: nowrap;
-`;
-
-const Faction = styled.td`
-  text-align: right;
-
-  > * {
-    display: inline-flex;
-    vertical-align: middle;
-  }
-`;
-
-const Skeleton = styled.span`
-  display: block;
-  height: 14px;
-  border-radius: var(--radius-sm);
-  background: var(--color-surface-raised);
-`;
-
-const Message = styled.p`
-  margin: 0;
-  padding: var(--space-8) var(--space-4);
-  color: var(--color-text-muted);
-  text-align: center;
-`;
-
-const FullLink = styled.span`
-  > a {
-    display: inline-flex;
-    gap: var(--space-2);
-    align-items: center;
-    color: var(--color-accent-strong);
-    font-weight: 600;
-  }
-
-  > a:hover {
-    color: var(--color-accent-hover);
-    text-decoration: underline;
-  }
-`;

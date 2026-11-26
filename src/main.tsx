@@ -5,13 +5,16 @@ import { RouterProvider } from '@tanstack/react-router';
 import { queryClient } from './api/queryClient';
 import { router } from './router';
 import { PreferencesProvider } from './preferences/PreferencesProvider';
-import { GlobalStyle } from './styles/GlobalStyle';
+// Site-wide CSS, in order: tokens (custom properties), global rules, game colours, icon sizing
+import './styles/tokens.css';
+import './styles/global.css';
+import './styles/gameColors.css';
+import './styles/iconOptics.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <PreferencesProvider>
       <QueryClientProvider client={queryClient}>
-        <GlobalStyle />
         <RouterProvider router={router} />
       </QueryClientProvider>
     </PreferencesProvider>

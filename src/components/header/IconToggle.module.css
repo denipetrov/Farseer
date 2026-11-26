@@ -1,0 +1,69 @@
+/* The icon size is a CSS var on the group, so a layout can shrink it (--toggle-icon-size). */
+.group {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.sm {
+  --toggle-icon-size: var(--icon-size-sm);
+}
+
+.md {
+  --toggle-icon-size: var(--icon-size-md);
+}
+
+.lg {
+  --toggle-icon-size: var(--icon-size-lg);
+}
+
+.option {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: var(--space-1);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  cursor: pointer;
+}
+
+.option img {
+  display: block;
+  width: var(--toggle-icon-size);
+  height: var(--toggle-icon-size);
+  object-fit: contain;
+  opacity: 0.6;
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.option:hover img,
+.option[aria-checked='true'] img {
+  opacity: 1;
+}
+
+/* The chosen option: a bar underneath, in the accent or the option's own faction colour */
+.option[aria-checked='true']::after {
+  content: '';
+  position: absolute;
+  right: 20%;
+  bottom: -2px;
+  left: 20%;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--color-accent);
+}
+
+.option[data-underline='horde']::after {
+  background: var(--color-horde);
+}
+
+.option[data-underline='alliance']::after {
+  background: var(--color-alliance);
+}
+
+.option:active img {
+  transform: scale(0.94);
+}

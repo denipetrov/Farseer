@@ -41,7 +41,7 @@ export function ClassIcon({ cls, size }: ClassIconProps) {
       label={name('classes', c.id, c.name)}
       size={size}
       shape="round"
-      artFill={CLASS_ICON_ART_FILL[style]}
+      padded={CLASS_ICON_ART_FILL[style] < 1}
     />
   );
 }

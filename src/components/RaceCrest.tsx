@@ -1,4 +1,4 @@
-import { factionColorVars, type FactionInput } from '@/lib/wow/factions';
+import { resolveFaction, type FactionInput } from '@/lib/wow/factions';
 import { raceCrestUrl, resolveRace, type RaceInput } from '@/lib/wow/races';
 import type { IconSize } from '@/styles/iconSizes';
 import { GameIcon } from './GameIcon';
@@ -25,7 +25,7 @@ export function RaceCrest({ race, faction, size }: RaceCrestProps) {
       src={url}
       label={`${r.name} crest`}
       size={size}
-      borderColor={factionColorVars(r.faction ?? faction)?.trim}
+      frame={resolveFaction(r.faction ?? faction)?.slug}
     />
   );
 }

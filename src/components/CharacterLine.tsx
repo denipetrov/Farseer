@@ -1,4 +1,4 @@
-import { classColorVar, classIconUrl, type ClassInput } from '@/lib/wow/classes';
+import { classColorKey, classIconUrl, type ClassInput } from '@/lib/wow/classes';
 import { factionIconUrl, type FactionInput } from '@/lib/wow/factions';
 import { heroTreeIconUrl, type HeroTreeInput } from '@/lib/wow/heroTalents';
 import { raceIconUrl, type GenderInput, type RaceInput } from '@/lib/wow/races';
@@ -14,12 +14,12 @@ import { FactionIcon } from './FactionIcon';
 import { HeroTalentIcon } from './HeroTalentIcon';
 import { RaceIcon } from './RaceIcon';
 import { SpecIcon } from './SpecIcon';
-import { End, First, Guild, Icons, Name, Row, Second, Text } from './lineParts';
+import styles from './lineParts.module.css';
 import { UnknownIcon } from './UnknownIcon';
 
 export interface CharacterLineProps {
   name: string;
-  /** Shown as `<Guild>` after the name, when the data has one */
+  /** Shown as `<span className={styles.guild}>` after the name, when the data has one */
   guild?: string | null;
   /** Display name, or the slug when the data has no name ("burning-legion" → "Burning Legion") */
   realm: string;
@@ -46,7 +46,7 @@ export interface CharacterLineProps {
 /**
  * How a character is shown everywhere (search, boards, rosters):
  *
- *   [race] [class] [spec] [hero talent]  Name <Guild>          [faction]
+ *   [race] [class] [spec] [hero talent]  Name <span className={styles.guild}>          [faction]
  *                                        Realm · Region
  *
  * PvE leaves out the hero talent slot (`showHeroTalent={false}`).
@@ -75,8 +75,8 @@ export function CharacterLine({
   const unknown = (key: MessageKey) => <UnknownIcon label={t(key)} size={size} />;
 
   return (
-    <Row>
-      <Icons>
+    <span className={styles.row}>
+      <span className={styles.icons}>
         {raceIconUrl(race, gender, { style, faction }) ? (
           <RaceIcon race={race} gender={gender} faction={faction} size={size} />
         ) : (
@@ -97,23 +97,25 @@ export function CharacterLine({
         ) : (
           unknown('unknown.heroTalent')
         )}
-      </Icons>
-      <Text>
-        <First>
-          <Name style={{ color: classColorVar(cls) ?? 'var(--color-text-highlight)' }}>{name}</Name>
-          {guild && <Guild>&lt;{guild}&gt;</Guild>}
-        </First>
-        <Second>
+      </span>
+      <span className={styles.text}>
+        <span className={styles.first}>
+          <span className={styles.name} data-class-color={classColorKey(cls)}>
+            {name}
+          </span>
+          {guild && <span className={styles.guild}>&lt;{guild}&gt;</span>}
+        </span>
+        <span className={styles.second}>
           {realmLabel(realm)} · {regionLabel(t, region)}
-        </Second>
-      </Text>
-      <End>
+        </span>
+      </span>
+      <span className={styles.end}>
         {factionIconUrl(faction, { style }) ? (
           <FactionIcon faction={faction} size={size} />
         ) : (
           unknown('unknown.faction')
         )}
-      </End>
-    </Row>
+      </span>
+    </span>
   );
 }

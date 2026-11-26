@@ -1,0 +1,106 @@
+.note {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-trim-muted);
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* Readable line length and spacing for long legal text */
+.doc {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 48rem;
+  color: var(--color-text);
+  line-height: 1.65;
+}
+
+.doc ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding-left: var(--space-6);
+}
+
+.doc a {
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent-muted);
+  text-underline-offset: 3px;
+}
+
+.contents {
+  padding: var(--space-4) var(--space-6);
+  border: 1px solid var(--color-trim-muted);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.contents ol {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding-left: var(--space-6);
+}
+
+.contents a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.contents a:hover {
+  color: var(--color-text-highlight);
+}
+
+.contentsTitle {
+  margin-bottom: var(--space-2);
+  color: var(--color-trim-strong);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  /* Clear the sticky header when jumped to from the contents (its height per layout) */
+  scroll-margin-top: 105px;
+}
+
+.section h2 {
+  font-size: var(--font-size-lg);
+}
+
+.num {
+  color: var(--color-trim-strong);
+}
+
+.summary {
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--color-trim-muted);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.summary strong {
+  color: var(--color-text-highlight);
+  font-style: normal;
+}
+
+@media (max-width: 1100px) {
+  .section {
+    scroll-margin-top: 170px;
+  }
+}
+
+@media (max-width: 820px) {
+  .section {
+    scroll-margin-top: 80px;
+  }
+}

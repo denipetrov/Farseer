@@ -1,0 +1,212 @@
+/*
+ * Menu sizes (the user chose the larger set, 2026-11-26): 17px text (15.5px for sub-items),
+ * 26px icons, 46px rows (42px for sub-items), in a 17.5rem sidebar (AppLayout). Deeper
+ * levels (PvE) keep the sub-item text, with 22px icons and 38px rows.
+ *
+ * Indent by depth (data-depth on each row): level 1 lines its icons up under the section's
+ * label (12 + 26 icon + 14 gap = 52px); each level below steps in by 14px only, so the
+ * PvE menu's deepest rows (Mythic+ → Archives → Leaderboards → Specs → class → spec) still
+ * fit 17.5rem.
+ */
+.nav {
+  padding: var(--space-3) var(--space-2);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.subList {
+  margin: 2px 0 var(--space-1);
+}
+
+/* display: flex above would otherwise override the hidden attribute */
+.list[hidden] {
+  display: none;
+}
+
+/* A row: a link (inside .rowFrame, whose <a> it styles) or a section's button */
+.rowFrame > a,
+.groupButton {
+  --nav-indent: 12px;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 46px;
+  padding: var(--space-2) var(--space-3) var(--space-2) var(--nav-indent);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: 1.0625rem; /* 17px */
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.rowFrame > a:hover,
+.groupButton:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text-highlight);
+}
+
+/* Smaller text and rows below the top; deeper still, tighter icons */
+.rowFrame:not([data-depth='0']) > a,
+.groupButton:not([data-depth='0']) {
+  min-height: 42px;
+  font-size: 0.96875rem; /* 15.5px */
+}
+
+.rowFrame[data-depth='2'] > a,
+.rowFrame[data-depth='3'] > a,
+.rowFrame[data-depth='4'] > a,
+.rowFrame[data-depth='5'] > a,
+.rowFrame[data-depth='6'] > a,
+.groupButton[data-depth='2'],
+.groupButton[data-depth='3'],
+.groupButton[data-depth='4'],
+.groupButton[data-depth='5'],
+.groupButton[data-depth='6'] {
+  min-height: 38px;
+  gap: 10px;
+}
+
+/* The indent, per depth */
+.rowFrame[data-depth='1'] > a,
+.groupButton[data-depth='1'],
+.note[data-depth='1'] {
+  --nav-indent: 52px;
+}
+
+.rowFrame[data-depth='2'] > a,
+.groupButton[data-depth='2'],
+.note[data-depth='2'] {
+  --nav-indent: 66px;
+}
+
+.rowFrame[data-depth='3'] > a,
+.groupButton[data-depth='3'],
+.note[data-depth='3'] {
+  --nav-indent: 80px;
+}
+
+.rowFrame[data-depth='4'] > a,
+.groupButton[data-depth='4'],
+.note[data-depth='4'] {
+  --nav-indent: 94px;
+}
+
+.rowFrame[data-depth='5'] > a,
+.groupButton[data-depth='5'],
+.note[data-depth='5'] {
+  --nav-indent: 108px;
+}
+
+.rowFrame[data-depth='6'] > a,
+.groupButton[data-depth='6'],
+.note[data-depth='6'] {
+  --nav-indent: 122px;
+}
+
+/* The current page: accent bar, bright text, icon in the accent */
+.rowFrame > a[data-status='active'] {
+  background: var(--color-surface-hover);
+  box-shadow: inset 3px 0 0 var(--color-accent);
+  color: var(--color-text-highlight);
+}
+
+.rowFrame > a[data-status='active'] > span[aria-hidden] {
+  color: var(--color-accent-strong);
+}
+
+.label {
+  flex: 1;
+}
+
+/* A page inside is open: the section reads as part of the path */
+.groupButton[data-has-active] {
+  color: var(--color-text-highlight);
+}
+
+/* Holds game art at the glyphs' width (26px, 22px when deep), so labels line up */
+.artSlot {
+  display: inline-flex;
+  flex: none;
+  justify-content: center;
+  width: 26px;
+}
+
+.artSlot.deep {
+  width: 22px;
+}
+
+/* Our own art at the slot's size, untouched; tall, thin art scaled up (iconOptics.css) */
+.artImage {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  transform: scale(var(--optical-scale, 1));
+}
+
+/*
+ * A logo (the expansions, the user's pick of 2026-11-26): 64×30 beside the label. The files
+ * are 128px squares with the logo across the middle, so the square is scaled to the width
+ * and its empty top and bottom are trimmed (object-fit: cover); the logo is untouched.
+ */
+.wideArt {
+  display: block;
+  flex: none;
+  width: 64px;
+  height: 30px;
+  object-fit: cover;
+}
+
+/* The logos' slot, for a plain icon in a list that has logos */
+.wideSlot {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+}
+
+.note {
+  --nav-indent: 12px;
+
+  margin: 0;
+  padding: var(--space-2) var(--space-3) var(--space-2) var(--nav-indent);
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+  font-style: italic;
+}
+
+/* A small chevron drawn with borders: right when closed, down when open */
+.chevron {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  margin-right: var(--space-1);
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  opacity: 0.7;
+  transform: rotate(-45deg);
+  transition: transform var(--transition-fast);
+}
+
+.chevron[data-open] {
+  transform: rotate(45deg);
+}

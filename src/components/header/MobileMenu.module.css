@@ -1,0 +1,162 @@
+.menuButton {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--color-trim-muted);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-sunken);
+  color: var(--color-accent-strong);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.menuButton:hover,
+.menuButton[aria-expanded='true'] {
+  border-color: var(--color-trim);
+}
+
+/* Three bars, drawn in the current colour */
+.bars {
+  position: relative;
+  width: 20px;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+}
+
+.bars::before,
+.bars::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 20px;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+}
+
+.bars::before {
+  top: -6px;
+}
+
+.bars::after {
+  top: 6px;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 0.6);
+  animation: fade-in var(--transition-fast);
+}
+
+.panel {
+  position: absolute;
+  inset: 0 auto 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: min(22rem, 88vw);
+  padding: var(--space-3) var(--space-4) var(--space-6);
+  overflow-y: auto;
+  border-right: 1px solid var(--color-trim-muted);
+  background: var(--color-surface);
+  box-shadow:
+    inset -2px 0 0 var(--color-accent),
+    var(--shadow-md);
+  animation: slide-in 160ms ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(-100%);
+  }
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.brand {
+  display: flex;
+  border-radius: var(--radius-md);
+}
+
+.brand img {
+  display: block;
+  width: auto;
+  height: 44px;
+}
+
+/* An × drawn in the current colour */
+.cross {
+  position: relative;
+  width: 18px;
+  height: 18px;
+}
+
+.cross::before,
+.cross::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 0;
+  width: 18px;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+}
+
+.cross::before {
+  transform: rotate(45deg);
+}
+
+.cross::after {
+  transform: rotate(-45deg);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border-muted);
+}
+
+.label {
+  color: var(--color-trim-strong);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.navSlot {
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-trim-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    animation: none;
+  }
+}

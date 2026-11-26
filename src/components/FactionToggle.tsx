@@ -15,7 +15,7 @@ export function FactionToggle() {
     label: t(`faction.${f.slug}`),
     icon: factionIconUrl(f.slug, { style: preferences.assetStyle }),
     // The chosen emblem is marked by a bar in its own faction colour; the art is never filtered
-    underline: `var(--color-${f.slug})`,
+    underline: f.slug,
   }));
 
   return (

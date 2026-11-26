@@ -1,14 +1,16 @@
-import { useRef, type CSSProperties, type KeyboardEvent } from 'react';
-import styled from 'styled-components';
+import { useRef, type KeyboardEvent } from 'react';
+import { cx } from '@/lib/cx';
 import type { IconSize } from '@/styles/iconSizes';
+import type { Faction } from '@/styles/palette';
+import styles from './IconToggle.module.css';
 
 export interface IconToggleOption<T extends string> {
   value: T;
   /** Accessible name and hover title */
   label: string;
   icon: string | undefined;
-  /** Colour of the bar under the chosen option; defaults to the faction accent */
-  underline?: string;
+  /** The bar under the chosen option in this faction's colour; defaults to the accent */
+  underline?: Faction;
 }
 
 interface IconToggleProps<T extends string> {
@@ -48,12 +50,14 @@ export function IconToggle<T extends string>({
   };
 
   return (
-    <Group role="radiogroup" aria-label={label} $size={size}>
+    <div role="radiogroup" aria-label={label} className={cx(styles.group, styles[size])}>
       {options.map((o, i) => {
         const checked = o.value === value;
         return (
-          <Option
+          <button
             key={o.value}
+            className={styles.option}
+            data-underline={o.underline}
             ref={(el) => {
               refs.current[i] = el;
             }}
@@ -65,65 +69,11 @@ export function IconToggle<T extends string>({
             tabIndex={checked ? 0 : -1}
             onClick={() => onChange(o.value)}
             onKeyDown={(e) => onKeyDown(e, i)}
-            style={
-              o.underline ? ({ '--toggle-underline': o.underline } as CSSProperties) : undefined
-            }
           >
             {o.icon && <img src={o.icon} alt="" draggable={false} />}
-          </Option>
+          </button>
         );
       })}
-    </Group>
+    </div>
   );
 }
-
-/** The icon size is a CSS var on the group, so a layout can shrink it (`--toggle-icon-size`). */
-const Group = styled.div<{ $size: IconSize }>`
-  --toggle-icon-size: var(--icon-size-${(p) => p.$size});
-
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-`;
-
-const Option = styled.button`
-  position: relative;
-  display: grid;
-  place-items: center;
-  padding: var(--space-1);
-  border: 0;
-  border-radius: var(--radius-md);
-  background: transparent;
-  cursor: pointer;
-
-  img {
-    display: block;
-    width: var(--toggle-icon-size);
-    height: var(--toggle-icon-size);
-    object-fit: contain;
-    opacity: 0.6;
-    transition:
-      opacity var(--transition-fast),
-      transform var(--transition-fast);
-  }
-
-  &:hover img,
-  &[aria-checked='true'] img {
-    opacity: 1;
-  }
-
-  &[aria-checked='true']::after {
-    content: '';
-    position: absolute;
-    left: 20%;
-    right: 20%;
-    bottom: -2px;
-    height: 3px;
-    border-radius: 2px;
-    background: var(--toggle-underline, var(--color-accent));
-  }
-
-  &:active img {
-    transform: scale(0.94);
-  }
-`;

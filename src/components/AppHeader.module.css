@@ -1,0 +1,97 @@
+.header {
+  --header-bg: var(--color-surface);
+
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid var(--color-trim-muted);
+  background: var(--header-bg);
+  box-shadow: inset 0 -2px 0 var(--color-accent);
+}
+
+.inner {
+  display: grid;
+  /* The sides never shrink below their content, so nothing overlaps the search */
+  grid-template-columns: minmax(max-content, 1fr) minmax(16rem, 36rem) minmax(max-content, 1fr);
+  grid-template-areas: 'start center end';
+  align-items: center;
+  gap: var(--space-4) var(--space-6);
+  max-width: var(--layout-max-width);
+  margin: 0 auto;
+  padding: var(--space-2) var(--space-6);
+}
+
+/* The mobile menu button: only on mobile */
+.menu {
+  display: none;
+  grid-area: menu;
+}
+
+.start {
+  display: flex;
+  grid-area: start;
+  align-items: center;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.center {
+  grid-area: center;
+  min-width: 0;
+}
+
+.end {
+  display: flex;
+  grid-area: end;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.brand {
+  display: flex;
+  flex: none;
+  border-radius: var(--radius-md);
+}
+
+.brand img {
+  display: block;
+  width: auto;
+  height: 52px;
+}
+
+.divider {
+  width: 1px;
+  height: 32px;
+  background: var(--color-trim-muted);
+}
+
+/* Too narrow for three columns: search on a row of its own */
+@media (max-width: 1100px) {
+  .inner {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'start end'
+      'center center';
+    padding-bottom: var(--space-3);
+  }
+}
+
+/* Mobile: the menu button, then the search, on one row; the rest is in the menu's drawer */
+@media (max-width: 820px) {
+  .inner {
+    grid-template-columns: auto 1fr;
+    grid-template-areas: 'menu center';
+    column-gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .menu {
+    display: flex;
+  }
+
+  .start,
+  .end {
+    display: none;
+  }
+}

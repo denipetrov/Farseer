@@ -113,8 +113,15 @@ export function classIconUrl(input: ClassInput, { style }: { style: AssetStyle }
  * so it can be overridden like any token. Undefined when the class is unknown.
  */
 export function classColorVar(input: ClassInput): string | undefined {
+  const key = classColorKey(input);
+  return key ? `var(--color-class-${key})` : undefined;
+}
+
+/**
+ * The class colour's name (`death-knight`), for `data-class-color` (gameColors.css colours
+ * the element). Undefined when the class is unknown.
+ */
+export function classColorKey(input: ClassInput): string | undefined {
   const c = resolveClass(input);
-  if (!c) return undefined;
-  const kebab = c.colorKey.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`);
-  return `var(--color-class-${kebab})`;
+  return c ? c.colorKey.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`) : undefined;
 }

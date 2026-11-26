@@ -1,7 +1,7 @@
 /**
  * Raw colour palette — the single source of hex values.
  * Components should NOT import this directly; use the CSS variables
- * defined in `tokens.ts` (e.g. `var(--color-text)`) instead.
+ * defined in `tokens.css` (e.g. `var(--color-text)`) instead.
  */
 export const palette = {
   neutral: {
@@ -89,6 +89,20 @@ export const palette = {
     shaman: '#0070dd',
     warlock: '#8788ee',
     warrior: '#c69b6d',
+  },
+  /**
+   * Rated PvP ranks (pvpRank.ts): each rankedpvp icon's main tone, lightened to read on the
+   * panels (contrast 5.8–11 : 1 on the surface), picked 2026-11-26.
+   */
+  rank: {
+    unranked: '#b8927f',
+    combatant: '#c3c8d0',
+    challenger: '#e2b85b',
+    rival: '#a9cdef',
+    duelist: '#4cb0f0',
+    elite: '#b47cf2',
+    gladiator: '#ffc53d',
+    rankOne: '#ff8a24',
   },
 } as const;
 

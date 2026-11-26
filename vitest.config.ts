@@ -11,5 +11,8 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     include: ['src/**/*.test.{ts,tsx}'],
+    // CSS is stubbed out in tests, except the global stylesheets, which tests read (`?raw`)
+    // to check them against palette.ts and the icon files
+    css: { include: [/src\/styles\/[^/]+\.css/] },
   },
 });

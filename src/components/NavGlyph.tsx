@@ -1,7 +1,11 @@
-import styled from 'styled-components';
+import type { CSSProperties } from 'react';
 import { iconUrl } from '@/lib/assets';
-import { opticalScale } from '@/lib/iconOptics';
+import { cx } from '@/lib/cx';
 import { inlineSvg } from '@/lib/inlineIcons';
+import styles from './NavGlyph.module.css';
+
+/** sm 22px (deep menu rows), md 26px (the menu), lg 32px (page headings) */
+export type GlyphSize = 'sm' | 'md' | 'lg';
 
 /**
  * A single-colour icon (an SVG drawn in `currentColor`, e.g. `nav/home` or
@@ -9,46 +13,32 @@ import { inlineSvg } from '@/lib/inlineIcons';
  * active and accent states. `icon` is its path under `icons/`, without extension.
  * Multi-colour icons (`src/lib/inlineIcons.ts`) are drawn inline instead.
  *
- * The `url("…")` value is built in TypeScript: Vite inlines small SVGs as data: URLs with
- * single quotes, and Prettier rewrites quotes inside styled-components CSS.
+ * Narrow shapes are drawn larger so every icon looks the same size: `data-optical` picks its
+ * factor in iconOptics.css. The file's URL is the one value set from here (`--glyph-url`):
+ * Vite hashes asset names at build time, so CSS can't name the file.
  */
-export function NavGlyph({ icon, size = 22 }: { icon: string; size?: number }) {
-  // Narrow shapes are drawn larger so every icon looks the same size (iconOptics.ts)
-  const scale = opticalScale(icon);
-  const box = { width: size, height: size, ...(scale !== 1 && { transform: `scale(${scale})` }) };
-
+export function NavGlyph({ icon, size = 'sm' }: { icon: string; size?: GlyphSize }) {
   const svg = inlineSvg(icon);
   if (svg) {
-    // Our own files, bundled at build time: safe to insert as markup
-    return <Inline aria-hidden style={box} dangerouslySetInnerHTML={{ __html: svg }} />;
+    return (
+      <span
+        aria-hidden
+        className={cx(styles.glyph, styles[size], styles.inline)}
+        data-optical={icon}
+        // Our own files, bundled at build time: safe to insert as markup
+        dangerouslySetInnerHTML={{ __html: svg }}
+      />
+    );
   }
 
   const url = iconUrl(icon);
   if (!url) return null;
   return (
-    <Glyph
+    <span
       aria-hidden
-      style={{ ...box, maskImage: `url("${url}")`, WebkitMaskImage: `url("${url}")` }}
+      className={cx(styles.glyph, styles[size], styles.mask)}
+      data-optical={icon}
+      style={{ '--glyph-url': `url("${url}")` } as CSSProperties}
     />
   );
 }
-
-const Glyph = styled.span`
-  display: inline-block;
-  flex: none;
-  background: currentColor;
-  mask-position: center;
-  mask-size: contain;
-  mask-repeat: no-repeat;
-`;
-
-const Inline = styled.span`
-  display: inline-block;
-  flex: none;
-
-  > svg {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-`;

@@ -1,11 +1,11 @@
 import { useNavigate } from '@tanstack/react-router';
 import type { MouseEvent, ReactNode } from 'react';
-import styled from 'styled-components';
 import { Muted, Page, PageTitle } from '@/components/Page';
 import { localeBySlug } from '@/i18n/locales';
 import { useI18n } from '@/i18n/useI18n';
 import type { LoadedLegalDocument } from '@/legal/load';
 import type { LegalBlock } from '@/legal/types';
+import styles from './LegalPage.module.css';
 
 interface LegalPageProps {
   title: 'legal.privacy' | 'legal.terms';
@@ -34,15 +34,21 @@ export function LegalPage({ title, loaded }: LegalPageProps) {
         <Muted>{t('legal.updated', { date })}</Muted>
       </header>
 
-      {docSlug !== locale.slug && <Note role="note">{t('legal.englishOnly')}</Note>}
+      {docSlug !== locale.slug && (
+        <p className={styles.note} role="note">
+          {t('legal.englishOnly')}
+        </p>
+      )}
 
-      <Doc lang={docLang}>
+      <article className={styles.doc} lang={docLang}>
         {doc.intro.map((b, i) => (
           <Block key={i} block={b} />
         ))}
 
-        <Contents aria-labelledby="legal-contents">
-          <ContentsTitle id="legal-contents">{t('legal.contents')}</ContentsTitle>
+        <nav className={styles.contents} aria-labelledby="legal-contents">
+          <h2 className={styles.contentsTitle} id="legal-contents">
+            {t('legal.contents')}
+          </h2>
           <ol>
             {doc.sections.map((s) => (
               <li key={s.id}>
@@ -50,24 +56,24 @@ export function LegalPage({ title, loaded }: LegalPageProps) {
               </li>
             ))}
           </ol>
-        </Contents>
+        </nav>
 
         {doc.sections.map((s, i) => (
-          <Section key={s.id} id={s.id} aria-labelledby={`${s.id}-h`}>
+          <section key={s.id} className={styles.section} id={s.id} aria-labelledby={`${s.id}-h`}>
             <h2 id={`${s.id}-h`}>
-              <Num>{i + 1}.</Num> {s.heading}
+              <span className={styles.num}>{i + 1}.</span> {s.heading}
             </h2>
             {s.summary && (
-              <Summary>
+              <p className={styles.summary}>
                 <strong>{t('legal.inShort')}</strong> {s.summary}
-              </Summary>
+              </p>
             )}
             {s.blocks.map((b, j) => (
               <Block key={j} block={b} />
             ))}
-          </Section>
+          </section>
         ))}
-      </Doc>
+      </article>
     </Page>
   );
 }
@@ -135,106 +141,3 @@ function DocLink({ href, label }: { href: string; label: string }) {
     </a>
   );
 }
-
-const Note = styled.p`
-  padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--color-trim-muted);
-  border-left: 3px solid var(--color-accent);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
-  color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
-`;
-
-/** Readable line length and spacing for long legal text */
-const Doc = styled.article`
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  max-width: 48rem;
-  color: var(--color-text);
-  line-height: 1.65;
-
-  ul {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    margin: 0;
-    padding-left: var(--space-6);
-  }
-
-  a {
-    text-decoration: underline;
-    text-decoration-color: var(--color-accent-muted);
-    text-underline-offset: 3px;
-    overflow-wrap: anywhere;
-  }
-`;
-
-const Contents = styled.nav`
-  padding: var(--space-4) var(--space-6);
-  border: 1px solid var(--color-trim-muted);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-
-  ol {
-    display: grid;
-    gap: var(--space-1);
-    margin: 0;
-    padding-left: var(--space-6);
-  }
-
-  a {
-    color: var(--color-text-muted);
-    text-decoration: none;
-
-    &:hover {
-      color: var(--color-text-highlight);
-    }
-  }
-`;
-
-const ContentsTitle = styled.h2`
-  margin-bottom: var(--space-2);
-  color: var(--color-trim-strong);
-  font-size: var(--font-size-xs);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-`;
-
-const Section = styled.section`
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  padding-top: var(--space-4);
-  /* Clear the sticky header when jumped to from the contents (its height per layout) */
-  scroll-margin-top: 105px;
-
-  h2 {
-    font-size: var(--font-size-lg);
-  }
-
-  @media (max-width: 1100px) {
-    scroll-margin-top: 170px;
-  }
-
-  @media (max-width: 820px) {
-    scroll-margin-top: 80px;
-  }
-`;
-
-const Num = styled.span`
-  color: var(--color-trim-strong);
-`;
-
-const Summary = styled.p`
-  padding-left: var(--space-3);
-  border-left: 2px solid var(--color-trim-muted);
-  color: var(--color-text-muted);
-  font-style: italic;
-
-  strong {
-    color: var(--color-text-highlight);
-    font-style: normal;
-  }
-`;

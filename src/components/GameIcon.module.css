@@ -1,0 +1,52 @@
+/*
+ * The shared box for every game icon family. Sizes match --icon-size-* (iconSizes.ts).
+ * Square (default): a box with a background and a 1px trim border. Round: self-framed art,
+ * no box. A faction frame recolours the square border in that faction's trim.
+ */
+.icon {
+  display: inline-block;
+  flex: none;
+  vertical-align: middle;
+  width: var(--game-icon-size);
+  height: var(--game-icon-size);
+  /* Square box for every source; non-square art is letterboxed, never cropped */
+  object-fit: contain;
+  border: 1px solid var(--color-trim-muted);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-sunken);
+}
+
+.sm {
+  --game-icon-size: var(--icon-size-sm);
+}
+
+.md {
+  --game-icon-size: var(--icon-size-md);
+}
+
+.lg {
+  --game-icon-size: var(--icon-size-lg);
+}
+
+/* The art is round and framed already: no box, no CSS border */
+.round {
+  border: none;
+  border-radius: 50%;
+  background: none;
+}
+
+.icon[data-frame='horde'] {
+  border-color: var(--color-horde-trim);
+}
+
+.icon[data-frame='alliance'] {
+  border-color: var(--color-alliance-trim);
+}
+
+/*
+ * Art padded inside its file (modern class icons: a 63px circle in an 88px canvas), scaled
+ * so it fills the box like every other icon (CLASS_ICON_ART_FILL); the art is untouched.
+ */
+.padded {
+  transform: scale(calc(88 / 63));
+}

@@ -1,9 +1,9 @@
 import { useNavigate, useRouterState } from '@tanstack/react-router';
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
-import styled from 'styled-components';
 import { LOCALES, resolveLocaleSlug, type LocaleSlug } from '@/i18n/locales';
 import { useI18n } from '@/i18n/useI18n';
 import { usePreferences } from '@/preferences/PreferencesProvider';
+import styles from './LanguageSelect.module.css';
 
 /**
  * The language dropdown, next to the logo. Shows the current language's code (`EN`); the
@@ -98,9 +98,10 @@ export function LanguageSelect() {
   const optionId = (i: number) => `${listId}-${i}`;
 
   return (
-    <Wrap ref={wrapRef}>
-      <Button
+    <div ref={wrapRef} className={styles.wrap}>
+      <button
         ref={buttonRef}
+        className={styles.button}
         type="button"
         aria-haspopup="listbox"
         aria-expanded={open}
@@ -111,15 +112,18 @@ export function LanguageSelect() {
         onClick={() => (open ? setOpen(false) : openList())}
         onKeyDown={onKeyDown}
       >
-        <Code lang={locale.htmlLang}>{locale.slug.toUpperCase()}</Code>
-        <Chevron aria-hidden $open={open} />
-      </Button>
+        <span className={styles.code} lang={locale.htmlLang}>
+          {locale.slug.toUpperCase()}
+        </span>
+        <span className={styles.chevron} aria-hidden />
+      </button>
 
       {open && (
-        <List id={listId} role="listbox" aria-label={t('header.language')}>
+        <ul className={styles.list} id={listId} role="listbox" aria-label={t('header.language')}>
           {LOCALES.map((l, i) => (
-            <Option
+            <li
               key={l.slug}
+              className={styles.option}
               id={optionId(i)}
               role="option"
               lang={l.htmlLang}
@@ -130,97 +134,11 @@ export function LanguageSelect() {
               onClick={() => choose(l.slug)}
             >
               <span>{l.name}</span>
-              <OptionCode>{l.slug.toUpperCase()}</OptionCode>
-            </Option>
+              <span className={styles.optionCode}>{l.slug.toUpperCase()}</span>
+            </li>
           ))}
-        </List>
+        </ul>
       )}
-    </Wrap>
+    </div>
   );
 }
-
-const Wrap = styled.div`
-  position: relative;
-  flex: none;
-`;
-
-const Button = styled.button`
-  --lang-border: var(--color-trim-muted);
-
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  height: 40px;
-  padding: 0 var(--space-3);
-  border: 1px solid var(--lang-border);
-  border-radius: var(--radius-md);
-  background: var(--color-bg-sunken);
-  color: var(--color-text-highlight);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  transition: border-color var(--transition-fast);
-
-  &:hover,
-  &[aria-expanded='true'] {
-    --lang-border: var(--color-trim);
-  }
-`;
-
-const Code = styled.span`
-  font-size: var(--font-size-sm);
-`;
-
-/** A small chevron drawn with borders, pointing down (up when open). */
-const Chevron = styled.span<{ $open: boolean }>`
-  width: 7px;
-  height: 7px;
-  margin-top: ${(p) => (p.$open ? '3px' : '-3px')};
-  border-right: 2px solid var(--color-text-subtle);
-  border-bottom: 2px solid var(--color-text-subtle);
-  transform: rotate(${(p) => (p.$open ? '-135deg' : '45deg')});
-  transition: transform var(--transition-fast);
-`;
-
-const List = styled.ul`
-  position: absolute;
-  top: calc(100% + var(--space-1));
-  left: 0;
-  z-index: 20;
-  min-width: 12rem;
-  margin: 0;
-  padding: var(--space-1);
-  list-style: none;
-  background: var(--color-surface-raised);
-  border: 1px solid var(--color-trim-muted);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
-`;
-
-const Option = styled.li`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-sm);
-  color: var(--color-text);
-  cursor: pointer;
-
-  &[data-active] {
-    background: var(--color-surface-hover);
-  }
-
-  &[aria-selected='true'] {
-    color: var(--color-text-highlight);
-    font-weight: 600;
-    box-shadow: inset 3px 0 0 var(--color-accent);
-  }
-`;
-
-const OptionCode = styled.span`
-  color: var(--color-text-subtle);
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-`;

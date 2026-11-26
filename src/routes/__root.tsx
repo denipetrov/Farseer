@@ -1,12 +1,8 @@
 import { createRootRouteWithContext, Outlet, redirect } from '@tanstack/react-router';
 import type { QueryClient } from '@tanstack/react-query';
 import { lazy, Suspense } from 'react';
-import styled from 'styled-components';
 import { usePveCatalogue } from '@/api/pve';
-import { AppFooter } from '@/components/AppFooter';
-import { AppHeader } from '@/components/AppHeader';
-import { SideNav } from '@/components/nav/SideNav';
-import { ScrollTopButton } from '@/components/ScrollTopButton';
+import { AppLayout } from '@/components/AppLayout';
 import { Page, PageTitle, Muted } from '@/components/Page';
 import { resolveLocaleSlug } from '@/i18n/locales';
 import { preferredLocale } from '@/i18n/preferredLocale';
@@ -85,56 +81,12 @@ function RootLayout() {
   usePveCatalogue(mode === 'pve');
   return (
     <>
-      <AppHeader />
-      <Body>
-        <Sidebar>
-          <SidebarInner>
-            <SideNav />
-          </SidebarInner>
-        </Sidebar>
-        <Content>
-          <Outlet />
-        </Content>
-      </Body>
-      <AppFooter />
-      <ScrollTopButton />
+      <AppLayout>
+        <Outlet />
+      </AppLayout>
       <Suspense>
         <Devtools />
       </Suspense>
     </>
   );
 }
-
-/** Grows between header and footer, so the footer sits at the bottom of short pages */
-const Body = styled.div`
-  display: flex;
-  flex: 1 0 auto;
-`;
-
-/**
- * Desktop: the mode's left menu. The column runs the full height between header and
- * footer (so its border never stops short); the menu inside stays in view below the sticky
- * header (whose height the header publishes as --header-height) and scrolls on its own if
- * taller than the window. Mobile: hidden, the menu is in the header's drawer.
- */
-const Sidebar = styled.aside`
-  flex: none;
-  width: 17.5rem;
-  border-right: 1px solid var(--color-trim-muted);
-
-  @media (max-width: 820px) {
-    display: none;
-  }
-`;
-
-const SidebarInner = styled.div`
-  position: sticky;
-  top: var(--header-height, 90px);
-  max-height: calc(100vh - var(--header-height, 90px));
-  overflow-y: auto;
-`;
-
-const Content = styled.div`
-  flex: 1;
-  min-width: 0;
-`;

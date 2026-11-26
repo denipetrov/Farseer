@@ -1,0 +1,83 @@
+/*
+ * Game colours chosen by data attributes, so components never set colours inline:
+ *
+ *   <span data-class-color="death-knight">   the class colour (classColorKey in classes.ts)
+ *   <td data-rank="elite">                    the PvP rank colour (PvpRank.id in pvpRank.ts)
+ *   <tr data-faction-line="alliance">         a divider in the faction trim (gold / silver)
+ *
+ * Each rule starts with :root so it outranks a component's own default (`.name { color }`
+ * in a CSS module has the same specificity as an attribute selector, and loads later).
+ */
+
+:root [data-class-color='death-knight'] {
+  color: var(--color-class-death-knight);
+}
+:root [data-class-color='demon-hunter'] {
+  color: var(--color-class-demon-hunter);
+}
+:root [data-class-color='druid'] {
+  color: var(--color-class-druid);
+}
+:root [data-class-color='evoker'] {
+  color: var(--color-class-evoker);
+}
+:root [data-class-color='hunter'] {
+  color: var(--color-class-hunter);
+}
+:root [data-class-color='mage'] {
+  color: var(--color-class-mage);
+}
+:root [data-class-color='monk'] {
+  color: var(--color-class-monk);
+}
+:root [data-class-color='paladin'] {
+  color: var(--color-class-paladin);
+}
+:root [data-class-color='priest'] {
+  color: var(--color-class-priest);
+}
+:root [data-class-color='rogue'] {
+  color: var(--color-class-rogue);
+}
+:root [data-class-color='shaman'] {
+  color: var(--color-class-shaman);
+}
+:root [data-class-color='warlock'] {
+  color: var(--color-class-warlock);
+}
+:root [data-class-color='warrior'] {
+  color: var(--color-class-warrior);
+}
+
+/* Rated PvP ranks: each icon's main tone, lightened to read on the panels (5.8–11 : 1) */
+:root [data-rank='unranked'] {
+  color: var(--color-rank-unranked);
+}
+:root [data-rank='combatant'] {
+  color: var(--color-rank-combatant);
+}
+:root [data-rank='challenger'] {
+  color: var(--color-rank-challenger);
+}
+:root [data-rank='rival'] {
+  color: var(--color-rank-rival);
+}
+:root [data-rank='duelist'] {
+  color: var(--color-rank-duelist);
+}
+:root [data-rank='elite'] {
+  color: var(--color-rank-elite);
+}
+:root [data-rank='gladiator'] {
+  color: var(--color-rank-gladiator);
+}
+:root [data-rank='rank-one'] {
+  color: var(--color-rank-rank-one);
+}
+
+:root [data-faction-line='horde'] {
+  border-bottom-color: var(--color-horde-trim);
+}
+:root [data-faction-line='alliance'] {
+  border-bottom-color: var(--color-alliance-trim);
+}

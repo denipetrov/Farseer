@@ -1,29 +1,20 @@
-import styled from 'styled-components';
+import type { ComponentProps } from 'react';
+import { cx } from '@/lib/cx';
+import styles from './Page.module.css';
 
-/** Basic page layout primitives shared by routes. */
-export const Page = styled.main`
-  max-width: var(--layout-max-width);
-  margin: 0 auto;
-  padding: var(--space-8) var(--space-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-`;
+/** Basic page layout primitives shared by routes. Each takes its element's usual props. */
+export function Page({ className, ...props }: ComponentProps<'main'>) {
+  return <main className={cx(styles.page, className)} {...props} />;
+}
 
-export const PageTitle = styled.h1`
-  font-size: var(--font-size-2xl);
-`;
+export function PageTitle({ className, ...props }: ComponentProps<'h1'>) {
+  return <h1 className={cx(styles.title, className)} {...props} />;
+}
 
-export const Panel = styled.section`
-  --panel-bg: var(--color-surface);
-  --panel-border: var(--color-trim-muted);
+export function Panel({ className, ...props }: ComponentProps<'section'>) {
+  return <section className={cx(styles.panel, className)} {...props} />;
+}
 
-  background: var(--panel-bg);
-  border: 1px solid var(--panel-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-6);
-`;
-
-export const Muted = styled.p`
-  color: var(--color-text-muted);
-`;
+export function Muted({ className, ...props }: ComponentProps<'p'>) {
+  return <p className={cx(styles.muted, className)} {...props} />;
+}

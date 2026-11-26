@@ -1,64 +1,65 @@
-import styled from 'styled-components';
-
-/**
- * The shared layout of a listed character or guild (`CharacterLine`, `GuildLine`):
+/*
+ * The shared layout of a listed character or guild (CharacterLine, GuildLine), one
+ * stylesheet for both since they must line up in the same lists:
  *
  *   [icons]  Name <extra>        [end]
  *            Realm · Region
  */
-export const Row = styled.span`
+.row {
   display: flex;
   flex: 1;
   align-items: center;
   gap: var(--space-3);
   min-width: 0;
-`;
+}
 
-/** The faction, pushed to the far right of the row */
-export const End = styled.span`
+/* The faction, pushed to the far right of the row */
+.end {
   display: flex;
   flex: none;
   margin-left: auto;
-`;
+}
 
-export const Icons = styled.span`
+.icons {
   display: flex;
   flex: none;
   align-items: center;
   gap: var(--space-1);
-`;
+}
 
-export const Text = styled.span`
+.text {
   display: flex;
   flex-direction: column;
   min-width: 0;
   line-height: 1.25;
-`;
+}
 
-export const First = styled.span`
+.first {
   display: flex;
   align-items: baseline;
   gap: var(--space-2);
   min-width: 0;
   white-space: nowrap;
-`;
+}
 
-export const Name = styled.span`
+/* In the class colour when known (data-class-color, gameColors.css), else the highlight */
+.name {
   overflow: hidden;
+  color: var(--color-text-highlight);
   font-weight: 600;
   text-overflow: ellipsis;
-`;
+}
 
-export const Guild = styled.span`
+.guild {
   overflow: hidden;
   color: var(--color-text-muted);
   text-overflow: ellipsis;
-`;
+}
 
-export const Second = styled.span`
+.second {
   overflow: hidden;
   color: var(--color-text-subtle);
   font-size: var(--font-size-sm);
   text-overflow: ellipsis;
   white-space: nowrap;
-`;
+}

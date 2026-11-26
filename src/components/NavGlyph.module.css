@@ -1,0 +1,41 @@
+/*
+ * A single-colour icon. Its size is one of three (sm 22px: deep menu rows, md 26px: the
+ * menu, lg 32px: page headings). Narrow icons are scaled up by --optical-scale
+ * (iconOptics.css, through data-optical). The file comes in as --glyph-url, the one value
+ * the component sets: Vite hashes asset names, so CSS can't write the URL.
+ */
+.glyph {
+  display: inline-block;
+  flex: none;
+  width: var(--glyph-size);
+  height: var(--glyph-size);
+  transform: scale(var(--optical-scale, 1));
+}
+
+.sm {
+  --glyph-size: 22px;
+}
+
+.md {
+  --glyph-size: 26px;
+}
+
+.lg {
+  --glyph-size: 32px;
+}
+
+/* Drawn in the text colour through the file's shape */
+.mask {
+  background: currentColor;
+  mask-image: var(--glyph-url);
+  mask-position: center;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+}
+
+/* Multi-colour SVG inserted as markup (inlineIcons.ts) */
+.inline > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
