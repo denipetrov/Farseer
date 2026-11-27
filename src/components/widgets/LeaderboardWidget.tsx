@@ -14,6 +14,7 @@ import { GameIcon } from '@/components/GameIcon';
 import { HeroTalentIcon } from '@/components/HeroTalentIcon';
 import { NavGlyph } from '@/components/NavGlyph';
 import { Pagination } from '@/components/Pagination';
+import { PvpTalentSlot } from '@/components/PvpTalentSlot';
 import { RaceIcon } from '@/components/RaceIcon';
 import { SpecIcon } from '@/components/SpecIcon';
 import { UnknownIcon } from '@/components/UnknownIcon';
@@ -27,11 +28,11 @@ import { useSite } from '@/lib/site';
 import { classColorKey } from '@/lib/wow/classes';
 import { factionIconUrl } from '@/lib/wow/factions';
 import { heroTreeIconUrl } from '@/lib/wow/heroTalents';
-import { rankOfLadderRow } from '@/lib/wow/pvpRank';
+import { PVP_RANKS, pvpRankIconUrl, rankOfLadderRow } from '@/lib/wow/pvpRank';
 import { raceIconUrl } from '@/lib/wow/races';
 import { realmLabel } from '@/lib/wow/regions';
 import { specIconUrl } from '@/lib/wow/specs';
-import { rowLoadoutCode, wowheadTalentUrl } from '@/lib/wow/talents';
+import { rowLoadoutCode, rowPvpTalents, wowheadTalentUrl } from '@/lib/wow/talents';
 import { winRateTier } from '@/lib/wow/winRate';
 import { usePreferences } from '@/preferences/PreferencesProvider';
 import { WidgetFooter, WidgetFrame, WidgetHeader, WidgetTitle } from './Widget';
@@ -42,31 +43,42 @@ import styles from './LeaderboardWidget.module.css';
 const CHARACTER_REGIONS = new Set(['us', 'eu', 'kr', 'tw']);
 
 type Column =
-  'place' | 'player' | 'rating' | 'previous' | 'won' | 'lost' | 'winRate' | 'faction' | 'talents';
+  'place' | 'player' | 'rating' | 'won' | 'lost' | 'winRate' | 'faction' | 'pvpTalents' | 'talents';
 
 /**
  * The columns of each size, in order (the user's design, 2026-11-26):
  * - small: place, spec + hero talent and name, rating, faction;
  * - medium: adds the race portrait before the spec, and the win % after the rating;
- * - large: adds the realm beside the name, a trend arrow before the rating (against the
- *   previous rating), the previous rating, wins and losses before the win %, and a talent
- *   loadout button at the end; its column titles are shown.
+ * - large: the faction moves between the place and the player; adds the realm beside the
+ *   name, a trend arrow before the rating (against the previous rating, which is on hover:
+ *   its own column went, 2026-11-27), wins and losses before the win %, the PvP talents and
+ *   a talent loadout button at the end; its column titles are shown.
  */
 const COLUMNS: Record<WidgetSize, readonly Column[]> = {
   small: ['place', 'player', 'rating', 'faction'],
   medium: ['place', 'player', 'rating', 'winRate', 'faction'],
-  large: ['place', 'player', 'rating', 'previous', 'won', 'lost', 'winRate', 'faction', 'talents'],
+  large: [
+    'place',
+    'faction',
+    'player',
+    'rating',
+    'won',
+    'lost',
+    'winRate',
+    'pvpTalents',
+    'talents',
+  ],
 };
 
 const HEADINGS: Record<Column, MessageKey> = {
   place: 'widget.rank',
   player: 'widget.player',
   rating: 'widget.rating',
-  previous: 'widget.previousRating',
   won: 'widget.won',
   lost: 'widget.lost',
   winRate: 'widget.winRate',
   faction: 'widget.faction',
+  pvpTalents: 'widget.pvpTalents',
   talents: 'widget.talents',
 };
 
@@ -289,6 +301,24 @@ export function LeaderboardWidget({
   );
 }
 
+const RANK_ONE_BADGE = pvpRankIconUrl(PVP_RANKS.find((r) => r.id === 'rank-one')!);
+
+/**
+ * The place of a character in Rank 1 range (the same test that colours the rating orange:
+ * rankOfLadderRow), written on the Rank 1 emblem as the game shows it: plain digits, no
+ * thousands separator, to fit the shield.
+ */
+function RankOnePlace({ place }: { place: number }) {
+  const digits = String(place);
+  if (!RANK_ONE_BADGE) return <>{digits}</>;
+  return (
+    <span className={styles.badge} data-digits={Math.min(digits.length, 5)}>
+      <img src={RANK_ONE_BADGE} alt="" draggable={false} />
+      <span className={styles.badgeNumber}>{digits}</span>
+    </span>
+  );
+}
+
 function Cell({
   column,
   entry,
@@ -306,7 +336,15 @@ function Cell({
 
   switch (column) {
     case 'place':
-      return <td className={styles.place}>{number(place)}</td>;
+      return (
+        <td className={styles.place}>
+          {rankOfLadderRow(entry).id === 'rank-one' ? (
+            <RankOnePlace place={place} />
+          ) : (
+            number(place)
+          )}
+        </td>
+      );
     case 'player':
       return <PlayerCell entry={entry} withRace={size !== 'small'} withRealm={size === 'large'} />;
     case 'rating':
@@ -317,8 +355,6 @@ function Cell({
           {number(entry.rating)}
         </td>
       );
-    case 'previous':
-      return <td className={styles.number}>{number(entry.previousRating)}</td>;
     case 'won':
       return <td className={cx(styles.number, styles.won)}>{number(entry.won)}</td>;
     case 'lost':
@@ -327,6 +363,8 @@ function Cell({
       return <WinRate entry={entry} />;
     case 'faction':
       return <FactionCell entry={entry} />;
+    case 'pvpTalents':
+      return <PvpTalentsCell entry={entry} />;
     case 'talents':
       return <TalentsCell entry={entry} />;
   }
@@ -464,6 +502,20 @@ function FactionCell({ entry }: { entry: LeaderboardEntry }) {
       ) : (
         <UnknownIcon label={t('unknown.faction')} />
       )}
+    </td>
+  );
+}
+
+/** The PvP talents of the row's spec, one slot each (empty slots in the game's green) */
+function PvpTalentsCell({ entry }: { entry: LeaderboardEntry }) {
+  const classColor = classColorKey(entry.classId ?? entry.class);
+  return (
+    <td className={styles.pvpTalents}>
+      <span className={styles.pvpTalentSlots}>
+        {rowPvpTalents(entry).map((talent, i) => (
+          <PvpTalentSlot key={i} talent={talent} classColor={classColor} />
+        ))}
+      </span>
     </td>
   );
 }

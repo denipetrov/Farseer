@@ -1,0 +1,42 @@
+/*
+ * A Wowhead spell tooltip (HTML made safe by wowheadTooltipHtml), in the game's tooltip
+ * colours: the name white and larger, "Talent" and requirements grey, the facts (cost,
+ * range, cast, cooldown) white in two columns, the description gold.
+ */
+.tooltip :global(table) {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tooltip :global(td),
+.tooltip :global(th) {
+  padding: 0;
+  font-weight: 400;
+  text-align: left;
+  vertical-align: top;
+}
+
+/* The right column of a fact row (range, cooldown) */
+.tooltip :global(th) {
+  padding-left: var(--space-3);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.tooltip :global(.whtt-name) {
+  display: block;
+  margin-bottom: var(--space-1);
+  color: var(--color-text-highlight);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+}
+
+.tooltip :global(.q0),
+.tooltip :global(.wowhead-tooltip-requirements) {
+  color: var(--color-quality-poor);
+}
+
+.tooltip :global(.q) {
+  margin-top: var(--space-2);
+  color: var(--color-tooltip-description);
+}

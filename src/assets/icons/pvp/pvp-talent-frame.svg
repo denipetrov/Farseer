@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 116 104">
+  <!-- PvP talent frame: the slot's octagonal outline only, its sides running into the arrows, in currentColor
+       (set by the component), and the gold arrows on both sides (fixed colour, a dark rim).
+       Empty inside. -->
+  <defs>
+    <linearGradient id="rw-pvp-talent-frame-arrow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe14a"/><stop offset=".5" stop-color="#ffd200"/><stop offset="1" stop-color="#e5a800"/></linearGradient>
+  </defs>
+  <path d="M18.6 33.4L38.4 13.6H77.6L97.4 33.4M18.6 70.6L38.4 90.4H77.6L97.4 70.6" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="miter" stroke-linecap="square"/>
+  <path d="M20.2 32.2V71.8L3.4 52ZM95.8 32.2V71.8L112.6 52Z" fill="url(#rw-pvp-talent-frame-arrow)" stroke="#3a0800" stroke-width="1.6" stroke-linejoin="round"/>
+</svg>

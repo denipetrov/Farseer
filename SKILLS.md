@@ -524,7 +524,10 @@ below).
   bracket PNGs (`pvp/brackets/<bracket>.png`, round), not the menu's single-colour SVGs, which
   stay for the left menu.
 - **Leaderboard** (`LeaderboardWidget`, the user's example): the bracket's PNG and name, a region dropdown (native `<select>`, `PVP_BOARDS`, World first and default), then
-  per row the place, spec and hero talent icons (unknown icon when absent: many characters
+  per row the place (a Rank 1 row, same test as its orange rating, gets its place written
+  on the Rank 1 emblem `rankedpvp_08`, as in game: `RankOnePlace`, plain digits with no
+  thousands separator, smaller type for 3+ digits, a 46px emblem in the large table; the
+  user's request of 2026-11-27), spec and hero talent icons (unknown icon when absent: many characters
   aren't enriched yet), the name in its class colour linking to the PvP character page
   (plain text when Blizzard gives no name or realm), the rating in its PvP rank's colour
   (`rankOfLadderRow` + `PVP_RANKS[].color` in `pvpRank.ts`: the bands of the rankedpvp icons,
@@ -546,15 +549,26 @@ below).
     - medium: + the race portrait first among the icons, + win % after the rating (whole
       percent, won ÷ (won + lost), the record on hover; red below 50%, grey 50–55%, green
       above 55% on the exact rate: `winRateTier` in `src/lib/wow/winRate.ts`);
-    - large: + the realm beside the name (`realmName`), a trend before the rating (green ▲
-      up, red ▼ down, grey — unchanged or no `previousRating`; CSS shapes, the change on
-      hover), the previous rating, wins (green) and losses (red) before the win %, and a **Talents**
+    - large: the faction moves between the place and the player (`place · faction ·
+player · rating · wins · losses · win % · PvP talents · talents`, the user's order of
+      2026-11-27); + the realm beside the name (`realmName`), a trend before the rating
+      (green ▲ up, red ▼ down, grey — unchanged or no `previousRating`; CSS shapes, the change
+      and the previous rating on hover: the Previous column was removed), wins (green) and
+      losses (red) before the win %, the **PvP talents** (`PvpTalentSlot`, three slots from
+      `rowPvpTalents`: the row's spec's `pvpTalents` by slot number, Soulseeker 671cb4b. **Blizzard numbers the slots 2, 3, 4, not 1–3** (`PVP_TALENT_SLOTS`); always exactly three boxes; an
+      empty slot or no data is `pvp-talent-empty.svg` as it is, green; a talent is
+      `pvp-talent-frame.svg` drawn inline, its outline in the class colour through
+      `data-class-color` + `currentColor`, with the spell's icon from Wowhead clipped to the
+      octagon, linking to `wowheadSpellUrl`. The icon name comes from Wowhead's tooltip API,
+      open to other sites (CORS `*`): `nether.wowhead.com/tooltip/spell/<spellId>` →
+      `wow.zamimg.com/images/wow/icons/large/<icon>.jpg`, `useSpellTooltip` in
+      `src/lib/wow/wowheadSpell.ts`, cached for the visit; asked in the site's language, `&locale=<WOWHEAD_LOCALE>`: en 0, ko 1, fr 2, de 3, cn 4, es 6, ru 7, pt 8, so names are translated. On hover or focus a slot shows Wowhead's full tooltip (cost, range, cast, cooldown, requirements, description in the game's gold) in a `HoverCard`: a portal placed with `--card-x`/`--card-y` above the slot, or below, closed on scroll. **Wowhead's tooltip HTML is never inserted as it is**: `wowheadTooltipHtml` rebuilds it from an allow-list (table/div/span/b/br, classes `whtt-name`, `q*`, `wowhead-tooltip-requirements`; links unwrapped; attributes, comments, scripts and media dropped), styled by `WowheadTooltip.module.css`; the plain `title` is the fallback until it loads), and a **Talents**
       button (the `nav/external` icon; its name and hover text say what it opens) that opens Wowhead's talent calculator in a new tab, in the site's language
       (`wowheadTalentUrl`: `https://<www|de|…>.wowhead.com/talent-calc/blizzard/<code>`),
       with the row's spec's `talentLoadoutCode` (`rowLoadoutCode`: by `specId`, else spec
       slug). No loadout yet: a dimmed, dashed button. Its column titles are visible
       (`#` for the place, "Rank" for screen readers), each centred over its centred values
-      (the player column stays left); long titles wrap, hyphenated in the page's language. It needs ~56rem and scrolls sideways below that.
+      (the player column stays left); long titles wrap, hyphenated in the page's language. It needs ~60rem and scrolls sideways below that.
   - **The full leaderboard pages** (`/pvp/leaderboards/<bracket>`) show the large widget,
     **50 rows a page**, with **page controls above and below** (`Pagination`:
     `src/components/Pagination.tsx`; first, previous, the pages around the current one from

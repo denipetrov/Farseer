@@ -120,6 +120,18 @@ gold (mythic, fanged skull with red eyes).
   and `.svg` of the same name in one folder would clash.
 - Read them by path: `iconUrl('difficulty/mythic')` or `iconUrl('difficulty/svg/mythic')`.
 
+### PvP talent slots
+
+`icons/pvp/pvp-talent-<empty|frame>.svg`, after the game's PvP talent slot (116×104 viewBox):
+an octagonal frame whose side ends run into an arrow on each side.
+
+- `pvp-talent-empty.svg`: the empty slot, in fixed colours: a bright green frame with a soft
+  glow, a dark field and a teal-green plus, green arrows.
+- `pvp-talent-frame.svg`: only the frame outline, in `currentColor` (the component sets the
+  colour; inline the SVG, as an `<img>` it falls back to black), and gold arrows (fixed
+  colour). Empty inside, for a talent's icon to sit in.
+- Gradient and filter ids are prefixed `rw-pvp-talent-…`.
+
 ### PvP brackets
 
 - `pvp/brackets/<bracket>.png`, one look, 128 px, named by Soulseeker's bracket slug (`2v2`,

@@ -77,6 +77,20 @@ export interface LeaderboardTalentLoadout {
   heroTalentId: number | null;
   /** The in-game export string, as Wowhead's talent calculator reads it */
   talentLoadoutCode: string | null;
+  /**
+   * The spec's chosen PvP talents in slot order, empty slots left out (Soulseeker 671cb4b,
+   * 2026-11-27); `[]` until Rankwarden refetches the character. `id` differs by spec for one
+   * talent, `spellId` does not.
+   */
+  pvpTalents?: LeaderboardPvpTalent[];
+}
+
+/** One chosen PvP talent */
+export interface LeaderboardPvpTalent {
+  slot: number;
+  id: number;
+  name: string;
+  spellId: number | null;
 }
 
 export interface LeaderboardResponse {

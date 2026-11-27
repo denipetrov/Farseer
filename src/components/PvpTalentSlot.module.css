@@ -1,0 +1,54 @@
+/*
+ * A PvP talent slot: the SVGs' 116 × 104 box. The talent's picture fills the frame's
+ * octagon (its inside, between the arrows: x 20.2–95.8, y 13.6–90.4 of the box) and the
+ * frame is drawn over it, so the outline covers the picture's edge.
+ */
+.slot {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  width: 40px;
+  aspect-ratio: 116 / 104;
+  /* The outline's colour when the class is unknown; data-class-color sets the class's */
+  color: var(--color-text-muted);
+  vertical-align: middle;
+}
+
+.empty,
+.frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.frame > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* The octagon inside the frame; dark until the picture loads, or when Wowhead has none */
+.field {
+  position: absolute;
+  top: 13.1%;
+  left: 17.4%;
+  width: 65.2%;
+  height: 73.8%;
+  overflow: hidden;
+  background: var(--color-bg-sunken);
+  clip-path: polygon(24% 0, 76% 0, 100% 26%, 100% 74%, 76% 100%, 24% 100%, 0 74%, 0 26%);
+}
+
+.icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+
+a.slot:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}

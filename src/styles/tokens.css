@@ -47,6 +47,9 @@
   --color-quality-artifact: #e6cc80;
   --color-quality-heirloom: #00ccff;
 
+  /* In-game tooltips: a spell's description (Wowhead's .q) */
+  --color-tooltip-description: #ffd100;
+
   /* Class colours: --color-class-death-knight, ... */
   --color-class-death-knight: #c41e3a;
   --color-class-demon-hunter: #a330c9;

@@ -74,6 +74,10 @@ export const palette = {
     artifact: '#e6cc80',
     heirloom: '#00ccff',
   },
+  /** In-game tooltip colours: a spell's description is gold (Wowhead's `.q`) */
+  tooltip: {
+    description: '#ffd100',
+  },
   /** In-game class colours */
   class: {
     deathKnight: '#c41e3a',
