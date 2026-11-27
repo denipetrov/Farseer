@@ -240,6 +240,12 @@ englishFallback)` looks up classes, specs, races, hero talents, affixes and dung
   cutoffs). Both are newest first; `ends.<region>` null means still open, and
   `isRunningIn(entry, region)` says whether a raid or season runs there now. Names are
   English: translate raids, bosses and dungeons by slug and affixes by id with `/i18n/names`.
+- **PvP seasons**: `GET /pvp/seasons` (Soulseeker dc443c8; every season newest first, one
+  id for all regions: `name`, `current`, and per region `startsAt`/`endsAt` (null while it
+  runs), `final`, and the 3v3 and RBG title cutoffs only). `usePvpSeasons(mode === 'pvp')`
+  in `RootLayout` fetches it on the PvP side, as the PvE catalogue is; readers use
+  `useQuery(pvpSeasonsQuery())`. Stale after 30 min. Shuffle and Blitz cutoffs are per spec,
+  on `/pvp/cutoffs` and the leaderboard answer, not here.
 - **Codes the API sends** get translated labels from `src/i18n/labels.ts`: `regionLabel(t,
 'eu')`, `roleText(t, kind)`. The English helpers in `src/lib/wow/` stay for code without
   a translator.
@@ -375,9 +381,15 @@ below).
   beside it (`.toggle`, aria-label "More in {name}", `nav.more`), opens or closes the
   section**. Its link is active on that exact page only; on a page inside, the label is
   bright (`data-has-active`). `navLinks` counts these pages, so the parent opens on them.
-  Sections without a page keep the whole row as the toggle.
-- **The PvP menu** (`pvpNav.ts`, the user's order): Home · Character · Leaderboards (2v2,
-  3v3, Solo Shuffle, Battleground Blitz, Rated Battlegrounds; each opens its whole ladder,
+  Sections without a page keep the whole row as the toggle. **Such a section closes when the visitor
+  goes to a page outside it** (the user, 2026-11-27): only the bracket (and class) being
+  viewed stays open, whether the move came from the menu, the bracket bar or a link. It
+  closes both when it stops being the current section and on any move while it isn't (a
+  bracket opened by hand), as the address can change a moment before the router matches
+  the new page. A region change (same address) leaves it alone.
+- **The PvP menu** (`pvpNav.ts`, the user's order): Home · Character · Leaderboards (Solo
+  Shuffle, 3v3, 2v2, Battleground Blitz, Rated Battlegrounds: `PVP_BRACKETS`' order, the
+  user's of 2026-11-27, also the bracket bar's; each opens its whole ladder,
   and its arrow lists every class A–Z; a class opens its whole ladder (`…/<class>/all`)
   and its arrow its specs A–Z, like the PvE Specs; A–Z by English name from `gameOrder.ts`, shared with `pveNav`) · Stats (Spec Representation,
   Hero Talents, Cutoffs) · FOTM · Tier List · Archives. Links are `linkOptions(...)`, so
@@ -469,7 +481,7 @@ below).
 "being built") until their content is built:
 
 - `leaderboards/$bracket/` (`2v2`, `3v3`, `shuffle`, `blitz`, `rbg`; anything else is not
-  found; search params `region` and `page`, both optional). `leaderboards/` opens 2v2.
+  found; search params `region` and `page`, both optional). `leaderboards/` opens the first bracket, Solo Shuffle.
 - `leaderboards/$bracket/$class/$spec`: one class or spec of a ladder (`shuffle/mage/fire`,
   `3v3/mage/all` for the whole class; `isSpecParams`, else not found), Soulseeker's
   `class=` / `spec=` filters, which every bracket takes. Both pages render
@@ -543,8 +555,7 @@ below).
   screenshots) and opens a row of its children, as deep as the tree goes. Picking the
   pick again unpicks it and everything below; the × at the end of the deepest row clears
   all. `value` / `onChange` are the picked path (`['mage', 'fire']`, `[]`); the logic is
-  `filterRows` / `nextFilterPath` in `src/lib/filterPath.ts` (tested). Choices are 48px
-  buttons around 40px icons (`size="md"`, the filter pickers' size); each row is a
+  `filterRows` / `nextFilterPath` in `src/lib/filterPath.ts` (tested). Choices are 48px buttons around 40px icons (`size="md"`, the filter pickers' size); the top row is a step larger, 56px around 48px (`data-level`, the user, 2026-11-27); the × is drawn in CSS (a font's × sits off centre); each row is a
   labelled group ("Class", "Specialization"), each choice a toggle (`aria-pressed`).
   Ready trees in `widgets/filterTrees.tsx`: `classSpecTree`, `classRoleTree` (A–Z, as the
   menus); dungeons and raid → boss go in the same shape. **On the PvP leaderboard pages**
@@ -588,13 +599,28 @@ losses · win % · PvP talents · talents · faction`, the user's order of 2026-
       octagon, linking to `wowheadSpellUrl`. The icon name comes from Wowhead's tooltip API,
       open to other sites (CORS `*`): `nether.wowhead.com/tooltip/spell/<spellId>` →
       `wow.zamimg.com/images/wow/icons/large/<icon>.jpg`, `useSpellTooltip` in
-      `src/lib/wow/wowheadSpell.ts`, cached for the visit; asked in the site's language, `&locale=<WOWHEAD_LOCALE>`: en 0, ko 1, fr 2, de 3, cn 4, es 6, ru 7, pt 8, so names are translated. On hover or focus a slot shows Wowhead's full tooltip (cost, range, cast, cooldown, requirements, description in the game's gold) in a `HoverCard`: a portal placed with `--card-x`/`--card-y` above the slot, or below, closed on scroll. **Wowhead's tooltip HTML is never inserted as it is**: `wowheadTooltipHtml` rebuilds it from an allow-list (table/div/span/b/br, classes `whtt-name`, `q*`, `wowhead-tooltip-requirements`; links unwrapped; attributes, comments, scripts and media dropped), styled by `WowheadTooltip.module.css`; the plain `title` is the fallback until it loads), and a **Talents**
+      `src/lib/wow/wowheadSpell.ts`; one request per unique spell and language (rows share the query), and the answers are kept between visits for 7 days in localStorage `farseer:wowhead-spells` (`spellCache.ts`: at most 600 entries, writes batched, tooltip HTML re-sanitised on read), so a page asks Wowhead only for talents it hasn't seen, cached for the visit; asked in the site's language, `&locale=<WOWHEAD_LOCALE>`: en 0, ko 1, fr 2, de 3, cn 4, es 6, ru 7, pt 8, so names are translated. On hover or focus a slot shows Wowhead's full tooltip (cost, range, cast, cooldown, requirements, description in the game's gold) in a `HoverCard`: a portal placed with `--card-x`/`--card-y` above the slot, or below, closed on scroll. **Wowhead's tooltip HTML is never inserted as it is**: `wowheadTooltipHtml` rebuilds it from an allow-list (table/div/span/b/br, classes `whtt-name`, `q*`, `wowhead-tooltip-requirements`; links unwrapped; attributes, comments, scripts and media dropped), styled by `WowheadTooltip.module.css`; the plain `title` is the fallback until it loads), and a **Talents**
       button (the `nav/external` icon; its name and hover text say what it opens) that opens Wowhead's talent calculator in a new tab, in the site's language
       (`wowheadTalentUrl`: `https://<www|de|…>.wowhead.com/talent-calc/blizzard/<code>`),
       with the row's spec's `talentLoadoutCode` (`rowLoadoutCode`: by `specId`, else spec
       slug). No loadout yet: a dimmed, dashed button. Its column titles are visible
       (`#` for the place, "Rank" for screen readers), each centred over its centred values
       (the player column stays left); long titles wrap, hyphenated in the page's language. It needs ~60rem and scrolls sideways below that.
+  - **The full leaderboard pages** (`PvpLeaderboardPage`; the user's layout of 2026-11-27):
+    the bracket's icon beside the heading; under it the live season (`SeasonInfo`, from
+    `GET /pvp/seasons`: name shortened from `Player vs. Player (…)`, start and end in the
+    region shown, World = first start and last end; the title the bracket awards with its
+    rating in that region: 3v3 Gladiator, RBG Hero of the header's faction; on one spec's
+    Shuffle or Blitz ladder the spec's title (Legend, Warlord) from the leaderboard's own
+    answer (`cutoff`, World `regionCutoffs`; `ladderReward`), read through the board's
+    query with the same parameters, so no second request; none for 2v2 or a Shuffle/Blitz
+    page of several specs; logic in `src/lib/wow/pvpSeason.ts`, tested; Blizzard's names
+    and titles come in English); a bar (`LeaderboardTabs`) with the brackets on the
+    left (short names "BG Blitz", "RBG" so it fits one line, the full name on hover; a
+    bracket keeps the class/spec filter and the region, which it also remembers) and the
+    regions on the right (the old dropdown: remembered per bracket, page 1), wrapping to
+    two rows on narrower pages; then the class/spec filter; then the large widget **with
+    its header off** (`header={false}`: the heading and bar say the same).
   - **The full leaderboard pages** (`/pvp/leaderboards/<bracket>`, and `…/<class>/<spec>`) show the large widget,
     **50 rows a page**, with **page controls above and below** (`Pagination`:
     `src/components/Pagination.tsx`; first, previous, the pages around the current one from

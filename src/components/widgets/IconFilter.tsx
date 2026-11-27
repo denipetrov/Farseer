@@ -51,6 +51,8 @@ export function IconFilter({
         <div
           key={level}
           className={styles.row}
+          // The top row's icons are a little larger than the rows below (the user, 2026-11-27)
+          data-level={Math.min(level, 1)}
           role="group"
           aria-label={levels[level] ?? levels.at(-1)}
         >
@@ -78,7 +80,8 @@ export function IconFilter({
               title={t('filter.clear')}
               onClick={() => onChange([])}
             >
-              <span aria-hidden>×</span>
+              {/* Drawn in CSS: a font's × sits off its box's centre */}
+              <span className={styles.cross} aria-hidden />
             </button>
           )}
         </div>

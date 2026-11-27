@@ -1,6 +1,7 @@
 import { useNavigate } from '@tanstack/react-router';
 import { useEffect, useMemo } from 'react';
-import type { PvpBracket } from '@/api/pvp';
+import type { PvpBoard, PvpBracket } from '@/api/pvp';
+import { GameIcon } from '@/components/GameIcon';
 import { Page, PageTitle } from '@/components/Page';
 import { LeaderboardWidget } from '@/components/widgets/LeaderboardWidget';
 import { IconFilter } from '@/components/widgets/IconFilter';
@@ -8,11 +9,15 @@ import { WidgetGrid } from '@/components/widgets/WidgetGrid';
 import { classSpecTree } from '@/components/widgets/filterTrees';
 import { useI18n } from '@/i18n/useI18n';
 import type { LeaderboardSearch } from '@/lib/leaderboardSearch';
+import { iconUrl } from '@/lib/assets';
 import { ALL } from '@/lib/mplusParams';
 import { resolveClass } from '@/lib/wow/classes';
 import { resolveSpec } from '@/lib/wow/specs';
 import { useSite } from '@/lib/site';
 import { usePreferences } from '@/preferences/PreferencesProvider';
+import { LeaderboardTabs } from './LeaderboardTabs';
+import { SeasonInfo } from './SeasonInfo';
+import styles from './PvpLeaderboardPage.module.css';
 
 /**
  * A whole ladder as the large leaderboard widget, 50 rows a page, with page controls above
@@ -63,10 +68,32 @@ export function PvpLeaderboardPage({
   ]
     .filter(Boolean)
     .join(' · ');
+  const bracketArt = iconUrl(`pvp/brackets/${bracket}`);
+
+  // The region shown: as the widget reads it (this bracket's remembered one, else the URL's)
+  const shownRegion = remembered ?? region ?? 'world';
+  const pickRegion = (next: PvpBoard) => {
+    setPreference('pvpBoardRegions', { ...preferences.pvpBoardRegions, [bracket]: next });
+    // Page 1 and World are left out of the URL
+    onSearch({ region: next === 'world' ? undefined : next });
+  };
 
   return (
     <Page>
-      <PageTitle>{title}</PageTitle>
+      {/* The bracket's icon beside the heading: the widget's own header is off here */}
+      <PageTitle className={styles.title}>
+        {bracketArt && <GameIcon src={bracketArt} label="" size="md" shape="round" />}
+        <span>{title}</span>
+      </PageTitle>
+      <SeasonInfo bracket={bracket} region={shownRegion} cls={c?.slug} spec={s?.slug} page={page} />
+      {/* The page's own gap spaces it from the heading and the filter */}
+      <LeaderboardTabs
+        bracket={bracket}
+        cls={c?.slug}
+        spec={s?.slug}
+        region={shownRegion}
+        onRegion={pickRegion}
+      />
       <WidgetGrid>
         {/* Class → spec: each pick opens that ladder (the menu's pages), × the whole bracket */}
         <IconFilter
@@ -94,11 +121,11 @@ export function PvpLeaderboardPage({
           spec={s?.slug}
           size="large"
           region={region}
+          header={false}
           fullLink={false}
           page={page}
-          // Page 1 and World are left out of the URL
+          // Page 1 is left out of the URL
           onPageChange={(next) => onSearch({ ...search, page: next > 1 ? next : undefined })}
-          onRegionChange={(next) => onSearch({ region: next === 'world' ? undefined : next })}
         />
       </WidgetGrid>
     </Page>

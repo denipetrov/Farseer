@@ -2,7 +2,7 @@
  * Soulseeker's PvP boards. Only what the site uses so far; extend the types as pages read
  * more of each answer (Soulseeker's `src/pvp/**\/*.types.ts` are the source).
  */
-import { queryOptions } from '@tanstack/react-query';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 import type { PvpBoard, PvpBracket } from '@/lib/pvpBoards';
 import { api } from '.';
 
@@ -28,6 +28,60 @@ export const currentSeasonQuery = (region: PvpBoard = 'world', bracket: PvpBrack
     queryFn: ({ signal }) => api.get<CutoffsSeason>('/pvp/cutoffs', { region, bracket }, signal),
     staleTime: 10 * 60_000,
   });
+
+/** A title cutoff (Soulseeker's `Cutoff`): one for everyone, or per faction (RBG's Hero) */
+export interface PvpCutoff {
+  rating: number | null;
+  /** `Gladiator: Midnight Season 2`; null when the title is per faction */
+  title: string | null;
+  achievementId: number | null;
+  /** Per faction when the factions' titles differ (RBG's Hero of the Alliance / Horde) */
+  factions: Partial<
+    Record<'alliance' | 'horde', { rating: number; title: string; achievementId: number }>
+  > | null;
+}
+
+/** A Blizzard region's run of a season, in `GET /pvp/seasons` */
+export interface PvpSeasonRegion {
+  startsAt: string | null;
+  /** Null while it runs, and for the oldest seasons Blizzard has no dates for */
+  endsAt: string | null;
+  current: boolean;
+  /** The cutoffs are final: the season is archived there */
+  final: boolean;
+  rewardsFetchedAt: string | null;
+  /** The ladders with one cutoff for everyone; 2v2 has no title, Shuffle and Blitz are per spec */
+  cutoffs: { '3v3': PvpCutoff | null; rbg: PvpCutoff | null };
+}
+
+/** A season in `GET /pvp/seasons` (Soulseeker dc443c8): one id, shared by every region */
+export interface PvpSeason {
+  /** Blizzard's id: 42 is Midnight Season 2 */
+  seasonId: number;
+  /** `Player vs. Player (Midnight Season 2)`; null for seasons Blizzard left unnamed (40, 37, 33…) */
+  name: string | null;
+  /** Live in at least one region */
+  current: boolean;
+  regions: Partial<Record<'us' | 'eu' | 'kr' | 'tw', PvpSeasonRegion>>;
+}
+
+export const pvpSeasonsQuery = () =>
+  queryOptions({
+    queryKey: ['pvp', 'seasons'],
+    queryFn: ({ signal }) => api.get<{ seasons: PvpSeason[] }>('/pvp/seasons', undefined, signal),
+    // Soulseeker keeps it an hour; the live season's cutoffs move through the day
+    staleTime: 30 * 60_000,
+    gcTime: 24 * 60 * 60_000,
+  });
+
+/**
+ * Fetches the PvP seasons while the visitor is on the PvP side (the user's request,
+ * 2026-11-27), and keeps them cached when they switch to PvE. Mounted once, in the root
+ * layout, as the PvE catalogue is; pages read the same query.
+ */
+export function usePvpSeasons(enabled: boolean) {
+  return useQuery({ ...pvpSeasonsQuery(), enabled });
+}
 
 /** One row of a ladder (Soulseeker's `src/pvp/leaderboard/leaderboard.types.ts`). */
 export interface LeaderboardEntry {
@@ -101,6 +155,13 @@ export interface LeaderboardResponse {
   pageSize: number;
   total: number;
   totalPages: number;
+  /**
+   * The board's title cutoff: set on 3v3, RBG and one spec's Shuffle or Blitz ladder in a
+   * region; null on 2v2, on a Shuffle or Blitz board of several specs, and on World.
+   */
+  cutoff: PvpCutoff | null;
+  /** World only: each region's cutoff for the board */
+  regionCutoffs?: Partial<Record<'us' | 'eu' | 'kr' | 'tw', PvpCutoff | null>>;
   entries: LeaderboardEntry[];
 }
 

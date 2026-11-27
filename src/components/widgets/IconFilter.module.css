@@ -33,6 +33,17 @@
     opacity var(--transition-fast);
 }
 
+/* The top row: a 48px icon in a 56px button, a step above the rows below (40 in 48) */
+.row[data-level='0'] .choice {
+  width: 56px;
+  height: 56px;
+}
+
+.row[data-level='0'] .choice > img {
+  width: 48px;
+  height: 48px;
+}
+
 .choice:hover {
   background: var(--color-surface-hover);
 }
@@ -70,9 +81,34 @@
   border-radius: var(--radius-md);
   background: transparent;
   color: var(--color-text-subtle);
-  font-size: 1.5rem;
-  line-height: 1;
   cursor: pointer;
+}
+
+/* The ×: two 2px bars crossed at the button's exact centre */
+.cross {
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+
+.cross::before,
+.cross::after {
+  position: absolute;
+  top: 7px;
+  left: 0;
+  width: 16px;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+  content: '';
+}
+
+.cross::before {
+  transform: rotate(45deg);
+}
+
+.cross::after {
+  transform: rotate(-45deg);
 }
 
 .clear:hover {

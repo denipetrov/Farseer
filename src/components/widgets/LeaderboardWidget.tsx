@@ -100,6 +100,11 @@ interface LeaderboardWidgetProps {
   size?: WidgetSize;
   /** The region it opens on until the visitor picks one for this bracket (then remembered) */
   region?: PvpBoard;
+  /**
+   * The bracket's icon, name and region dropdown. Off on the full leaderboard pages, whose
+   * heading and bracket/region bar say the same (the user, 2026-11-27).
+   */
+  header?: boolean;
   /** The "View full leaderboard" link; off on the full leaderboard page itself */
   fullLink?: boolean;
   /** The page shown (1-based), when the widget pages through the board */
@@ -127,6 +132,7 @@ export function LeaderboardWidget({
   spec,
   size = 'small',
   region: initialRegion = 'world',
+  header = true,
   fullLink = true,
   page = 1,
   onPageChange,
@@ -197,28 +203,30 @@ export function LeaderboardWidget({
 
   return (
     <WidgetFrame ref={frameRef} size={size} aria-label={title} className={styles.frame}>
-      <WidgetHeader>
-        <WidgetTitle>
-          {/* Centre content uses the coloured game art (the user, 2026-11-26), not the menu glyphs */}
-          {bracketArt && <GameIcon src={bracketArt} label="" shape="round" />}
-          <span title={shown === title ? undefined : title}>{shown}</span>
-        </WidgetTitle>
-        <label htmlFor={selectId} className="sr-only">
-          {t('widget.region')}
-        </label>
-        <select
-          className={styles.regionSelect}
-          id={selectId}
-          value={region}
-          onChange={(e) => setRegion(e.target.value as PvpBoard)}
-        >
-          {PVP_BOARDS.map((r) => (
-            <option key={r} value={r}>
-              {regionLabel(t, r)}
-            </option>
-          ))}
-        </select>
-      </WidgetHeader>
+      {header && (
+        <WidgetHeader>
+          <WidgetTitle>
+            {/* Centre content uses the coloured game art (the user, 2026-11-26), not the menu glyphs */}
+            {bracketArt && <GameIcon src={bracketArt} label="" shape="round" />}
+            <span title={shown === title ? undefined : title}>{shown}</span>
+          </WidgetTitle>
+          <label htmlFor={selectId} className="sr-only">
+            {t('widget.region')}
+          </label>
+          <select
+            className={styles.regionSelect}
+            id={selectId}
+            value={region}
+            onChange={(e) => setRegion(e.target.value as PvpBoard)}
+          >
+            {PVP_BOARDS.map((r) => (
+              <option key={r} value={r}>
+                {regionLabel(t, r)}
+              </option>
+            ))}
+          </select>
+        </WidgetHeader>
+      )}
 
       {paging && paging('top')}
 

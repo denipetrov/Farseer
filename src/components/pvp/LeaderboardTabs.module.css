@@ -1,0 +1,61 @@
+/*
+ * The brackets (left) and the regions (right) in one bar; on a narrow page the regions
+ * wrap below. Each tab: muted text, the hover surface, and the current one bright with an
+ * accent line under it, as the header's PvP/PvE switch.
+ */
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-6);
+  padding: var(--space-2);
+  border: 1px solid var(--color-border-muted);
+  border-radius: var(--radius-lg, var(--radius-md));
+  background: var(--color-surface);
+}
+
+.group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 40px;
+  padding: var(--space-1) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  box-shadow: inset 0 -2px 0 transparent;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    box-shadow var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.tab:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text-highlight);
+}
+
+.tab[aria-current='page'],
+.tab[aria-pressed='true'] {
+  background: var(--color-surface-hover);
+  box-shadow: inset 0 -2px 0 var(--color-accent);
+  color: var(--color-text-highlight);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}

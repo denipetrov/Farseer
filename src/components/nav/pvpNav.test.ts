@@ -69,4 +69,15 @@ describe('PvP menu', () => {
     expect(ids).toContain('leaderboards-3v3');
     expect(ids).toContain('leaderboards-3v3-mage-fire');
   });
+
+  it('lists the brackets Solo Shuffle, 3v3, 2v2, Blitz, RBG', () => {
+    const brackets = (items.find((i) => i.id === 'leaderboards') as NavGroup).children;
+    expect(brackets.map((b) => b.id)).toEqual([
+      'leaderboards-shuffle',
+      'leaderboards-3v3',
+      'leaderboards-2v2',
+      'leaderboards-blitz',
+      'leaderboards-rbg',
+    ]);
+  });
 });

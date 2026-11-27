@@ -1,4 +1,4 @@
-import { Link, useMatchRoute } from '@tanstack/react-router';
+import { Link, useLocation, useMatchRoute } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { useId, useState } from 'react';
 import { raidsQuery } from '@/api/pve';
@@ -126,6 +126,18 @@ function Group({ group, depth, wide }: { group: NavGroup; depth: number; wide?: 
   if (childActive !== wasActive) {
     setWasActive(childActive);
     if (childActive) setOpen(true);
+  }
+
+  // A section with its own page (a bracket, a class) closes when the visitor goes to a page
+  // outside it, so only the bracket being viewed stays open (the user, 2026-11-27): when it
+  // stops being the current section, and on any move while it is not (one opened by hand).
+  // Both, as the address can change a moment before the router matches the new page.
+  const inside = childActive || (!!group.link && !!matchRoute(group.link));
+  const pathname = useLocation({ select: (l) => l.pathname });
+  const [seen, setSeen] = useState({ pathname, inside });
+  if (pathname !== seen.pathname || inside !== seen.inside) {
+    setSeen({ pathname, inside });
+    if (group.link && !inside) setOpen(false);
   }
 
   const list = open ? (

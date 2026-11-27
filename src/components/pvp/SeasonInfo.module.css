@@ -1,0 +1,49 @@
+/*
+ * The season's facts in a row under the heading: a small capital label over each value,
+ * wrapping on narrow pages.
+ */
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-8);
+  margin: 0;
+}
+
+.facts > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.facts dt {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.facts dd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin: 0;
+  color: var(--color-text-highlight);
+  font-weight: 600;
+}
+
+/* The season still runs: in the success green */
+.live {
+  color: var(--color-success);
+}
+
+/* The title in its rank's colour (Gladiator) */
+.title {
+  color: var(--color-rank-gladiator);
+}
+
+.rating {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
