@@ -179,5 +179,20 @@
   "pagination.last": "Dernière page",
   "pagination.page": "Page {page}",
   "pagination.summary": "Page {page} sur {pages} · {total} joueurs",
-  "pagination.goTo": "Aller à la page"
+  "pagination.goTo": "Aller à la page",
+  "cutoffs.title": "Seuils Rang 1",
+  "cutoffs.allSpecs": "toutes les spés",
+  "cutoffs.about": "La cote requise par chaque spé pour le titre suprême de la saison en {region}",
+  "cutoffs.read": "relevé le {date}",
+  "cutoffs.reach": "{count} joueurs au seuil ou au-dessus",
+  "cutoffs.titleLabel": "Titre Rang 1",
+  "cutoffs.positions": "Places Rang 1",
+  "cutoffs.unknown": "Pas encore identifiés",
+  "cutoffs.unknownHint": "Personnages que Rankwarden n’a pas encore associés à une spé",
+  "cutoffs.holders": "{count} joueurs occupent une place Rang 1",
+  "cutoffs.aboutLadder": "La cote requise pour le titre suprême de la saison en {region}",
+  "cutoffs.pageTitle": "Seuils Rang 1 – {bracket}",
+  "archive.pageTitle": "Archives – {bracket}",
+  "season.endedPast": "Terminée",
+  "archive.pickSpec": "Les classements passés de Solo Shuffle et de Blitz sont conservés par spécialisation : choisissez-en une pour voir le classement de cette classe."
 }

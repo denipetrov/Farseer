@@ -574,8 +574,8 @@ below).
   - **PvP home** (the user, 2026-11-27): each bracket's tier list above its ladder, at its
     width (`PvpHomeBracket`: one grid cell holding both, `grid-template-rows: subgrid` over
     two rows, so lists side by side share a height and the ladders start level). The
-    `mini` version: named for its bracket ("RBG Tier List" when small), disclaimer and
-    season line, icon-only chips (name and score on hover), "View full tier list" to
+    `mini` version: named for its bracket ("RBG Tier List" when small), disclaimer (no
+    season line: only the full page has it), icon-only chips (name and score on hover), "View full tier list" to
     `/pvp/tier-list?bracket=`; no role filter or "how" panel. It follows the ladder's
     region (the bracket's remembered one).
   - No "By Hero Talent" view: the endpoints have no hero talent breakdown.
@@ -664,6 +664,64 @@ losses · win % · PvP talents · talents · faction`, the user's order of 2026-
     regions on the right (the old dropdown: remembered per bracket, page 1), wrapping to
     two rows on narrower pages; then the class/spec filter; then the large widget **with
     its header off** (`header={false}`: the heading and bar say the same).
+  - **PvP Archives** (`/pvp/archives?season&bracket&role&region&page`, `ArchivesPage.tsx`;
+    the user's design of 2026-11-27, was Coming soon): a finished season's ladder in the
+    leaderboard pages' layout. Rules in `src/lib/archive.ts` (tested):
+    - **What exists** (probed 2026-11-27): 2v2/3v3/RBG from season 27, Shuffle from 34,
+      Blitz from 38; 22–26 are listed by `/pvp/seasons` but empty, so the dropdown starts
+      at 27. A bracket the season lacks falls back to 3v3.
+    - **Season dropdown** in place of the season's name in `SeasonInfo` (`seasonId` and
+      `picker` props; "Ended" not "Ends"). Unnamed seasons are named from their 3v3 title
+      (`seasonLabel`: "Sinful Gladiator: Shadowlands Season 1" → "Shadowlands Season 1").
+    - **Bar**: the season's brackets and the regions with World. No tier list.
+    - **Filter on Shuffle/Blitz only** (the user, 2026-11-27): the leaderboard pages'
+      `IconFilter` (`classSpecRoleTree`) between the bar and the board, in the URL as
+      `class`/`spec`/`role`. Soulseeker archives those per spec ladder and serves them by
+      class+spec or by role only (all specs or a class alone is a 400), so the filter opens
+      on DPS (× goes back to it) and a class picked alone shows "pick a spec" instead of a
+      board. A bracket switch keeps the filter; 2v2/3v3/RBG drop it (archived rows there
+      have no class). `resolveArchive` decides it, tested.
+    - **Trap: TanStack marks a Link current by itself** (`aria-current="page"`) when its
+      search is a subset of the URL's, and a key set to `undefined` is ignored, so World
+      (no `region`) matched every region. Tab links that leave a key out need
+      `activeOptions={{ explicitUndefined: true }}` (archives, `TierListTabs`).
+    - **Board**: `LeaderboardWidget archiveSeason={id}`: `ARCHIVE_COLUMNS` (place, name +
+      realm, rating, wins, losses, win %, faction), no icons or trend (archived rows have
+      no class, spec, race, talents or previous rating), the region from the URL (not the
+      remembered live one). Names are white: no class colour in archived rows.
+  - **Rank One cutoffs** (`src/components/pvp/RankOneCutoffs.tsx`; the user's designs of
+    2026-11-27): on every ladder with a title (3v3, RBG, Shuffle, Blitz: `TITLE_BRACKETS`;
+    2v2 has none), **below the ladder** (the user's call: the ladder stays in view on
+    1080p), and **hidden on World** (Blizzard sets cutoffs per region; the user's call). One
+    `GET /pvp/cutoffs?region&bracket` (`pvpCutoffsQuery`, every spec) filtered on the client
+    by the page's class or role, so the filter costs no request. Header "RANK ONE CUTOFFS ⓘ
+    · all specs | <class> | <role>"; the ⓘ's hover names the region, the title (the header's
+    faction's on RBG and Blitz, via `ladderReward`) and when Rankwarden read the cutoffs.
+    - **Shuffle and Blitz** (a cutoff per spec ladder): a card per class (A–Z,
+      `CLASSES_AZ`/`specsAz`), wrapping and centred; each spec links to its ladder
+      (`aria-current` marks the spec page's), its cutoff in the **rating band's rank
+      colour** (`rankForRating({rating})`, `data-rank`), players at or above on hover.
+    - **3v3 and RBG** (one cutoff): the title (tooltip gold) and its rating large in the
+      Rank 1 colour; "Rank One positions" and "Not yet identified" (the answer's null
+      class/spec entry: characters Rankwarden has no spec for, shown only unfiltered); the
+      role split as a **pie** (`RolePie.tsx`, the user's request: an SVG of slices in the role
+      colours with a 2px surface gap, each slice's role icon at 32px on its middle, `--x`/`--y`
+      custom properties; slices under 8% skip the icon) beside a legend of role icon, name in
+      the role colour, count and share; then a column per role, its role icon in the title (Melee, Ranged, Healers,
+      with Tanks stacked under Healers as in the user's example), specs most first, each
+      with a bar against the column's most. Role colours are tokens
+      (`--color-role-melee|ranged|healer|tank`, `palette.role`). Bar widths are the
+      custom-property exception (`--share` 0–1): data-only values. Tank is `#d07cf2`, not
+      the example's purple: the dataviz validator failed that purple against ranged blue for
+      normal vision; melee red and healer green stay close for colour-blind readers, which
+      the role icons on every slice and legend row cover.
+    - **Standalone page** (Stats → Cutoffs, `/pvp/stats/cutoffs?bracket&region`; the user,
+      2026-11-27; `CutoffsPage.tsx`, was Coming soon): "Solo Shuffle Rank One Cutoffs" with
+      the bracket's icon, a bar of the title ladders (Solo, 3v3, Blitz, RBG) and the regions
+      US/EU/KR/TW (`CUTOFF_REGIONS`, no World), then the widget unfiltered. Defaults: Solo
+      Shuffle; the bracket's remembered leaderboard region unless World, else US.
+    - **Not built (no data yet):** the example's cutoff history chart and the Mains/Alts
+      split need Soulseeker endpoints that don't exist.
   - **The full leaderboard pages** (`/pvp/leaderboards/<bracket>`, and `…/<class>/<spec>`) show the large widget,
     **50 rows a page**, with **page controls above and below** (`Pagination`:
     `src/components/Pagination.tsx`; first, previous, the pages around the current one from

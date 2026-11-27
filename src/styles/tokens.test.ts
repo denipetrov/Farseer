@@ -28,6 +28,8 @@ describe('tokens.css follows palette.ts', () => {
       expect(root[`--color-rank-${kebab(k)}`], k).toBe(v);
     for (const [k, v] of Object.entries(palette.tooltip))
       expect(root[`--color-tooltip-${kebab(k)}`], k).toBe(v);
+    for (const [k, v] of Object.entries(palette.role))
+      expect(root[`--color-role-${kebab(k)}`], k).toBe(v);
   });
 
   it('has the surfaces, text, status and faction colours', () => {

@@ -41,6 +41,58 @@ export interface PvpCutoff {
   > | null;
 }
 
+/** The ladders that award a title, the ones `GET /pvp/cutoffs` takes (2v2 has none) */
+export const TITLE_BRACKETS = ['3v3', 'rbg', 'shuffle', 'blitz'] as const;
+export type TitleBracket = (typeof TITLE_BRACKETS)[number];
+export const isTitleBracket = (v: string): v is TitleBracket =>
+  (TITLE_BRACKETS as readonly string[]).includes(v);
+
+/** A spec in `GET /pvp/cutoffs`, in one region: how many of it reach the title */
+export interface PvpSpecCutoff {
+  /** Null (with `spec`) on 3v3 and RBG for the characters Rankwarden has not identified yet */
+  class: string | null;
+  spec: string | null;
+  classId: number | null;
+  specId: number | null;
+  /** Characters at or above the cutoff */
+  count: number;
+  /** Shuffle and Blitz: the spec ladder's own cutoff (3v3 and RBG have one for all) */
+  cutoff?: PvpCutoff | null;
+}
+
+/** `GET /pvp/cutoffs?region=&bracket=`: the title cutoffs and who reaches them */
+export interface PvpCutoffs {
+  seasonName: string | null;
+  /** The season is over: the cutoffs no longer move */
+  final: boolean;
+  /** When Rankwarden last read the cutoffs from Blizzard */
+  rewardsFetchedAt: string | null;
+  /** 3v3 and RBG: the ladder's one cutoff; null on Shuffle and Blitz (per spec) */
+  cutoff: PvpCutoff | null;
+  /** Characters at or above the cutoff, every spec together */
+  total: number;
+  specs: PvpSpecCutoff[];
+}
+
+/** The regions cutoffs exist for: Blizzard sets them per region, so not World */
+export type CutoffRegion = Exclude<PvpBoard, 'world'>;
+export const CUTOFF_REGIONS: readonly CutoffRegion[] = ['us', 'eu', 'kr', 'tw'];
+export const isCutoffRegion = (v: unknown): v is CutoffRegion =>
+  (CUTOFF_REGIONS as readonly unknown[]).includes(v);
+
+/**
+ * A title ladder's cutoffs in one region (not World: Blizzard sets cutoffs per region), with
+ * every spec. One request; a page's class or role filter is applied to it, so changing the
+ * filter costs nothing.
+ */
+export const pvpCutoffsQuery = (region: Exclude<PvpBoard, 'world'>, bracket: TitleBracket) =>
+  queryOptions({
+    queryKey: ['pvp', 'cutoffs', region, bracket, 'specs'],
+    queryFn: ({ signal }) => api.get<PvpCutoffs>('/pvp/cutoffs', { region, bracket }, signal),
+    // Rankwarden reads the cutoffs a few times a day
+    staleTime: 10 * 60_000,
+  });
+
 /** A Blizzard region's run of a season, in `GET /pvp/seasons` */
 export interface PvpSeasonRegion {
   startsAt: string | null;

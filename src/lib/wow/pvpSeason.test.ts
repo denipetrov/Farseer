@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { PvpSeason } from '@/api/pvp';
-import { ladderReward, seasonDates, seasonReward, seasonShortName } from './pvpSeason';
+import { ladderReward, seasonDates, seasonLabel, seasonReward, seasonShortName } from './pvpSeason';
 
 const glad = (rating: number) => ({
   rating,
@@ -50,6 +50,25 @@ describe('PvP season details', () => {
     expect(seasonShortName('Player vs. Player (Midnight Season 2)')).toBe('Midnight Season 2');
     expect(seasonShortName('Season 9')).toBe('Season 9');
     expect(seasonShortName(null)).toBeNull();
+  });
+
+  it('names an unnamed season after its Gladiator title', () => {
+    const unnamed = {
+      ...live,
+      name: null,
+      regions: {
+        us: {
+          ...live.regions.us!,
+          cutoffs: {
+            '3v3': { ...glad(2400), title: 'Sinful Gladiator: Shadowlands Season 1' },
+            rbg: null,
+          },
+        },
+      },
+    };
+    expect(seasonLabel(unnamed)).toBe('Shadowlands Season 1');
+    expect(seasonLabel({ ...unnamed, regions: {} })).toBeNull();
+    expect(seasonLabel(live)).toBe('Midnight Season 2');
   });
 
   it("gives a region's dates, and World's first start and last end", () => {

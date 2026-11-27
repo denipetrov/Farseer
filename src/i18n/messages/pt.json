@@ -179,5 +179,20 @@
   "pagination.last": "Última página",
   "pagination.page": "Página {page}",
   "pagination.summary": "Página {page} de {pages} · {total} jogadores",
-  "pagination.goTo": "Ir para a página"
+  "pagination.goTo": "Ir para a página",
+  "cutoffs.title": "Cortes de Rank 1",
+  "cutoffs.allSpecs": "todas as especializações",
+  "cutoffs.about": "A pontuação que cada especialização precisa para o título máximo da temporada em {region}",
+  "cutoffs.read": "lido em {date}",
+  "cutoffs.reach": "{count} jogadores no corte ou acima",
+  "cutoffs.titleLabel": "Título de Rank 1",
+  "cutoffs.positions": "Vagas de Rank 1",
+  "cutoffs.unknown": "Ainda não identificados",
+  "cutoffs.unknownHint": "Personagens que o Rankwarden ainda não associou a uma especialização",
+  "cutoffs.holders": "{count} jogadores ocupam uma vaga de Rank 1",
+  "cutoffs.aboutLadder": "A pontuação necessária para o título máximo da temporada em {region}",
+  "cutoffs.pageTitle": "Cortes de Rank 1 – {bracket}",
+  "archive.pageTitle": "Arquivo – {bracket}",
+  "season.endedPast": "Terminou",
+  "archive.pickSpec": "Os rankings passados de Solo Shuffle e Blitz são guardados por especialização: escolha uma para ver o ranking desta classe."
 }

@@ -179,5 +179,20 @@
   "pagination.last": "Letzte Seite",
   "pagination.page": "Seite {page}",
   "pagination.summary": "Seite {page} von {pages} · {total} Spieler",
-  "pagination.goTo": "Gehe zu Seite"
+  "pagination.goTo": "Gehe zu Seite",
+  "cutoffs.title": "Rang-1-Grenzen",
+  "cutoffs.allSpecs": "alle Spezialisierungen",
+  "cutoffs.about": "Die Wertung, die jede Spezialisierung für den höchsten Titel der Saison in {region} braucht",
+  "cutoffs.read": "gelesen {date}",
+  "cutoffs.reach": "{count} Spieler auf oder über der Grenze",
+  "cutoffs.titleLabel": "Rang-1-Titel",
+  "cutoffs.positions": "Rang-1-Plätze",
+  "cutoffs.unknown": "Noch nicht erkannt",
+  "cutoffs.unknownHint": "Charaktere, die Rankwarden noch keiner Spezialisierung zugeordnet hat",
+  "cutoffs.holders": "{count} Spieler halten einen Rang-1-Platz",
+  "cutoffs.aboutLadder": "Die Wertung für den höchsten Titel der Saison in {region}",
+  "cutoffs.pageTitle": "{bracket}: Rang-1-Grenzen",
+  "archive.pageTitle": "{bracket}: Archiv",
+  "season.endedPast": "Endete",
+  "archive.pickSpec": "Vergangene Solo-Shuffle- und Blitz-Ranglisten gibt es nur je Spezialisierung: Wähle eine, um die Rangliste dieser Klasse zu sehen."
 }

@@ -67,7 +67,7 @@ export function TierListWidget({
   compact?: boolean;
   /**
    * The home page's version (the user, 2026-11-27), above each ladder at its width: the
-   * title, disclaimer and season line, then each tier's spec icons only (name and score on
+   * title and disclaimer (no season line), then each tier's spec icons only (name and score on
    * hover), and a link to the full list. No role filter or "how" panel: no room.
    */
   mini?: { size: 'small' | 'medium'; fullLink: LinkOptions };
@@ -157,8 +157,9 @@ export function TierListWidget({
             )}
             <p className={styles.disclaimer}>{t('tier.disclaimer')}</p>
           </div>
-          {/* Compact: no season line, the page's heading has the season (the date is in the rules) */}
-          {!compact && <p className={styles.meta}>{meta}</p>}
+          {/* The season line only on the full page (the user, 2026-11-27): compact has it in
+              the rules, the home page's mini lists none */}
+          {!compact && !mini && <p className={styles.meta}>{meta}</p>}
         </div>
         {!mini && (
           <div className={tabBar.group} role="group" aria-label={t('tier.role.label')}>

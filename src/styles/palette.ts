@@ -108,6 +108,13 @@ export const palette = {
     gladiator: '#ffc53d',
     rankOne: '#ff8a24',
   },
+  /** Ladder roles, as in the user's Rank One example (2026-11-27): the role split's bars */
+  role: {
+    melee: '#f0524f',
+    ranged: '#58a6ff',
+    healer: '#3fb950',
+    tank: '#d07cf2',
+  },
 } as const;
 
 export type Faction = 'horde' | 'alliance';

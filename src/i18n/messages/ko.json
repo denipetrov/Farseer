@@ -179,5 +179,20 @@
   "pagination.last": "마지막 페이지",
   "pagination.page": "{page}페이지",
   "pagination.summary": "{pages}페이지 중 {page}페이지 · 플레이어 {total}명",
-  "pagination.goTo": "페이지로 이동"
+  "pagination.goTo": "페이지로 이동",
+  "cutoffs.title": "랭크 1 커트라인",
+  "cutoffs.allSpecs": "모든 전문화",
+  "cutoffs.about": "{region}에서 시즌 최고 칭호에 필요한 전문화별 평점",
+  "cutoffs.read": "{date} 기준",
+  "cutoffs.reach": "커트라인 이상 {count}명",
+  "cutoffs.titleLabel": "랭크 1 칭호",
+  "cutoffs.positions": "랭크 1 자리",
+  "cutoffs.unknown": "아직 확인되지 않음",
+  "cutoffs.unknownHint": "Rankwarden이 아직 전문화를 확인하지 못한 캐릭터",
+  "cutoffs.holders": "랭크 1 자리를 가진 플레이어 {count}명",
+  "cutoffs.aboutLadder": "{region}에서 시즌 최고 칭호에 필요한 평점",
+  "cutoffs.pageTitle": "{bracket} 랭크 1 커트라인",
+  "archive.pageTitle": "{bracket} 기록 보관소",
+  "season.endedPast": "종료",
+  "archive.pickSpec": "지난 1:1 난투와 전장 돌격전 순위표는 전문화별로 저장됩니다. 이 직업의 순위표를 보려면 전문화를 선택하세요."
 }

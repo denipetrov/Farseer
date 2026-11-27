@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import type { ReactNode } from 'react';
 import {
   currentSeasonQuery,
   leaderboardQuery,
@@ -8,7 +9,7 @@ import {
 } from '@/api/pvp';
 import { useI18n } from '@/i18n/useI18n';
 import { lastReachablePage } from '@/lib/pagination';
-import { ladderReward, seasonDates, seasonReward, seasonShortName } from '@/lib/wow/pvpSeason';
+import { ladderReward, seasonDates, seasonLabel, seasonReward } from '@/lib/wow/pvpSeason';
 import { usePreferences } from '@/preferences/PreferencesProvider';
 import styles from './SeasonInfo.module.css';
 
@@ -29,6 +30,8 @@ export function SeasonInfo({
   cls,
   spec,
   page,
+  seasonId,
+  picker,
 }: {
   bracket: PvpBracket;
   region: PvpBoard;
@@ -37,14 +40,21 @@ export function SeasonInfo({
   spec?: string;
   /** The board's page, so the query is the board's own */
   page: number;
+  /** A finished season (the archives) instead of the live one */
+  seasonId?: number;
+  /** Shown in place of the season's name: the archives' season dropdown */
+  picker?: ReactNode;
 }) {
   const { t, locale } = useI18n();
   const { faction } = usePreferences().preferences;
   const seasons = useQuery(pvpSeasonsQuery());
-  const season = seasons.data?.seasons.find((s) => s.current);
+  const season = seasons.data?.seasons.find((s) =>
+    seasonId != null ? s.seasonId === seasonId : s.current,
+  );
 
   // One spec's Shuffle or Blitz ladder: its title is in the board's answer
-  const specLadder = (bracket === 'shuffle' || bracket === 'blitz') && !!cls && !!spec;
+  const specLadder =
+    seasonId == null && (bracket === 'shuffle' || bracket === 'blitz') && !!cls && !!spec;
   const current = useQuery({ ...currentSeasonQuery('world'), enabled: specLadder });
   const board = useQuery({
     // The LeaderboardWidget's parameters exactly (large size: 50 a page)
@@ -67,13 +77,13 @@ export function SeasonInfo({
   const reward = specLadder
     ? board.data && ladderReward(board.data, region, faction)
     : seasonReward(season, bracket, region, faction);
-  const name = seasonShortName(season.name) ?? t('season.unnamed', { id: season.seasonId });
+  const name = seasonLabel(season) ?? t('season.unnamed', { id: season.seasonId });
 
   return (
     <dl className={styles.facts}>
       <div>
         <dt>{t('season.label')}</dt>
-        <dd>{name}</dd>
+        <dd>{picker ?? name}</dd>
       </div>
       {dates?.startsAt && (
         <div>
@@ -85,7 +95,7 @@ export function SeasonInfo({
       )}
       {dates && (
         <div>
-          <dt>{t('season.ended')}</dt>
+          <dt>{t(seasonId != null ? 'season.endedPast' : 'season.ended')}</dt>
           <dd>
             {dates.endsAt ? (
               <time dateTime={dates.endsAt}>{date(dates.endsAt)}</time>

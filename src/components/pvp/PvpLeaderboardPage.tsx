@@ -1,6 +1,6 @@
 import { useNavigate } from '@tanstack/react-router';
 import { useEffect, useMemo } from 'react';
-import { isLadderRole, type PvpBoard, type PvpBracket } from '@/api/pvp';
+import { isLadderRole, isTitleBracket, type PvpBoard, type PvpBracket } from '@/api/pvp';
 import { GameIcon } from '@/components/GameIcon';
 import { Page, PageTitle } from '@/components/Page';
 import { LeaderboardWidget } from '@/components/widgets/LeaderboardWidget';
@@ -19,6 +19,7 @@ import { roleText } from '@/i18n/labels';
 import { useSite } from '@/lib/site';
 import { usePreferences } from '@/preferences/PreferencesProvider';
 import { LeaderboardTabs } from './LeaderboardTabs';
+import { RankOneCutoffs } from './RankOneCutoffs';
 import { SeasonInfo } from './SeasonInfo';
 import styles from './PvpLeaderboardPage.module.css';
 
@@ -147,6 +148,17 @@ export function PvpLeaderboardPage({
           // Page 1 is left out of the URL
           onPageChange={(next) => onSearch({ ...search, page: next > 1 ? next : undefined })}
         />
+        {/* Below the ladder (the user, 2026-11-27): the Rank One cutoffs of a ladder with a
+            title (not 2v2), and not on World: Blizzard sets the cutoffs per region */}
+        {isTitleBracket(bracket) && shownRegion !== 'world' && (
+          <RankOneCutoffs
+            bracket={bracket}
+            region={shownRegion}
+            cls={c?.slug}
+            spec={s?.slug}
+            role={role}
+          />
+        )}
       </WidgetGrid>
     </Page>
   );

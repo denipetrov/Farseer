@@ -179,5 +179,20 @@
   "pagination.last": "最后一页",
   "pagination.page": "第 {page} 页",
   "pagination.summary": "第 {page} 页，共 {pages} 页 · {total} 名玩家",
-  "pagination.goTo": "跳转到页"
+  "pagination.goTo": "跳转到页",
+  "cutoffs.title": "第一名分数线",
+  "cutoffs.allSpecs": "所有专精",
+  "cutoffs.about": "{region}各专精获得本赛季最高头衔所需的等级分",
+  "cutoffs.read": "读取于 {date}",
+  "cutoffs.reach": "达到分数线的玩家：{count}",
+  "cutoffs.titleLabel": "第一名头衔",
+  "cutoffs.positions": "第一名名额",
+  "cutoffs.unknown": "尚未识别",
+  "cutoffs.unknownHint": "Rankwarden 尚未匹配到专精的角色",
+  "cutoffs.holders": "占据第一名名额的玩家：{count}",
+  "cutoffs.aboutLadder": "{region}获得本赛季最高头衔所需的等级分",
+  "cutoffs.pageTitle": "{bracket}第一名分数线",
+  "archive.pageTitle": "{bracket}历史赛季",
+  "season.endedPast": "结束",
+  "archive.pickSpec": "过往的单人竞技场和闪电战场排行榜按专精保存：请选择一个专精以查看该职业的排行榜。"
 }

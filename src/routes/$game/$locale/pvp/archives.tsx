@@ -1,10 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { ComingSoonPage } from '@/components/ComingSoonPage';
-import { useI18n } from '@/i18n/useI18n';
+import { ArchivesPage } from '@/components/pvp/ArchivesPage';
+import { validateArchiveSearch } from '@/lib/archive';
 
+/** PvP Archives: a finished season's ladder (`?season&bracket&role&region&page`) */
 export const Route = createFileRoute('/$game/$locale/pvp/archives')({
+  validateSearch: validateArchiveSearch,
   component: function Page() {
-    const { t } = useI18n();
-    return <ComingSoonPage title={t('nav.archives')} icon="nav/archives" />;
+    const search = Route.useSearch();
+    const navigate = Route.useNavigate();
+    return <ArchivesPage search={search} onSearch={(next) => void navigate({ search: next })} />;
   },
 });

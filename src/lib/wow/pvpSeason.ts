@@ -11,6 +11,22 @@ export function seasonShortName(name: string | null): string | null {
   return /^Player vs\.? Player \((.+)\)$/.exec(name.trim())?.[1] ?? name.trim();
 }
 
+/**
+ * A season's name: Blizzard's (`Midnight Season 2`), or for the seasons it left unnamed (27–33,
+ * 37, 40) the one in its Gladiator title: `Sinful Gladiator: Shadowlands Season 1` →
+ * `Shadowlands Season 1`. Null when neither is known.
+ */
+export function seasonLabel(season: PvpSeason): string | null {
+  const own = seasonShortName(season.name);
+  if (own) return own;
+  for (const run of Object.values(season.regions)) {
+    const title = run?.cutoffs['3v3']?.title;
+    const name = title && /:\s*(.+)$/.exec(title)?.[1]?.trim();
+    if (name) return name;
+  }
+  return null;
+}
+
 export interface SeasonDates {
   startsAt: string | null;
   /** Null while it runs */

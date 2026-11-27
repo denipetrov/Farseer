@@ -179,5 +179,20 @@
   "pagination.last": "Last page",
   "pagination.page": "Page {page}",
   "pagination.summary": "Page {page} of {pages} · {total} players",
-  "pagination.goTo": "Go to page"
+  "pagination.goTo": "Go to page",
+  "cutoffs.title": "Rank One Cutoffs",
+  "cutoffs.allSpecs": "all specs",
+  "cutoffs.about": "The rating each spec needs for the season’s top title in {region}",
+  "cutoffs.read": "read {date}",
+  "cutoffs.reach": "{count} players at or above",
+  "cutoffs.titleLabel": "Rank One title",
+  "cutoffs.positions": "Rank One positions",
+  "cutoffs.unknown": "Not yet identified",
+  "cutoffs.unknownHint": "Characters Rankwarden has not matched to a spec yet",
+  "cutoffs.holders": "{count} players hold a Rank One spot",
+  "cutoffs.aboutLadder": "The rating it takes for the season’s top title in {region}",
+  "cutoffs.pageTitle": "{bracket} Rank One Cutoffs",
+  "archive.pageTitle": "{bracket} Archive",
+  "season.endedPast": "Ended",
+  "archive.pickSpec": "Past Solo Shuffle and Blitz ladders are kept per specialization: pick one to see this class’s ladder."
 }

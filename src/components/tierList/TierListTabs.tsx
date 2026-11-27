@@ -47,6 +47,8 @@ export function TierListTabs({
                 className={tabBar.tab}
                 to="/$game/$locale/pvp/tier-list"
                 params={site}
+                // A key left out (World) must be absent from the URL too, or World is marked current
+                activeOptions={{ explicitUndefined: true }}
                 search={{ bracket: b, region: pvpRegion === 'world' ? undefined : pvpRegion }}
                 aria-current={b === active ? 'page' : undefined}
               >
@@ -67,6 +69,8 @@ export function TierListTabs({
               className={tabBar.tab}
               to="/$game/$locale/pve/tier-list"
               params={site}
+              // A key left out (World) must be absent from the URL too, or World is marked current
+              activeOptions={{ explicitUndefined: true }}
               search={{ region: r === 'world' ? undefined : (r as PveBoard) }}
               aria-current={r === region ? 'page' : undefined}
             >
@@ -78,6 +82,8 @@ export function TierListTabs({
               className={tabBar.tab}
               to="/$game/$locale/pvp/tier-list"
               params={site}
+              // A key left out (World) must be absent from the URL too, or World is marked current
+              activeOptions={{ explicitUndefined: true }}
               search={{ bracket: active, region: r === 'world' ? undefined : (r as PvpBoard) }}
               aria-current={r === region ? 'page' : undefined}
             >

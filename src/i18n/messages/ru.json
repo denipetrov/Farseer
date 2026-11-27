@@ -179,5 +179,20 @@
   "pagination.last": "Последняя страница",
   "pagination.page": "Страница {page}",
   "pagination.summary": "Страница {page} из {pages} · игроков: {total}",
-  "pagination.goTo": "Перейти на страницу"
+  "pagination.goTo": "Перейти на страницу",
+  "cutoffs.title": "Пороги Ранга 1",
+  "cutoffs.allSpecs": "все спеки",
+  "cutoffs.about": "Рейтинг, нужный каждому спеку для высшего звания сезона в регионе {region}",
+  "cutoffs.read": "обновлено {date}",
+  "cutoffs.reach": "Игроков на пороге и выше: {count}",
+  "cutoffs.titleLabel": "Звание Ранга 1",
+  "cutoffs.positions": "Места Ранга 1",
+  "cutoffs.unknown": "Ещё не определены",
+  "cutoffs.unknownHint": "Персонажи, для которых Rankwarden ещё не определил спек",
+  "cutoffs.holders": "Игроков на местах Ранга 1: {count}",
+  "cutoffs.aboutLadder": "Рейтинг для высшего звания сезона в регионе {region}",
+  "cutoffs.pageTitle": "Пороги Ранга 1 – {bracket}",
+  "archive.pageTitle": "Архив – {bracket}",
+  "season.endedPast": "Завершён",
+  "archive.pickSpec": "Прошлые таблицы Solo Shuffle и Blitz хранятся по спекам: выберите спек, чтобы увидеть таблицу этого класса."
 }

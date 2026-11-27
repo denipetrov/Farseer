@@ -179,5 +179,20 @@
   "pagination.last": "Última página",
   "pagination.page": "Página {page}",
   "pagination.summary": "Página {page} de {pages} · {total} jugadores",
-  "pagination.goTo": "Ir a la página"
+  "pagination.goTo": "Ir a la página",
+  "cutoffs.title": "Umbrales de Rango 1",
+  "cutoffs.allSpecs": "todas las especializaciones",
+  "cutoffs.about": "El índice que necesita cada especialización para el título máximo de la temporada en {region}",
+  "cutoffs.read": "leído el {date}",
+  "cutoffs.reach": "{count} jugadores en el umbral o por encima",
+  "cutoffs.titleLabel": "Título de Rango 1",
+  "cutoffs.positions": "Plazas de Rango 1",
+  "cutoffs.unknown": "Aún sin identificar",
+  "cutoffs.unknownHint": "Personajes que Rankwarden aún no ha asociado a una especialización",
+  "cutoffs.holders": "{count} jugadores ocupan una plaza de Rango 1",
+  "cutoffs.aboutLadder": "El índice necesario para el título máximo de la temporada en {region}",
+  "cutoffs.pageTitle": "Umbrales de Rango 1 – {bracket}",
+  "archive.pageTitle": "Archivo – {bracket}",
+  "season.endedPast": "Terminó",
+  "archive.pickSpec": "Las clasificaciones pasadas de Solo Shuffle y Blitz se guardan por especialización: elige una para ver la clasificación de esta clase."
 }

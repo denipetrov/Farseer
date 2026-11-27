@@ -75,6 +75,12 @@
   --color-rank-gladiator: #ffc53d;
   --color-rank-rank-one: #ff8a24;
 
+  /* Ladder roles (the Rank One role split): --color-role-melee, ... */
+  --color-role-melee: #f0524f;
+  --color-role-ranged: #58a6ff;
+  --color-role-healer: #3fb950;
+  --color-role-tank: #d07cf2;
+
   /* Typography */
   --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;

@@ -72,6 +72,21 @@ const COLUMNS: Record<WidgetSize, readonly Column[]> = {
   ],
 };
 
+/**
+ * A finished season's ladder (the archives; the user, 2026-11-27): Soulseeker's archived rows
+ * have no class, spec, race, talents or previous rating, so the large board shrinks to the
+ * place, the name (and realm), the rating, wins, losses, win % and faction.
+ */
+const ARCHIVE_COLUMNS: readonly Column[] = [
+  'place',
+  'player',
+  'rating',
+  'won',
+  'lost',
+  'winRate',
+  'faction',
+];
+
 const HEADINGS: Record<Column, MessageKey> = {
   place: 'widget.rank',
   player: 'widget.player',
@@ -119,6 +134,12 @@ interface LeaderboardWidgetProps {
   onPageChange?: (page: number) => void;
   /** A region was picked (after it is remembered): the full page puts it in its URL, page 1 */
   onRegionChange?: (region: PvpBoard) => void;
+  /**
+   * A finished season's ladder (the archives page): its rows have no icons or trend, the
+   * columns are ARCHIVE_COLUMNS, and the region is `region` as given (the page's URL), not
+   * the one remembered for the live ladder.
+   */
+  archiveSeason?: number;
 }
 
 /**
@@ -141,13 +162,15 @@ export function LeaderboardWidget({
   page = 1,
   onPageChange,
   onRegionChange,
+  archiveSeason,
 }: LeaderboardWidgetProps) {
   const { t, locale } = useI18n();
   const site = useSite();
   // The region last picked for this bracket is remembered (preference `pvpBoardRegions`), so
   // it stays after navigating or reloading, and every widget of the bracket shows it
   const { preferences, setPreference } = usePreferences();
-  const region = preferences.pvpBoardRegions[bracket] ?? initialRegion;
+  const region =
+    archiveSeason != null ? initialRegion : (preferences.pvpBoardRegions[bracket] ?? initialRegion);
   const setRegion = (next: PvpBoard) => {
     setPreference('pvpBoardRegions', { ...preferences.pvpBoardRegions, [bracket]: next });
     onRegionChange?.(next);
@@ -156,11 +179,12 @@ export function LeaderboardWidget({
   const frameRef = useRef<HTMLElement>(null);
 
   // Season ids are global: the World board's current season is every region's
-  const season = useQuery(currentSeasonQuery('world'));
+  const season = useQuery({ ...currentSeasonQuery('world'), enabled: archiveSeason == null });
+  const seasonId = archiveSeason ?? season.data?.seasonId;
   const board = useQuery({
     ...leaderboardQuery({
       region,
-      seasonId: season.data?.seasonId ?? 0,
+      seasonId: seasonId ?? 0,
       bracket,
       class: cls,
       spec,
@@ -169,12 +193,13 @@ export function LeaderboardWidget({
       page: onPageChange ? Math.min(page, lastReachablePage(Infinity, ROWS[size])) : 1,
       pageSize: ROWS[size],
     }),
-    enabled: !!season.data,
+    enabled: seasonId != null,
     // Keep the previous region's rows on screen while the next one loads
     placeholderData: (previous) => previous,
   });
 
-  const columns = COLUMNS[size];
+  const archived = archiveSeason != null;
+  const columns = archived ? ARCHIVE_COLUMNS : COLUMNS[size];
   const title = t(`bracket.${bracket}`);
   // A small widget has no room for "Battleground Blitz": its short name ("BG Blitz", "RBG")
   const shown = size === 'small' && bracket in SHORT_NAMES ? t(SHORT_NAMES[bracket]!) : title;
@@ -282,7 +307,14 @@ export function LeaderboardWidget({
                       className={styles.row}
                     >
                       {columns.map((c) => (
-                        <Cell key={c} column={c} entry={entry} place={offset + i + 1} size={size} />
+                        <Cell
+                          key={c}
+                          column={c}
+                          entry={entry}
+                          place={offset + i + 1}
+                          size={size}
+                          archived={archived}
+                        />
                       ))}
                     </tr>
                   ))
@@ -345,11 +377,14 @@ function Cell({
   entry,
   place,
   size,
+  archived,
 }: {
   column: Column;
   entry: LeaderboardEntry;
   place: number;
   size: WidgetSize;
+  /** A finished season's row: no icons, no trend (archived rows have neither) */
+  archived: boolean;
 }) {
   const { locale } = useI18n();
   const number = (n: number | null | undefined) =>
@@ -367,12 +402,19 @@ function Cell({
         </td>
       );
     case 'player':
-      return <PlayerCell entry={entry} withRace={size !== 'small'} withRealm={size === 'large'} />;
+      return (
+        <PlayerCell
+          entry={entry}
+          withIcons={!archived}
+          withRace={size !== 'small'}
+          withRealm={size === 'large'}
+        />
+      );
     case 'rating':
       return (
         // In its rank's colour (pvpRank.ts): Duelist blue, Elite purple, Rank 1 orange…
         <td className={styles.rating} data-rank={rankOfLadderRow(entry).id}>
-          {size === 'large' && <Trend entry={entry} />}
+          {size === 'large' && !archived && <Trend entry={entry} />}
           {number(entry.rating)}
         </td>
       );
@@ -397,10 +439,13 @@ function Cell({
  */
 function PlayerCell({
   entry,
+  withIcons,
   withRace,
   withRealm,
 }: {
   entry: LeaderboardEntry;
+  /** Off on a finished season's rows, which have no class, spec or race */
+  withIcons: boolean;
   withRace: boolean;
   withRealm: boolean;
 }) {
@@ -420,30 +465,32 @@ function PlayerCell({
   return (
     <td>
       <span className={styles.player}>
-        <span className={styles.icons}>
-          {withRace &&
-            (raceIconUrl(race, gender, { style, faction: entry.faction }) ? (
-              <RaceIcon race={race} gender={gender} faction={entry.faction} />
+        {withIcons && (
+          <span className={styles.icons}>
+            {withRace &&
+              (raceIconUrl(race, gender, { style, faction: entry.faction }) ? (
+                <RaceIcon race={race} gender={gender} faction={entry.faction} />
+              ) : (
+                <UnknownIcon label={t('unknown.race')} />
+              ))}
+            {/* The class before the spec, on every size (the user, 2026-11-27) */}
+            {classIconUrl(cls, { style }) ? (
+              <ClassIcon cls={cls} />
             ) : (
-              <UnknownIcon label={t('unknown.race')} />
-            ))}
-          {/* The class before the spec, on every size (the user, 2026-11-27) */}
-          {classIconUrl(cls, { style }) ? (
-            <ClassIcon cls={cls} />
-          ) : (
-            <UnknownIcon label={t('unknown.class')} />
-          )}
-          {specIconUrl(spec, cls) ? (
-            <SpecIcon spec={spec} cls={cls} />
-          ) : (
-            <UnknownIcon label={t('unknown.spec')} />
-          )}
-          {heroTreeIconUrl(hero) ? (
-            <HeroTalentIcon tree={hero} />
-          ) : (
-            <UnknownIcon label={t('unknown.heroTalent')} />
-          )}
-        </span>
+              <UnknownIcon label={t('unknown.class')} />
+            )}
+            {specIconUrl(spec, cls) ? (
+              <SpecIcon spec={spec} cls={cls} />
+            ) : (
+              <UnknownIcon label={t('unknown.spec')} />
+            )}
+            {heroTreeIconUrl(hero) ? (
+              <HeroTalentIcon tree={hero} />
+            ) : (
+              <UnknownIcon label={t('unknown.heroTalent')} />
+            )}
+          </span>
+        )}
         {linkable ? (
           <span className={styles.nameLink}>
             <Link
