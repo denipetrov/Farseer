@@ -194,6 +194,74 @@
   font-style: italic;
 }
 
+/*
+ * A section with its own page (a PvP bracket): the label is a link, the arrow a separate,
+ * framed button beside it (the user, 2026-11-27: clearly its own click), each with its own hover. The link keeps the row's look and indent.
+ */
+.linkGroup {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.linkGroup > a {
+  flex: 1;
+  min-width: 0;
+}
+
+/* A page of the section is open (a class or spec ladder): the label reads as on the path */
+.linkGroup[data-has-active] > a {
+  color: var(--color-text-highlight);
+}
+
+.toggle {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  /* Framed like the site's other small buttons, so the arrow reads as its own click target */
+  border: 1px solid var(--color-trim-muted);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-sunken);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.toggle:hover {
+  border-color: var(--color-trim);
+  background: var(--color-surface-hover);
+  color: var(--color-text-highlight);
+}
+
+.toggle[aria-expanded='true'] {
+  border-color: var(--color-trim);
+}
+
+.toggle:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+}
+
+/*
+ * The chevron is centred in the button: no margin of its own there. Its two strokes sit in
+ * one corner of its box, so the box's centre is not the arrow's: it is moved back along the
+ * way it points (left when closed, up when open) to sit visually centred.
+ */
+.toggle > .chevron {
+  margin: 0;
+  transform: translateX(-1.5px) rotate(-45deg);
+}
+
+.toggle > .chevron[data-open] {
+  transform: translateY(-1.5px) rotate(45deg);
+}
+
 /* A small chevron drawn with borders: right when closed, down when open */
 .chevron {
   flex: none;

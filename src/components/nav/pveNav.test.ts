@@ -66,9 +66,10 @@ describe('PvE menu', () => {
   it('lists every class with its specs, and with the roles it plays', () => {
     const specs = group(leaderboards.children, 'mplus-specs');
     expect(specs.children).toHaveLength(13);
-    // 40 specs, and each class's All row
+    // 40 specs, and each class's own page (the whole class: `…/specs/<class>/all`)
     expect(navLinks(specs.children)).toHaveLength(40 + 13);
-    expect(navLinks(specs.children).filter((l) => l.id.endsWith('-all'))).toHaveLength(13);
+    const hunter = group(specs.children, 'mplus-specs-hunter');
+    expect(hunter.link?.params).toMatchObject({ class: 'hunter', spec: 'all' });
 
     const druid = group(group(leaderboards.children, 'mplus-roles').children, 'mplus-roles-druid');
     expect(druid.children.map((c) => c.id)).toEqual([
@@ -76,8 +77,8 @@ describe('PvE menu', () => {
       'mplus-roles-druid-melee',
       'mplus-roles-druid-ranged',
       'mplus-roles-druid-tank',
-      'mplus-roles-druid-all',
     ]);
+    expect(druid.link?.params).toMatchObject({ class: 'druid', role: 'all' });
   });
 
   it('groups raids by expansion, newest first and open, each with its bosses', () => {
@@ -143,7 +144,6 @@ describe('PvE menu', () => {
       'beastmastery',
       'marksmanship',
       'survival',
-      'all',
     ]);
   });
 

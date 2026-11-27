@@ -5,11 +5,11 @@ import { bossIconUrl, bossName, raidIconUrl, raidName, type Raid } from '@/api/p
 import type { GameName } from '@/i18n/useI18n';
 import type { MessageKey } from '@/i18n/messages';
 import { iconUrl } from '@/lib/assets';
-import { CLASSES } from '@/lib/wow/classes';
+import type { WowClass } from '@/lib/wow/classes';
 import { classRoleKinds, roleLabel, roleSlug, type RoleKind } from '@/lib/wow/roles';
-import { SPECS, type Spec } from '@/lib/wow/specs';
 import type { Faction } from '@/styles/palette';
 import { ALL } from '@/lib/mplusParams';
+import { CLASSES_AZ, specsAz } from './gameOrder';
 import type { NavGroup, NavIcon, NavItem, NavLabel } from './navTypes';
 
 /** An icon the PvE menu wants, or a stand-in until its file is added (then it is used). */
@@ -183,14 +183,27 @@ function mythicPlusGroup(site: SiteParams, name: GameName): NavGroup {
 
 /**
  * Leaderboards: All Characters, Runs, Specs (each class, its specs inside), Classes & Roles
- * (each class, the roles it plays inside). The same rows for the current season and, under
+ * (each class, the roles it plays inside). A class row opens the whole class's board and
+ * only its arrow opens its specs or roles (the user, 2026-11-27: no more "All" rows). The same rows for the current season and, under
  * Archives, for past ones (`archive`: other pages, ids prefixed `archives-`).
  */
 function leaderboardsGroup(site: SiteParams, name: GameName, archive: boolean): NavGroup {
   const id = (s: string) => (archive ? `archives-${s}` : s);
-  const className = (c: (typeof CLASSES)[number]): NavLabel => ({
+  const className = (c: WowClass): NavLabel => ({
     text: name('classes', c.id, c.name),
   });
+  const specLink = (cls: string, spec: string) => {
+    const params = { ...site, class: cls, spec };
+    return archive
+      ? linkOptions({ to: '/$game/$locale/pve/mythic-plus/archives/specs/$class/$spec', params })
+      : linkOptions({ to: '/$game/$locale/pve/mythic-plus/specs/$class/$spec', params });
+  };
+  const roleLink = (cls: string, role: string) => {
+    const params = { ...site, class: cls, role };
+    return archive
+      ? linkOptions({ to: '/$game/$locale/pve/mythic-plus/archives/roles/$class/$role', params })
+      : linkOptions({ to: '/$game/$locale/pve/mythic-plus/roles/$class/$role', params });
+  };
   return {
     id: id('mplus-leaderboards'),
     label: 'nav.leaderboards',
@@ -216,87 +229,43 @@ function leaderboardsGroup(site: SiteParams, name: GameName, archive: boolean): 
         id: id('mplus-specs'),
         label: 'nav.mplusSpecs',
         icon: PVE_ICONS.mplusSpecs,
+        // A class opens its whole board (`…/specs/<class>/all`); its arrow, its specs
         children: CLASSES_AZ.map((c) => ({
           id: id(`mplus-specs-${c.slug}`),
           label: className(c),
           icon: { kind: 'class', cls: c.slug },
-          children: [
-            ...specsAz(c.slug).map((sp) => ({
-              slug: sp.slug,
-              label: { text: name('specs', sp.id, sp.name) } as NavLabel,
-              icon: { kind: 'spec', specId: sp.id } as NavIcon,
-            })),
-            // The whole class, last
-            {
-              slug: ALL,
-              label: 'nav.allSpecs' as NavLabel,
-              icon: { kind: 'class', cls: c.slug } as NavIcon,
-            },
-          ].map(({ slug, label, icon }) => {
-            const params = { ...site, class: c.slug, spec: slug };
-            return {
-              id: id(`mplus-specs-${c.slug}-${slug}`),
-              label,
-              icon,
-              link: archive
-                ? linkOptions({
-                    to: '/$game/$locale/pve/mythic-plus/archives/specs/$class/$spec',
-                    params,
-                  })
-                : linkOptions({ to: '/$game/$locale/pve/mythic-plus/specs/$class/$spec', params }),
-            };
-          }),
+          link: specLink(c.slug, ALL),
+          children: specsAz(c.slug).map((sp) => ({
+            id: id(`mplus-specs-${c.slug}-${sp.slug}`),
+            label: { text: name('specs', sp.id, sp.name) },
+            icon: { kind: 'spec', specId: sp.id },
+            link: specLink(c.slug, sp.slug),
+          })),
         })),
       },
       {
         id: id('mplus-roles'),
         label: 'nav.mplusClassRoles',
         icon: PVE_ICONS.mplusClassRoles,
+        // A class opens its whole board (`…/roles/<class>/all`); its arrow, its roles
         children: CLASSES_AZ.map((c) => ({
           id: id(`mplus-roles-${c.slug}`),
           label: className(c),
           icon: { kind: 'class', cls: c.slug },
-          children: [
-            ...rolesAz(c.slug).map((kind) => ({
-              slug: roleSlug(kind) as string,
-              label: ROLE_LABEL[roleSlug(kind)] as NavLabel,
-              icon: { kind: 'role', role: kind.role, subRole: kind.subRole } as NavIcon,
-            })),
-            // The whole class, last: the "all roles" flag
-            {
-              slug: ALL,
-              label: 'nav.allRoles' as NavLabel,
-              icon: { kind: 'art', path: 'roles/all', round: true } as NavIcon,
-            },
-          ].map(({ slug, label, icon }) => {
-            const params = { ...site, class: c.slug, role: slug };
-            return {
-              id: id(`mplus-roles-${c.slug}-${slug}`),
-              label,
-              icon,
-              link: archive
-                ? linkOptions({
-                    to: '/$game/$locale/pve/mythic-plus/archives/roles/$class/$role',
-                    params,
-                  })
-                : linkOptions({ to: '/$game/$locale/pve/mythic-plus/roles/$class/$role', params }),
-            };
-          }),
+          link: roleLink(c.slug, ALL),
+          children: rolesAz(c.slug).map((kind) => ({
+            id: id(`mplus-roles-${c.slug}-${roleSlug(kind)}`),
+            label: ROLE_LABEL[roleSlug(kind)],
+            icon: { kind: 'role', role: kind.role, subRole: kind.subRole },
+            link: roleLink(c.slug, roleSlug(kind)),
+          })),
         })),
       },
     ],
   };
 }
 
-/**
- * The menu lists classes, specs and roles A–Z by their English names (the user's choice,
- * 2026-11-26), in every language, so the order never moves when the language changes.
- */
-const byEnglishName = (a: { name: string }, b: { name: string }) =>
-  a.name.localeCompare(b.name, 'en');
-const CLASSES_AZ = [...CLASSES].sort(byEnglishName);
-const specsAz = (classSlug: string): Spec[] =>
-  SPECS.filter((sp) => sp.classSlug === classSlug).sort(byEnglishName);
+// Classes, specs and roles A–Z by their English names (gameOrder.ts)
 /** Healer, Melee DPS, Ranged DPS, Tank */
 const rolesAz = (classSlug: string): RoleKind[] =>
   classRoleKinds(classSlug).sort((a, b) => roleLabel(a).localeCompare(roleLabel(b), 'en'));

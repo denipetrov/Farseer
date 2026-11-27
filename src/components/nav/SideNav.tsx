@@ -50,7 +50,7 @@ export function SideNav() {
           names: i18n.names,
           raids: { status: raids.status, data: raids.data?.raids },
         })
-      : pvpNav(site);
+      : pvpNav(site, i18n.name);
 
   return (
     <nav className={styles.nav} aria-label={i18n.t('nav.aria')}>
@@ -108,8 +108,12 @@ function Item({ item, depth, wide }: { item: NavLink; depth: number; wide?: bool
  * An expandable section (Leaderboards, Stats, Raids, a class, a raid). Opens by itself on
  * one of its pages, and on arrival when it is `defaultOpen` (the current expansion). Its
  * rows are only rendered while it is open: PvE's sections hold hundreds of links.
+ *
+ * A section with its own page (a PvP bracket) is a link with a separate arrow button: the
+ * label opens the page, only the arrow opens or closes the section (the user, 2026-11-27).
  */
 function Group({ group, depth, wide }: { group: NavGroup; depth: number; wide?: boolean }) {
+  const { t } = useI18n();
   const matchRoute = useMatchRoute();
   const listId = useId();
   const childActive = navLinks(group.children).some(
@@ -122,6 +126,44 @@ function Group({ group, depth, wide }: { group: NavGroup; depth: number; wide?: 
   if (childActive !== wasActive) {
     setWasActive(childActive);
     if (childActive) setOpen(true);
+  }
+
+  const list = open ? (
+    <Items items={group.children} depth={depth + 1} id={listId} />
+  ) : (
+    <ul className={cx(styles.list, styles.subList)} id={listId} hidden />
+  );
+
+  if (group.link) {
+    const name = typeof group.label === 'string' ? t(group.label) : group.label.text;
+    return (
+      <>
+        <div
+          className={cx(styles.rowFrame, styles.linkGroup)}
+          data-depth={depthAttr(depth)}
+          data-has-active={childActive || undefined}
+        >
+          <Link {...group.link} activeOptions={{ exact: true }}>
+            {group.icon && <Icon icon={group.icon} depth={depth} wide={wide} />}
+            <span className={styles.label}>
+              <Label label={group.label} />
+            </span>
+          </Link>
+          <button
+            className={styles.toggle}
+            type="button"
+            aria-expanded={open}
+            aria-controls={listId}
+            aria-label={t('nav.more', { name })}
+            title={t('nav.more', { name })}
+            onClick={() => setOpen((o) => !o)}
+          >
+            <span className={styles.chevron} aria-hidden data-open={open || undefined} />
+          </button>
+        </div>
+        {list}
+      </>
+    );
   }
 
   return (
@@ -141,11 +183,7 @@ function Group({ group, depth, wide }: { group: NavGroup; depth: number; wide?: 
         </span>
         <span className={styles.chevron} aria-hidden data-open={open || undefined} />
       </button>
-      {open ? (
-        <Items items={group.children} depth={depth + 1} id={listId} />
-      ) : (
-        <ul className={cx(styles.list, styles.subList)} id={listId} hidden />
-      )}
+      {list}
     </>
   );
 }

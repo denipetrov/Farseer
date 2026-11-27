@@ -165,7 +165,7 @@ Through CORS, the browser can read the `retry-after` and `www-authenticate` head
     `/en/privacy` would clash with `/<game>` as the first segment.
   - **Linking:** `useSite()` (`src/lib/site.ts`) gives `{ game, locale }` for the current
     page. Pass it as the params: `<Link to="/$game/$locale/pvp" params={site}>`, or
-    `params: { ...site, bracket }`. The menu builders take it (`pvpNav(site)`,
+    `params: { ...site, bracket }`. The menu builders take it (`pvpNav(site, name)`,
     `pveNav({ site, … })`).
   - **Canonical addresses** (`canonicalPath` in `src/lib/sitePath.ts`, run by the root
     route): `/en/pvp/…` (old links) → `/retail/en/pvp/…`; `/pvp/…` →
@@ -180,7 +180,7 @@ Through CORS, the browser can read the `retry-after` and `www-authenticate` head
   so a page can be shared and the back button works.
 - `validateSearch` with a plain function: TanStack treats its output type as the input
   type for `<Link search>`. So **make every search field optional** and apply defaults
-  when reading (see `$game/$locale/pvp/leaderboards/$bracket.tsx`). Drop invalid values to `undefined` instead of throwing.
+  when reading (see `validateLeaderboardSearch` in `src/lib/leaderboardSearch.ts`). Drop invalid values to `undefined` instead of throwing.
 - The router context carries `queryClient`. A loader can prime data with
   `context.queryClient.ensureQueryData(someQuery(...))`.
 - Route files are code-split by the plugin (`autoCodeSplitting`), and the
@@ -365,13 +365,21 @@ below).
   below it is the bottom of the mobile drawer (`<MobileMenu>` children in `AppHeader`).
   Both modes have one; `SideNav` picks `pvpNav` or `pveNav`.
 - **The model** (`navTypes.ts`): `NavLink`, `NavGroup` (children nest to any depth;
-  `defaultOpen` opens it on arrival) and `NavNote` (a muted line: "Loading raids…"). A
+  `defaultOpen` opens it on arrival; an optional `link` gives the section its own page) and `NavNote` (a muted line: "Loading raids…"). A
   label is a message key or `{ text }` (a game name already translated). An icon is a
   single-colour SVG path (drawn by `NavGlyph`) or game art drawn as it is:
   `{ kind: 'class' | 'spec' | 'role' | 'image' }` (`image` is a URL from the data, null or
   broken → the unknown icon). Art sits in a slot of the glyphs' width so labels line up.
+- **Sections with their own page** (`NavGroup.link`; the PvP brackets, the user's rule of
+  2026-11-27): the label is a link to the page and **only the arrow, a separate button
+  beside it (`.toggle`, aria-label "More in {name}", `nav.more`), opens or closes the
+  section**. Its link is active on that exact page only; on a page inside, the label is
+  bright (`data-has-active`). `navLinks` counts these pages, so the parent opens on them.
+  Sections without a page keep the whole row as the toggle.
 - **The PvP menu** (`pvpNav.ts`, the user's order): Home · Character · Leaderboards (2v2,
-  3v3, Solo Shuffle, Battleground Blitz, Rated Battlegrounds) · Stats (Spec Representation,
+  3v3, Solo Shuffle, Battleground Blitz, Rated Battlegrounds; each opens its whole ladder,
+  and its arrow lists every class A–Z; a class opens its whole ladder (`…/<class>/all`)
+  and its arrow its specs A–Z, like the PvE Specs; A–Z by English name from `gameOrder.ts`, shared with `pveNav`) · Stats (Spec Representation,
   Hero Talents, Cutoffs) · FOTM · Tier List · Archives. Links are `linkOptions(...)`, so
   every target is type-checked against the routes. Icons are single-colour SVGs given by
   their path under `icons/` (`nav/home`, `pvp/brackets/svg/2v2`, `nav/spec-representation`,
@@ -460,8 +468,12 @@ below).
 **PvP pages** (`src/routes/$game/$locale/pvp/`), all placeholders (`ComingSoonPage`: title, icon,
 "being built") until their content is built:
 
-- `leaderboards/$bracket` (`2v2`, `3v3`, `shuffle`, `blitz`, `rbg`; anything else is not
+- `leaderboards/$bracket/` (`2v2`, `3v3`, `shuffle`, `blitz`, `rbg`; anything else is not
   found; search params `region` and `page`, both optional). `leaderboards/` opens 2v2.
+- `leaderboards/$bracket/$class/$spec`: one class or spec of a ladder (`shuffle/mage/fire`,
+  `3v3/mage/all` for the whole class; `isSpecParams`, else not found), Soulseeker's
+  `class=` / `spec=` filters, which every bracket takes. Both pages render
+  `PvpLeaderboardPage` (`src/components/pvp/`); its title is "Solo Shuffle · Mage · Fire".
 - `stats/representation`, `stats/hero-talents`, `stats/cutoffs`; `stats/` opens Spec
   Representation. `fotm` (will read `/pvp/spec-representation/history`), `tier-list`,
   `archives`.
@@ -498,14 +510,15 @@ below).
   board and stat Soulseeker serves takes `season`, and `/pve/spec-representation` lists the
   seasons it has (`getSeasons=true`), for a season picker.
 - **Order:** classes, specs and roles are A–Z by their English names (`CLASSES_AZ`,
-  `specsAz`, `rolesAz` in `pveNav.ts`; the user's choice, 2026-11-26) in every language, so
-  the order never moves with the language; roles read Healer, Melee DPS, Ranged DPS, Tank.
-  The All row stays last.
-- **"All" under a class** (the last row in Specs and in Classes & Roles, current and
-  archived): `…/specs/<class>/all` and `…/roles/<class>/all` (`ALL` in `mplusParams.ts`; no
-  spec or role has that slug). Both are the whole class's board (Soulseeker's `class=`
-  alone); two addresses so the menu highlights the row that was clicked. Icons: the class
-  for Specs, `roles/all.png` (a green flag, drawn round like the role icons) for Roles.
+  `specsAz` in `gameOrder.ts`, `rolesAz` in `pveNav.ts`; the user's choice, 2026-11-26) in
+  every language, so the order never moves with the language; roles read Healer, Melee
+  DPS, Ranged DPS, Tank.
+- **A class row is a page** (the user, 2026-11-27, in both menus; it replaced the "All"
+  rows): the class's label opens the whole class's board and only its framed arrow opens
+  its specs or roles (`NavGroup.link`). Specs → `…/specs/<class>/all`, Classes & Roles →
+  `…/roles/<class>/all`, PvP → `…/leaderboards/<bracket>/<class>/all` (`ALL` in
+  `mplusParams.ts`; no spec or role has that slug; Soulseeker's `class=` alone). The
+  `nav.allSpecs` / `nav.allRoles` labels are gone; `roles/all.png` is no longer used.
 - The current and archived pages share their components (`src/components/pve/MplusPages.tsx`)
   and URL checks (`src/lib/mplusParams.ts`); the menu builds both Leaderboards from one
   `leaderboardsGroup(locale, name, archive)`, archive ids prefixed `archives-`.
@@ -549,9 +562,8 @@ below).
     - medium: + the race portrait first among the icons, + win % after the rating (whole
       percent, won ÷ (won + lost), the record on hover; red below 50%, grey 50–55%, green
       above 55% on the exact rate: `winRateTier` in `src/lib/wow/winRate.ts`);
-    - large: the faction moves between the place and the player (`place · faction ·
-player · rating · wins · losses · win % · PvP talents · talents`, the user's order of
-      2026-11-27); + the realm beside the name (`realmName`), a trend before the rating
+    - large: the faction last, as on the other sizes (`place · player · rating · wins ·
+losses · win % · PvP talents · talents · faction`, the user's order of 2026-11-27); + the realm beside the name (`realmName`), a trend before the rating
       (green ▲ up, red ▼ down, grey — unchanged or no `previousRating`; CSS shapes, the change
       and the previous rating on hover: the Previous column was removed), wins (green) and
       losses (red) before the win %, the **PvP talents** (`PvpTalentSlot`, three slots from
@@ -569,7 +581,7 @@ player · rating · wins · losses · win % · PvP talents · talents`, the user
       slug). No loadout yet: a dimmed, dashed button. Its column titles are visible
       (`#` for the place, "Rank" for screen readers), each centred over its centred values
       (the player column stays left); long titles wrap, hyphenated in the page's language. It needs ~60rem and scrolls sideways below that.
-  - **The full leaderboard pages** (`/pvp/leaderboards/<bracket>`) show the large widget,
+  - **The full leaderboard pages** (`/pvp/leaderboards/<bracket>`, and `…/<class>/<spec>`) show the large widget,
     **50 rows a page**, with **page controls above and below** (`Pagination`:
     `src/components/Pagination.tsx`; first, previous, the pages around the current one from
     `pageWindow`, next, last, with the nav/page-* icons, "Page 3 of 4,000 · 265,120

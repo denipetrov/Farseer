@@ -9,6 +9,7 @@ import {
   type PvpBoard,
   type PvpBracket,
 } from '@/api/pvp';
+import { ClassIcon } from '@/components/ClassIcon';
 import { FactionIcon } from '@/components/FactionIcon';
 import { GameIcon } from '@/components/GameIcon';
 import { HeroTalentIcon } from '@/components/HeroTalentIcon';
@@ -25,7 +26,7 @@ import { iconUrl } from '@/lib/assets';
 import { cx } from '@/lib/cx';
 import { lastReachablePage } from '@/lib/pagination';
 import { useSite } from '@/lib/site';
-import { classColorKey } from '@/lib/wow/classes';
+import { classColorKey, classIconUrl } from '@/lib/wow/classes';
 import { factionIconUrl } from '@/lib/wow/factions';
 import { heroTreeIconUrl } from '@/lib/wow/heroTalents';
 import { PVP_RANKS, pvpRankIconUrl, rankOfLadderRow } from '@/lib/wow/pvpRank';
@@ -47,9 +48,9 @@ type Column =
 
 /**
  * The columns of each size, in order (the user's design, 2026-11-26):
- * - small: place, spec + hero talent and name, rating, faction;
+ * - small: place, class + spec + hero talent icons and name, rating, faction;
  * - medium: adds the race portrait before the spec, and the win % after the rating;
- * - large: the faction moves between the place and the player; adds the realm beside the
+ * - large: the faction last, as on the other sizes (the user, 2026-11-27); adds the realm beside the
  *   name, a trend arrow before the rating (against the previous rating, which is on hover:
  *   its own column went, 2026-11-27), wins and losses before the win %, the PvP talents and
  *   a talent loadout button at the end; its column titles are shown.
@@ -59,7 +60,6 @@ const COLUMNS: Record<WidgetSize, readonly Column[]> = {
   medium: ['place', 'player', 'rating', 'winRate', 'faction'],
   large: [
     'place',
-    'faction',
     'player',
     'rating',
     'won',
@@ -67,6 +67,7 @@ const COLUMNS: Record<WidgetSize, readonly Column[]> = {
     'winRate',
     'pvpTalents',
     'talents',
+    'faction',
   ],
 };
 
@@ -93,6 +94,9 @@ const ROWS: Record<WidgetSize, number> = { small: 10, medium: 10, large: 50 };
 
 interface LeaderboardWidgetProps {
   bracket: PvpBracket;
+  /** One class's rows only (Soulseeker's slug); with `spec`, one spec's */
+  cls?: string;
+  spec?: string;
   size?: WidgetSize;
   /** The region it opens on until the visitor picks one for this bracket (then remembered) */
   region?: PvpBoard;
@@ -119,6 +123,8 @@ interface LeaderboardWidgetProps {
  */
 export function LeaderboardWidget({
   bracket,
+  cls,
+  spec,
   size = 'small',
   region: initialRegion = 'world',
   fullLink = true,
@@ -146,6 +152,8 @@ export function LeaderboardWidget({
       region,
       seasonId: season.data?.seasonId ?? 0,
       bracket,
+      class: cls,
+      spec,
       // Never past the last page Soulseeker serves, whatever the URL asks for
       page: onPageChange ? Math.min(page, lastReachablePage(Infinity, ROWS[size])) : 1,
       pageSize: ROWS[size],
@@ -406,6 +414,12 @@ function PlayerCell({
             ) : (
               <UnknownIcon label={t('unknown.race')} />
             ))}
+          {/* The class before the spec, on every size (the user, 2026-11-27) */}
+          {classIconUrl(cls, { style }) ? (
+            <ClassIcon cls={cls} />
+          ) : (
+            <UnknownIcon label={t('unknown.class')} />
+          )}
           {specIconUrl(spec, cls) ? (
             <SpecIcon spec={spec} cls={cls} />
           ) : (

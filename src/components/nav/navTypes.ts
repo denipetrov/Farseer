@@ -42,6 +42,12 @@ export interface NavGroup {
   children: NavItem[];
   /** Open on arrival even when none of its pages is the current one (the current expansion) */
   defaultOpen?: boolean;
+  /**
+   * The section's own page (a PvP bracket: the whole ladder). Its label then opens the page
+   * and only its arrow opens or closes the section (the user, 2026-11-27); without one, the
+   * whole row opens and closes it. Active on that exact page only: its rows mark the rest.
+   */
+  link?: LinkOptions;
 }
 
 /** A line of muted text in a section: loading, or why it is empty. */
@@ -55,9 +61,16 @@ export type NavItem = NavLink | NavGroup | NavNote;
 export const isNavGroup = (item: NavItem): item is NavGroup => 'children' in item;
 export const isNavNote = (item: NavItem): item is NavNote => 'note' in item;
 
-/** Every link in a list of items, at any depth. */
+/** Every link in a list of items, at any depth: sections' own pages included. */
 export function navLinks(items: readonly NavItem[]): NavLink[] {
-  return items.flatMap((item) =>
-    isNavGroup(item) ? navLinks(item.children) : isNavNote(item) ? [] : [item],
+  return items.flatMap((item): NavLink[] =>
+    isNavGroup(item)
+      ? [
+          ...(item.link ? [{ id: item.id, label: item.label, link: item.link, exact: true }] : []),
+          ...navLinks(item.children),
+        ]
+      : isNavNote(item)
+        ? []
+        : [item],
   );
 }

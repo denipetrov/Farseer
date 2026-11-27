@@ -108,6 +108,10 @@ export interface LeaderboardParams {
   region: PvpBoard;
   seasonId: number;
   bracket: PvpBracket;
+  /** One class's rows only (Soulseeker's slug, `mage`) */
+  class?: string;
+  /** One spec's rows only (`fire`); needs `class` */
+  spec?: string;
   page?: number;
   pageSize?: number;
 }
@@ -116,15 +120,17 @@ export const leaderboardQuery = ({
   region,
   seasonId,
   bracket,
+  class: cls,
+  spec,
   page = 1,
   pageSize = 50,
 }: LeaderboardParams) =>
   queryOptions({
-    queryKey: ['pvp', 'leaderboard', region, seasonId, bracket, page, pageSize],
+    queryKey: ['pvp', 'leaderboard', region, seasonId, bracket, cls, spec, page, pageSize],
     queryFn: ({ signal }) =>
       api.get<LeaderboardResponse>(
         '/pvp/leaderboard',
-        { region, seasonId, bracket, page, pageSize },
+        { region, seasonId, bracket, class: cls, spec, page, pageSize },
         signal,
       ),
     staleTime: 60_000,
