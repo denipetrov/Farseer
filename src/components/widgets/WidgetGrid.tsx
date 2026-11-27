@@ -11,7 +11,11 @@ import styles from './WidgetGrid.module.css';
  */
 export type WidgetSize = 'small' | 'medium' | 'large';
 
-/** The grid widgets sit in */
-export function WidgetGrid({ children }: { children: ReactNode }) {
-  return <div className={styles.grid}>{children}</div>;
+/** The grid widgets sit in; `dense` halves the gaps (the leaderboard pages, to show the board) */
+export function WidgetGrid({ children, dense }: { children: ReactNode; dense?: boolean }) {
+  return (
+    <div className={styles.grid} data-dense={dense || undefined}>
+      {children}
+    </div>
+  );
 }

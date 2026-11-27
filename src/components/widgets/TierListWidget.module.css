@@ -1,0 +1,453 @@
+/*
+ * The tier list: a header (title, season line, role tabs), the "how" panel, then one row
+ * per tier: the letter on the tier's colour at the left, the specs as chips beside it.
+ * Tier colours are the game's item quality colours, legendary (S) to poor (D).
+ */
+.frame {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-6);
+}
+
+/* An icon-only role tab: square, the icon centred (the bar's tab keeps its states) */
+.roleTab {
+  justify-content: center;
+  padding: var(--space-1);
+}
+
+/*
+ * The icon is the tab's picture: no hover title of its own over the tab's. Larger than the
+ * shared sizes, for an easy target (the user, 2026-11-27): 48px, 36px on the compact list.
+ */
+.roleTab > img {
+  width: 48px;
+  height: 48px;
+  pointer-events: none;
+}
+
+.frame[data-compact] .roleTab > img {
+  width: 28px;
+  height: 28px;
+}
+
+/* Compact: the role tabs no taller than the title line */
+.frame[data-compact] .roleTab {
+  min-height: 0;
+  padding: 2px;
+}
+
+.frame[data-compact] .header {
+  align-items: center;
+}
+
+/* Compact: the "how" as an ⓘ button beside the title */
+.infoButton {
+  display: inline-grid;
+  place-items: center;
+  align-self: center;
+  padding: 2px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.infoButton:hover .info,
+.infoButton[aria-expanded='true'] .info {
+  background: var(--color-text);
+}
+
+.infoButton:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+/* Opened from the ⓘ, the rules sit straight under the header */
+.frame[data-compact] > .howBody {
+  margin-top: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.title {
+  margin: 0;
+  color: var(--color-text-highlight);
+  font-size: var(--font-size-lg);
+}
+
+/* The title, with the disclaimer beside it (below it when there is no room) */
+.titleLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+}
+
+/*
+ * Small, in the highlight colour so it is read (the user, 2026-11-27): the list follows the
+ * live ladder, so it lags buffs and nerfs
+ */
+.disclaimer {
+  max-width: 46rem;
+  margin: 0;
+  color: var(--color-accent-strong);
+  font-size: var(--font-size-xs);
+  font-style: italic;
+}
+
+.meta {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+/*
+ * "How are rankings calculated?": a quiet line under the season (the user's example,
+ * 2026-11-27): small muted text between an info mark and a chevron, no box. Opened, the
+ * explanation shows below in a box.
+ */
+.how {
+  /* Tucked under the season line: the frame's gap is for blocks, this is a line of it */
+  margin-top: calc(-1 * var(--space-3));
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+}
+
+.how > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-subtle);
+  cursor: pointer;
+  list-style: none;
+  transition: color var(--transition-fast);
+}
+
+/* No browser triangle: the chevron after the text says it opens */
+.how > summary::-webkit-details-marker {
+  display: none;
+}
+
+.how > summary:hover {
+  color: var(--color-text);
+}
+
+.how > summary:focus-visible {
+  border-radius: var(--radius-sm);
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* The info mark: an "i" in the page's background colour, in a small circle of the text's */
+.info {
+  display: inline-grid;
+  place-items: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-text-subtle);
+  color: var(--color-bg);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1;
+  transition: background var(--transition-fast);
+}
+
+.how > summary:hover .info {
+  background: var(--color-text);
+}
+
+/* A small chevron drawn with borders: down when closed, up when open */
+.chevron {
+  width: 6px;
+  height: 6px;
+  margin: 0 2px 3px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform var(--transition-fast);
+}
+
+.how[open] .chevron {
+  margin-bottom: 0;
+  margin-top: 3px;
+  transform: rotate(-135deg);
+}
+
+.howBody {
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border-muted);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-sunken);
+}
+
+.howBody > p:first-child {
+  margin-top: 0;
+}
+
+.how p,
+.howBody p {
+  margin: var(--space-3) 0 0;
+}
+
+.how strong,
+.howBody strong {
+  color: var(--color-text);
+}
+
+.factors {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--space-3);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.factors > li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border-muted);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+/* A factor's points out of 100 */
+.points {
+  display: inline-block;
+  min-width: 2.25rem;
+  margin-right: var(--space-1);
+  padding: 1px var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-hover);
+  color: var(--color-accent-strong);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.note {
+  font-size: var(--font-size-xs);
+}
+
+.tiers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* One tier: the letter's block, then the specs; the row framed in the tier's colour */
+.tier {
+  --tier-color: var(--color-quality-poor);
+  --tier-ink: var(--color-bg);
+
+  display: flex;
+  min-height: 80px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--tier-color) 45%, transparent);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.tier[data-tier='S'] {
+  --tier-color: var(--color-quality-legendary);
+}
+
+.tier[data-tier='A'] {
+  --tier-color: var(--color-quality-epic);
+  --tier-ink: var(--color-text-highlight);
+}
+
+.tier[data-tier='B'] {
+  --tier-color: var(--color-quality-rare);
+  --tier-ink: var(--color-text-highlight);
+}
+
+.tier[data-tier='C'] {
+  --tier-color: var(--color-quality-uncommon);
+}
+
+.tier[data-tier='D'] {
+  --tier-color: var(--color-quality-poor);
+}
+
+.letter {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 80px;
+  margin: 0;
+  background: var(--tier-color);
+  color: var(--tier-ink);
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.specs {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-content: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3);
+  list-style: none;
+}
+
+/* A spec: its icon and name in its class colour (data-class-color), a line of that colour at the left */
+.spec {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-4) var(--space-1) var(--space-2);
+  border-left: 3px solid currentColor;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-sunken);
+  color: var(--color-text);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background var(--transition-fast);
+}
+
+a.spec:hover {
+  background: var(--color-surface-hover);
+}
+
+a.spec:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.specName {
+  white-space: nowrap;
+}
+
+.skeleton {
+  flex: 1;
+  margin: var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-raised);
+}
+
+.message {
+  margin: 0;
+  padding: var(--space-6) var(--space-4);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/*
+ * Compact (the leaderboard pages): about 48px rows instead of 80, a narrower letter block,
+ * 24px icons and smaller chips, tighter spacing.
+ */
+.frame[data-compact] {
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+}
+
+.frame[data-compact] .title {
+  font-size: var(--font-size-md);
+}
+
+.frame[data-compact] .how {
+  margin-top: calc(-1 * var(--space-2));
+}
+
+.frame[data-compact] .tiers {
+  gap: var(--space-2);
+}
+
+.frame[data-compact] .tier {
+  min-height: 36px;
+}
+
+.frame[data-compact] .letter {
+  width: 36px;
+  font-size: 1.1rem;
+}
+
+.frame[data-compact] .specs {
+  gap: 4px;
+  padding: 6px var(--space-2);
+}
+
+/* Icon-only, as on the home page: the class colour as a short line under the icon */
+.frame[data-compact] .spec,
+.frame[data-mini] .spec {
+  padding: 2px;
+  border-bottom: 2px solid currentColor;
+  border-left: 0;
+}
+
+/*
+ * Mini (the home page, above each ladder): small or medium width, icon-only chips in short
+ * rows, a narrow letter block, and a link to the full list in the footer.
+ */
+.frame[data-mini] {
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4) 0;
+}
+
+.frame[data-mini] .title {
+  font-size: var(--font-size-md);
+}
+
+.frame[data-mini] .tiers {
+  gap: var(--space-2);
+}
+
+.frame[data-mini] .tier {
+  min-height: 40px;
+}
+
+.frame[data-mini] .letter {
+  width: 36px;
+  font-size: 1.25rem;
+}
+
+.frame[data-mini] .specs {
+  gap: 4px;
+  padding: 6px var(--space-2);
+}
+
+/*
+ * The footer sits flush with the frame's edges, as the ladders' does, and at its bottom: on
+ * the home page a list is stretched to its neighbour's height (PvpHomeBracket)
+ */
+.frame[data-mini] > footer {
+  margin: auto calc(-1 * var(--space-4)) 0;
+}
+
+.fullLink > a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-accent-strong);
+  font-weight: 600;
+}
+
+.fullLink > a:hover {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
+}

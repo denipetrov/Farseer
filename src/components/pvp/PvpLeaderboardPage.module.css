@@ -1,6 +1,27 @@
-/* The heading with the bracket's icon before it */
+/*
+ * The leaderboard pages fit a 1080p screen down to the board's first rows (the user,
+ * 2026-11-27): half the page's usual gaps, and the season beside the heading.
+ */
+main.page {
+  gap: var(--space-3);
+  /* Half the usual space under the site header */
+  padding-top: var(--space-4);
+}
+
+/* The heading on the left, the season's facts on the right, wrapping under it when narrow */
+.headingRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-8);
+}
+
+/* The heading with the bracket's icon before it: a step smaller than other pages' (1080p) */
 .title {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--font-size-xl);
 }

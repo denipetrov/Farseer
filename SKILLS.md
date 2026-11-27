@@ -530,7 +530,7 @@ below).
   its specs or roles (`NavGroup.link`). Specs → `…/specs/<class>/all`, Classes & Roles →
   `…/roles/<class>/all`, PvP → `…/leaderboards/<bracket>/<class>/all` (`ALL` in
   `mplusParams.ts`; no spec or role has that slug; Soulseeker's `class=` alone). The
-  `nav.allSpecs` / `nav.allRoles` labels are gone; `roles/all.png` is no longer used.
+  `nav.allSpecs` / `nav.allRoles` labels are gone; `roles/all.png` is now the tier list's All role tab.
 - The current and archived pages share their components (`src/components/pve/MplusPages.tsx`)
   and URL checks (`src/lib/mplusParams.ts`); the menu builds both Leaderboards from one
   `leaderboardsGroup(locale, name, archive)`, archive ids prefixed `archives-`.
@@ -548,6 +548,37 @@ below).
 - **Icons in the centre content are the coloured game art** (the user, 2026-11-26): the
   bracket PNGs (`pvp/brackets/<bracket>.png`, round), not the menu's single-colour SVGs, which
   stay for the left menu.
+- **Tier list** (`TierListWidget`, the user's design of 2026-11-27; data in
+  `src/api/tierList.ts`): every spec in tiers **S to D** from Soulseeker's `/pvp/tier-list`
+  (`region`, `bracket`) or `/pve/tier-list` (`region`, incl. `cn`); both have the same
+  `TierListSpec`, so one widget draws both (`PvpTierList`, `PveTierList` in
+  `widgets/TierLists.tsx` fetch and pass the floor text and links).
+  - **Read Soulseeker's rules before changing the "how" text** (its SKILLS.md, "PvP tier
+    list"): top-tier density 45 (top 250/500/1,000/2,500/5,000, 30/25/20/15/10 %),
+    representation 35, average 20 (by order; the average with 50 more players at the floor,
+    1500 rating / 2000 M+ score); lines at 10/35/65/90 % moved up to 2 specs to the widest
+    gap; every spec listed. Five tiers, not four.
+  - Header: title with a disclaimer beside it (small, in the highlight colour so it is read: the list follows the live ladder, so buffs and nerfs take time to show; `tier.disclaimer`, the user's text of 2026-11-27), short season name, region, "Updated"; a role filter as icons (48px, 36px compact; the round `roles/all` flag, then the DPS, Healer, Melee,
+    Ranged and Tank role icons; names on hover and for screen readers; All, DPS, Healers,
+    Melee, Ranged, Tanks: `tierRoles.ts`, tested) on the right, client-side. "How are
+    rankings calculated?" is a `<details>`: a quiet line under the season (ⓘ, muted text, a
+    chevron; the user's example of 2026-11-27), the explanation opening below it in a box.
+  - Each tier a row: the letter on the item-quality colour (legendary S, epic A, rare B,
+    uncommon C, poor D), then chips: the spec icon (40px) and name in the class colour
+    with a class-colour line, the score breakdown on hover, linking to that spec's board
+    (PvP ladder on the bracket, M+ spec board). Empty tiers are left out.
+  - **Placed:** `/pvp/tier-list?bracket=&region=` and `/pve/tier-list?region=` (standalone:
+    `TierListPage` with `TierListTabs`: on PvP its brackets and the regions, on Mythic+ the regions only; neither links to the other mode (the user, 2026-11-27), from the
+    shared tab bar `components/tabBar.ts`), and on the PvP leaderboard pages between the
+    bracket bar and the class filter (the user's placement), **compact** (`compact`: one header line, "Tier List ⓘ disclaimer" with 28px role icons; no season line (the page heading has it); the ⓘ opens the rules box with the season and "Updated" at its foot; 36px rows, icon-only chips; it stays vertical, the user's call of 2026-11-27, so the page keeps the board in view on 1080p), following the page's bracket and region (no bracket menu of its own).
+  - **PvP home** (the user, 2026-11-27): each bracket's tier list above its ladder, at its
+    width (`PvpHomeBracket`: one grid cell holding both, `grid-template-rows: subgrid` over
+    two rows, so lists side by side share a height and the ladders start level). The
+    `mini` version: named for its bracket ("RBG Tier List" when small), disclaimer and
+    season line, icon-only chips (name and score on hover), "View full tier list" to
+    `/pvp/tier-list?bracket=`; no role filter or "how" panel. It follows the ladder's
+    region (the bracket's remembered one).
+  - No "By Hero Talent" view: the endpoints have no hero talent breakdown.
 - **Icon filter** (`IconFilter`, the user's design of 2026-11-27): a full-width widget of
   centred icon rows for **any tree** of choices, `{ id, label, icon, children? }`
   (`FilterOption`; `icon` is any element). The first row is the top level; picking one
@@ -560,7 +591,13 @@ below).
   Ready trees in `widgets/filterTrees.tsx`: `classSpecTree`, `classRoleTree` (A–Z, as the
   menus); dungeons and raid → boss go in the same shape. **On the PvP leaderboard pages**
   it sits above the board and navigates: a class → `…/<class>/all`, a spec →
-  `…/<class>/<spec>`, × → the bracket; the region stays, the page resets.
+  `…/<class>/<spec>`, × → the bracket; the region stays, the page resets. **Roles beside the classes** (the user,
+  2026-11-27; `classSpecRoleTree`): DPS, Healer, Melee DPS, Ranged DPS, Tank after a divider
+  (`FilterOption.group`: a divider where the group changes). One pick per row: a role
+  replaces a class and the other way round, as Soulseeker never pairs a role with a spec.
+  A role is the bracket page's `?role=` (`LADDER_ROLES` in `api/pvp.ts`; tank, healer and dps
+  go to Soulseeker as `role`, melee and ranged as `subRole`), in the title ("Solo
+  Shuffle · Healer"), kept by the bracket and region tabs.
 - **Leaderboard** (`LeaderboardWidget`, the user's example): the bracket's PNG and name, a region dropdown (native `<select>`, `PVP_BOARDS`, World first and default), then
   per row the place (a Rank 1 row, same test as its orange rating, gets its place written
   on the Rank 1 emblem `rankedpvp_08`, as in game: `RankOnePlace`, plain digits with no
@@ -606,6 +643,12 @@ losses · win % · PvP talents · talents · faction`, the user's order of 2026-
       slug). No loadout yet: a dimmed, dashed button. Its column titles are visible
       (`#` for the place, "Rank" for screen readers), each centred over its centred values
       (the player column stays left); long titles wrap, hyphenated in the page's language. It needs ~60rem and scrolls sideways below that.
+  - **Fit for 1080p** (the user, 2026-11-27: the board must show on a 1920×1080 screen):
+    the leaderboard pages use half gaps (`main.page` 12px, 16px under the site header, `<WidgetGrid dense>`), a smaller
+    heading (xl, 24px icon) and season (sm) beside it, a dense bracket bar
+    (`.bar[data-dense]`: 32px tabs), the compact tier list (rows, not columns), and a tighter filter
+    (40px class icons in 46px buttons, 36 in 42 below). Measured at 1920×950: the board's
+    first row at ~660px on a bracket page, ~800px on a spec page (the season wraps there).
   - **The full leaderboard pages** (`PvpLeaderboardPage`; the user's layout of 2026-11-27):
     the bracket's icon beside the heading; under it the live season (`SeasonInfo`, from
     `GET /pvp/seasons`: name shortened from `Player vs. Player (…)`, start and end in the

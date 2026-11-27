@@ -1,12 +1,13 @@
 /*
- * Icon rows, centred, one per level of the filter. Each choice is a 48px button around a
- * 40px game icon (ICON_SIZES.md, the filter pickers' size).
+ * Icon rows, centred, one per level of the filter: the top row 40px icons in 46px buttons,
+ * the rows below 36px in 42px (tightened on 2026-11-27 so a 1080p screen shows the board
+ * under it).
  */
 .frame {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-4);
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
 }
 
 .row {
@@ -20,8 +21,8 @@
 .choice {
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 48px;
+  width: 42px;
+  height: 42px;
   padding: 0;
   border: 1px solid transparent;
   border-radius: var(--radius-md);
@@ -33,15 +34,25 @@
     opacity var(--transition-fast);
 }
 
-/* The top row: a 48px icon in a 56px button, a step above the rows below (40 in 48) */
+/* The top row holds the most (13 classes and 5 roles): tighter, so it stays one line */
+.row[data-level='0'] {
+  gap: var(--space-1);
+}
+
+/* The top row: a step above the rows below */
 .row[data-level='0'] .choice {
-  width: 56px;
-  height: 56px;
+  width: 46px;
+  height: 46px;
 }
 
 .row[data-level='0'] .choice > img {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
+}
+
+.row:not([data-level='0']) .choice > img {
+  width: 36px;
+  height: 36px;
 }
 
 .choice:hover {
@@ -114,4 +125,12 @@
 .clear:hover {
   background: var(--color-surface-hover);
   color: var(--color-text-highlight);
+}
+
+/* Between groups in a row (the classes | the roles) */
+.divider {
+  align-self: stretch;
+  width: 1px;
+  margin: var(--space-1) var(--space-2);
+  background: var(--color-trim-muted);
 }

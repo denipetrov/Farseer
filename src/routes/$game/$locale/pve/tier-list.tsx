@@ -1,12 +1,27 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { ComingSoonPage } from '@/components/ComingSoonPage';
-import { useI18n } from '@/i18n/useI18n';
-import { PVE_ICONS } from '@/components/nav/pveNav';
+import type { PveBoard } from '@/api/pve';
+import { PVE_TIER_REGIONS } from '@/api/tierList';
+import { TierListPage } from '@/components/tierList/TierListPage';
+import { PveTierList } from '@/components/widgets/TierLists';
 
-/** The Mythic+ tier list: specs ranked by their results. */
+/** `?region=`: World when absent */
+interface TierListSearch {
+  region?: PveBoard;
+}
+
+/** The Mythic+ tier list: the current season's specs in tiers S to D. */
 export const Route = createFileRoute('/$game/$locale/pve/tier-list')({
+  validateSearch: (search: Record<string, unknown>): TierListSearch => ({
+    region: PVE_TIER_REGIONS.includes(search.region as PveBoard)
+      ? (search.region as PveBoard)
+      : undefined,
+  }),
   component: function Page() {
-    const { t } = useI18n();
-    return <ComingSoonPage title={t('nav.tierList')} icon={PVE_ICONS.tierList} />;
+    const { region = 'world' } = Route.useSearch();
+    return (
+      <TierListPage active="mplus" region={region}>
+        <PveTierList region={region} />
+      </TierListPage>
+    );
   },
 });

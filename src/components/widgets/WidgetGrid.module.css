@@ -12,6 +12,10 @@
   gap: var(--space-6);
 }
 
+.grid[data-dense] {
+  gap: var(--space-3);
+}
+
 .grid > [data-size='small'] {
   grid-column: span 2;
 }

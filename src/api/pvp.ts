@@ -165,6 +165,15 @@ export interface LeaderboardResponse {
   entries: LeaderboardEntry[];
 }
 
+/**
+ * A ladder's role filter, A–Z by English name: DPS (every damage dealer), Healer, Melee DPS,
+ * Ranged DPS, Tank (DPS added by the user, 2026-11-27)
+ */
+export const LADDER_ROLES = ['dps', 'healer', 'melee', 'ranged', 'tank'] as const;
+export type LadderRole = (typeof LADDER_ROLES)[number];
+export const isLadderRole = (v: unknown): v is LadderRole =>
+  typeof v === 'string' && (LADDER_ROLES as readonly string[]).includes(v);
+
 export interface LeaderboardParams {
   region: PvpBoard;
   seasonId: number;
@@ -173,6 +182,11 @@ export interface LeaderboardParams {
   class?: string;
   /** One spec's rows only (`fire`); needs `class` */
   spec?: string;
+  /**
+   * One role's rows only: `tank`, `healer`, `dps` (Soulseeker's `role`) or `melee`, `ranged` (its
+   * `subRole`, damage dealers of that reach). Never with `spec`.
+   */
+  role?: LadderRole;
   page?: number;
   pageSize?: number;
 }
@@ -183,15 +197,27 @@ export const leaderboardQuery = ({
   bracket,
   class: cls,
   spec,
+  role,
   page = 1,
   pageSize = 50,
 }: LeaderboardParams) =>
   queryOptions({
-    queryKey: ['pvp', 'leaderboard', region, seasonId, bracket, cls, spec, page, pageSize],
+    queryKey: ['pvp', 'leaderboard', region, seasonId, bracket, cls, spec, role, page, pageSize],
     queryFn: ({ signal }) =>
       api.get<LeaderboardResponse>(
         '/pvp/leaderboard',
-        { region, seasonId, bracket, class: cls, spec, page, pageSize },
+        {
+          region,
+          seasonId,
+          bracket,
+          class: cls,
+          spec,
+          // Tank, healer and dps are roles; melee and ranged are damage dealers' sub-roles
+          role: role === 'tank' || role === 'healer' || role === 'dps' ? role : undefined,
+          subRole: role === 'melee' || role === 'ranged' ? role : undefined,
+          page,
+          pageSize,
+        },
         signal,
       ),
     staleTime: 60_000,

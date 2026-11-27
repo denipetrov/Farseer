@@ -1,5 +1,11 @@
 import { Link } from '@tanstack/react-router';
-import { PVP_BOARDS, PVP_BRACKETS, type PvpBoard, type PvpBracket } from '@/api/pvp';
+import {
+  PVP_BOARDS,
+  PVP_BRACKETS,
+  type LadderRole,
+  type PvpBoard,
+  type PvpBracket,
+} from '@/api/pvp';
 import { GameIcon } from '@/components/GameIcon';
 import { regionLabel } from '@/i18n/labels';
 import { useI18n } from '@/i18n/useI18n';
@@ -8,7 +14,7 @@ import { ALL } from '@/lib/mplusParams';
 import { useSite } from '@/lib/site';
 import { usePreferences } from '@/preferences/PreferencesProvider';
 import type { MessageKey } from '@/i18n/messages';
-import styles from './LeaderboardTabs.module.css';
+import { tabBar as styles } from '@/components/tabBar';
 
 const SHORT: Partial<Record<PvpBracket, MessageKey>> = {
   blitz: 'bracketShort.blitz',
@@ -28,6 +34,7 @@ export function LeaderboardTabs({
   cls,
   spec,
   region,
+  role,
   onRegion,
 }: {
   bracket: PvpBracket;
@@ -35,6 +42,8 @@ export function LeaderboardTabs({
   spec?: string;
   /** The region shown */
   region: PvpBoard;
+  /** A bracket page's role filter: kept when switching bracket */
+  role?: LadderRole;
   onRegion: (region: PvpBoard) => void;
 }) {
   const { t } = useI18n();
@@ -43,7 +52,7 @@ export function LeaderboardTabs({
   const search = { region: region === 'world' ? undefined : region };
 
   return (
-    <div className={styles.bar}>
+    <div className={styles.bar} data-dense>
       <nav className={styles.group} aria-label={t('tabs.brackets')}>
         {PVP_BRACKETS.map((b) => {
           const art = iconUrl(`pvp/brackets/${b}`);
@@ -78,7 +87,7 @@ export function LeaderboardTabs({
               className={styles.tab}
               to="/$game/$locale/pvp/leaderboards/$bracket"
               params={{ ...site, bracket: b }}
-              search={search}
+              search={{ ...search, role }}
               aria-current={current ? 'page' : undefined}
               onClick={keepRegion}
             >

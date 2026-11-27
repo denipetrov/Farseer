@@ -1,0 +1,6 @@
+/* The heading with the bracket's icon before it */
+.title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}

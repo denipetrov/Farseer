@@ -1,18 +1,21 @@
 import { useNavigate } from '@tanstack/react-router';
 import { useEffect, useMemo } from 'react';
-import type { PvpBoard, PvpBracket } from '@/api/pvp';
+import { isLadderRole, type PvpBoard, type PvpBracket } from '@/api/pvp';
 import { GameIcon } from '@/components/GameIcon';
 import { Page, PageTitle } from '@/components/Page';
 import { LeaderboardWidget } from '@/components/widgets/LeaderboardWidget';
 import { IconFilter } from '@/components/widgets/IconFilter';
+import { PvpTierList } from '@/components/widgets/TierLists';
 import { WidgetGrid } from '@/components/widgets/WidgetGrid';
-import { classSpecTree } from '@/components/widgets/filterTrees';
+import { classSpecRoleTree } from '@/components/widgets/filterTrees';
 import { useI18n } from '@/i18n/useI18n';
 import type { LeaderboardSearch } from '@/lib/leaderboardSearch';
 import { iconUrl } from '@/lib/assets';
 import { ALL } from '@/lib/mplusParams';
 import { resolveClass } from '@/lib/wow/classes';
 import { resolveSpec } from '@/lib/wow/specs';
+import { roleKindOfSlug } from '@/lib/wow/roles';
+import { roleText } from '@/i18n/labels';
 import { useSite } from '@/lib/site';
 import { usePreferences } from '@/preferences/PreferencesProvider';
 import { LeaderboardTabs } from './LeaderboardTabs';
@@ -43,11 +46,13 @@ export function PvpLeaderboardPage({
   onSearch: (next: LeaderboardSearch) => void;
 }) {
   const { region, page = 1 } = search;
+  // A role is a bracket page's filter only (Soulseeker never pairs one with a spec)
+  const role = cls ? undefined : search.role;
   const { t, name } = useI18n();
   const { preferences, setPreference } = usePreferences();
   const site = useSite();
   const navigate = useNavigate();
-  const tree = useMemo(() => classSpecTree(name), [name]);
+  const tree = useMemo(() => classSpecRoleTree(name, t), [name, t]);
 
   // A link naming a region (shared, or "View full leaderboard") opens on it, and it becomes
   // the bracket's remembered choice, as a URL's game mode does
@@ -65,6 +70,7 @@ export function PvpLeaderboardPage({
     t(`bracket.${bracket}`),
     c && name('classes', c.id, c.name),
     s && name('specs', s.id, s.name),
+    role && roleText(t, roleKindOfSlug(role)!),
   ]
     .filter(Boolean)
     .join(' · ');
@@ -75,43 +81,56 @@ export function PvpLeaderboardPage({
   const pickRegion = (next: PvpBoard) => {
     setPreference('pvpBoardRegions', { ...preferences.pvpBoardRegions, [bracket]: next });
     // Page 1 and World are left out of the URL
-    onSearch({ region: next === 'world' ? undefined : next });
+    onSearch({ region: next === 'world' ? undefined : next, role });
   };
 
   return (
-    <Page>
-      {/* The bracket's icon beside the heading: the widget's own header is off here */}
-      <PageTitle className={styles.title}>
-        {bracketArt && <GameIcon src={bracketArt} label="" size="md" shape="round" />}
-        <span>{title}</span>
-      </PageTitle>
-      <SeasonInfo bracket={bracket} region={shownRegion} cls={c?.slug} spec={s?.slug} page={page} />
+    <Page className={styles.page}>
+      <div className={styles.headingRow}>
+        {/* The bracket's icon beside the heading: the widget's own header is off here */}
+        <PageTitle className={styles.title}>
+          {bracketArt && <GameIcon src={bracketArt} label="" shape="round" />}
+          <span>{title}</span>
+        </PageTitle>
+        <SeasonInfo
+          bracket={bracket}
+          region={shownRegion}
+          cls={c?.slug}
+          spec={s?.slug}
+          page={page}
+        />
+      </div>
       {/* The page's own gap spaces it from the heading and the filter */}
       <LeaderboardTabs
         bracket={bracket}
         cls={c?.slug}
         spec={s?.slug}
+        role={role}
         region={shownRegion}
         onRegion={pickRegion}
       />
-      <WidgetGrid>
-        {/* Class → spec: each pick opens that ladder (the menu's pages), × the whole bracket */}
+      <WidgetGrid dense>
+        {/* Below the bar, above the filter (the user, 2026-11-27): the bracket's tier list in
+            the region shown; the page's bar is its bracket menu */}
+        <PvpTierList bracket={bracket} region={shownRegion} compact />
+        {/* Class → spec, or a role beside the classes: each pick opens that ladder (the menu's
+            pages, a role as `?role=`), × the whole bracket. One pick in the top row. */}
         <IconFilter
           options={tree}
-          value={c ? (s ? [c.slug, s.slug] : [c.slug]) : []}
-          levels={[t('filter.class'), t('filter.spec')]}
+          value={c ? (s ? [c.slug, s.slug] : [c.slug]) : role ? [role] : []}
+          levels={[t('filter.classOrRole'), t('filter.spec')]}
           label={t('filter.leaderboard')}
-          onChange={([cls, spec]) =>
-            void (cls
+          onChange={([first, spec]) =>
+            void (first && !isLadderRole(first)
               ? navigate({
                   to: '/$game/$locale/pvp/leaderboards/$bracket/$class/$spec',
-                  params: { ...site, bracket, class: cls, spec: spec ?? ALL },
+                  params: { ...site, bracket, class: first, spec: spec ?? ALL },
                   search: { region },
                 })
               : navigate({
                   to: '/$game/$locale/pvp/leaderboards/$bracket',
                   params: { ...site, bracket },
-                  search: { region },
+                  search: { region, role: isLadderRole(first) ? first : undefined },
                 }))
           }
         />
@@ -119,6 +138,7 @@ export function PvpLeaderboardPage({
           bracket={bracket}
           cls={c?.slug}
           spec={s?.slug}
+          role={role}
           size="large"
           region={region}
           header={false}

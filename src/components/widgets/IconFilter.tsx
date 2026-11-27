@@ -13,6 +13,11 @@ export interface FilterOption {
   label: string;
   icon: ReactNode;
   children?: readonly FilterOption[];
+  /**
+   * The kind of choice it is, when a row mixes kinds (the classes, then the roles): a thin
+   * divider goes between groups. Still one pick per row.
+   */
+  group?: string;
 }
 
 /**
@@ -56,7 +61,11 @@ export function IconFilter({
           role="group"
           aria-label={levels[level] ?? levels.at(-1)}
         >
-          {choices.map((c) => (
+          {choices.map((c, i) => [
+            // A divider where the row moves to another group (classes | roles)
+            i > 0 && c.group !== choices[i - 1]!.group && (
+              <span key={`divider-${c.id}`} className={styles.divider} aria-hidden />
+            ),
             <button
               key={c.id}
               type="button"
@@ -69,8 +78,8 @@ export function IconFilter({
               onClick={() => pick(level, c.id)}
             >
               {c.icon}
-            </button>
-          ))}
+            </button>,
+          ])}
           {/* The ×, at the end of the deepest row, once something is picked */}
           {level === rows.length - 1 && value.length > 0 && (
             <button

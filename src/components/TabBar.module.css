@@ -1,6 +1,6 @@
 /*
- * The brackets (left) and the regions (right) in one bar; on a narrow page the regions
- * wrap below. Each tab: muted text, the hover surface, and the current one bright with an
+ * The site's tab bars (the leaderboard and tier list pages): groups of tabs in one bar, the
+ * first on the left and the last on the right; on a narrow page they wrap. Each tab: muted text, the hover surface, and the current one bright with an
  * accent line under it, as the header's PvP/PvE switch.
  */
 .bar {
@@ -58,4 +58,15 @@
 .tab:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 1px;
+}
+
+/* Dense (the leaderboard pages, to leave room for the board on 1080p): lower tabs */
+.bar[data-dense] {
+  padding: var(--space-1);
+}
+
+.bar[data-dense] .tab {
+  min-height: 32px;
+  padding: 2px var(--space-3);
+  font-size: var(--font-size-sm);
 }

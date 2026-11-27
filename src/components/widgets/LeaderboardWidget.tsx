@@ -8,6 +8,7 @@ import {
   type LeaderboardEntry,
   type PvpBoard,
   type PvpBracket,
+  type LadderRole,
 } from '@/api/pvp';
 import { ClassIcon } from '@/components/ClassIcon';
 import { FactionIcon } from '@/components/FactionIcon';
@@ -97,6 +98,8 @@ interface LeaderboardWidgetProps {
   /** One class's rows only (Soulseeker's slug); with `spec`, one spec's */
   cls?: string;
   spec?: string;
+  /** One role's rows only (`tank`, `healer`, `melee`, `ranged`); not with a spec */
+  role?: LadderRole;
   size?: WidgetSize;
   /** The region it opens on until the visitor picks one for this bracket (then remembered) */
   region?: PvpBoard;
@@ -130,6 +133,7 @@ export function LeaderboardWidget({
   bracket,
   cls,
   spec,
+  role,
   size = 'small',
   region: initialRegion = 'world',
   header = true,
@@ -160,6 +164,7 @@ export function LeaderboardWidget({
       bracket,
       class: cls,
       spec,
+      role,
       // Never past the last page Soulseeker serves, whatever the URL asks for
       page: onPageChange ? Math.min(page, lastReachablePage(Infinity, ROWS[size])) : 1,
       pageSize: ROWS[size],
