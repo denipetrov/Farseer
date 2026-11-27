@@ -536,6 +536,20 @@ below).
 - **Icons in the centre content are the coloured game art** (the user, 2026-11-26): the
   bracket PNGs (`pvp/brackets/<bracket>.png`, round), not the menu's single-colour SVGs, which
   stay for the left menu.
+- **Icon filter** (`IconFilter`, the user's design of 2026-11-27): a full-width widget of
+  centred icon rows for **any tree** of choices, `{ id, label, icon, children? }`
+  (`FilterOption`; `icon` is any element). The first row is the top level; picking one
+  frames it in the faction trim, dims the rest of its row (opacity, as in the user's
+  screenshots) and opens a row of its children, as deep as the tree goes. Picking the
+  pick again unpicks it and everything below; the × at the end of the deepest row clears
+  all. `value` / `onChange` are the picked path (`['mage', 'fire']`, `[]`); the logic is
+  `filterRows` / `nextFilterPath` in `src/lib/filterPath.ts` (tested). Choices are 48px
+  buttons around 40px icons (`size="md"`, the filter pickers' size); each row is a
+  labelled group ("Class", "Specialization"), each choice a toggle (`aria-pressed`).
+  Ready trees in `widgets/filterTrees.tsx`: `classSpecTree`, `classRoleTree` (A–Z, as the
+  menus); dungeons and raid → boss go in the same shape. **On the PvP leaderboard pages**
+  it sits above the board and navigates: a class → `…/<class>/all`, a spec →
+  `…/<class>/<spec>`, × → the bracket; the region stays, the page resets.
 - **Leaderboard** (`LeaderboardWidget`, the user's example): the bracket's PNG and name, a region dropdown (native `<select>`, `PVP_BOARDS`, World first and default), then
   per row the place (a Rank 1 row, same test as its orange rating, gets its place written
   on the Rank 1 emblem `rankedpvp_08`, as in game: `RankOnePlace`, plain digits with no
