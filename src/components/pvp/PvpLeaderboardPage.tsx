@@ -1,13 +1,17 @@
-import { useEffect } from 'react';
+import { useNavigate } from '@tanstack/react-router';
+import { useEffect, useMemo } from 'react';
 import type { PvpBracket } from '@/api/pvp';
 import { Page, PageTitle } from '@/components/Page';
 import { LeaderboardWidget } from '@/components/widgets/LeaderboardWidget';
+import { IconFilter } from '@/components/widgets/IconFilter';
 import { WidgetGrid } from '@/components/widgets/WidgetGrid';
+import { classSpecTree } from '@/components/widgets/filterTrees';
 import { useI18n } from '@/i18n/useI18n';
 import type { LeaderboardSearch } from '@/lib/leaderboardSearch';
 import { ALL } from '@/lib/mplusParams';
 import { resolveClass } from '@/lib/wow/classes';
 import { resolveSpec } from '@/lib/wow/specs';
+import { useSite } from '@/lib/site';
 import { usePreferences } from '@/preferences/PreferencesProvider';
 
 /**
@@ -36,6 +40,9 @@ export function PvpLeaderboardPage({
   const { region, page = 1 } = search;
   const { t, name } = useI18n();
   const { preferences, setPreference } = usePreferences();
+  const site = useSite();
+  const navigate = useNavigate();
+  const tree = useMemo(() => classSpecTree(name), [name]);
 
   // A link naming a region (shared, or "View full leaderboard") opens on it, and it becomes
   // the bracket's remembered choice, as a URL's game mode does
@@ -61,6 +68,26 @@ export function PvpLeaderboardPage({
     <Page>
       <PageTitle>{title}</PageTitle>
       <WidgetGrid>
+        {/* Class → spec: each pick opens that ladder (the menu's pages), × the whole bracket */}
+        <IconFilter
+          options={tree}
+          value={c ? (s ? [c.slug, s.slug] : [c.slug]) : []}
+          levels={[t('filter.class'), t('filter.spec')]}
+          label={t('filter.leaderboard')}
+          onChange={([cls, spec]) =>
+            void (cls
+              ? navigate({
+                  to: '/$game/$locale/pvp/leaderboards/$bracket/$class/$spec',
+                  params: { ...site, bracket, class: cls, spec: spec ?? ALL },
+                  search: { region },
+                })
+              : navigate({
+                  to: '/$game/$locale/pvp/leaderboards/$bracket',
+                  params: { ...site, bracket },
+                  search: { region },
+                }))
+          }
+        />
         <LeaderboardWidget
           bracket={bracket}
           cls={c?.slug}

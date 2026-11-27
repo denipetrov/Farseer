@@ -1,4 +1,5 @@
 import { CLASSES } from '@/lib/wow/classes';
+import { classRoleKinds, roleLabel, type RoleKind } from '@/lib/wow/roles';
 import { SPECS, type Spec } from '@/lib/wow/specs';
 
 /**
@@ -13,3 +14,7 @@ export const CLASSES_AZ = [...CLASSES].sort(byEnglishName);
 
 export const specsAz = (classSlug: string): Spec[] =>
   SPECS.filter((sp) => sp.classSlug === classSlug).sort(byEnglishName);
+
+/** A class's roles: Healer, Melee DPS, Ranged DPS, Tank */
+export const rolesAz = (classSlug: string): RoleKind[] =>
+  classRoleKinds(classSlug).sort((a, b) => roleLabel(a).localeCompare(roleLabel(b), 'en'));

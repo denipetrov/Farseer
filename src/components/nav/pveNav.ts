@@ -6,10 +6,10 @@ import type { GameName } from '@/i18n/useI18n';
 import type { MessageKey } from '@/i18n/messages';
 import { iconUrl } from '@/lib/assets';
 import type { WowClass } from '@/lib/wow/classes';
-import { classRoleKinds, roleLabel, roleSlug, type RoleKind } from '@/lib/wow/roles';
+import { roleSlug } from '@/lib/wow/roles';
 import type { Faction } from '@/styles/palette';
 import { ALL } from '@/lib/mplusParams';
-import { CLASSES_AZ, specsAz } from './gameOrder';
+import { CLASSES_AZ, rolesAz, specsAz } from './gameOrder';
 import type { NavGroup, NavIcon, NavItem, NavLabel } from './navTypes';
 
 /** An icon the PvE menu wants, or a stand-in until its file is added (then it is used). */
@@ -267,8 +267,6 @@ function leaderboardsGroup(site: SiteParams, name: GameName, archive: boolean): 
 
 // Classes, specs and roles A–Z by their English names (gameOrder.ts)
 /** Healer, Melee DPS, Ranged DPS, Tank */
-const rolesAz = (classSlug: string): RoleKind[] =>
-  classRoleKinds(classSlug).sort((a, b) => roleLabel(a).localeCompare(roleLabel(b), 'en'));
 
 const ROLE_LABEL: Record<ReturnType<typeof roleSlug>, MessageKey> = {
   tank: 'role.tank',
