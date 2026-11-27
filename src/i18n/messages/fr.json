@@ -21,10 +21,6 @@
   "search.keepTyping": "Continuez à taper pour affiner la liste",
   "mode.pvp.intro": "Classements d’arène et de champs de bataille, seuils, tier lists et personnages JcJ.",
   "mode.pve.intro": "Classements mythique+ et raids, parcours, personnages et guildes.",
-  "api.connecting": "Connexion à Soulseeker…",
-  "api.unavailable": "Soulseeker indisponible : {message}",
-  "api.connected": "Connecté · {who}",
-  "api.anonymous": "session anonyme",
   "page.notFound.title": "Introuvable",
   "page.notFound.text": "La page que vous cherchez n’existe pas.",
   "page.error.title": "Une erreur est survenue",
@@ -233,5 +229,6 @@
   "heroStats.infoFull": "Les {count} meilleurs joueurs sont comptés.",
   "heroStats.infoCovered": "Le build de {covered} d’entre eux est connu ({coverage} de couverture) : les pourcentages portent sur ces {covered}.",
   "heroStats.infoAllCovered": "Le build de tous est connu.",
-  "heroStats.infoRating": "Cote {min}–{max}."
+  "heroStats.infoRating": "Cote {min}–{max}.",
+  "home.tagline": "À nous la garde"
 }

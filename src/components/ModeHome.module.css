@@ -1,0 +1,73 @@
+/*
+ * A mode's home: the hero on top of the page, then the widgets. The hero's art covers its
+ * box and fades out: dimmed, and masked towards the bottom (into the page) and the sides
+ * (into the menu and the page's margins), as on the user's example (2026-11-28).
+ */
+main.page {
+  padding-top: 0;
+}
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  min-height: 360px;
+  /* Out into the page's side padding, so the art reaches the content's edges */
+  margin: 0 calc(var(--space-6) * -1);
+  padding: var(--space-12) var(--space-6) var(--space-8);
+  overflow: hidden;
+  isolation: isolate;
+  text-align: center;
+}
+
+/* The art: centred on the figure's face and shoulders, faded out (mask), behind the text */
+.art {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 26%;
+  opacity: 0.55;
+  pointer-events: none;
+  user-select: none;
+  mask-image:
+    linear-gradient(to bottom, #000 0%, #000 35%, transparent 100%),
+    linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%);
+  mask-composite: intersect;
+}
+
+.title {
+  margin: 0;
+  line-height: 0;
+}
+
+/* The wordmark, as large as the page allows */
+.logo {
+  width: min(640px, 85vw);
+  height: auto;
+}
+
+.intro {
+  max-width: 40rem;
+  margin: 0;
+  color: var(--color-text-highlight);
+  /* The footer slogan's handwriting (the user, 2026-11-28), with its per-language fonts */
+  font-family: 'Caveat', 'Nanum Pen Script', cursive;
+  font-size: 2.25rem;
+  line-height: 1.2;
+}
+
+/* Korean and Chinese: their own handwriting first, as the footer's slogan */
+:root:lang(ko) .intro {
+  font-family: 'Nanum Pen Script', 'Caveat', cursive;
+}
+
+:root:lang(zh) .intro {
+  font-family: 'Ma Shan Zheng', 'Caveat', cursive;
+  font-size: 2rem;
+}

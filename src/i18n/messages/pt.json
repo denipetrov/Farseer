@@ -21,10 +21,6 @@
   "search.keepTyping": "Continue digitando para refinar a lista",
   "mode.pvp.intro": "Rankings de arena e campos de batalha, cortes, tier lists e personagens JxJ.",
   "mode.pve.intro": "Rankings de mítica+ e raides, corridas, personagens e guildas.",
-  "api.connecting": "Conectando ao Soulseeker…",
-  "api.unavailable": "Soulseeker indisponível: {message}",
-  "api.connected": "Conectado · {who}",
-  "api.anonymous": "sessão anônima",
   "page.notFound.title": "Não encontrado",
   "page.notFound.text": "A página que você procura não existe.",
   "page.error.title": "Algo deu errado",
@@ -233,5 +229,6 @@
   "heroStats.infoFull": "Os {count} melhores jogadores são contados.",
   "heroStats.infoCovered": "A build de {covered} deles é conhecida ({coverage} de cobertura): as porcentagens são desses {covered}.",
   "heroStats.infoAllCovered": "A build de todos é conhecida.",
-  "heroStats.infoRating": "Pontuação {min}–{max}."
+  "heroStats.infoRating": "Pontuação {min}–{max}.",
+  "home.tagline": "Nossa é a vigília"
 }

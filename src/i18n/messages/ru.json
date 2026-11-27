@@ -21,10 +21,6 @@
   "search.keepTyping": "Продолжайте вводить, чтобы сузить список",
   "mode.pvp.intro": "Рейтинги арен и полей боя, пороги, тир-листы и PvP-персонажи.",
   "mode.pve.intro": "Рейтинги эпохальных+ подземелий и рейдов, забеги, персонажи и гильдии.",
-  "api.connecting": "Подключение к Soulseeker…",
-  "api.unavailable": "Soulseeker недоступен: {message}",
-  "api.connected": "Подключено · {who}",
-  "api.anonymous": "анонимная сессия",
   "page.notFound.title": "Не найдено",
   "page.notFound.text": "Страница, которую вы ищете, не существует.",
   "page.error.title": "Что-то пошло не так",
@@ -233,5 +229,6 @@
   "heroStats.infoFull": "Учтены лучшие {count} игроков.",
   "heroStats.infoCovered": "Билд известен у {covered} из них (покрытие {coverage}): проценты — от этих {covered}.",
   "heroStats.infoAllCovered": "Билд известен у всех.",
-  "heroStats.infoRating": "Рейтинг {min}–{max}."
+  "heroStats.infoRating": "Рейтинг {min}–{max}.",
+  "home.tagline": "Наш дозор"
 }

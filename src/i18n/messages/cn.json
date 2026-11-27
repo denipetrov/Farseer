@@ -21,10 +21,6 @@
   "search.keepTyping": "继续输入以缩小列表",
   "mode.pvp.intro": "竞技场与战场排行榜、分数线、强度榜和 PvP 角色。",
   "mode.pve.intro": "史诗钥石与团队副本排行榜、记录、角色和公会。",
-  "api.connecting": "正在连接 Soulseeker…",
-  "api.unavailable": "Soulseeker 不可用：{message}",
-  "api.connected": "已连接 · {who}",
-  "api.anonymous": "匿名会话",
   "page.notFound.title": "未找到",
   "page.notFound.text": "您要找的页面不存在。",
   "page.error.title": "出了点问题",
@@ -233,5 +229,6 @@
   "heroStats.infoFull": "统计了前 {count} 名玩家。",
   "heroStats.infoCovered": "其中 {covered} 名玩家的天赋已知（覆盖率 {coverage}）：百分比基于这 {covered} 名。",
   "heroStats.infoAllCovered": "所有玩家的天赋均已知。",
-  "heroStats.infoRating": "等级分 {min}–{max}。"
+  "heroStats.infoRating": "等级分 {min}–{max}。",
+  "home.tagline": "守望属于我们"
 }

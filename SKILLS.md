@@ -570,7 +570,7 @@ below).
   - **Placed:** `/pvp/tier-list?bracket=&region=` and `/pve/tier-list?region=` (standalone:
     `TierListPage` with `TierListTabs`: on PvP its brackets and the regions, on Mythic+ the regions only; neither links to the other mode (the user, 2026-11-27), from the
     shared tab bar `components/tabBar.ts`), and on the PvP leaderboard pages between the
-    bracket bar and the class filter (the user's placement), **compact** (`compact`: one header line, "Tier List ⓘ disclaimer" with 28px role icons; no season line (the page heading has it); the ⓘ opens the rules box with the season and "Updated" at its foot; 36px rows, icon-only chips; it stays vertical, the user's call of 2026-11-27, so the page keeps the board in view on 1080p), following the page's bracket and region (no bracket menu of its own).
+    bracket bar and the class filter (the user's placement), **compact** (`compact`: one header line, "Tier List ⓘ disclaimer" with 28px role icons; no season line (the page heading has it); the ⓘ opens the rules box with the season and "Updated" at its foot; 36px rows, icon-only chips (no dark chip background on the compact and mini lists, only the class-colour line under the icon: the user, 2026-11-28); it stays vertical, the user's call of 2026-11-27, so the page keeps the board in view on 1080p), following the page's bracket and region (no bracket menu of its own).
   - **PvP home** (the user, 2026-11-27): each bracket's tier list above its ladder, at its
     width (`PvpHomeBracket`: one grid cell holding both, `grid-template-rows: subgrid` over
     two rows, so lists side by side share a height and the ladders start level). The
@@ -840,6 +840,18 @@ class&spec&role`, `HeroTalentsPage.tsx`; the user's design of 2026-11-27, was Co
   (`bracketShort.*`; the full name on hover and as the widget's label).
 - **The PvP home** (the user's layout): Solo Shuffle and 3v3 as medium boards, then 2v2,
   Blitz and RBG as small ones (`ModeHome` takes children).
+- **The mode homes' hero** (`ModeHome`, both PvP and PvE; the user's design, 2026-11-28):
+  **the wordmark only** (`rankwarden-wordmark.svg`: the logo's "RANKWARDEN" paths and
+  gradients lifted out unchanged, viewBox cropped to their measured box; no emblem, the
+  user's call) up to 640px wide, **"Ours is the watch"** under it in the footer slogan's handwriting (Caveat; Nanum Pen
+  Script for Korean, Ma Shan Zheng for Chinese) (`home.tagline`, all 8
+  languages; the old `mode.*.intro` lines are no longer shown), and the user's art behind
+  (`src/assets/images/backgrounds/home-hero.webp`: their 1200×1485 PNG, re-encoded to WebP
+  q86 per `assets/README.md`, 1.09 MB → 83 KB, pixels otherwise as given). **The fade is
+  CSS, not the file**: `opacity: 0.55` and two intersected `mask-image` gradients (bottom
+  into the page, both sides), `object-position: center 26%` on the figure. This is a
+  requested background, not icon/emblem art, so the no-filter rule for game art doesn't
+  apply. The page's top padding goes, so the art meets the header.
 - **`.sr-only`** (`global.css`): read by screen readers, not shown.
 
 **Back to top** (`src/components/ScrollTopButton.tsx`, in `__root.tsx`): a 48px round button
@@ -1234,7 +1246,6 @@ cluster has been done.
   - routes `/` (redirect), `/pvp`, `/pve`, `/leaderboards`, `/character/$region/$realm/$name`
     and `/guild/$region/$realm/$name`;
   - the complete auth flow and API client;
-  - the `ApiStatus` indicator (`GET /session`) on the mode homes;
   - CI/CD and the chart.
 - **Placeholders:** the `/pvp` and `/pve` homes (`ModeHome`), every PvP and PvE menu page,
   and the character and guild pages render their titles or parameters but don't fetch data

@@ -21,10 +21,6 @@
   "search.keepTyping": "Keep typing to narrow the list",
   "mode.pvp.intro": "Arena and battleground ladders, cutoffs, tier lists and PvP characters.",
   "mode.pve.intro": "Mythic+ and raid rankings, runs, characters and guilds.",
-  "api.connecting": "Connecting to Soulseeker…",
-  "api.unavailable": "Soulseeker unavailable: {message}",
-  "api.connected": "Connected · {who}",
-  "api.anonymous": "anonymous session",
   "page.notFound.title": "Not found",
   "page.notFound.text": "The page you are looking for does not exist.",
   "page.error.title": "Something went wrong",
@@ -233,5 +229,6 @@
   "heroStats.infoFull": "The top {count} players are counted.",
   "heroStats.infoCovered": "{covered} of them have a known build ({coverage} coverage): percentages are shares of those {covered}.",
   "heroStats.infoAllCovered": "All of them have a known build.",
-  "heroStats.infoRating": "Rating {min}–{max}."
+  "heroStats.infoRating": "Rating {min}–{max}.",
+  "home.tagline": "Ours is the watch"
 }

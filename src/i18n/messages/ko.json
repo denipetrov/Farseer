@@ -21,10 +21,6 @@
   "search.keepTyping": "목록을 좁히려면 계속 입력하세요",
   "mode.pvp.intro": "투기장 및 전장 순위, 컷오프, 티어 목록, PvP 캐릭터.",
   "mode.pve.intro": "신화+ 및 공격대 순위, 기록, 캐릭터와 길드.",
-  "api.connecting": "Soulseeker에 연결 중…",
-  "api.unavailable": "Soulseeker를 사용할 수 없음: {message}",
-  "api.connected": "연결됨 · {who}",
-  "api.anonymous": "익명 세션",
   "page.notFound.title": "찾을 수 없음",
   "page.notFound.text": "찾으시는 페이지가 존재하지 않습니다.",
   "page.error.title": "문제가 발생했습니다",
@@ -233,5 +229,6 @@
   "heroStats.infoFull": "상위 {count}명을 집계했습니다.",
   "heroStats.infoCovered": "이 중 {covered}명의 빌드가 확인되었습니다(확인률 {coverage}). 비율은 이 {covered}명 기준입니다.",
   "heroStats.infoAllCovered": "모두의 빌드가 확인되었습니다.",
-  "heroStats.infoRating": "평점 {min}–{max}."
+  "heroStats.infoRating": "평점 {min}–{max}.",
+  "home.tagline": "감시는 우리의 몫"
 }

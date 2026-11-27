@@ -21,10 +21,6 @@
   "search.keepTyping": "Sigue escribiendo para acotar la lista",
   "mode.pvp.intro": "Clasificaciones de arena y campos de batalla, cortes, listas de niveles y personajes JcJ.",
   "mode.pve.intro": "Clasificaciones de mítica+ y bandas, carreras, personajes y hermandades.",
-  "api.connecting": "Conectando con Soulseeker…",
-  "api.unavailable": "Soulseeker no disponible: {message}",
-  "api.connected": "Conectado · {who}",
-  "api.anonymous": "sesión anónima",
   "page.notFound.title": "No encontrado",
   "page.notFound.text": "La página que buscas no existe.",
   "page.error.title": "Algo ha salido mal",
@@ -233,5 +229,6 @@
   "heroStats.infoFull": "Se cuentan los {count} mejores jugadores.",
   "heroStats.infoCovered": "Se conoce la build de {covered} ({coverage} de cobertura): los porcentajes son de esos {covered}.",
   "heroStats.infoAllCovered": "Se conoce la build de todos.",
-  "heroStats.infoRating": "Índice {min}–{max}."
+  "heroStats.infoRating": "Índice {min}–{max}.",
+  "home.tagline": "Nuestra es la guardia"
 }

@@ -21,10 +21,6 @@
   "search.keepTyping": "Tippe weiter, um die Liste einzugrenzen",
   "mode.pvp.intro": "Arena- und Schlachtfeld-Ranglisten, Grenzwerte, Tierlisten und PvP-Charaktere.",
   "mode.pve.intro": "Mythisch+- und Schlachtzugsranglisten, Durchläufe, Charaktere und Gilden.",
-  "api.connecting": "Verbindung zu Soulseeker wird hergestellt…",
-  "api.unavailable": "Soulseeker nicht erreichbar: {message}",
-  "api.connected": "Verbunden · {who}",
-  "api.anonymous": "anonyme Sitzung",
   "page.notFound.title": "Nicht gefunden",
   "page.notFound.text": "Die gesuchte Seite existiert nicht.",
   "page.error.title": "Etwas ist schiefgelaufen",
@@ -233,5 +229,6 @@
   "heroStats.infoFull": "Die besten {count} Spieler werden gezählt.",
   "heroStats.infoCovered": "Von {covered} ist der Build bekannt ({coverage} Abdeckung): Die Prozente beziehen sich auf diese {covered}.",
   "heroStats.infoAllCovered": "Von allen ist der Build bekannt.",
-  "heroStats.infoRating": "Wertung {min}–{max}."
+  "heroStats.infoRating": "Wertung {min}–{max}.",
+  "home.tagline": "Unser ist die Wacht"
 }

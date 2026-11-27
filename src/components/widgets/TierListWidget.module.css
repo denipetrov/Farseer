@@ -392,12 +392,16 @@ a.spec:focus-visible {
   padding: 6px var(--space-2);
 }
 
-/* Icon-only, as on the home page: the class colour as a short line under the icon */
+/*
+ * Icon-only, as on the home page: the class colour as a short line under the icon, no dark
+ * chip behind it (the user, 2026-11-28); a link still lights up on hover
+ */
 .frame[data-compact] .spec,
 .frame[data-mini] .spec {
   padding: 2px;
   border-bottom: 2px solid currentColor;
   border-left: 0;
+  background: transparent;
 }
 
 /*
