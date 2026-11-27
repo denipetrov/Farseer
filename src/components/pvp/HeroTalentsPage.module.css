@@ -1,0 +1,264 @@
+/*
+ * The hero talents page: the stats pages' tight layout, then a card per class, two across
+ * (one on narrow pages). A card's colour is its class's (data-class-color sets currentColor):
+ * its name and its bars.
+ */
+main.page {
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--font-size-xl);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.summary {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text);
+}
+
+.summary strong {
+  color: var(--color-text-highlight);
+}
+
+.summary > span {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+}
+
+.message {
+  margin: 0;
+  padding: var(--space-8) var(--space-4);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.skeleton {
+  height: 480px;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(440px, 100%), 1fr));
+  gap: var(--space-4);
+  align-items: start;
+  transition: opacity var(--transition-fast);
+}
+
+/* The previous answer, while the next loads */
+.cards[data-stale] {
+  opacity: 0.6;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-trim-muted);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border-muted);
+}
+
+.cardHeader > h2 {
+  display: flex;
+  /* The card's class colour (the site's heading colour would win otherwise) */
+  color: inherit;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cardHeader > span {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.spec {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+}
+
+.spec + .spec {
+  border-top: 1px solid var(--color-border-muted);
+}
+
+.specHead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.specName {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  color: var(--color-text-highlight);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.specName:hover {
+  text-decoration: underline;
+}
+
+.specName:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.range {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Players with a known tree, of the top asked: amber when the ladder had fewer */
+.pool {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.pool strong {
+  color: var(--color-text);
+}
+
+.pool[data-short],
+.pool[data-short] strong {
+  color: var(--color-warning);
+}
+
+.shortNote {
+  margin: calc(var(--space-1) * -1) 0 0;
+  color: var(--color-warning);
+  font-size: var(--font-size-xs);
+}
+
+.trees {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* A tree: icon, name, its bar, players, share */
+.tree {
+  display: grid;
+  grid-template-columns: auto minmax(7rem, 11rem) minmax(0, 1fr) 3ch 6ch;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-sm);
+}
+
+.treeName {
+  overflow: hidden;
+  color: var(--color-text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bar {
+  position: relative;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--color-border-muted);
+}
+
+.bar::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--share) * 100%);
+  border-radius: inherit;
+  background: currentColor;
+  content: '';
+}
+
+.count {
+  color: var(--color-text-highlight);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.share {
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* A tree nobody took: quieter */
+.tree[data-zero] .treeName,
+.tree[data-zero] .count {
+  color: var(--color-text-subtle);
+}
+
+/* The coverage ⚠: a button (hover, focus or click explains), amber like its count */
+.info {
+  margin-right: 3px;
+  padding: 0 2px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-warning);
+  font: inherit;
+  cursor: help;
+}
+
+.info:hover,
+.info[aria-expanded='true'] {
+  background: var(--color-surface-hover);
+}
+
+.info:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.infoTitle {
+  display: block;
+  margin-bottom: var(--space-1);
+  color: var(--color-text-highlight);
+}
+
+.infoLine {
+  display: block;
+  color: var(--color-text);
+}
+
+/* The less taken tree (rows are most taken first): a muted bar, to set the two lines apart */
+.tree + .tree .bar::after {
+  opacity: 0.4;
+}

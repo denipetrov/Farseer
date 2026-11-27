@@ -220,5 +220,18 @@
   "fotm.specs": "Spezialisierungen",
   "fotm.heroTalents": "Heldentalente",
   "fotm.chartLabelHero": "Anteil je Heldentalent pro Tag",
-  "fotm.legendHero": "{shown} von {total} Heldentalenten angezeigt"
+  "fotm.legendHero": "{shown} von {total} Heldentalenten angezeigt",
+  "heroStats.pageTitle": "{bracket}: Heldentalente",
+  "heroStats.topLabel": "Spieler je Spezialisierung",
+  "heroStats.top": "Top {count} je Spezialisierung",
+  "heroStats.summary": "Spieler mit bekanntem Heldentalent-Build.",
+  "heroStats.summaryNote": "Prozente beziehen sich auf Spieler mit bekanntem Build, nicht auf die ganze Spezialisierung.",
+  "heroStats.shortPool": "Nur {count} Spieler auf dieser Rangliste",
+  "heroStats.unavailable": "Heldentalent-Statistiken sind gerade nicht verfügbar.",
+  "heroStats.infoLabel": "Warum die Zahlen für {spec} unvollständig sind",
+  "heroStats.infoShort": "Nur {count} von möglichen {top} Spielern stehen auf dieser Rangliste.",
+  "heroStats.infoFull": "Die besten {count} Spieler werden gezählt.",
+  "heroStats.infoCovered": "Von {covered} ist der Build bekannt ({coverage} Abdeckung): Die Prozente beziehen sich auf diese {covered}.",
+  "heroStats.infoAllCovered": "Von allen ist der Build bekannt.",
+  "heroStats.infoRating": "Wertung {min}–{max}."
 }

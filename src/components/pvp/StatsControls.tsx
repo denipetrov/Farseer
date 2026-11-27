@@ -1,6 +1,11 @@
 import { Link, type LinkOptions } from '@tanstack/react-router';
 import { useId } from 'react';
-import { REPRESENTATION_RATINGS, type RepresentationRating } from '@/api/pvp';
+import {
+  HERO_TALENT_TOPS,
+  REPRESENTATION_RATINGS,
+  type HeroTalentTop,
+  type RepresentationRating,
+} from '@/api/pvp';
 import { GameIcon } from '@/components/GameIcon';
 import { RoleIcon } from '@/components/RoleIcon';
 import { tabBar } from '@/components/tabBar';
@@ -47,6 +52,37 @@ export function RatingSelect({
         {REPRESENTATION_RATINGS.map((r) => (
           <option key={r} value={r}>
             {r.toLocaleString(locale.htmlLang)}+
+          </option>
+        ))}
+      </select>
+    </>
+  );
+}
+
+/** The hero talents page's "Top N per spec" dropdown (Soulseeker's `top`) */
+export function TopSelect({
+  top,
+  onPick,
+}: {
+  top: HeroTalentTop;
+  onPick: (top: HeroTalentTop) => void;
+}) {
+  const { t } = useI18n();
+  const id = useId();
+  return (
+    <>
+      <label htmlFor={id} className="sr-only">
+        {t('heroStats.topLabel')}
+      </label>
+      <select
+        id={id}
+        className={styles.select}
+        value={top}
+        onChange={(e) => onPick(Number(e.target.value) as HeroTalentTop)}
+      >
+        {HERO_TALENT_TOPS.map((n) => (
+          <option key={n} value={n}>
+            {t('heroStats.top', { count: n })}
           </option>
         ))}
       </select>

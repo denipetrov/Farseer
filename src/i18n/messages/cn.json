@@ -220,5 +220,18 @@
   "fotm.specs": "专精",
   "fotm.heroTalents": "英雄天赋",
   "fotm.chartLabelHero": "各英雄天赋每日占比",
-  "fotm.legendHero": "显示 {total} 个英雄天赋中的 {shown} 个"
+  "fotm.legendHero": "显示 {total} 个英雄天赋中的 {shown} 个",
+  "heroStats.pageTitle": "{bracket}英雄天赋",
+  "heroStats.topLabel": "每个专精的玩家数",
+  "heroStats.top": "每个专精前 {count} 名",
+  "heroStats.summary": "名玩家的英雄天赋已知。",
+  "heroStats.summaryNote": "百分比基于已知天赋的玩家，而非整个专精。",
+  "heroStats.shortPool": "此排行榜仅有 {count} 名玩家",
+  "heroStats.unavailable": "当前无法获取英雄天赋统计。",
+  "heroStats.infoLabel": "为什么{spec}的数据不完整",
+  "heroStats.infoShort": "此排行榜仅有 {count} 名玩家（最多 {top} 名）。",
+  "heroStats.infoFull": "统计了前 {count} 名玩家。",
+  "heroStats.infoCovered": "其中 {covered} 名玩家的天赋已知（覆盖率 {coverage}）：百分比基于这 {covered} 名。",
+  "heroStats.infoAllCovered": "所有玩家的天赋均已知。",
+  "heroStats.infoRating": "等级分 {min}–{max}。"
 }

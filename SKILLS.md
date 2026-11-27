@@ -698,6 +698,26 @@ getEarliestDate=true` for Today, then one request per other day. The 31-day
     - **Not built yet** from the example: the Normalized and Distribution tabs and the
       "2.75x" column (their formula isn't known).
 
+  - **PvP Hero Talents** (Stats → Hero Talents, `/pvp/stats/hero-talents?bracket&region&top&
+class&spec&role`, `HeroTalentsPage.tsx`; the user's design of 2026-11-27, was Coming
+    soon). One `GET /pvp/hero-talents?region&bracket&top` (`pvpHeroTalentsQuery`): current
+    season, **no rating parameter**, so the example's "1800+" is not offered; "Top N per
+    spec" (`HERO_TALENT_TOPS` 10–500, **100 default**, the user's; `TopSelect` in `StatsControls`). The
+    leaderboard's `IconFilter` (class → spec, roles) filters the cards on the client.
+    - Rules in `src/lib/heroTalentStats.ts` (tested): a card per class in the answer's
+      order, each spec with **both its trees** (`SPEC_HERO_TREES` in `heroTalents.ts`, so
+      the untaken one shows at 0); a tree of another class is a data error and dropped (EU
+      Shuffle has a Frost DK "Spellslinger"); specs with no players left out.
+    - `SPEC_HERO_TREES` was written from the game and checked against every (spec, tree)
+      pair in Rankwarden's data on all regions and brackets at top 500 (2026-11-27): no
+      mismatch but that one error. A test keeps every spec at two trees of its own class.
+    - Per spec: name (links to its ladder), rating range, covered / top, amber "⚠" and "Only N players on this ladder" when `characters < top`. **The ⚠
+      shows whenever coverage isn't full** (`characters < top` or `covered < characters`):
+      a button (`CoverageInfo`) whose hover, focus or click (held for touch until clicked
+      again or blurred) opens a HoverCard: the spec, "Only 7 of a possible 25 players are
+      on this ladder" / "The top 25 players are counted", "19 of them have a known build
+      (76% coverage): percentages are shares of those 19" / "All of them have a known
+      build", and the rating range (the user's example, 2026-11-27). Trees: icon, name, bar in the class colour (`--share`; the less taken tree's bar muted to 40%, the user's), count, %.
   - **PvP FOTM** (`/pvp/fotm?bracket&region&rating&role`, `FotmPage.tsx` + `FotmChart.tsx`;
     the user, 2026-11-27, was Coming soon). One `GET /pvp/spec-representation/history`
     (`specRepresentationHistoryQuery`, 31 days; this endpoint is FOTM's only). Rules in

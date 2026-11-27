@@ -220,5 +220,18 @@
   "fotm.specs": "전문화",
   "fotm.heroTalents": "영웅 특성",
   "fotm.chartLabelHero": "일별 영웅 특성 비율",
-  "fotm.legendHero": "{total}개 중 {shown}개 영웅 특성 표시"
+  "fotm.legendHero": "{total}개 중 {shown}개 영웅 특성 표시",
+  "heroStats.pageTitle": "{bracket} 영웅 특성",
+  "heroStats.topLabel": "전문화별 플레이어 수",
+  "heroStats.top": "전문화별 상위 {count}명",
+  "heroStats.summary": "명의 영웅 특성 빌드가 확인되었습니다.",
+  "heroStats.summaryNote": "비율은 전문화 전체가 아니라 빌드가 확인된 플레이어 기준입니다.",
+  "heroStats.shortPool": "이 순위표에는 {count}명뿐입니다",
+  "heroStats.unavailable": "지금은 영웅 특성 통계를 볼 수 없습니다.",
+  "heroStats.infoLabel": "{spec} 수치가 불완전한 이유",
+  "heroStats.infoShort": "이 순위표에는 가능한 {top}명 중 {count}명뿐입니다.",
+  "heroStats.infoFull": "상위 {count}명을 집계했습니다.",
+  "heroStats.infoCovered": "이 중 {covered}명의 빌드가 확인되었습니다(확인률 {coverage}). 비율은 이 {covered}명 기준입니다.",
+  "heroStats.infoAllCovered": "모두의 빌드가 확인되었습니다.",
+  "heroStats.infoRating": "평점 {min}–{max}."
 }

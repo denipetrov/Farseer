@@ -195,6 +195,42 @@ export const specRepresentationHistoryQuery = (
     staleTime: 10 * 60_000,
   });
 
+/** A spec in `GET /pvp/hero-talents`: the trees its top players take */
+export interface HeroTalentsSpec {
+  spec: string;
+  specId: number | null;
+  /** Its top players read (at most `top`: fewer when the ladder is smaller) */
+  characters: number;
+  /** Of them, those whose tree is known (the rest are not enriched yet) */
+  covered: number;
+  minRating: number | null;
+  maxRating: number | null;
+  /** Most played first; `share` of `covered`. Trees nobody took are absent. */
+  heroTalents: { id: number; name: string; count: number; share: number }[];
+}
+
+/** `GET /pvp/hero-talents?region&bracket&top`: every class, every spec, the current season */
+export interface PvpHeroTalents {
+  seasonName: string | null;
+  top: number;
+  computedAt: string;
+  classes: { class: string; classId: number | null; specs: HeroTalentsSpec[] }[];
+}
+
+/** The "Top N per spec" choices (Soulseeker takes 1–500) */
+export const HERO_TALENT_TOPS = [10, 25, 50, 100, 250, 500] as const;
+export type HeroTalentTop = (typeof HERO_TALENT_TOPS)[number];
+
+/** Which hero talent trees each spec's top `top` players take (the hero talents page) */
+export const pvpHeroTalentsQuery = (region: PvpBoard, bracket: PvpBracket, top: HeroTalentTop) =>
+  queryOptions({
+    queryKey: ['pvp', 'hero-talents', region, bracket, top],
+    queryFn: ({ signal }) =>
+      api.get<PvpHeroTalents>('/pvp/hero-talents', { region, bracket, top }, signal),
+    // Soulseeker keeps it 15 minutes
+    staleTime: 15 * 60_000,
+  });
+
 /** A Blizzard region's run of a season, in `GET /pvp/seasons` */
 export interface PvpSeasonRegion {
   startsAt: string | null;

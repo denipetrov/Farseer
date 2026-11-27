@@ -110,3 +110,51 @@ export function heroTreeIconUrl(input: HeroTreeInput): string | undefined {
     ? iconUrl(`hero-talents/${classFolder(classOfHeroTree(h))}/${heroTreeFile(h)}`)
     : undefined;
 }
+
+/**
+ * The two hero talent trees each spec can take (`<class>/<spec>` slugs → tree ids), so a
+ * tree nobody picked still shows at 0 (the hero talents page; the user, 2026-11-27). From
+ * the game's tree list, checked against Rankwarden's data on every bracket (2026-11-27).
+ */
+export const SPEC_HERO_TREES: Readonly<Record<string, readonly [number, number]>> = {
+  'deathknight/blood': [31, 33],
+  'deathknight/frost': [33, 32],
+  'deathknight/unholy': [31, 32],
+  'demonhunter/havoc': [35, 34],
+  'demonhunter/vengeance': [124, 35],
+  'demonhunter/devourer': [126, 124],
+  'druid/balance': [23, 24],
+  'druid/feral': [22, 21],
+  'druid/guardian': [24, 21],
+  'druid/restoration': [23, 22],
+  'evoker/augmentation': [36, 38],
+  'evoker/devastation': [36, 37],
+  'evoker/preservation': [37, 38],
+  'hunter/beastmastery': [43, 44],
+  'hunter/marksmanship': [42, 44],
+  'hunter/survival': [42, 43],
+  'mage/arcane': [39, 40],
+  'mage/fire': [39, 41],
+  'mage/frost': [40, 41],
+  'monk/brewmaster': [65, 66],
+  'monk/mistweaver': [64, 66],
+  'monk/windwalker': [65, 64],
+  'paladin/holy': [50, 49],
+  'paladin/protection': [49, 48],
+  'paladin/retribution': [48, 50],
+  'priest/discipline': [18, 20],
+  'priest/holy': [19, 20],
+  'priest/shadow': [18, 19],
+  'rogue/assassination': [53, 52],
+  'rogue/outlaw': [51, 52],
+  'rogue/subtlety': [51, 53],
+  'shaman/elemental': [55, 56],
+  'shaman/enhancement': [55, 54],
+  'shaman/restoration': [56, 54],
+  'warlock/affliction': [57, 58],
+  'warlock/demonology': [59, 57],
+  'warlock/destruction': [59, 58],
+  'warrior/arms': [60, 62],
+  'warrior/fury': [60, 61],
+  'warrior/protection': [61, 62],
+};

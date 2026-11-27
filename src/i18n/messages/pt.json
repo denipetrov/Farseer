@@ -220,5 +220,18 @@
   "fotm.specs": "Especializações",
   "fotm.heroTalents": "Talentos Heroicos",
   "fotm.chartLabelHero": "Participação de cada talento heroico por dia",
-  "fotm.legendHero": "{shown} de {total} talentos heroicos exibidos"
+  "fotm.legendHero": "{shown} de {total} talentos heroicos exibidos",
+  "heroStats.pageTitle": "Talentos Heroicos – {bracket}",
+  "heroStats.topLabel": "Jogadores por especialização",
+  "heroStats.top": "Top {count} por especialização",
+  "heroStats.summary": "jogadores com build de talentos heroicos conhecida.",
+  "heroStats.summaryNote": "As porcentagens são dos jogadores com build conhecida, não da especialização inteira.",
+  "heroStats.shortPool": "Apenas {count} jogadores neste ranking",
+  "heroStats.unavailable": "As estatísticas de talentos heroicos não estão disponíveis agora.",
+  "heroStats.infoLabel": "Por que os dados de {spec} estão incompletos",
+  "heroStats.infoShort": "Apenas {count} de {top} jogadores possíveis estão neste ranking.",
+  "heroStats.infoFull": "Os {count} melhores jogadores são contados.",
+  "heroStats.infoCovered": "A build de {covered} deles é conhecida ({coverage} de cobertura): as porcentagens são desses {covered}.",
+  "heroStats.infoAllCovered": "A build de todos é conhecida.",
+  "heroStats.infoRating": "Pontuação {min}–{max}."
 }

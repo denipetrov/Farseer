@@ -220,5 +220,18 @@
   "fotm.specs": "Specs",
   "fotm.heroTalents": "Hero Talents",
   "fotm.chartLabelHero": "Hero talent share by day",
-  "fotm.legendHero": "{shown} of {total} hero talents shown"
+  "fotm.legendHero": "{shown} of {total} hero talents shown",
+  "heroStats.pageTitle": "{bracket} Hero Talents",
+  "heroStats.topLabel": "Players per spec",
+  "heroStats.top": "Top {count} per spec",
+  "heroStats.summary": "players with a known hero talent build.",
+  "heroStats.summaryNote": "Percentages are of the players whose build is known, not of the whole spec.",
+  "heroStats.shortPool": "Only {count} players on this ladder",
+  "heroStats.unavailable": "Hero talent stats aren’t available right now.",
+  "heroStats.infoLabel": "Why the counts for {spec} are incomplete",
+  "heroStats.infoShort": "Only {count} of a possible {top} players are on this ladder.",
+  "heroStats.infoFull": "The top {count} players are counted.",
+  "heroStats.infoCovered": "{covered} of them have a known build ({coverage} coverage): percentages are shares of those {covered}.",
+  "heroStats.infoAllCovered": "All of them have a known build.",
+  "heroStats.infoRating": "Rating {min}–{max}."
 }

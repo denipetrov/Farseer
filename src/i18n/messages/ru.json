@@ -220,5 +220,18 @@
   "fotm.specs": "Спеки",
   "fotm.heroTalents": "Героические таланты",
   "fotm.chartLabelHero": "Доля героических талантов по дням",
-  "fotm.legendHero": "Показано {shown} из {total} героических талантов"
+  "fotm.legendHero": "Показано {shown} из {total} героических талантов",
+  "heroStats.pageTitle": "Героические таланты – {bracket}",
+  "heroStats.topLabel": "Игроков на спек",
+  "heroStats.top": "Топ {count} на спек",
+  "heroStats.summary": "игроков с известным билдом героических талантов.",
+  "heroStats.summaryNote": "Проценты — от игроков с известным билдом, а не от всего спека.",
+  "heroStats.shortPool": "В этой таблице всего {count} игроков",
+  "heroStats.unavailable": "Статистика героических талантов сейчас недоступна.",
+  "heroStats.infoLabel": "Почему данные по {spec} неполные",
+  "heroStats.infoShort": "В этой таблице только {count} из {top} возможных игроков.",
+  "heroStats.infoFull": "Учтены лучшие {count} игроков.",
+  "heroStats.infoCovered": "Билд известен у {covered} из них (покрытие {coverage}): проценты — от этих {covered}.",
+  "heroStats.infoAllCovered": "Билд известен у всех.",
+  "heroStats.infoRating": "Рейтинг {min}–{max}."
 }
