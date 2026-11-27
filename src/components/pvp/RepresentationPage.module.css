@@ -1,0 +1,275 @@
+/*
+ * The spec representation page: the leaderboard pages' tight layout (1080p), the controls
+ * row, the chart, then the role columns (Tanks under Healers).
+ */
+main.page {
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--font-size-xl);
+}
+
+/* Rating, role and day, on one row, wrapping when narrow */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+/* A day before the first with data */
+.controls [aria-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.chartHeader {
+  gap: var(--space-2);
+}
+
+.chartTitle {
+  flex: none;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.chartMeta {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+}
+
+.chartBody {
+  padding: var(--space-4) var(--space-4) var(--space-3);
+}
+
+.message {
+  margin: 0;
+  padding: var(--space-8) var(--space-4);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.skeleton {
+  height: 320px;
+  margin: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+}
+
+.summary {
+  margin: var(--space-2) 0;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr));
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--color-trim-muted);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.columnHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-1) var(--space-2) var(--space-2);
+  border-bottom: 1px solid var(--color-border-muted);
+}
+
+.columnHeader > h2 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.columnHeader > span {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/*
+ * A spec's row: place, class and spec icons, players (in the class colour, from
+ * data-class-color), its share of the column, and under them a bar against the column's
+ * most. A link to the spec's ladder.
+ */
+.row {
+  display: grid;
+  grid-template-columns: 1.75em auto auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'place cls spec count share'
+    'place cls spec bar bar';
+  align-items: center;
+  column-gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+}
+
+.row:hover {
+  background: var(--color-surface-hover);
+}
+
+.row:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.row > :nth-child(2) {
+  grid-area: cls;
+}
+
+.row > :nth-child(3) {
+  grid-area: spec;
+}
+
+.place {
+  grid-area: place;
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.count {
+  grid-area: count;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.share {
+  grid-area: share;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Against the column's most (--share, 0–1), in the class colour */
+.bar {
+  position: relative;
+  grid-area: bar;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--color-border-muted);
+}
+
+.bar::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--share) * 100%);
+  border-radius: inherit;
+  background: currentColor;
+  content: '';
+}
+
+/*
+ * Under a spec: its hero talents (the user, 2026-11-27). The trees on one line (the most
+ * played on the left, the other on the right), then a split bar: the first part full class
+ * colour, the next ones lighter (data-class-color sets currentColor).
+ */
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0 var(--space-2) var(--space-2) calc(1.75em + var(--space-2) * 2 + 24px);
+  font-size: var(--font-size-xs);
+}
+
+.heroTrees {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.heroTrees > li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+/* The second tree reads from the right: share, name, icon */
+.heroTrees > li:nth-child(2) {
+  flex-direction: row-reverse;
+}
+
+.heroTrees img {
+  width: 18px;
+  height: 18px;
+}
+
+.heroName {
+  overflow: hidden;
+  color: var(--color-text-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.heroShare {
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.heroBar {
+  display: flex;
+  gap: 2px;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 1px;
+}
+
+/* Quieter than the spec's own bar above it: the split, not a count */
+.heroBar > span {
+  flex: var(--part) 1 0;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+.heroBar > span + span {
+  opacity: 0.25;
+}

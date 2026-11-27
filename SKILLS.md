@@ -664,6 +664,76 @@ losses · win % · PvP talents · talents · faction`, the user's order of 2026-
     regions on the right (the old dropdown: remembered per bracket, page 1), wrapping to
     two rows on narrower pages; then the class/spec filter; then the large widget **with
     its header off** (`header={false}`: the heading and bar say the same).
+  - **PvP Spec Representation** (Stats → Spec Representation,
+    `/pvp/stats/representation?bracket&region&rating&role&day`, `RepresentationPage.tsx`; the
+    user's design of 2026-11-27, was Coming soon). Rules in `src/lib/representation.ts`
+    (tested).
+    - **Data: the daily endpoint only** (`specRepresentationQuery`): `date=latest&
+getEarliestDate=true` for Today, then one request per other day. The 31-day
+      `/history` endpoint is reserved for the FOTM page (the user's call).
+    - **Controls**: rating dropdown of `REPRESENTATION_RATINGS` (1500, 1800, 2100, 2300,
+      2700: the only ratings Rankwarden snapshots; 2100 default) instead of the example's
+      "Top X"; role icon tabs (`TIER_ROLES`, as the tier list's); day tabs Today / 7 / 15 /
+      30 days ago (the user's list), counted back from the newest snapshot's date, off
+      before `earliestDate`. A missing day is a 404: "No snapshot for <date>", no retry.
+    - **Chart** (`SpecBarChart.tsx`, dataviz rules): bars in class colours, 4px rounded
+      tops, 2px gaps, recessive gridlines on a 1/2/5 axis (`niceAxis`); spec icons under the
+      bars as direct labels (no rotated names); hover/focus card (spec, players, share,
+      hero talent split); each bar links to the spec's ladder. `--h`/`--at` custom props.
+      **Trap:** the axis values are absolute, so they can't size their column; an unseen
+      in-flow `.sizer` with the top value does, or wide values ("15,000") run into the
+      "Players" title. Column headings carry their role icon.
+    - Then "3,991 of 5,007 ranked players with a known spec" and Melee / Ranged / Healers
+      columns with Tanks stacked under Healers: place, class + spec icons, players in class
+      colour, share of the column, a bar against the column's most.
+    - **Hero talents under each spec** (`HeroSplit`; the user, 2026-11-27): the trees
+      most played first, icon + name + share (of `heroTalentsClassified`) at each end, and
+      a 2px split bar in the class colour (first tree 60% opacity, the next 25%), quieter
+      than the spec's own 4px bar; counts on hover; nothing when no tree is known.
+    - **On the PvP home** (`RepresentationWidget.tsx`; the user, 2026-11-27): under each
+      bracket's ladder (`PvpHomeBracket` now spans 3 subgrid rows: tier list, ladder,
+      representation, so each row starts level). 2100+, today, the ladder's region, the most
+      played specs the card fits at 1080p without scrolling (`BARS`: 11 small, 18 medium;
+      `SpecBarChart compact`: 150px plot, 24px columns), and "View full spec representation".
+    - **Not built yet** from the example: the Normalized and Distribution tabs and the
+      "2.75x" column (their formula isn't known).
+
+  - **PvP FOTM** (`/pvp/fotm?bracket&region&rating&role`, `FotmPage.tsx` + `FotmChart.tsx`;
+    the user, 2026-11-27, was Coming soon). One `GET /pvp/spec-representation/history`
+    (`specRepresentationHistoryQuery`, 31 days; this endpoint is FOTM's only). Rules in
+    `src/lib/fotm.ts` (tested): `fotmSeries` makes a line per spec over every day of
+    `from`–`to`; **null on a day without a snapshot** (the line breaks, a lone point is a
+    dot), 0 on a day that lists no such spec; shares are recomputed **within the role
+    filter** (a role's lines add to 100%); sorted by the newest day's share.
+    - Controls shared with Spec Representation (`StatsControls.tsx`: `RatingSelect`,
+      `RoleTabs`), no day control.
+    - Chart: SVG sized by a ResizeObserver (2px lines at any width), 1/2/5 percent axis,
+      lines in class colours; two specs of a class share a colour, so each line ends in
+      its spec icon (`spreadLabels` keeps them 22px apart); crosshair + card (the day's
+      shares) and the nearest line highlighted, others dimmed.
+    - Legend under it: a toggle chip per line (icon, name, today's share), the **top 15**
+      shown at first (the user's number), "Top N" / "All" / "None", each `aria-pressed`
+      while the lines shown are exactly its pick. **N follows the selection**: as many as
+      are shown, at most 15 (and at most the lines there are: "Top 7" for healers), 15 when
+      none are; clicking it shows the top N. Hovering a chip highlights its line. **Clicks
+      on lines or their end icons pin them, several at once** (each ringed and kept
+      highlighted; a second click on one unpins it); the line hovered joins them while it
+      lasts. A new bracket/region/rating/role/view starts again from the top 15. The chart **grows with the lines shown** (`max(340, lines × 22px + padding)`), so
+      "All" fits every end icon.
+    - **Specs / Hero Talents switch** (`?view=hero`; the user, 2026-11-27): `fotmSeries(…,
+'hero')` makes a line per hero talent tree, its players summed over the specs in the
+      filter that take it (Oracle = Discipline + Holy) from each spec's `heroTalents`,
+      shares over all trees in the filter; class colour, tree icon (`FotmIcon`,
+      `fotmItemName`). The mock drifts each spec's hero split too.
+    - **Mock toggle, localhost only** (the user, 2026-11-27): real data by default; a
+      dashed "Mocked data (localhost)" checkbox at the controls' end, shown only when
+      `DEV_MOCKS_AVAILABLE` (`src/lib/devMocks.ts`: dev build **and** `localhost` /
+      `127.0.0.1`), kept in localStorage (`farseer:dev-mock-fotm`). On, the history query
+      (`specRepresentationHistoryQuery(…, mock)`, its own cache key) loads
+      `src/api/mocks/fotmHistory.ts` on demand: the real newest day walked back over 31
+      days, hero splits drifting, one day left out. Checked: a production build holds none
+      of it. The label is English on purpose (a dev tool). Remove once Rankwarden has a
+      month of snapshots.
   - **PvP Archives** (`/pvp/archives?season&bracket&role&region&page`, `ArchivesPage.tsx`;
     the user's design of 2026-11-27, was Coming soon): a finished season's ladder in the
     leaderboard pages' layout. Rules in `src/lib/archive.ts` (tested):

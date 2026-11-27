@@ -1,0 +1,156 @@
+/*
+ * The FOTM line chart: an SVG (gridlines, axis, days, lines) with the spec icons at the
+ * lines' ends laid over it at the right. A line's colour is its class's (data-class-color
+ * sets currentColor); with a line highlighted, the others dim.
+ */
+.chart {
+  position: relative;
+  min-height: 340px;
+}
+
+.svg {
+  display: block;
+  cursor: crosshair;
+  overflow: visible;
+  touch-action: pan-y;
+}
+
+/* Recessive grid and axis */
+.tick line {
+  stroke: var(--color-border-muted);
+  stroke-width: 1;
+}
+
+.tick text,
+.day {
+  fill: var(--color-text-subtle);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.crosshair {
+  stroke: var(--color-text-subtle);
+  stroke-dasharray: 3 3;
+  stroke-width: 1;
+}
+
+.series {
+  transition: opacity var(--transition-fast);
+}
+
+.series path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.series circle {
+  fill: currentColor;
+  stroke: var(--color-surface);
+  stroke-width: 2;
+}
+
+.chart[data-highlight] .series:not([data-on]) {
+  opacity: 0.18;
+}
+
+.chart[data-highlight] .series[data-on] path {
+  stroke-width: 3;
+}
+
+/* A line's spec icon at its end, at the plot's right edge */
+.end {
+  position: absolute;
+  top: var(--y);
+  right: 2px;
+  display: grid;
+  padding: 1px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: opacity var(--transition-fast);
+}
+
+/* Its icon is its picture: no hover title of its own over the button's */
+.end img {
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+/* Pinned: ringed in the accent */
+.end[aria-pressed='true'] {
+  box-shadow: 0 0 0 2px var(--color-accent);
+}
+
+.end:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.chart[data-highlight] .end:not([data-on]) {
+  opacity: 0.25;
+}
+
+/* The point the hover card hangs from: the crosshair's top */
+.anchor {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.cardDate {
+  display: block;
+  margin-bottom: var(--space-2);
+  color: var(--color-text-highlight);
+  font-weight: 700;
+}
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cardList > li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.cardList > li[data-on] {
+  font-weight: 700;
+}
+
+.cardList img {
+  width: 18px;
+  height: 18px;
+}
+
+/* The spec's name in its class colour */
+.cardName {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cardShare {
+  color: var(--color-text-highlight);
+  font-variant-numeric: tabular-nums;
+}
+
+.cardNone {
+  color: var(--color-text-muted);
+}

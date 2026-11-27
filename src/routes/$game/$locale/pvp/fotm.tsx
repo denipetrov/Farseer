@@ -1,16 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { ComingSoonPage } from '@/components/ComingSoonPage';
-import { useI18n } from '@/i18n/useI18n';
+import { FotmPage } from '@/components/pvp/FotmPage';
+import { validateFotmSearch } from '@/lib/fotm';
 
+/** PvP → FOTM: each spec's share by day over the last month (`?bracket&region&rating&role`) */
 export const Route = createFileRoute('/$game/$locale/pvp/fotm')({
+  validateSearch: validateFotmSearch,
   component: function Page() {
-    const { t } = useI18n();
-    return (
-      <ComingSoonPage
-        title={t('nav.fotm')}
-        subtitle={t('fotm.subtitle')}
-        icon="nav/flavour-of-the-month"
-      />
-    );
+    return <FotmPage search={Route.useSearch()} />;
   },
 });

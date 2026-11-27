@@ -1,0 +1,157 @@
+/*
+ * The spec bar chart: the axis title and values on the left, the plot on the right. The plot
+ * is a fixed height (--plot); bars grow from its floor by --h (0–1), gridlines sit at --at.
+ */
+.chart {
+  --plot: 280px;
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  gap: var(--space-2);
+  align-items: start;
+}
+
+/* The home's widgets: a shorter plot */
+.chart[data-compact] {
+  --plot: 150px;
+}
+
+/* Compact columns: no wider than the spec icon under them */
+.chart[data-compact] .column {
+  flex-basis: 24px;
+}
+
+/* "Players", turned to run up the axis */
+.axisTitle {
+  align-self: start;
+  height: var(--plot);
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  text-align: center;
+  transform: rotate(180deg);
+  writing-mode: vertical-rl;
+}
+
+.axis {
+  position: relative;
+  height: var(--plot);
+  min-width: 2ch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.axis > li:not(.sizer) {
+  position: absolute;
+  right: 0;
+  bottom: calc(var(--at) * 100%);
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  transform: translateY(50%);
+}
+
+.sizer {
+  height: 0;
+  overflow: hidden;
+  font-size: var(--font-size-xs);
+  font-variant-numeric: tabular-nums;
+  visibility: hidden;
+}
+
+.scroll {
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.plot {
+  position: relative;
+  min-width: max-content;
+}
+
+/* Gridlines: recessive, behind the bars */
+.grid {
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--plot);
+  pointer-events: none;
+}
+
+.grid > span {
+  position: absolute;
+  right: 0;
+  bottom: calc(var(--at) * 100%);
+  left: 0;
+  border-top: 1px solid var(--color-border-muted);
+}
+
+.bars {
+  position: relative;
+  display: flex;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.column {
+  display: grid;
+  flex: 1 0 30px;
+  grid-template-rows: var(--plot) auto;
+  justify-items: center;
+  gap: var(--space-2);
+}
+
+/* A bar in its class colour (data-class-color sets color), rounded where data ends */
+.bar {
+  align-self: end;
+  width: 70%;
+  min-height: 2px;
+  height: calc(var(--h) * 100%);
+  border-radius: 4px 4px 0 0;
+  background: currentColor;
+  transition: opacity var(--transition-fast);
+}
+
+.bars:hover .bar:not(:hover) {
+  opacity: 0.55;
+}
+
+.bar:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+}
+
+/* The hover card's lines */
+.cardTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+  font-weight: 700;
+}
+
+.cardLine,
+.cardHero {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.cardLine strong {
+  color: var(--color-text-highlight);
+}
+
+.cardHero {
+  color: var(--color-text-muted);
+}
+
+.cardHero > span {
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}

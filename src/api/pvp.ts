@@ -93,6 +93,108 @@ export const pvpCutoffsQuery = (region: Exclude<PvpBoard, 'world'>, bracket: Tit
     staleTime: 10 * 60_000,
   });
 
+/**
+ * The ratings Rankwarden writes spec representation snapshots at
+ * (`REPRESENTATION_MIN_RATINGS` in spirit-link): the only ones the endpoint takes.
+ */
+export const REPRESENTATION_RATINGS = [1500, 1800, 2100, 2300, 2700] as const;
+export type RepresentationRating = (typeof REPRESENTATION_RATINGS)[number];
+export const isRepresentationRating = (v: unknown): v is RepresentationRating =>
+  (REPRESENTATION_RATINGS as readonly unknown[]).includes(v);
+
+/** A spec in a representation snapshot */
+export interface RepresentedSpec {
+  class: string;
+  spec: string;
+  classId: number | null;
+  specId: number | null;
+  /** Players of the spec at or above the rating */
+  count: number;
+  /** Of the snapshot's `classified` (0–1) */
+  share: number;
+  heroTalentsClassified: number;
+  heroTalents: { id: number; name: string; count: number; share: number }[];
+}
+
+/** `GET /pvp/spec-representation`: one day's spec shares at a rating */
+export interface SpecRepresentation {
+  /** The UTC day answered (`YYYY-MM-DD`): with `date=latest`, the newest stored */
+  date: string;
+  computedAt: string;
+  /** Players at or above the rating */
+  total: number;
+  /** Of them, those whose spec is known */
+  classified: number;
+  /** Most played first */
+  specs: RepresentedSpec[];
+  /** With `getEarliestDate`: the first day with specs named; null when none */
+  earliestDate?: string | null;
+}
+
+/**
+ * A spec representation snapshot (`GET /pvp/spec-representation`): `latest` (with the
+ * first day there is data for) or a UTC day. A day without a snapshot is a 404.
+ * (The 31-day `/history` endpoint is the FOTM page's: the user, 2026-11-27.)
+ */
+export const specRepresentationQuery = (
+  region: PvpBoard,
+  bracket: PvpBracket,
+  rating: RepresentationRating,
+  date: string,
+) =>
+  queryOptions({
+    queryKey: ['pvp', 'spec-representation', region, bracket, rating, date],
+    queryFn: ({ signal }) =>
+      api.get<SpecRepresentation>(
+        '/pvp/spec-representation',
+        date === 'latest'
+          ? { region, bracket, rating, date, getEarliestDate: true }
+          : { region, bracket, rating, date },
+        signal,
+      ),
+    // Rankwarden writes a day once; the latest moves at most daily
+    staleTime: date === 'latest' ? 10 * 60_000 : Infinity,
+  });
+
+/** `GET /pvp/spec-representation/history`: the last 31 UTC days, today included */
+export interface SpecRepresentationHistory {
+  /** The window, for the axis (`YYYY-MM-DD`) */
+  from: string;
+  to: string;
+  /**
+   * Only days with a snapshot, oldest first (Rankwarden may miss a day, and deletes those
+   * before the season). A spec nobody played that day is absent from its `specs`.
+   */
+  days: (Omit<SpecRepresentation, 'earliestDate'> & { date: string })[];
+}
+
+/** A month of spec shares at a rating: the FOTM page's (the user, 2026-11-27) */
+export const specRepresentationHistoryQuery = (
+  region: PvpBoard,
+  bracket: PvpBracket,
+  rating: RepresentationRating,
+  /** Localhost only: a mocked full month (`lib/devMocks.ts`); its own cache entry */
+  mock = false,
+) =>
+  queryOptions({
+    queryKey: ['pvp', 'spec-representation', 'history', region, bracket, rating, mock],
+    queryFn: async ({ signal }) => {
+      const real = await api.get<SpecRepresentationHistory>(
+        '/pvp/spec-representation/history',
+        { region, bracket, rating },
+        signal,
+      );
+      // The localhost toggle's mocked month (api/mocks/fotmHistory.ts); dev builds only
+      if (import.meta.env.DEV && mock) {
+        const { mockFotmHistory } = await import('./mocks/fotmHistory');
+        return mockFotmHistory(real, `${region}-${bracket}-${rating}`);
+      }
+      return real;
+    },
+    // Rankwarden writes a day once a day
+    staleTime: 10 * 60_000,
+  });
+
 /** A Blizzard region's run of a season, in `GET /pvp/seasons` */
 export interface PvpSeasonRegion {
   startsAt: string | null;

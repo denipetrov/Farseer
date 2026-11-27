@@ -1,10 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { ComingSoonPage } from '@/components/ComingSoonPage';
-import { useI18n } from '@/i18n/useI18n';
+import { RepresentationPage } from '@/components/pvp/RepresentationPage';
+import { validateRepresentationSearch } from '@/lib/representation';
 
+/** PvP Stats → Spec Representation (`?bracket&region&rating&role&day`) */
 export const Route = createFileRoute('/$game/$locale/pvp/stats/representation')({
+  validateSearch: validateRepresentationSearch,
   component: function Page() {
-    const { t } = useI18n();
-    return <ComingSoonPage title={t('nav.representation')} icon="nav/spec-representation" />;
+    return <RepresentationPage search={Route.useSearch()} />;
   },
 });

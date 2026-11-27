@@ -1,11 +1,11 @@
 /*
- * A bracket's tier list over its ladder, in one grid cell (data-size places it). The pair
- * takes two of the grid's rows (subgrid), so the tier lists side by side share a height and
- * the ladders under them start level, however many lines each list wraps to.
+ * A bracket's tier list, ladder and spec representation, in one grid cell (data-size places
+ * it). They take three of the grid's rows (subgrid), so the widgets side by side share a
+ * height and each row starts level, however many lines each tier list wraps to.
  */
 .column {
   display: grid;
-  grid-row: span 2;
+  grid-row: span 3;
   grid-template-rows: subgrid;
   min-width: 0;
 }

@@ -2,10 +2,12 @@ import type { PvpBracket } from '@/api/pvp';
 import { LeaderboardWidget } from '@/components/widgets/LeaderboardWidget';
 import { PvpTierList } from '@/components/widgets/TierLists';
 import { usePreferences } from '@/preferences/PreferencesProvider';
+import { RepresentationWidget } from './RepresentationWidget';
 import styles from './PvpHomeBracket.module.css';
 
 /**
- * One bracket on the PvP home: its tier list above its ladder (the user, 2026-11-27), at
+ * One bracket on the PvP home: its tier list above its ladder and its spec representation
+ * under it (the user, 2026-11-27), at
  * the ladder's width, in one grid cell so the pair stays together when the grid wraps. The
  * tier list follows the region the ladder shows (the bracket's remembered one), and moves
  * with it when the ladder's region dropdown changes it.
@@ -22,6 +24,8 @@ export function PvpHomeBracket({
     <div className={styles.column} data-size={size}>
       <PvpTierList bracket={bracket} region={region} mini={size} />
       <LeaderboardWidget bracket={bracket} size={size} />
+      {/* Under the ladder: who plays what there (the user, 2026-11-27) */}
+      <RepresentationWidget bracket={bracket} region={region} size={size} />
     </div>
   );
 }

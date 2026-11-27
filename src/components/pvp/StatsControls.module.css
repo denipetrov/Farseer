@@ -1,0 +1,36 @@
+/* The PvP stats pages' controls: the rating dropdown and the icon role tabs */
+.select {
+  min-width: 7rem;
+  padding: var(--space-2) var(--space-6) var(--space-2) var(--space-3);
+  border: 1px solid var(--color-trim-muted);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-sunken)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23a3a3a3' stroke-width='1.6'/%3E%3C/svg%3E")
+    no-repeat right var(--space-2) center / 10px 6px;
+  color: var(--color-text-highlight);
+  font: inherit;
+  font-weight: 600;
+  appearance: none;
+  cursor: pointer;
+}
+
+.select:hover {
+  border-color: var(--color-trim);
+}
+
+.select:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+/* An icon-only role tab: the icon its picture (no hover title of its own) */
+.roleTab {
+  justify-content: center;
+  padding: var(--space-1);
+}
+
+.roleTab > img {
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+}
