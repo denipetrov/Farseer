@@ -251,5 +251,6 @@
   "mplus.top01": "{region} 상위 0.1%: {score}+",
   "mplus.top1": "{region} 상위 1%: {score}+",
   "mplus.factTop01": "상위 0.1%",
-  "mplus.factTop1": "상위 1%"
+  "mplus.factTop1": "상위 1%",
+  "tier.disclaimerPve": "등급표는 현재 신화+ 기록으로 만듭니다. 최근의 상향과 하향이 메타와 등급표에 반영되기까지는 시간이 걸립니다."
 }

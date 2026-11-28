@@ -251,5 +251,6 @@
   "mplus.top01": "Top 0.1% in {region}: {score}+",
   "mplus.top1": "Top 1% in {region}: {score}+",
   "mplus.factTop01": "Top 0.1%",
-  "mplus.factTop1": "Top 1%"
+  "mplus.factTop1": "Top 1%",
+  "tier.disclaimerPve": "The tier list is made from live Mythic+ runs: recent buffs and nerfs take time to shift the meta, and the tier list with it."
 }

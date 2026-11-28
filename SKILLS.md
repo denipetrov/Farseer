@@ -543,6 +543,14 @@ below).
     given) with the key level over it in white with a dark outline; depleted levels muted,
     no run a "–" tile. Hover: "Altar of Fangs +24 · timed +1, 0:13 left · score 545.2".
     Runs match the season's dungeons by id, else slug (`runsBySeasonDungeon`).
+  - **Mythic+ tier list widgets** (the user, 2026-11-28; `PveTierList` in `TierLists.tsx`,
+    as `PvpTierList`): the full list on `/pve/tier-list` (existed), `compact` on this board
+    between the region bar and the filter (the page's region), and on the PvE home a
+    `mini` list **of one role's specs** above each role board (`PveHomeRole.tsx`: subgrid
+    pair, as `PvpHomeBracket`; `TierListWidget role=` fixes the role and hides the tabs;
+    title "Healers Tier List"; the board's remembered region). Spec links open this board
+    filtered (`?class&spec&region`): the per-spec Mythic+ pages are still placeholders.
+    Mythic+ lists say "made from live Mythic+ runs" (`tier.disclaimerPve`, `pve` prop).
   - **Compact version on the PvE home** (`MplusRoleWidget.tsx`; the user, 2026-11-28):
     four medium widgets, two by two: Melee DPS, Ranged DPS, Healers, Tanks (`role` sent
     as `subRole` for melee/ranged). `MplusLeaderboard size="medium"`: the top 10, no

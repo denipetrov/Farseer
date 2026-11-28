@@ -7,6 +7,7 @@ import { GameIcon } from '@/components/GameIcon';
 import { Page, PageTitle } from '@/components/Page';
 import { tabBar } from '@/components/tabBar';
 import { IconFilter } from '@/components/widgets/IconFilter';
+import { PveTierList } from '@/components/widgets/TierLists';
 import { WidgetGrid } from '@/components/widgets/WidgetGrid';
 import { classSpecRoleTree } from '@/components/widgets/filterTrees';
 import { regionLabel } from '@/i18n/labels';
@@ -79,6 +80,8 @@ export function MplusCharactersPage({
       </div>
 
       <WidgetGrid dense>
+        {/* Below the bar, above the filter, as on the PvP boards: the region's tier list */}
+        <PveTierList region={region} compact />
         <IconFilter
           options={tree}
           value={cls ? (spec ? [cls, spec] : [cls]) : role ? [role] : []}

@@ -7,6 +7,7 @@ import { regionLabel } from '@/i18n/labels';
 import { useI18n } from '@/i18n/useI18n';
 import { useSite } from '@/lib/site';
 import type { MessageKey } from '@/i18n/messages';
+import type { TierRole } from '@/lib/wow/tierRoles';
 import { TierListWidget } from './TierListWidget';
 
 /** Names too long for a small widget (as the ladders do) */
@@ -77,16 +78,47 @@ export function PvpTierList({
 }
 
 /**
- * The Mythic+ tier list (`/pve/tier-list`) in a region; each spec links to its Mythic+
- * board (`…/mythic-plus/specs/<class>/<spec>`).
+ * The Mythic+ tier list (`/pve/tier-list`) in a region, as the PvP one: full on its page,
+ * `compact` above the Mythic+ board, `mini` on the PvE home above each role's board (one
+ * role's specs: `role`, the user, 2026-11-28). Each spec links to the Mythic+ board filtered
+ * to it (`mythic-plus/characters?class&spec`): the per-spec pages are not built yet.
  */
-export function PveTierList({ region }: { region: PveBoard }) {
+export function PveTierList({
+  region,
+  compact,
+  mini,
+  role,
+  roleName,
+}: {
+  region: PveBoard;
+  /** Smaller, for the Mythic+ board page */
+  compact?: boolean;
+  /** The home page's icon-only version at this width, linking to the full list */
+  mini?: 'small' | 'medium';
+  /** One role's specs only (the home's role boards) */
+  role?: TierRole;
+  /** That role's name, for the mini title ("Healers Tier List") */
+  roleName?: string;
+}) {
   const { t, locale } = useI18n();
   const site = useSite();
   const list = useQuery(pveTierListQuery(region));
   return (
     <TierListWidget
-      title={t('nav.tierList')}
+      title={mini && roleName ? t('tier.pageTitle', { bracket: roleName }) : t('nav.tierList')}
+      compact={compact}
+      role={role}
+      pve
+      mini={
+        mini && {
+          size: mini,
+          fullLink: linkOptions({
+            to: '/$game/$locale/pve/tier-list',
+            params: site,
+            search: { region: region === 'world' ? undefined : region },
+          }),
+        }
+      }
       list={list.data}
       status={list.status}
       regionName={regionLabel(t, region)}
@@ -96,8 +128,13 @@ export function PveTierList({ region }: { region: PveBoard }) {
       averageTitle={t('tier.averageScore')}
       linkFor={(s) =>
         linkOptions({
-          to: '/$game/$locale/pve/mythic-plus/specs/$class/$spec',
-          params: { ...site, class: s.class, spec: s.spec },
+          to: '/$game/$locale/pve/mythic-plus/characters',
+          params: site,
+          search: {
+            class: s.class,
+            spec: s.spec,
+            region: region === 'world' ? undefined : region,
+          },
         })
       }
     />

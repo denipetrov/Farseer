@@ -48,6 +48,8 @@ export function TierListWidget({
   linkFor,
   compact = false,
   mini,
+  role: fixedRole,
+  pve = false,
 }: {
   title: string;
   list: TierList | undefined;
@@ -71,9 +73,17 @@ export function TierListWidget({
    * hover), and a link to the full list. No role filter or "how" panel: no room.
    */
   mini?: { size: 'small' | 'medium'; fullLink: LinkOptions };
+  /**
+   * One role's specs only, without the role tabs: the PvE home's list above each role's
+   * board (the user, 2026-11-28)
+   */
+  role?: TierRole;
+  /** A Mythic+ list: its disclaimer speaks of runs, not ladders */
+  pve?: boolean;
 }) {
   const { t, locale, name } = useI18n();
-  const [role, setRole] = useState<TierRole>('all');
+  const [picked, setRole] = useState<TierRole>('all');
+  const role = fixedRole ?? picked;
   const [howOpen, setHowOpen] = useState(false);
   const date = (iso: string) =>
     new Intl.DateTimeFormat(locale.htmlLang, { dateStyle: 'medium' }).format(new Date(iso));
@@ -155,13 +165,13 @@ export function TierListWidget({
                 </span>
               </button>
             )}
-            <p className={styles.disclaimer}>{t('tier.disclaimer')}</p>
+            <p className={styles.disclaimer}>{t(pve ? 'tier.disclaimerPve' : 'tier.disclaimer')}</p>
           </div>
           {/* The season line only on the full page (the user, 2026-11-27): compact has it in
               the rules, the home page's mini lists none */}
           {!compact && !mini && <p className={styles.meta}>{meta}</p>}
         </div>
-        {!mini && (
+        {!mini && !fixedRole && (
           <div className={tabBar.group} role="group" aria-label={t('tier.role.label')}>
             {/* The role icons, their names on hover and for screen readers (the user, 2026-11-27) */}
             {TIER_ROLES.map((r) => (

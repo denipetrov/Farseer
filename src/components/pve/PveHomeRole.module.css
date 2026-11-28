@@ -1,0 +1,11 @@
+/*
+ * A role's tier list over its board, in one medium grid cell. The pair takes two of the
+ * grid's rows (subgrid), so the lists side by side share a height and the boards under them
+ * start level, however many lines each list wraps to.
+ */
+.column {
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  min-width: 0;
+}

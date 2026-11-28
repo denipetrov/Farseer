@@ -251,5 +251,6 @@
   "mplus.top01": "Top 0,1 % en {region}: {score}+",
   "mplus.top1": "Top 1 % en {region}: {score}+",
   "mplus.factTop01": "Top 0,1 %",
-  "mplus.factTop1": "Top 1 %"
+  "mplus.factTop1": "Top 1 %",
+  "tier.disclaimerPve": "La lista se basa en partidas de Mítica+ actuales: los cambios recientes tardan en mover el meta, y la lista con él."
 }

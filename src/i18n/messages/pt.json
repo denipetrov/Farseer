@@ -251,5 +251,6 @@
   "mplus.top01": "Top 0,1% em {region}: {score}+",
   "mplus.top1": "Top 1% em {region}: {score}+",
   "mplus.factTop01": "Top 0,1%",
-  "mplus.factTop1": "Top 1%"
+  "mplus.factTop1": "Top 1%",
+  "tier.disclaimerPve": "A lista vem de corridas de Mítica+ atuais: buffs e nerfs recentes levam tempo para mudar o meta, e a lista com ele."
 }

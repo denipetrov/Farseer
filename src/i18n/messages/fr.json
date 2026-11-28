@@ -251,5 +251,6 @@
   "mplus.top01": "Top 0,1 % en {region} : {score}+",
   "mplus.top1": "Top 1 % en {region} : {score}+",
   "mplus.factTop01": "Top 0,1 %",
-  "mplus.factTop1": "Top 1 %"
+  "mplus.factTop1": "Top 1 %",
+  "tier.disclaimerPve": "Le classement est tiré des clés Mythique+ en cours : les up et les nerfs récents mettent du temps à faire bouger la méta, et le classement avec elle."
 }

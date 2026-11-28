@@ -251,5 +251,6 @@
   "mplus.top01": "{region}前 0.1%：{score}+",
   "mplus.top1": "{region}前 1%：{score}+",
   "mplus.factTop01": "前 0.1%",
-  "mplus.factTop1": "前 1%"
+  "mplus.factTop1": "前 1%",
+  "tier.disclaimerPve": "档位表来自当前的史诗+记录：最近的增强和削弱需要时间才能改变版本，档位表也随之变化。"
 }

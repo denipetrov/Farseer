@@ -251,5 +251,6 @@
   "mplus.top01": "Top 0,1 % in {region}: {score}+",
   "mplus.top1": "Top 1 % in {region}: {score}+",
   "mplus.factTop01": "Top 0,1 %",
-  "mplus.factTop1": "Top 1 %"
+  "mplus.factTop1": "Top 1 %",
+  "tier.disclaimerPve": "Die Stufenliste entsteht aus aktuellen Mythisch+-Läufen: Neue Buffs und Nerfs brauchen Zeit, um die Meta zu verschieben, und mit ihr die Liste."
 }
