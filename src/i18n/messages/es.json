@@ -239,5 +239,17 @@
   "slogan.climb": "Cada ascenso, registrado",
   "slogan.cutoffs": "Los umbrales no mienten",
   "slogan.repeat": "Subir. Rankear. Repetir.",
-  "slogan.archives": "Los archivos recuerdan"
+  "slogan.archives": "Los archivos recuerdan",
+  "mplus.boardTitle": "Clasificación de Mítica+",
+  "mplus.dungeons": "Mazmorras",
+  "mplus.score": "Puntuación",
+  "mplus.partial": "Falta una mazmorra: la puntuación es una suma parcial",
+  "mplus.noRun": "Sin partida en {dungeon}",
+  "mplus.timed": "a tiempo +{chests}, {left} restantes",
+  "mplus.depleted": "fuera de tiempo por {over}",
+  "mplus.runScore": "puntuación {score}",
+  "mplus.top01": "Top 0,1 % en {region}: {score}+",
+  "mplus.top1": "Top 1 % en {region}: {score}+",
+  "mplus.factTop01": "Top 0,1 %",
+  "mplus.factTop1": "Top 1 %"
 }

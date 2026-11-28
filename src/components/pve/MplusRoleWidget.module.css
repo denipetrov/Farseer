@@ -1,0 +1,39 @@
+/* The PvE home's role widget: the PvP widgets' region dropdown and full-board link */
+.regionSelect {
+  flex: none;
+  max-width: 9rem;
+  padding: var(--space-1) var(--space-6) var(--space-1) var(--space-2);
+  border: 1px solid var(--color-trim-muted);
+  border-radius: var(--radius-md);
+  /* A small chevron, drawn in the background (the native arrow is hidden) */
+  background: var(--color-bg-sunken)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23a3a3a3' stroke-width='1.6'/%3E%3C/svg%3E")
+    no-repeat right var(--space-2) center / 10px 6px;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  appearance: none;
+  cursor: pointer;
+}
+
+.regionSelect:hover {
+  color: var(--color-text-highlight);
+}
+
+.regionSelect:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.fullLink > a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-accent-strong);
+  font-weight: 600;
+}
+
+.fullLink > a:hover {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
+}

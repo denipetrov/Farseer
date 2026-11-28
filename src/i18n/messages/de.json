@@ -239,5 +239,17 @@
   "slogan.climb": "Jeder Aufstieg, festgehalten",
   "slogan.cutoffs": "Grenzwerte lügen nicht",
   "slogan.repeat": "Klettern. Ranken. Wiederholen.",
-  "slogan.archives": "Das Archiv vergisst nicht"
+  "slogan.archives": "Das Archiv vergisst nicht",
+  "mplus.boardTitle": "Mythisch+-Rangliste",
+  "mplus.dungeons": "Dungeons",
+  "mplus.score": "Wertung",
+  "mplus.partial": "Ein Dungeon fehlt: Die Wertung ist eine Teilsumme",
+  "mplus.noRun": "Kein Lauf in {dungeon}",
+  "mplus.timed": "in der Zeit +{chests}, {left} übrig",
+  "mplus.depleted": "{over} über der Zeit",
+  "mplus.runScore": "Wertung {score}",
+  "mplus.top01": "Top 0,1 % in {region}: {score}+",
+  "mplus.top1": "Top 1 % in {region}: {score}+",
+  "mplus.factTop01": "Top 0,1 %",
+  "mplus.factTop1": "Top 1 %"
 }

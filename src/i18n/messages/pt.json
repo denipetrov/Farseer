@@ -239,5 +239,17 @@
   "slogan.climb": "Cada subida, registrada",
   "slogan.cutoffs": "Os cortes não mentem",
   "slogan.repeat": "Subir. Rankear. Repetir.",
-  "slogan.archives": "Os arquivos se lembram"
+  "slogan.archives": "Os arquivos se lembram",
+  "mplus.boardTitle": "Ranking de Mítica+",
+  "mplus.dungeons": "Masmorras",
+  "mplus.score": "Pontuação",
+  "mplus.partial": "Falta uma masmorra: a pontuação é uma soma parcial",
+  "mplus.noRun": "Nenhuma corrida em {dungeon}",
+  "mplus.timed": "no tempo +{chests}, {left} restantes",
+  "mplus.depleted": "fora do tempo por {over}",
+  "mplus.runScore": "pontuação {score}",
+  "mplus.top01": "Top 0,1% em {region}: {score}+",
+  "mplus.top1": "Top 1% em {region}: {score}+",
+  "mplus.factTop01": "Top 0,1%",
+  "mplus.factTop1": "Top 1%"
 }

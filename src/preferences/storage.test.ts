@@ -22,6 +22,7 @@ describe('preferences storage', () => {
       lastPveCharacter: { region: 'us', realm: 'illidan', name: 'Rooiben' },
       lastPveGuild: { region: 'eu', realm: 'tarren-mill', name: 'Echo' },
       pvpBoardRegions: { shuffle: 'eu', '3v3': 'us' },
+      mplusBoardRegions: { healer: 'cn', melee: 'eu' },
     } as const;
     writePreferences(prefs);
     expect(readPreferences()).toEqual(prefs);
@@ -47,6 +48,7 @@ describe('preferences storage', () => {
       lastPveCharacter: null,
       lastPveGuild: null,
       pvpBoardRegions: {},
+      mplusBoardRegions: {},
     });
   });
 
@@ -64,6 +66,7 @@ describe('preferences storage', () => {
       lastPveCharacter: null,
       lastPveGuild: null,
       pvpBoardRegions: {},
+      mplusBoardRegions: {},
     });
   });
 
@@ -117,5 +120,15 @@ describe('preferences storage', () => {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ pvpBoardRegions: bad }));
       expect(readPreferences().pvpBoardRegions).toEqual({});
     }
+  });
+
+  it('keeps a known region per Mythic+ widget role, and drops the rest', () => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        mplusBoardRegions: { healer: 'cn', tank: 'world', dps: 'eu', melee: 'mars', ranged: 7 },
+      }),
+    );
+    expect(readPreferences().mplusBoardRegions).toEqual({ healer: 'cn', tank: 'world' });
   });
 });

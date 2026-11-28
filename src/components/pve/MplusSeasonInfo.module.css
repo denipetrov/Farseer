@@ -1,0 +1,56 @@
+/*
+ * The Mythic+ season's facts beside the board's heading: the PvP pages' SeasonInfo look
+ * (a small capital label over each value), with the top 0.1% / 1% shields.
+ */
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  margin: 0;
+  font-size: var(--font-size-sm);
+}
+
+.facts > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.facts dt {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.facts dd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin: 0;
+  color: var(--color-text-highlight);
+  font-weight: 600;
+}
+
+/* The season still runs: in the success green */
+.live {
+  color: var(--color-success);
+}
+
+/* The tier's shield before its score (the board's badge art, drawn as given) */
+.shield {
+  width: 20px;
+  height: 20px;
+  align-self: center;
+}
+
+/* Top 0.1% in the legendary orange, top 1% in silver (the shields' metals) */
+[data-tier='p999'] {
+  color: var(--color-quality-legendary);
+}
+
+[data-tier='p990'] {
+  color: var(--color-rank-combatant);
+}

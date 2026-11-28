@@ -239,5 +239,17 @@
   "slogan.climb": "Chaque ascension, consignée",
   "slogan.cutoffs": "Les seuils ne mentent pas",
   "slogan.repeat": "Grimper. Classer. Recommencer.",
-  "slogan.archives": "Les archives se souviennent"
+  "slogan.archives": "Les archives se souviennent",
+  "mplus.boardTitle": "Classement Mythique+",
+  "mplus.dungeons": "Donjons",
+  "mplus.score": "Score",
+  "mplus.partial": "Un donjon manque : le score est une somme partielle",
+  "mplus.noRun": "Aucune clé dans {dungeon}",
+  "mplus.timed": "dans les temps +{chests}, {left} restantes",
+  "mplus.depleted": "hors temps de {over}",
+  "mplus.runScore": "score {score}",
+  "mplus.top01": "Top 0,1 % en {region} : {score}+",
+  "mplus.top1": "Top 1 % en {region} : {score}+",
+  "mplus.factTop01": "Top 0,1 %",
+  "mplus.factTop1": "Top 1 %"
 }

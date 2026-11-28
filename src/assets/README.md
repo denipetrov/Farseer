@@ -274,6 +274,14 @@ crimson ribbon with stars (3, 2, 1) and a light burst. 1st is palette gold with 
 palette silver with sapphires, 3rd bronze (not in the palette: `#c27a3c` family) with
 emeralds. Read them by path with `iconUrl('places/place-1')`.
 
+### PvE ranks
+
+`icons/pve/ranks/<rank>.png`, one look, 128 px: the score-cutoff badges (a Spartan helmet on a
+shield over crossed swords). `zeropointonepercent` (top 0.1%) is gold, the art as drawn;
+`onepercent` is palette silver and `fivepercent` a rich bronze, recoloured from it (each
+pixel's brightness mapped onto the metal, so the shading is the same; the red sword grips
+unchanged). Read them by path: `iconUrl('pve/ranks/onepercent')`.
+
 ### Info
 
 `icons/info/<name>.png`, one look, 128 px: informational icons in the role icons' round frame

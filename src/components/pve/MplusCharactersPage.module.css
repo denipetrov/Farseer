@@ -1,0 +1,22 @@
+/* The Mythic+ board page: the PvP leaderboard pages' tight layout (1080p) */
+main.page {
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+}
+
+/* The heading on the left, the season's facts on the right, wrapping under it when narrow */
+.headingRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-8);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--font-size-xl);
+}

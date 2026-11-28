@@ -173,7 +173,23 @@ export function isRunningIn(
 /** PvE boards' regions: one of Raider.io's, or `world` for all of them together. */
 export type PveBoard = PveRegion | 'world';
 
-/** One row of `GET /pve/mplus-leaderboard`: only what the site reads so far. */
+/** A character's best run in one dungeon, as stored (`dungeonRuns[]`) */
+export interface MplusDungeonRun {
+  dungeon: { id: number; name: string; slug: string; shortName: string | null };
+  keystoneRunId: number;
+  mythicLevel: number;
+  score: number;
+  clearTimeMs: number;
+  /** Negative when over time */
+  timeRemainingMs: number;
+  /** 0 when depleted (over time); 1–3 when timed */
+  numChests: number;
+  completedAt: string;
+  specId: number | null;
+  role: string | null;
+}
+
+/** One row of `GET /pve/mplus-leaderboard` */
 export interface MplusLeaderboardEntry {
   rank: number;
   characterName: string;
@@ -182,6 +198,21 @@ export interface MplusLeaderboardEntry {
   region: PveRegion;
   faction: string | null;
   mythicScore: number;
+  /** Before Rankwarden's latest write; null on a first write and on archived seasons */
+  previousMythicScore?: number | null;
+  /** False when a dungeon of the season has no run: the score is then a partial sum */
+  isFullyCovered?: boolean;
+  profile?: {
+    classId: number | null;
+    className: string | null;
+    specId: number | null;
+    specName: string | null;
+    raceId: number | null;
+    raceName: string | null;
+    level: number | null;
+    role: string | null;
+  } | null;
+  dungeonRuns?: MplusDungeonRun[];
 }
 
 export interface MplusLeaderboardResponse {
@@ -199,6 +230,11 @@ export interface MplusLeaderboardParams {
   region?: PveBoard;
   /** A season slug, or `current` */
   season?: string;
+  /** Soulseeker's class slug; with `spec`, one spec's board */
+  class?: string;
+  spec?: string;
+  /** `dps`, `healer`, `tank`, or `melee` / `ranged` (sent as `subRole`); not with a spec */
+  role?: string;
   page?: number;
   pageSize?: number;
 }
@@ -206,15 +242,27 @@ export interface MplusLeaderboardParams {
 export const mplusLeaderboardQuery = ({
   region = 'world',
   season = 'current',
+  class: cls,
+  spec,
+  role,
   page = 1,
   pageSize = 50,
 }: MplusLeaderboardParams = {}) =>
   queryOptions({
-    queryKey: ['pve', 'mplus-leaderboard', region, season, page, pageSize],
+    queryKey: ['pve', 'mplus-leaderboard', region, season, cls, spec, role, page, pageSize],
     queryFn: ({ signal }) =>
       api.get<MplusLeaderboardResponse>(
         '/pve/mplus-leaderboard',
-        { region, season, page, pageSize },
+        {
+          region,
+          season,
+          class: cls,
+          spec,
+          role: role === 'tank' || role === 'healer' || role === 'dps' ? role : undefined,
+          subRole: role === 'melee' || role === 'ranged' ? role : undefined,
+          page,
+          pageSize,
+        },
         signal,
       ),
     staleTime: 60_000,

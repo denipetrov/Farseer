@@ -239,5 +239,17 @@
   "slogan.climb": "모든 등반을 기록한다",
   "slogan.cutoffs": "커트라인은 거짓말하지 않는다",
   "slogan.repeat": "오르고, 순위를 매기고, 반복하라",
-  "slogan.archives": "기록은 기억한다"
+  "slogan.archives": "기록은 기억한다",
+  "mplus.boardTitle": "신화+ 순위표",
+  "mplus.dungeons": "던전",
+  "mplus.score": "점수",
+  "mplus.partial": "던전이 빠져 있어 점수가 부분 합계입니다",
+  "mplus.noRun": "{dungeon} 기록 없음",
+  "mplus.timed": "시간 내 완료 +{chests}, {left} 남음",
+  "mplus.depleted": "{over} 초과",
+  "mplus.runScore": "점수 {score}",
+  "mplus.top01": "{region} 상위 0.1%: {score}+",
+  "mplus.top1": "{region} 상위 1%: {score}+",
+  "mplus.factTop01": "상위 0.1%",
+  "mplus.factTop1": "상위 1%"
 }

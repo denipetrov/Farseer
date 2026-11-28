@@ -1,0 +1,362 @@
+/*
+ * The Mythic+ board: the PvP large board's table (LeaderboardWidget.module.css), with a
+ * dungeons column of tiles. Fixed layout: the place, dungeons, score and faction keep their
+ * widths and the player takes the rest.
+ */
+.scroll {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  transition: opacity var(--transition-fast);
+}
+
+/* The full board keeps its columns and scrolls sideways when the page is narrower */
+.table[data-size='large'] {
+  min-width: 64rem;
+}
+
+.table[data-stale] {
+  opacity: 0.55;
+}
+
+.colPlace {
+  width: 5.25rem;
+}
+
+/* Eight 40px tiles, 4px apart, and the cell's padding (a season has eight dungeons) */
+.colDungeons {
+  width: 23.5rem;
+}
+
+.colScore {
+  width: 7.5rem;
+}
+
+.colFaction {
+  width: 5.5rem;
+}
+
+.head th {
+  padding: var(--space-3) 6px var(--space-2);
+  border-bottom: 1px solid var(--color-border-muted);
+  color: var(--color-trim-strong);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  text-align: center;
+  text-transform: uppercase;
+  vertical-align: bottom;
+}
+
+.head th:first-child {
+  padding-left: var(--space-4);
+}
+
+.head th:last-child {
+  padding-right: var(--space-4);
+}
+
+.head .thPlayer {
+  text-align: left;
+}
+
+.row {
+  height: 56px;
+}
+
+.row > td {
+  padding: 0 6px;
+  border-bottom: 1px solid var(--color-trim-muted);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.row > td:nth-child(2) {
+  text-align: left;
+}
+
+.row:last-child > td {
+  border-bottom: 0;
+}
+
+.row > td:first-child {
+  padding-left: var(--space-4);
+}
+
+.row > td:last-child {
+  padding-right: var(--space-4);
+}
+
+.place {
+  color: var(--color-text-subtle);
+  white-space: nowrap;
+}
+
+/*
+ * Top 0.1% / 1%: the place written on the tier's shield (pve/ranks), as the PvP board's
+ * Rank 1 badge: white with a dark outline on the shield's face, below the helmet; longer
+ * places a size smaller. The shield is drawn as given.
+ */
+.badge {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  vertical-align: middle;
+}
+
+.badge > img {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+.badgeNumber {
+  grid-area: 1 / 1;
+  transform: translateY(18%);
+  color: var(--color-text-highlight);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-shadow:
+    0 0 2px #000,
+    0 1px 2px #000,
+    0 0 4px rgb(0 0 0 / 0.8);
+}
+
+.badge[data-digits='3'] .badgeNumber {
+  font-size: 12px;
+}
+
+.badge[data-digits='4'] .badgeNumber,
+.badge[data-digits='5'] .badgeNumber {
+  font-size: 10.5px;
+  letter-spacing: -0.04em;
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.icons {
+  display: flex;
+  flex: none;
+  gap: 2px;
+}
+
+/* The name in the class colour (data-class-color, gameColors.css) */
+.nameLink {
+  display: flex;
+  min-width: 0;
+}
+
+.nameLink > a {
+  overflow: hidden;
+  color: var(--color-text-highlight);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nameLink > a:hover {
+  text-decoration: underline;
+}
+
+.realm {
+  flex: none;
+  max-width: 45%;
+  overflow: hidden;
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The dungeons: a row of 40px tiles, the header's icons above them */
+.tiles {
+  display: inline-flex;
+  gap: 4px;
+  vertical-align: middle;
+}
+
+.headTile {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  width: 40px;
+  color: var(--color-text-subtle);
+}
+
+/* The dungeon's short name under its icon (AOF, BV, DON…), as the column's title */
+.headShort {
+  overflow: hidden;
+  max-width: 100%;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+.headTile > img {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+}
+
+/*
+ * A tile: the dungeon's art filling it, the key level over it in white with a dark outline
+ * so it reads on any art (the art itself is drawn as given)
+ */
+.tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-raised);
+  cursor: default;
+}
+
+.tile > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+
+.level {
+  position: relative;
+  color: var(--color-text-highlight);
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+  text-shadow:
+    0 0 2px #000,
+    0 1px 3px #000,
+    0 0 6px rgb(0 0 0 / 0.9);
+}
+
+/* Over time: the level muted */
+.tile[data-state='depleted'] .level {
+  color: var(--color-text-muted);
+}
+
+/* No run in this dungeon */
+.tile[data-state='none'] {
+  color: var(--color-text-subtle);
+}
+
+.score {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* The score in its colour on the season's scale (Raider.io's, scaled to the season's top) */
+.scoreValue {
+  color: var(--score-color, var(--color-text-highlight));
+}
+
+/* The score misses a dungeon: a partial sum */
+.partial {
+  margin-left: 2px;
+  color: var(--color-warning);
+  cursor: help;
+}
+
+.faction > * {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+/* The score's trend: a triangle up (green) or down (red), a short line when unchanged */
+.trend {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: var(--space-2);
+  vertical-align: 1px;
+}
+
+.trend-up {
+  background: var(--color-success);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.trend-down {
+  background: var(--color-danger);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.trend-same {
+  height: 2px;
+  border-radius: 1px;
+  background: var(--color-text-subtle);
+  vertical-align: 3px;
+}
+
+.skeleton {
+  display: block;
+  height: 14px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-raised);
+}
+
+.message {
+  margin: 0;
+  padding: var(--space-8) var(--space-4);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.pagingBottom:empty {
+  display: none;
+}
+
+/* A home widget (medium): a narrower place and score, a smaller badge, shorter rows */
+.table[data-size='medium'] .colPlace {
+  width: 3.75rem;
+}
+
+.table[data-size='medium'] .colScore {
+  width: 6.5rem;
+}
+
+.table[data-size='medium'] .colFaction {
+  width: 3rem;
+}
+
+.table[data-size='medium'] .row {
+  height: 48px;
+}
+
+.table[data-size='medium'] .badge {
+  width: 38px;
+  height: 38px;
+}
+
+.table[data-size='medium'] .badgeNumber {
+  font-size: 12px;
+}
+
+.table[data-size='medium'] .badge[data-digits='3'] .badgeNumber {
+  font-size: 11px;
+}

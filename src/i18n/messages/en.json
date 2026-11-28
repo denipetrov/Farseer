@@ -239,5 +239,17 @@
   "slogan.climb": "Every climb, recorded",
   "slogan.cutoffs": "Cutoffs don’t lie",
   "slogan.repeat": "Climb. Rank. Repeat.",
-  "slogan.archives": "The archives remember"
+  "slogan.archives": "The archives remember",
+  "mplus.boardTitle": "Mythic+ Leaderboard",
+  "mplus.dungeons": "Dungeons",
+  "mplus.score": "Score",
+  "mplus.partial": "Missing a dungeon: the score is a partial sum",
+  "mplus.noRun": "No run in {dungeon}",
+  "mplus.timed": "timed +{chests}, {left} left",
+  "mplus.depleted": "over time by {over}",
+  "mplus.runScore": "score {score}",
+  "mplus.top01": "Top 0.1% in {region}: {score}+",
+  "mplus.top1": "Top 1% in {region}: {score}+",
+  "mplus.factTop01": "Top 0.1%",
+  "mplus.factTop1": "Top 1%"
 }

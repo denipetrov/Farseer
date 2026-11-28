@@ -519,6 +519,54 @@ below).
   and is not found otherwise. Names: `raidName` / `bossName` (`/i18n/names`, else English).
 - `stats/mythic-plus/{representation,compositions,cutoffs}` (`stats/` opens the first),
   `tier-list`.
+- **Mythic+ All Characters board** (`mythic-plus/characters?region&class&spec&role&page`,
+  `MplusCharactersPage.tsx` + `MplusLeaderboard.tsx`; the user's design of 2026-11-28, was
+  Coming soon). `/pve/mplus-leaderboard` (`mplusLeaderboardQuery`, now with `class`/`spec`
+  and `role`, melee/ranged sent as `subRole`), 50 a page, paging above and below. Rules
+  in `src/lib/mplusBoard.ts` (tested).
+  - Heading "Mythic+ Leaderboard" with the season's facts on the right
+    (`MplusSeasonInfo.tsx`, the PvP `SeasonInfo` look; the user, 2026-11-28): Season in
+    full (`mplusSeasonName`: Soulseeker's "MN Season 2" → "Midnight Season 2", from the
+    season's Raider.io `expansionId`, English as Blizzard's PvP names; tested),
+    Started (World: the first region's start), Ends ("In progress" while any region plays
+    it), and on a region only Top 0.1% / Top 1% with their shields and scores (legendary
+    orange / silver); region bar World, US, EU, KR,
+    TW, **CN** (`MPLUS_BOARDS`: Raider.io covers China); the leaderboard's `IconFilter`.
+  - Columns: place, player (race, class, spec icons from `profile`; name in the class
+    colour linking to `/pve/character/...`; realm), **dungeons**, score (trend arrow from
+    `previousMythicScore`; amber `*` when `isFullyCovered` is false: a partial sum;
+    **coloured on Raider.io's scale**, see below),
+    faction. No hero talents, no wins/losses (Mythic+ has neither: the user).
+  - **Dungeon tiles**: the live season's dungeons (`/pve/mplus-seasons`: World = the
+    newest season, else the one `isRunningIn` the region) in its order; the column header
+    shows each icon with its `shortName` under it (AOF, BV, DON…; the user, 2026-11-28). Each tile is the dungeon's art (`iconUrl`, Raider.io's CDN, drawn as
+    given) with the key level over it in white with a dark outline; depleted levels muted,
+    no run a "–" tile. Hover: "Altar of Fangs +24 · timed +1, 0:13 left · score 545.2".
+    Runs match the season's dungeons by id, else slug (`runsBySeasonDungeon`).
+  - **Compact version on the PvE home** (`MplusRoleWidget.tsx`; the user, 2026-11-28):
+    four medium widgets, two by two: Melee DPS, Ranged DPS, Healers, Tanks (`role` sent
+    as `subRole` for melee/ranged). `MplusLeaderboard size="medium"`: the top 10, no
+    dungeon tiles, realm or paging, column titles for screen readers only, smaller rows
+    and badge; badges, trend and score colours as the full board. Header: role icon and
+    name, a region dropdown remembered per role (`preferences.mplusBoardRegions`,
+    validated in `storage.ts`, World by default); footer "View full leaderboard" to
+    `mythic-plus/characters?role=&region=`. The live season comes from `liveSeason`
+    (`mplusBoard.ts`), shared with the full board.
+  - **Top 0.1% / 1% badges** (the user, 2026-11-28): the place is written on
+    `icons/pve/ranks/zeropointonepercent.png` (gold) or `onepercent.png` (silver) when
+    the score reaches the season's `quantiles.p999` / `p990` `all.minScore`
+    (`tierCutoffs`, `scoreTier`, tested), drawn like the PvP Rank 1 badge (46px, number
+    on the shield's face, smaller for long places); hover "Top 0.1% in Americas:
+    4,092.8+". Judged by the **character's own region** (also on World). The season data
+    has only those two cutoffs, so `fivepercent.png` is unused until a 5% cutoff exists.
+  - **Score colours** (`src/lib/wow/mplusScoreColor.ts`, tested; the user, 2026-11-28):
+    the user's 167-step table (Raider.io's, for a season topped at 4350: orange from
+    4350, epic `#a335ee` 3450, rare `#0070dd` 3075, uncommon `#1eff00` 2200, white 200)
+    keeps its colours, but each threshold is **scaled by the season's current top /
+    4350**, so the colours move as the top climbs. The top is the World #1's score
+    (`mplusLeaderboardQuery({ pageSize: 1 })`, the character page's query too), the same
+    for every region; until it loads the table is used as is. Applied through the
+    `--score-color` custom property (data-only value).
 - **Archives** (past seasons): `mythic-plus/archives/{characters,runs}`,
   `…/archives/specs/$class/$spec`, `…/archives/roles/$class/$role`,
   `…/archives/stats/{representation,compositions}` (no Cutoffs); `archives/` opens

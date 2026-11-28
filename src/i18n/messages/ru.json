@@ -239,5 +239,17 @@
   "slogan.climb": "Каждый подъём записан",
   "slogan.cutoffs": "Пороги не лгут",
   "slogan.repeat": "Подъём. Ранг. Повтор.",
-  "slogan.archives": "Архивы помнят"
+  "slogan.archives": "Архивы помнят",
+  "mplus.boardTitle": "Рейтинг эпохальных+",
+  "mplus.dungeons": "Подземелья",
+  "mplus.score": "Рейтинг",
+  "mplus.partial": "Не хватает подземелья: рейтинг неполный",
+  "mplus.noRun": "Нет забега в {dungeon}",
+  "mplus.timed": "в таймер +{chests}, осталось {left}",
+  "mplus.depleted": "не в таймер на {over}",
+  "mplus.runScore": "рейтинг {score}",
+  "mplus.top01": "Топ 0,1% в регионе {region}: {score}+",
+  "mplus.top1": "Топ 1% в регионе {region}: {score}+",
+  "mplus.factTop01": "Топ 0,1%",
+  "mplus.factTop1": "Топ 1%"
 }

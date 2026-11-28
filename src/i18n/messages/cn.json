@@ -239,5 +239,17 @@
   "slogan.climb": "每一次攀升，皆有记录",
   "slogan.cutoffs": "分数线不会说谎",
   "slogan.repeat": "攀升，排名，周而复始",
-  "slogan.archives": "档案永不遗忘"
+  "slogan.archives": "档案永不遗忘",
+  "mplus.boardTitle": "史诗+排行榜",
+  "mplus.dungeons": "地下城",
+  "mplus.score": "分数",
+  "mplus.partial": "缺少一个地下城：分数为部分合计",
+  "mplus.noRun": "{dungeon} 没有记录",
+  "mplus.timed": "限时完成 +{chests}，剩余 {left}",
+  "mplus.depleted": "超时 {over}",
+  "mplus.runScore": "分数 {score}",
+  "mplus.top01": "{region}前 0.1%：{score}+",
+  "mplus.top1": "{region}前 1%：{score}+",
+  "mplus.factTop01": "前 0.1%",
+  "mplus.factTop1": "前 1%"
 }

@@ -36,7 +36,19 @@ export interface Preferences {
    * it stays after navigating or reloading. A bracket not listed opens on its default (World).
    */
   pvpBoardRegions: Partial<Record<PvpBracket, PvpBoard>>;
+  /**
+   * The region last picked on each of the PvE home's Mythic+ role widgets
+   * (`{ healer: 'eu' }`); a role not listed opens on World
+   */
+  mplusBoardRegions: Partial<Record<MplusWidgetRole, MplusRegion>>;
 }
+
+/** The PvE home's Mythic+ widgets, one per role (the user, 2026-11-28) */
+export const MPLUS_WIDGET_ROLES = ['melee', 'ranged', 'healer', 'tank'] as const;
+export type MplusWidgetRole = (typeof MPLUS_WIDGET_ROLES)[number];
+/** Raider.io's regions and World (Soulseeker's PvE boards) */
+const MPLUS_REGIONS = ['world', 'us', 'eu', 'kr', 'tw', 'cn'] as const;
+export type MplusRegion = (typeof MPLUS_REGIONS)[number];
 
 /** A character or guild page's address: region, realm slug and name as in its URL. */
 export interface CharacterRef {
@@ -54,6 +66,7 @@ export const defaultPreferences: Preferences = {
   lastPveCharacter: null,
   lastPveGuild: null,
   pvpBoardRegions: {},
+  mplusBoardRegions: {},
 };
 
 const isFaction = (v: unknown): v is Faction => v === 'horde' || v === 'alliance';
@@ -84,6 +97,18 @@ function boardRegions(v: unknown): Partial<Record<PvpBracket, PvpBoard>> {
   );
 }
 
+/** Only the four roles with known regions are kept */
+function mplusRegions(v: unknown): Partial<Record<MplusWidgetRole, MplusRegion>> {
+  if (typeof v !== 'object' || v === null) return {};
+  return Object.fromEntries(
+    Object.entries(v).filter(
+      ([role, region]) =>
+        (MPLUS_WIDGET_ROLES as readonly string[]).includes(role) &&
+        (MPLUS_REGIONS as readonly unknown[]).includes(region),
+    ),
+  );
+}
+
 /** Each field is validated on its own: one bad value never resets the others. */
 export function readPreferences(): Preferences {
   try {
@@ -101,6 +126,7 @@ export function readPreferences(): Preferences {
       lastPveCharacter: pageRef(parsed.lastPveCharacter),
       lastPveGuild: pageRef(parsed.lastPveGuild),
       pvpBoardRegions: boardRegions(parsed.pvpBoardRegions),
+      mplusBoardRegions: mplusRegions(parsed.mplusBoardRegions),
     };
   } catch {
     return defaultPreferences;
