@@ -50,7 +50,6 @@
   "menu.open": "Open menu",
   "menu.close": "Close menu",
   "menu.title": "Menu",
-  "footer.slogan": "“Chaos is a ladder.”",
   "footer.legal": "Legal",
   "legal.privacy": "Privacy Policy",
   "legal.terms": "Terms of Service",
@@ -198,7 +197,6 @@
   "rep.day": "Day",
   "rep.today": "Today",
   "rep.daysAgo": "{days} days ago",
-  "rep.noData": "No data that far back yet",
   "rep.noSnapshot": "No snapshot for {date}: Rankwarden missed that day.",
   "rep.noSpecs": "No players with a known spec at this rating yet.",
   "rep.summary": "{classified} of {total} ranked players with a known spec",
@@ -230,5 +228,16 @@
   "heroStats.infoCovered": "{covered} of them have a known build ({coverage} coverage): percentages are shares of those {covered}.",
   "heroStats.infoAllCovered": "All of them have a known build.",
   "heroStats.infoRating": "Rating {min}–{max}.",
-  "home.tagline": "Ours is the watch"
+  "rep.beforeSeason": "Before this season started ({date})",
+  "rep.noSnapshotDay": "No data for {date}",
+  "slogan.watch": "Ours is the watch",
+  "slogan.chaos": "Chaos is a ladder",
+  "slogan.ladder": "The ladder never sleeps",
+  "slogan.rank": "Every rank, on watch",
+  "slogan.earned": "Rank is earned, not given",
+  "slogan.meta": "Know the meta, climb the ladder",
+  "slogan.climb": "Every climb, recorded",
+  "slogan.cutoffs": "Cutoffs don’t lie",
+  "slogan.repeat": "Climb. Rank. Repeat.",
+  "slogan.archives": "The archives remember"
 }

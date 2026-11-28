@@ -326,14 +326,19 @@ listed (search, boards, rosters), use `<CharacterLine>`, the user's fixed order:
 the slogan below it, and the legal links on the right (stacked and centred at 820px and
 below).
 
-- The slogan is the user's: "Chaos is a ladder." (`footer.slogan`), in each language's own
-  quotation marks (part of the message: “…”, „…“, « … », «…»), grey
-  (`--color-text-subtle`), in a handwritten font. Fonts are self-hosted from fontsource
-  (OFL): Caveat (Latin, Cyrillic), Nanum Pen Script (Korean), Ma Shan Zheng (Chinese; first
-  on `:lang(zh)`, else the Korean font would draw the Han characters). Split by character
-  range, so a page downloads only the glyphs it shows.
-- Korean also puts its own font first (`:lang(ko)`): with Caveat first, Caveat's small “
-  was hidden under the first Hangul glyph.
+- **Slogans** (`src/lib/slogans.ts`, tested; the user, 2026-11-28): a pool of ten short
+  lines on the name and the site (`slogan.*`: Ours is the watch, Chaos is a ladder, The
+  ladder never sleeps, Every rank on watch, Rank is earned not given, Know the meta climb
+  the ladder, Every climb recorded, Cutoffs don't lie, Climb. Rank. Repeat., The archives
+  remember), translated into all 8 languages without quote marks. `SITE_SLOGANS` draws
+  two **different** ones once per site load: `hero` under the home page's wordmark,
+  `footer` beside the footer logo, without quote marks (the user, 2026-11-28). Add one by adding its key to `SLOGANS` and
+  every language file.
+- The footer slogan is grey (`--color-text-subtle`), in a handwritten font. Fonts are
+  self-hosted from fontsource (OFL): Caveat (Latin, Cyrillic), Nanum Pen Script (Korean),
+  Ma Shan Zheng (Chinese; first on `:lang(zh)`, else the Korean font would draw the Han
+  characters). Split by character range, so a page downloads only the glyphs it shows.
+- Korean also puts its own font first (`:lang(ko)`), so the whole line is in one hand.
 - Below a thin divider, the notice: `footer.copyright` ("© {year} Rankwarden. World of
   Warcraft is a trademark of Blizzard Entertainment.", the year from the clock) and
   `footer.notAffiliated` ("Not affiliated with Blizzard Entertainment."). Names stay in
@@ -669,13 +674,20 @@ losses · win % · PvP talents · talents · faction`, the user's order of 2026-
     user's design of 2026-11-27, was Coming soon). Rules in `src/lib/representation.ts`
     (tested).
     - **Data: the daily endpoint only** (`specRepresentationQuery`): `date=latest&
-getEarliestDate=true` for Today, then one request per other day. The 31-day
+returnAvailableDates=true` for Today (Soulseeker e52974b, 2026-11-28: replaced
+      `getEarliestDate` / `earliestDate`, which it no longer reads), then one request per other day. The 31-day
       `/history` endpoint is reserved for the FOTM page (the user's call).
     - **Controls**: rating dropdown of `REPRESENTATION_RATINGS` (1500, 1800, 2100, 2300,
       2700: the only ratings Rankwarden snapshots; 2100 default) instead of the example's
       "Top X"; role icon tabs (`TIER_ROLES`, as the tier list's); day tabs Today / 7 / 15 /
-      30 days ago (the user's list), counted back from the newest snapshot's date, off
-      before `earliestDate`. A missing day is a 404: "No snapshot for <date>", no retry.
+      30 days ago (the user's list), counted back from the newest snapshot's date. A tab is
+      **off** (`dayStatus`, tested; the user, 2026-11-28) when its day is **before the
+      live season's start** in the region shown (`seasonDates(...).startsAt` from
+      `/pvp/seasons`; World = the first region's), hover "Before this season started
+      (<date>)", or **not in `availableDates`** (the last 30 days with specs named; missed
+      days are absent), hover "No data for <date>". Today is always on. Without
+      `availableDates` (an older Soulseeker) days stay on and a missing one is a 404:
+      "No snapshot for <date>", no retry.
     - **Chart** (`SpecBarChart.tsx`, dataviz rules): bars in class colours, 4px rounded
       tops, 2px gaps, recessive gridlines on a 1/2/5 axis (`niceAxis`); spec icons under the
       bars as direct labels (no rotated names); hover/focus card (spec, players, share,
@@ -843,8 +855,8 @@ class&spec&role`, `HeroTalentsPage.tsx`; the user's design of 2026-11-27, was Co
 - **The mode homes' hero** (`ModeHome`, both PvP and PvE; the user's design, 2026-11-28):
   **the wordmark only** (`rankwarden-wordmark.svg`: the logo's "RANKWARDEN" paths and
   gradients lifted out unchanged, viewBox cropped to their measured box; no emblem, the
-  user's call) up to 640px wide, **"Ours is the watch"** under it in the footer slogan's handwriting (Caveat; Nanum Pen
-  Script for Korean, Ma Shan Zheng for Chinese) (`home.tagline`, all 8
+  user's call) up to 640px wide, **a random slogan** (`SITE_SLOGANS.hero`) under it in the footer slogan's handwriting (Caveat; Nanum Pen
+  Script for Korean, Ma Shan Zheng for Chinese) (all 8
   languages; the old `mode.*.intro` lines are no longer shown), and the user's art behind
   (`src/assets/images/backgrounds/home-hero.webp`: their 1200×1485 PNG, re-encoded to WebP
   q86 per `assets/README.md`, 1.09 MB → 83 KB, pixels otherwise as given). **The fade is
@@ -946,7 +958,9 @@ together), then use the variable. Shared layout pieces are `Page`, `PageTitle`, 
 ### Assets and asset styles
 
 Assets live in `src/assets/` (`icons/`, `images/`, `fonts/`). The Rankwarden logo is
-`images/logo/rankwarden-logo.svg` (header) and `rankwarden-emblem.svg`; favicons are in `public/`.
+`images/logo/rankwarden-logo.svg` (header, footer, mobile menu: the wordmark with a jewelled
+crown on the R, no emblem since 2026-11-28) and `rankwarden-emblem.svg` (square places);
+favicons are in `public/`, still made from the emblem.
 Navigation icons (`icons/nav/*.svg`) are monochrome `currentColor` SVGs coloured by the
 faction accent, except `bosses.svg` (fixed fel green), which `NavGlyph` inlines. The guild
 icons also carry colours but are drawn as masks on purpose (`inlineIcons.ts`). One-look PNG families read by path

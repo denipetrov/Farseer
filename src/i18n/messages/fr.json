@@ -50,7 +50,6 @@
   "menu.open": "Ouvrir le menu",
   "menu.close": "Fermer le menu",
   "menu.title": "Menu",
-  "footer.slogan": "« Le chaos est une échelle. »",
   "footer.legal": "Mentions légales",
   "legal.privacy": "Politique de confidentialité",
   "legal.terms": "Conditions d’utilisation",
@@ -198,7 +197,6 @@
   "rep.day": "Jour",
   "rep.today": "Aujourd’hui",
   "rep.daysAgo": "Il y a {days} jours",
-  "rep.noData": "Pas encore de données aussi anciennes",
   "rep.noSnapshot": "Aucun relevé pour le {date} : Rankwarden a manqué ce jour.",
   "rep.noSpecs": "Aucun joueur de spé connue à cette cote pour l’instant.",
   "rep.summary": "{classified} joueurs classés sur {total} de spé connue",
@@ -230,5 +228,16 @@
   "heroStats.infoCovered": "Le build de {covered} d’entre eux est connu ({coverage} de couverture) : les pourcentages portent sur ces {covered}.",
   "heroStats.infoAllCovered": "Le build de tous est connu.",
   "heroStats.infoRating": "Cote {min}–{max}.",
-  "home.tagline": "À nous la garde"
+  "rep.beforeSeason": "Avant le début de cette saison ({date})",
+  "rep.noSnapshotDay": "Aucune donnée pour le {date}",
+  "slogan.watch": "À nous la garde",
+  "slogan.chaos": "Le chaos est une échelle",
+  "slogan.ladder": "Le classement ne dort jamais",
+  "slogan.rank": "Chaque rang sous bonne garde",
+  "slogan.earned": "Le rang se mérite, il ne se donne pas",
+  "slogan.meta": "Connais la méta, grimpe le classement",
+  "slogan.climb": "Chaque ascension, consignée",
+  "slogan.cutoffs": "Les seuils ne mentent pas",
+  "slogan.repeat": "Grimper. Classer. Recommencer.",
+  "slogan.archives": "Les archives se souviennent"
 }

@@ -50,7 +50,6 @@
   "menu.open": "打开菜单",
   "menu.close": "关闭菜单",
   "menu.title": "菜单",
-  "footer.slogan": "“混乱是阶梯。”",
   "footer.legal": "法律信息",
   "legal.privacy": "隐私政策",
   "legal.terms": "服务条款",
@@ -198,7 +197,6 @@
   "rep.day": "日期",
   "rep.today": "今天",
   "rep.daysAgo": "{days} 天前",
-  "rep.noData": "还没有这么早的数据",
   "rep.noSnapshot": "{date} 没有快照：Rankwarden 错过了这一天。",
   "rep.noSpecs": "此等级分下还没有已知专精的玩家。",
   "rep.summary": "{total} 名上榜玩家中 {classified} 名已知专精",
@@ -230,5 +228,16 @@
   "heroStats.infoCovered": "其中 {covered} 名玩家的天赋已知（覆盖率 {coverage}）：百分比基于这 {covered} 名。",
   "heroStats.infoAllCovered": "所有玩家的天赋均已知。",
   "heroStats.infoRating": "等级分 {min}–{max}。",
-  "home.tagline": "守望属于我们"
+  "rep.beforeSeason": "本赛季开始之前（{date}）",
+  "rep.noSnapshotDay": "{date} 没有数据",
+  "slogan.watch": "守望属于我们",
+  "slogan.chaos": "混乱是阶梯",
+  "slogan.ladder": "天梯从不沉睡",
+  "slogan.rank": "每个排名，尽在守望",
+  "slogan.earned": "排名靠争取，而非施舍",
+  "slogan.meta": "洞悉版本，登顶天梯",
+  "slogan.climb": "每一次攀升，皆有记录",
+  "slogan.cutoffs": "分数线不会说谎",
+  "slogan.repeat": "攀升，排名，周而复始",
+  "slogan.archives": "档案永不遗忘"
 }

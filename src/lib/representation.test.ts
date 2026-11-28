@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { RepresentedSpec } from '@/api/pvp';
 import {
+  dayStatus,
   daysBefore,
   niceAxis,
   representationColumns,
@@ -89,5 +90,32 @@ describe('niceAxis', () => {
     expect(niceAxis(72)).toEqual({ top: 80, ticks: [0, 20, 40, 60, 80] });
     expect(niceAxis(243)).toEqual({ top: 250, ticks: [0, 50, 100, 150, 200, 250] });
     expect(niceAxis(3)).toEqual({ top: 3, ticks: [0, 1, 2, 3] });
+  });
+});
+
+describe('dayStatus', () => {
+  const AVAILABLE = ['2026-11-04', '2026-11-21', '2026-11-27', '2026-11-28'];
+
+  it('is on when Soulseeker lists the day, off when it does not', () => {
+    expect(dayStatus(7, '2026-11-28', AVAILABLE, '2026-08-18T15:00:00Z')).toEqual({
+      date: '2026-11-21',
+      off: null,
+    });
+    expect(dayStatus(15, '2026-11-28', AVAILABLE, '2026-08-18T15:00:00Z')).toEqual({
+      date: '2026-11-13',
+      off: 'noSnapshot',
+    });
+  });
+
+  it('is off before the season started, whatever the list says', () => {
+    // The season started 8 days before the newest snapshot: 7 days ago is in it, 15 is not
+    expect(dayStatus(7, '2026-11-28', AVAILABLE, '2026-11-20T15:00:00Z').off).toBeNull();
+    expect(dayStatus(15, '2026-11-28', AVAILABLE, '2026-11-20T15:00:00Z').off).toBe('beforeSeason');
+    expect(dayStatus(30, '2026-11-28', AVAILABLE, '2026-11-20T15:00:00Z').off).toBe('beforeSeason');
+  });
+
+  it('keeps today on, and every day on without a list (an older Soulseeker)', () => {
+    expect(dayStatus(0, '2026-11-28', [], '2026-12-01T00:00:00Z').off).toBeNull();
+    expect(dayStatus(30, '2026-11-28', undefined, null).off).toBeNull();
   });
 });

@@ -7,14 +7,15 @@ import { useI18n } from '@/i18n/useI18n';
 import { useGameMode } from '@/preferences/useGameMode';
 import styles from './AppFooter.module.css';
 import { useSite } from '@/lib/site';
+import { SITE_SLOGANS } from '@/lib/slogans';
 
 /**
  * The site footer: the logo (home of the current game mode) with the slogan below it, and
  * the legal links: Privacy Policy and Terms of Service. Below, the copyright and the
  * Blizzard trademark notice (the year is the current one).
  *
- * The slogan, "Chaos is a ladder." (the user's choice), is in quotes (each language's own
- * marks, part of the message: “…”, „…“, « … », «…»), grey, in a handwritten font. The
+ * The slogan, one of `SLOGANS` at random each load (never the home page's; the user,
+ * 2026-11-28), without quote marks (the user), grey, in a handwritten font. The
  * fonts are self-hosted (fontsource, OFL): Caveat for Latin and Cyrillic, Nanum Pen Script
  * for Korean, Ma Shan Zheng for Chinese. Each is split by character range, so a page
  * downloads only the glyphs it shows.
@@ -34,7 +35,7 @@ export function AppFooter() {
           <Link to={`/$game/$locale/${mode}`} params={site} aria-label={t('app.home')}>
             <img src={logoUrl} alt="Rankwarden" />
           </Link>
-          <p className={styles.slogan}>{t('footer.slogan')}</p>
+          <p className={styles.slogan}>{t(SITE_SLOGANS.footer)}</p>
         </div>
 
         <nav className={styles.legal} aria-label={t('footer.legal')}>

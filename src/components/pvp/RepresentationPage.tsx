@@ -4,6 +4,7 @@ import type { CSSProperties } from 'react';
 import {
   PVP_BOARDS,
   PVP_BRACKETS,
+  pvpSeasonsQuery,
   specRepresentationQuery,
   type PvpBoard,
   type PvpBracket,
@@ -25,6 +26,7 @@ import { useI18n } from '@/i18n/useI18n';
 import { iconUrl } from '@/lib/assets';
 import {
   REPRESENTATION_DAYS,
+  dayStatus,
   daysBefore,
   representationColumns,
   shownSpecs,
@@ -34,6 +36,7 @@ import {
 } from '@/lib/representation';
 import { useSite } from '@/lib/site';
 import { classColorKey } from '@/lib/wow/classes';
+import { seasonDates } from '@/lib/wow/pvpSeason';
 import { classOfSpec } from '@/lib/wow/specs';
 import type { TierRole } from '@/lib/wow/tierRoles';
 import { SpecBarChart } from './SpecBarChart';
@@ -94,6 +97,9 @@ export function RepresentationPage({ search }: { search: RepresentationSearch })
   const day: RepresentationDay = search.day ?? 0;
 
   const latest = useQuery(specRepresentationQuery(region, bracket, rating, 'latest'));
+  // The live season's start in the region shown (World: the first region's): no day before
+  const season = useQuery(pvpSeasonsQuery()).data?.seasons.find((x) => x.current);
+  const seasonStart = season ? seasonDates(season, region)?.startsAt : null;
   const date = latest.data && day ? daysBefore(latest.data.date, day) : null;
   const past = useQuery({
     ...specRepresentationQuery(region, bracket, rating, date ?? 'latest'),
@@ -188,13 +194,22 @@ export function RepresentationPage({ search }: { search: RepresentationSearch })
         <nav className={tabBar.group} aria-label={t('rep.day')}>
           {REPRESENTATION_DAYS.map((d) => {
             const label = d ? t('rep.daysAgo', { days: d }) : t('rep.today');
-            const iso = latest.data ? daysBefore(latest.data.date, d) : null;
-            // Off before the first day with specs named (or with none at all)
-            const off =
-              !!latest.data &&
-              (!latest.data.earliestDate || (!!iso && iso < latest.data.earliestDate));
-            return off ? (
-              <span key={d} className={tabBar.tab} aria-disabled title={t('rep.noData')}>
+            // Off before the season started, or on a day Soulseeker has no data for
+            const status = latest.data
+              ? dayStatus(d, latest.data.date, latest.data.availableDates, seasonStart)
+              : null;
+            const iso = status?.date ?? null;
+            return status?.off ? (
+              <span
+                key={d}
+                className={tabBar.tab}
+                aria-disabled
+                title={
+                  status.off === 'beforeSeason' && seasonStart
+                    ? t('rep.beforeSeason', { date: dateText(seasonStart.slice(0, 10)) })
+                    : t('rep.noSnapshotDay', { date: dateText(status.date) })
+                }
+              >
                 {label}
               </span>
             ) : (

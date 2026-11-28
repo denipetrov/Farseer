@@ -50,7 +50,6 @@
   "menu.open": "메뉴 열기",
   "menu.close": "메뉴 닫기",
   "menu.title": "메뉴",
-  "footer.slogan": "“혼돈은 사다리다.”",
   "footer.legal": "법적 고지",
   "legal.privacy": "개인정보 처리방침",
   "legal.terms": "서비스 약관",
@@ -198,7 +197,6 @@
   "rep.day": "날짜",
   "rep.today": "오늘",
   "rep.daysAgo": "{days}일 전",
-  "rep.noData": "아직 그만큼 오래된 데이터가 없습니다",
   "rep.noSnapshot": "{date} 스냅샷이 없습니다: Rankwarden이 그날을 놓쳤습니다.",
   "rep.noSpecs": "이 평점에는 아직 전문화가 확인된 플레이어가 없습니다.",
   "rep.summary": "랭크 플레이어 {total}명 중 {classified}명의 전문화 확인",
@@ -230,5 +228,16 @@
   "heroStats.infoCovered": "이 중 {covered}명의 빌드가 확인되었습니다(확인률 {coverage}). 비율은 이 {covered}명 기준입니다.",
   "heroStats.infoAllCovered": "모두의 빌드가 확인되었습니다.",
   "heroStats.infoRating": "평점 {min}–{max}.",
-  "home.tagline": "감시는 우리의 몫"
+  "rep.beforeSeason": "이번 시즌 시작 전 ({date})",
+  "rep.noSnapshotDay": "{date} 데이터 없음",
+  "slogan.watch": "감시는 우리의 몫",
+  "slogan.chaos": "혼돈은 사다리다",
+  "slogan.ladder": "래더는 잠들지 않는다",
+  "slogan.rank": "모든 순위를 지켜본다",
+  "slogan.earned": "순위는 주어지지 않는다, 쟁취할 뿐",
+  "slogan.meta": "메타를 알고, 래더를 올라라",
+  "slogan.climb": "모든 등반을 기록한다",
+  "slogan.cutoffs": "커트라인은 거짓말하지 않는다",
+  "slogan.repeat": "오르고, 순위를 매기고, 반복하라",
+  "slogan.archives": "기록은 기억한다"
 }

@@ -127,13 +127,16 @@ export interface SpecRepresentation {
   classified: number;
   /** Most played first */
   specs: RepresentedSpec[];
-  /** With `getEarliestDate`: the first day with specs named; null when none */
-  earliestDate?: string | null;
+  /**
+   * With `returnAvailableDates` (asked with `latest`): each of the last 30 UTC days, today
+   * included, with specs named, oldest first; days Rankwarden missed are absent
+   */
+  availableDates?: string[];
 }
 
 /**
  * A spec representation snapshot (`GET /pvp/spec-representation`): `latest` (with the
- * first day there is data for) or a UTC day. A day without a snapshot is a 404.
+ * days there is data for, `availableDates`) or a UTC day. A day without a snapshot is a 404.
  * (The 31-day `/history` endpoint is the FOTM page's: the user, 2026-11-27.)
  */
 export const specRepresentationQuery = (
@@ -148,7 +151,7 @@ export const specRepresentationQuery = (
       api.get<SpecRepresentation>(
         '/pvp/spec-representation',
         date === 'latest'
-          ? { region, bracket, rating, date, getEarliestDate: true }
+          ? { region, bracket, rating, date, returnAvailableDates: true }
           : { region, bracket, rating, date },
         signal,
       ),
@@ -165,7 +168,7 @@ export interface SpecRepresentationHistory {
    * Only days with a snapshot, oldest first (Rankwarden may miss a day, and deletes those
    * before the season). A spec nobody played that day is absent from its `specs`.
    */
-  days: (Omit<SpecRepresentation, 'earliestDate'> & { date: string })[];
+  days: (Omit<SpecRepresentation, 'availableDates'> & { date: string })[];
 }
 
 /** A month of spec shares at a rating: the FOTM page's (the user, 2026-11-27) */

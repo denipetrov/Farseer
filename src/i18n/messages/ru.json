@@ -50,7 +50,6 @@
   "menu.open": "Открыть меню",
   "menu.close": "Закрыть меню",
   "menu.title": "Меню",
-  "footer.slogan": "«Хаос — это лестница.»",
   "footer.legal": "Правовая информация",
   "legal.privacy": "Политика конфиденциальности",
   "legal.terms": "Условия использования",
@@ -198,7 +197,6 @@
   "rep.day": "День",
   "rep.today": "Сегодня",
   "rep.daysAgo": "{days} дн. назад",
-  "rep.noData": "Таких старых данных пока нет",
   "rep.noSnapshot": "Нет снимка за {date}: Rankwarden пропустил этот день.",
   "rep.noSpecs": "На этом рейтинге пока нет игроков с известным спеком.",
   "rep.summary": "{classified} из {total} игроков с известным спеком",
@@ -230,5 +228,16 @@
   "heroStats.infoCovered": "Билд известен у {covered} из них (покрытие {coverage}): проценты — от этих {covered}.",
   "heroStats.infoAllCovered": "Билд известен у всех.",
   "heroStats.infoRating": "Рейтинг {min}–{max}.",
-  "home.tagline": "Наш дозор"
+  "rep.beforeSeason": "До начала этого сезона ({date})",
+  "rep.noSnapshotDay": "Нет данных за {date}",
+  "slogan.watch": "Наш дозор",
+  "slogan.chaos": "Хаос — это лестница",
+  "slogan.ladder": "Ладдер никогда не спит",
+  "slogan.rank": "Каждый ранг под присмотром",
+  "slogan.earned": "Ранг заслуживают, а не получают",
+  "slogan.meta": "Знай мету — поднимайся в ладдере",
+  "slogan.climb": "Каждый подъём записан",
+  "slogan.cutoffs": "Пороги не лгут",
+  "slogan.repeat": "Подъём. Ранг. Повтор.",
+  "slogan.archives": "Архивы помнят"
 }

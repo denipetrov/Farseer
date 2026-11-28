@@ -45,8 +45,8 @@
 }
 
 /*
- * Korean: its own font first, quote marks included (Caveat's small “ was hidden by the
- * first Hangul glyph). Chinese: its own font first (the Korean font would draw the Han).
+ * Korean: its own font first, so the whole line is in one hand. Chinese: its own font
+ * first (the Korean font would draw the Han).
  */
 :root:lang(ko) .slogan {
   font-family: 'Nanum Pen Script', 'Caveat', cursive;

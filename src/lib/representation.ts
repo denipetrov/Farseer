@@ -26,6 +26,30 @@ export function daysBefore(date: string, days: number): string {
   return d.toISOString().slice(0, 10);
 }
 
+/** Why a day tab is off: before the season started, or no snapshot that day */
+export type DayOff = 'beforeSeason' | 'noSnapshot';
+
+/**
+ * A day tab's date and whether it can be picked (the user, 2026-11-28): counted back from
+ * the newest snapshot (`latest`); off when that is before the season started in the region
+ * shown (`seasonStart`, an ISO time: its UTC day counts), or when Soulseeker's
+ * `availableDates` (the last 30 days with data) doesn't list it. Today is always the
+ * newest snapshot. Without `availableDates` (an older Soulseeker) a day is left on: a
+ * missing one answers 404, which the page explains.
+ */
+export function dayStatus(
+  day: RepresentationDay,
+  latest: string,
+  availableDates: readonly string[] | undefined,
+  seasonStart: string | null | undefined,
+): { date: string; off: DayOff | null } {
+  const date = daysBefore(latest, day);
+  if (day === 0) return { date, off: null };
+  if (seasonStart && date < seasonStart.slice(0, 10)) return { date, off: 'beforeSeason' };
+  if (availableDates && !availableDates.includes(date)) return { date, off: 'noSnapshot' };
+  return { date, off: null };
+}
+
 /** The page's URL: all optional, invalid values dropped */
 export interface RepresentationSearch {
   bracket?: PvpBracket;

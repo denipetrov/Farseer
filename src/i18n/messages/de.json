@@ -50,7 +50,6 @@
   "menu.open": "Menü öffnen",
   "menu.close": "Menü schließen",
   "menu.title": "Menü",
-  "footer.slogan": "„Chaos ist eine Leiter.“",
   "footer.legal": "Rechtliches",
   "legal.privacy": "Datenschutzerklärung",
   "legal.terms": "Nutzungsbedingungen",
@@ -198,7 +197,6 @@
   "rep.day": "Tag",
   "rep.today": "Heute",
   "rep.daysAgo": "vor {days} Tagen",
-  "rep.noData": "So weit zurück gibt es noch keine Daten",
   "rep.noSnapshot": "Keine Momentaufnahme für den {date}: Rankwarden hat diesen Tag verpasst.",
   "rep.noSpecs": "Bei dieser Wertung gibt es noch keine Spieler mit bekannter Spezialisierung.",
   "rep.summary": "{classified} von {total} gewerteten Spielern mit bekannter Spezialisierung",
@@ -230,5 +228,16 @@
   "heroStats.infoCovered": "Von {covered} ist der Build bekannt ({coverage} Abdeckung): Die Prozente beziehen sich auf diese {covered}.",
   "heroStats.infoAllCovered": "Von allen ist der Build bekannt.",
   "heroStats.infoRating": "Wertung {min}–{max}.",
-  "home.tagline": "Unser ist die Wacht"
+  "rep.beforeSeason": "Vor dem Start dieser Saison ({date})",
+  "rep.noSnapshotDay": "Keine Daten für den {date}",
+  "slogan.watch": "Unser ist die Wacht",
+  "slogan.chaos": "Chaos ist eine Leiter",
+  "slogan.ladder": "Die Rangliste schläft nie",
+  "slogan.rank": "Jeder Rang unter Wacht",
+  "slogan.earned": "Ränge werden verdient, nicht geschenkt",
+  "slogan.meta": "Kenne die Meta, erklimm die Rangliste",
+  "slogan.climb": "Jeder Aufstieg, festgehalten",
+  "slogan.cutoffs": "Grenzwerte lügen nicht",
+  "slogan.repeat": "Klettern. Ranken. Wiederholen.",
+  "slogan.archives": "Das Archiv vergisst nicht"
 }

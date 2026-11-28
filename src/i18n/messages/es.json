@@ -50,7 +50,6 @@
   "menu.open": "Abrir menú",
   "menu.close": "Cerrar menú",
   "menu.title": "Menú",
-  "footer.slogan": "«El caos es una escalera.»",
   "footer.legal": "Legal",
   "legal.privacy": "Política de privacidad",
   "legal.terms": "Términos del servicio",
@@ -198,7 +197,6 @@
   "rep.day": "Día",
   "rep.today": "Hoy",
   "rep.daysAgo": "Hace {days} días",
-  "rep.noData": "Aún no hay datos tan antiguos",
   "rep.noSnapshot": "No hay registro del {date}: Rankwarden se saltó ese día.",
   "rep.noSpecs": "Aún no hay jugadores con especialización conocida en este índice.",
   "rep.summary": "{classified} de {total} jugadores clasificados con especialización conocida",
@@ -230,5 +228,16 @@
   "heroStats.infoCovered": "Se conoce la build de {covered} ({coverage} de cobertura): los porcentajes son de esos {covered}.",
   "heroStats.infoAllCovered": "Se conoce la build de todos.",
   "heroStats.infoRating": "Índice {min}–{max}.",
-  "home.tagline": "Nuestra es la guardia"
+  "rep.beforeSeason": "Antes del inicio de esta temporada ({date})",
+  "rep.noSnapshotDay": "Sin datos del {date}",
+  "slogan.watch": "Nuestra es la guardia",
+  "slogan.chaos": "El caos es una escalera",
+  "slogan.ladder": "La clasificación nunca duerme",
+  "slogan.rank": "Cada rango, bajo vigilancia",
+  "slogan.earned": "El rango se gana, no se regala",
+  "slogan.meta": "Conoce el meta, escala la clasificación",
+  "slogan.climb": "Cada ascenso, registrado",
+  "slogan.cutoffs": "Los umbrales no mienten",
+  "slogan.repeat": "Subir. Rankear. Repetir.",
+  "slogan.archives": "Los archivos recuerdan"
 }

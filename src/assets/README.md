@@ -330,10 +330,15 @@ in the tank frame) stands for every role, e.g. a "show all roles" filter; it isn
 podium, crown above, a Horde-red and Alliance-blue ribbon, in the palette's gold, silver,
 horde and alliance colours.
 
-- `rankwarden-logo.svg`: emblem + "RANKWARDEN" wordmark (RANK in gold, WARDEN in silver).
-  The wordmark is outlined (Georgia Bold paths), so it renders the same everywhere.
-  Used by `<AppHeader>`.
-- `rankwarden-emblem.svg`: the emblem alone, for square places.
+- `rankwarden-logo.svg` (since 2026-11-28): the "RANKWARDEN" wordmark alone (RANK in gold,
+  WARDEN in silver) with a jewelled crown tilted on the R: five gold spires with pearls and a
+  ruby on the tallest, red velvet between them, a band with a ruby, a sapphire, a gold
+  diamond and pearl beads. The wordmark is outlined (Georgia Bold paths), so it renders the
+  same everywhere. Used by `<AppHeader>`, `<AppFooter>` and the mobile menu. Crown gradient
+  ids are prefixed `rw-logo-crown`.
+- `rankwarden-wordmark.svg`: the wordmark without the crown.
+- `rankwarden-emblem.svg`: the emblem (laurel, podium, crown, ribbon), for square places; no
+  longer part of the logo.
 - Favicons are copies in `public/`: `favicon.svg`, `favicon.ico` (16/32/48 px) and
   `apple-touch-icon.png` (180 px on the app background, as iOS shows no transparency).
   Regenerate them from the emblem when it changes.

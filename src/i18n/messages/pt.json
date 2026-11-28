@@ -50,7 +50,6 @@
   "menu.open": "Abrir menu",
   "menu.close": "Fechar menu",
   "menu.title": "Menu",
-  "footer.slogan": "“O caos é uma escada.”",
   "footer.legal": "Legal",
   "legal.privacy": "Política de Privacidade",
   "legal.terms": "Termos de Serviço",
@@ -198,7 +197,6 @@
   "rep.day": "Dia",
   "rep.today": "Hoje",
   "rep.daysAgo": "Há {days} dias",
-  "rep.noData": "Ainda não há dados tão antigos",
   "rep.noSnapshot": "Sem registro de {date}: o Rankwarden perdeu esse dia.",
   "rep.noSpecs": "Ainda não há jogadores com especialização conhecida nesta pontuação.",
   "rep.summary": "{classified} de {total} jogadores ranqueados com especialização conhecida",
@@ -230,5 +228,16 @@
   "heroStats.infoCovered": "A build de {covered} deles é conhecida ({coverage} de cobertura): as porcentagens são desses {covered}.",
   "heroStats.infoAllCovered": "A build de todos é conhecida.",
   "heroStats.infoRating": "Pontuação {min}–{max}.",
-  "home.tagline": "Nossa é a vigília"
+  "rep.beforeSeason": "Antes do início desta temporada ({date})",
+  "rep.noSnapshotDay": "Sem dados de {date}",
+  "slogan.watch": "Nossa é a vigília",
+  "slogan.chaos": "O caos é uma escada",
+  "slogan.ladder": "O ranking nunca dorme",
+  "slogan.rank": "Cada rank, sob vigília",
+  "slogan.earned": "Rank se conquista, não se ganha",
+  "slogan.meta": "Conheça o meta, suba no ranking",
+  "slogan.climb": "Cada subida, registrada",
+  "slogan.cutoffs": "Os cortes não mentem",
+  "slogan.repeat": "Subir. Rankear. Repetir.",
+  "slogan.archives": "Os arquivos se lembram"
 }
